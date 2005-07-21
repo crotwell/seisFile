@@ -4,7 +4,7 @@
  * @author Created by Omnicore CodeGuide
  */
 
-package edu.sc.seis.fissuresUtil.mseed;
+package edu.sc.seis.seisFile.mseed;
 
 
 
