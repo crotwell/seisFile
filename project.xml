@@ -64,6 +64,10 @@
 
   <dependencies>
     <dependency>
+    <id>log4j</id>
+    <version>1.2.8</version>
+  </dependency>
+   <dependency>
       <id>junit</id>
       <version>3.8</version>
       <type>test</type>
