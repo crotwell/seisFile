@@ -21,10 +21,10 @@
   </description>
   <url>http://www.seis.sc.edu/software/seisFile</url>
   <logo>http://www.seis.sc.edu/images/fissures_header.gif</logo>
-  <siteAddress>www.seis.sc.edu</siteAddress>
-  <siteDirectory>/seis/raid1/Apache/htdocs/software/${pom.artifactId}</siteDirectory>
-  <distributionSite>www.seis.sc.edu</distributionSite>
-  <distributionDirectory>/seis/raid1/Apache/htdocs/software/mavenRepository</distributionDirectory>
+  <siteAddress>roo.seis.sc.edu</siteAddress>
+  <siteDirectory>/Library/WebServer/software/${pom.artifactId}</siteDirectory>
+  <distributionSite>roo.seis.sc.edu</distributionSite>
+  <distributionDirectory>/Library/WebServer/software/mavenRepository</distributionDirectory>
 
   <repository>
         <url>http://roo.seis.sc.edu/fisheye/viewrep/CVS/seis/${pom.artifactId}</url>
