@@ -29,7 +29,7 @@ public abstract class  Blockette {
         throws IOException, SeedFormatException {
         
         try {
-            Class blocketteClass = Class.forName("edu.sc.seis.fissuresUtil.mseed.Blockette"+type);
+            Class blocketteClass = Class.forName("edu.sc.seis.seisFile.mseed.Blockette"+type);
             //System.out.println(" Class.forName suceeded");
             
             Class[] argTypes = new Class[1];
