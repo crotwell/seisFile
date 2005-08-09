@@ -10,7 +10,7 @@
     <logo>http://www.seis.sc.edu/images/IRISlogo9.99_small.gif</logo>
   </organization>
 
-  <currentVersion>1.0beta</currentVersion>
+  <currentVersion>1.0</currentVersion>
   <inceptionYear>2005</inceptionYear>
   <package>edu.sc.seis.seisFile</package>
   <shortDescription>Implementation of file formats for seismic data.
