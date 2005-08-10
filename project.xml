@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0"?>
 <project>
   <pomVersion>3</pomVersion>
   <name>seisFile</name>
@@ -7,9 +6,8 @@
   <organization>  
     <name>The University of South Carolina</name>
     <url>http://www.seis.sc.edu</url>
-    <logo>http://www.seis.sc.edu/images/IRISlogo9.99_small.gif</logo>
+    <logo>http://www.seis.sc.edu/images/seislogo.gif</logo>
   </organization>
-
   <currentVersion>1.0</currentVersion>
   <inceptionYear>2005</inceptionYear>
   <package>edu.sc.seis.seisFile</package>
@@ -25,15 +23,11 @@
   <siteDirectory>/Library/WebServer/software/${pom.artifactId}</siteDirectory>
   <distributionSite>roo.seis.sc.edu</distributionSite>
   <distributionDirectory>/Library/WebServer/software/mavenRepository</distributionDirectory>
-
   <repository>
         <url>http://roo.seis.sc.edu/fisheye/viewrep/CVS/seis/${pom.artifactId}</url>
     </repository>
-
-
   <mailingLists>
   </mailingLists>
-
   <developers>
     <developer>
       <name>Philip Crotwell</name>
@@ -61,7 +55,6 @@
       </roles>
     </developer>
   </developers>
-
   <dependencies>
     <dependency>
     <id>log4j</id>
@@ -74,11 +67,9 @@
       <url>http://junit.org/</url>
     </dependency>
   </dependencies>
-   
   <build>
     <nagEmailAddress>jaster@seis.sc.edu</nagEmailAddress>
     <unitTestSourceDirectory>test</unitTestSourceDirectory>
-
     <!-- Unit test cases -->
     <unitTest>
       <includes>
@@ -90,6 +81,4 @@
     </unitTest>
     <sourceDirectory>src</sourceDirectory>
   </build>
-
 </project>
-
