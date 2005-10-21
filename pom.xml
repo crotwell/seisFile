@@ -13,7 +13,17 @@
       <sourceDirectory>src</sourceDirectory>
       <testSourceDirectory>tests/unit</testSourceDirectory>
   </build>
-  <dependencyManagement>
+  <dependencies>
+      <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+      </dependency>
+ </dependencies>
+ <dependencyManagement>
       <dependencies>
         <dependency>
           <groupId>junit</groupId>
