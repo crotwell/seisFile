@@ -1,48 +1,28 @@
-<project 
-    xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.sc.seis</groupId>
-  <artifactId>seisFile</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0</version>
-  <name>seisFile</name>
-  <url>http://www.seis.sc.edu/software/seisFile/</url>
-  <build>
-      <sourceDirectory>src</sourceDirectory>
-      <testSourceDirectory>tests/unit</testSourceDirectory>
-  </build>
-  <dependencies>
-      <dependency>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-      </dependency>
- </dependencies>
- <dependencyManagement>
-      <dependencies>
-        <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>3.8.1</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>edu.sc.seis</groupId>
-            <artifactId>seisFile</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency> 
+    <parent>
+        <groupId>edu.sc.seis</groupId>
+        <artifactId>seis</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>edu.sc.seis</groupId>
+    <artifactId>seisFile</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0</version>
+    <name>seisFile</name>
+    <url>http://www.seis.sc.edu/software/seisFile/</url>
+    <dependencies>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.8</version>
-            <scope>compile</scope>
-        </dependency> 
-      </dependencies>
-  </dependencyManagement>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+    </dependencies>
 </project>
