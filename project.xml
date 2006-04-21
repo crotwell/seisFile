@@ -8,7 +8,7 @@
     <url>http://www.seis.sc.edu</url>
     <logo>http://www.seis.sc.edu/images/seislogo.gif</logo>
   </organization>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.0.1</currentVersion>
   <inceptionYear>2005</inceptionYear>
   <package>edu.sc.seis.seisFile</package>
   <shortDescription>Implementation of file formats for seismic data.
