@@ -25,22 +25,31 @@ public class SacTimeSeriesTest extends TestCase {
         float f1 = Float.MIN_VALUE * 2;
         float f2 = Float.MAX_VALUE / 2;
         float f3 = 0f;
-        float f4 = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(f1));
-        float f5 = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(f2));
-        float f6 = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(f3));
-        assertEquals(f1, f4, 0.01f);
+        float f4 =   2539327.8f;
+        float f1s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(f1));
+        float f2s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(f2));
+        float f3s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(f3));
+        float f4s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(f4));
+        assertEquals(f1, f1s, 0.01f);
+        assertEquals(f2, f2s, 0.01f);
+        assertEquals(f3, f3s, 0.01f);
+        assertEquals(f4, f4s, 0.01f);
     }
 
     public void testSwapBytesInt() {
         int i1 = Integer.MIN_VALUE + 1;
         int i2 = Integer.MAX_VALUE - 1;
         int i3 = 0;
-        int i4 = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(i1));
-        int i5 = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(i2));
-        int i6 = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(i3));
-        assertEquals(i1, i4);
-        assertEquals(i2, i5);
-        assertEquals(i3, i6);
+        int i4 = 255 + (252 << 8) + ( 26 << 16) + (74 << 24);
+        int i1s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(i1));
+        int i2s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(i2));
+        int i3s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(i3));
+        int i4s = SacTimeSeries.swapBytes(SacTimeSeries.swapBytes(i4));
+        assertEquals(i1, i1s);
+        assertEquals(i2, i2s);
+        assertEquals(i3, i3s);
+        assertEquals(i4, i4s);
+        System.out.println(i4+"  "+i4s);
     }
 
     public void testSwapBytesDouble() {

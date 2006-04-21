@@ -882,18 +882,21 @@ public class SacTimeSeries {
             }
             // i is now set to first unused byte in buf
             while(i <= numRead - 4) {
-                y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 24)
-                        + ((buf[i++] & 0xff) << 16) + ((buf[i++] & 0xff) << 8)
-                        + ((buf[i++] & 0xff) << 0));
+                if (byteOrder == IntelByteOrder) {
+                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 0)
+                                                         + ((buf[i++] & 0xff) << 8)
+                                                         + ((buf[i++] & 0xff) << 16)
+                                                         + ((buf[i++] & 0xff) << 24));
+                } else {
+                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 24)
+                                                         + ((buf[i++] & 0xff) << 16)
+                                                         + ((buf[i++] & 0xff) << 8)
+                                                         + ((buf[i++] & 0xff) << 0));
+                }
             }
             System.arraycopy(overflow, 0, prevoverflow, 0, overflowBytes);
             prevoverflowBytes = overflowBytes;
         }
-        if(byteOrder == IntelByteOrder) {
-            for(int j = 0; j < y.length; j++) {
-                y[j] = swapBytes(y[j]);
-            } // end of for ()
-        } // end of if ()
     }
 
     /**
@@ -943,7 +946,11 @@ public class SacTimeSeries {
     private final void writeFloat(DataOutputStream dos, float val)
             throws IOException {
         if(byteOrder == IntelByteOrder) {
-            dos.writeFloat(swapBytes(val));
+            // careful here as dos.writeFloat() will collapse all NaN floats to
+            // a single NaN value. But we are trying to write out byte swapped values
+            // so different floats that are all NaN are different values in the
+            // other byte order. Solution is to swap on the integer bits, not the float
+            dos.writeInt(swapBytes(Float.floatToRawIntBits(val)));
         } else {
             dos.writeFloat(val);
         } // end of else
