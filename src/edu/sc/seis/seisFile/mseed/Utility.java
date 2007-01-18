@@ -100,7 +100,7 @@ public class Utility {
             byte[] returnByteArray = new byte[requiredBytes];
             System.arraycopy(source, 0, returnByteArray, 0, source.length);
             for(int i = source.length; i < requiredBytes; i++) {
-                returnByteArray[i] = (byte)paddingByte;
+                returnByteArray[i] = paddingByte;
             }
             return returnByteArray;
         }

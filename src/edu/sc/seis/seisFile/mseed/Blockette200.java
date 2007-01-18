@@ -17,17 +17,22 @@ public class Blockette200 extends DataBlockette {
         Utility.insertFloat(background, info, BACKGROUND);
         byte[] onsetBytes = signalOnset.getAsBytes();
         System.arraycopy(onsetBytes, 0, info, SIGNAL_ONSET, onsetBytes.length);
-        if(eventDetector.length() > 24) {
-            throw new IllegalArgumentException("The event detector can only be up to 24 characters in length");
+        if(eventDetector.length() > EVENT_DETECTOR_LENGTH) {
+            throw new IllegalArgumentException("The event detector can only be up to "
+                    + EVENT_DETECTOR_LENGTH + " characters in length");
         }
         byte[] detectorBytes;
         try {
             detectorBytes = eventDetector.getBytes("US-ASCII");
         } catch(UnsupportedEncodingException e) {
             throw new RuntimeException("Java was unable to find the US-ASCII character encoding.");
-        }if(detectorBytes.length != eventDetector.length()) {
+        }
+        if(detectorBytes.length != eventDetector.length()) {
             throw new IllegalArgumentException("The characters in event detector must be in the ASCII character set i.e. from 0-127");
         }
+        detectorBytes = Utility.pad(detectorBytes,
+                                    EVENT_DETECTOR_LENGTH,
+                                    (byte)' ');
         System.arraycopy(detectorBytes,
                          0,
                          info,
@@ -97,4 +102,6 @@ public class Blockette200 extends DataBlockette {
 
     // Full size of blockette 200
     private static final int B200_SIZE = 52;
+
+    private static final int EVENT_DETECTOR_LENGTH = 24;
 }
