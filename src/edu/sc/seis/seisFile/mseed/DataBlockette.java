@@ -25,7 +25,7 @@ public abstract class DataBlockette extends Blockette
         this.info = new byte[size];
         System.arraycopy(Utility.intToByteArray(getType()), 2, info, 0, 2);
     }
-
+    
     /** For use by subclasses that want to ensure that they are of a given size.
      * @throws IllegalArgumentException if the size is larger than the number of bytes
      */
