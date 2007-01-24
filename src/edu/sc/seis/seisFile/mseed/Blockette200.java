@@ -84,9 +84,32 @@ public class Blockette200 extends DataBlockette {
     public Btime getSignalOnset() {
         return new Btime(info, SIGNAL_ONSET);
     }
+    
+    public String getEventDetector(){
+        return new String(info, EVENT_DETECTOR, EVENT_DETECTOR_LENGTH);
+    }
 
     public void writeASCII(Writer out) throws IOException {
         out.write("Blockette200");
+    }
+
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+        if(o instanceof Blockette200) {
+            byte[] oinfo = ((Blockette200)o).info;
+            if(info.length != oinfo.length){
+                return false;
+            }
+            for(int i = 0; i < oinfo.length; i++) {
+                if(info[i] != oinfo[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     // Offsets for various fields
