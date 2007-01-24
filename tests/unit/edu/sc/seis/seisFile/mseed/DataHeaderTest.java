@@ -11,18 +11,6 @@ import junit.framework.TestCase;
 
 public class DataHeaderTest extends TestCase {
 
-    public DataHeaderTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testWrite() throws Exception {
         DataHeader header = new DataHeader(1, 'D', false);
         header.setChannelIdentifier("BHZ");
