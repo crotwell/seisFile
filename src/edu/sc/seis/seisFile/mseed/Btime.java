@@ -14,7 +14,7 @@ public class Btime {
     }
 
     public Btime(byte[] bytes, int offset) {
-        boolean byteSwapFlag = shouldSwapBytes(bytes);
+        boolean byteSwapFlag = shouldSwapBytes(bytes, offset);
         year = Utility.uBytesToInt(bytes[offset],
                                    bytes[offset + 1],
                                    byteSwapFlag);
@@ -30,7 +30,37 @@ public class Btime {
                                          byteSwapFlag);
     }
 
-    public int year = 1900;
+    public int hashCode() {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + hour;
+        result = PRIME * result + jday;
+        result = PRIME * result + min;
+        result = PRIME * result + sec;
+        result = PRIME * result + tenthMilli;
+        result = PRIME * result + year;
+        return result;
+    }
+
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+        if(o instanceof Btime) {
+            Btime oBtime = (Btime)o;
+            return oBtime.year == year && oBtime.jday == jday
+                    && oBtime.hour == hour && oBtime.min == min
+                    && oBtime.sec == sec && oBtime.tenthMilli == tenthMilli;
+        }
+        return false;
+    }
+
+    public String toString() {
+        return "BTime(" + year + ":" + jday + ":" + hour + ":" + min + ":"
+                + sec + "." + tenthMilli + ")";
+    }
+
+    public int year = 1960;
 
     public int jday = 1;
 
@@ -49,7 +79,19 @@ public class Btime {
      * @return - true if the bytes need to be swapped to get a valid year
      */
     public static boolean shouldSwapBytes(byte[] btime) {
-        int year = Utility.uBytesToInt(btime[0], btime[1], false);
+        return shouldSwapBytes(btime, 0);
+    }
+
+    /**
+     * Expects btime to be a byte array pointing at the beginning of a btime
+     * segment
+     * 
+     * @return - true if the bytes need to be swapped to get a valid year
+     */
+    public static boolean shouldSwapBytes(byte[] btime, int offset) {
+        int year = Utility.uBytesToInt(btime[0 + offset],
+                                       btime[1 + offset],
+                                       false);
         return year < 1960 || year > 2050;
     }
 
