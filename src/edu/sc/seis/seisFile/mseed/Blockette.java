@@ -2,8 +2,6 @@ package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Superclass of all seed blockettes. The actual blockettes do not store either
