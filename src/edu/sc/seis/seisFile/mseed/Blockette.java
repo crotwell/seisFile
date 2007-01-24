@@ -32,6 +32,8 @@ public abstract class Blockette {
                 return new Blockette200(bytes);
             case 1000:
                 return new Blockette1000(bytes);
+            case 2000:
+                return new Blockette2000(bytes);
             default:
                 return new BlocketteUnknown(bytes, type);
         }
