@@ -497,7 +497,7 @@ public class SacTimeSeries {
                         + " does not appear to be a sac file! npts(" + npts
                         + ") + header(" + data_offset + ") !=  file length="
                         + sacFile.length() + "\n  as linux: npts("
-                        + swapBytes(npts) + ") + header(" + data_offset
+                        + swapBytes(npts) + ")*4 + header(" + data_offset
                         + ") !=  file length=" + sacFile.length());
             } // end of else
         }
