@@ -557,7 +557,7 @@ public class SacTimeSeries {
     }
 
     /** Swaps the byte order of the header values. */
-    protected void swapHeader() {
+    public void swapHeader() {
         delta = swapBytes(delta);
         depmin = swapBytes(depmin);
         depmax = swapBytes(depmax);
