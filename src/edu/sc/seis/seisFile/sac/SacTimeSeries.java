@@ -504,6 +504,11 @@ public class SacTimeSeries {
         readData(dis);
         dis.close();
     }
+    
+    /** Sets the byte order when writing to output. Does not change the internal representation of the data.*/
+    public final void littleEndian() {
+        byteOrder = IntelByteOrder;
+    }
 
     public final static short swapBytes(short val) {
         return (short)(((val & 0xff00) >> 8) + ((val & 0x00ff) << 8));
