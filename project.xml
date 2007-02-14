@@ -19,10 +19,10 @@
   </description>
   <url>http://www.seis.sc.edu/software/seisFile</url>
   <logo>http://www.seis.sc.edu/images/fissures_header.gif</logo>
-  <siteAddress>roo.seis.sc.edu</siteAddress>
-  <siteDirectory>/Library/WebServer/software/${pom.artifactId}</siteDirectory>
-  <distributionSite>roo.seis.sc.edu</distributionSite>
-  <distributionDirectory>/Library/WebServer/software/mavenRepository</distributionDirectory>
+  <siteAddress>hopalong.seis.sc.edu</siteAddress>
+  <siteDirectory>/var/www/html/software/${pom.artifactId}</siteDirectory>
+  <distributionSite>hopalong.seis.sc.edu</distributionSite>
+  <distributionDirectory>/var/www/html/software/mavenRepository</distributionDirectory>
   <repository>
         <url>http://roo.seis.sc.edu/fisheye/viewrep/seis/trunk/${pom.artifactId}</url>
     </repository>
