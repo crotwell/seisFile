@@ -28,8 +28,8 @@ public class Utility {
         return a & 0xff;
     }
 
-    public static int bytesToInt(byte[] info, int i) {
-        return bytesToInt(info[i], info[i + 1], info[i + 2], info[i + 3], false);
+    public static int bytesToInt(byte[] info, int i, boolean swapBytes) {
+        return bytesToInt(info[i], info[i + 1], info[i + 2], info[i + 3], swapBytes);
     }
 
     public static int bytesToInt(byte a, byte b, boolean swapBytes) {

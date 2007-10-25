@@ -40,8 +40,8 @@ public class Blockette200 extends DataBlockette {
                          detectorBytes.length);
     }
 
-    public Blockette200(byte[] info) {
-        super(info);
+    public Blockette200(byte[] info, boolean swapBytes) {
+        super(info, swapBytes);
         trimToSize(getSize());
     }
 
@@ -61,21 +61,21 @@ public class Blockette200 extends DataBlockette {
      * @return - the signal amplitude field
      */
     public float getSignal() {
-        return Float.intBitsToFloat(Utility.bytesToInt(info, SIGNAL));
+        return Float.intBitsToFloat(Utility.bytesToInt(info, SIGNAL, swapBytes));
     }
 
     /**
      * @return - the signal period field
      */
     public float getPeriod() {
-        return Float.intBitsToFloat(Utility.bytesToInt(info, PERIOD));
+        return Float.intBitsToFloat(Utility.bytesToInt(info, PERIOD, swapBytes));
     }
 
     /**
      * @return - the background estimate field
      */
     public float getBackground() {
-        return Float.intBitsToFloat(Utility.bytesToInt(info, BACKGROUND));
+        return Float.intBitsToFloat(Utility.bytesToInt(info, BACKGROUND, swapBytes));
     }
 
     /**

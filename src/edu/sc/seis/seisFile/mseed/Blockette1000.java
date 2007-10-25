@@ -22,8 +22,8 @@ public class Blockette1000 extends  DataBlockette {
         super(B1000_SIZE);
     }
 
-    public Blockette1000(byte[] info) {
-        super(info);
+    public Blockette1000(byte[] info, boolean swapBytes) {
+        super(info, swapBytes);
         trimToSize(B1000_SIZE);
     }
 

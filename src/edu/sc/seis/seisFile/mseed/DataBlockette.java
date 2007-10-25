@@ -17,8 +17,9 @@ import java.io.Serializable;
 public abstract class DataBlockette extends Blockette
     implements Serializable {
 
-    public DataBlockette(byte[] info) {
+    public DataBlockette(byte[] info, boolean swapBytes) {
         this.info = info;
+        this.swapBytes = swapBytes;
     }
 
     public DataBlockette(int size) {
@@ -55,5 +56,7 @@ public abstract class DataBlockette extends Blockette
     }
 
     protected byte[] info;
+    
+    protected boolean swapBytes;
 
 } // DataBlockette

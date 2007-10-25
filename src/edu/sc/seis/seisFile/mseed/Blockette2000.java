@@ -38,8 +38,8 @@ public class Blockette2000 extends DataBlockette {
         return len;
     }
 
-    public Blockette2000(byte[] info) {
-        super(info);
+    public Blockette2000(byte[] info, boolean swapBytes) {
+        super(info, swapBytes);
     }
 
     public String getName() {

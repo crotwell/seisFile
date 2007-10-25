@@ -157,7 +157,7 @@ public class DataHeader extends ControlHeader {
      * test whether the data being read needs to be byte-swapped look for bogus
      * year value to determine this
      */
-    private boolean flagByteSwap() {
+    boolean flagByteSwap() {
         return Btime.shouldSwapBytes(startTime);
     }
 
