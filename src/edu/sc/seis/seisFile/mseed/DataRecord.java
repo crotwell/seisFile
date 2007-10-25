@@ -9,6 +9,7 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -118,9 +119,10 @@ public class DataRecord extends SeedRecord implements Serializable {
         }
     }
 
-    protected static DataRecord readDataRecord(DataInputStream inStream,
+    protected static DataRecord readDataRecord(DataInput inStream,
                                                DataHeader header)
             throws IOException, SeedFormatException {
+        boolean swapBytes = header.flagByteSwap();
         /*
          * Assert.isTrue(header.getDataBlocketteOffset()>= header.getSize(),
          * "Offset to first blockette must be larger than the header size");
@@ -138,11 +140,11 @@ public class DataRecord extends SeedRecord implements Serializable {
             // get blockette type (first 2 bytes)
             byte hibyteType = inStream.readByte();
             byte lowbyteType = inStream.readByte();
-            type = Utility.uBytesToInt(hibyteType, lowbyteType, false);
+            type = Utility.uBytesToInt(hibyteType, lowbyteType, swapBytes);
             // System.out.println("Blockette type "+type);
             byte hibyteOffset = inStream.readByte();
             byte lowbyteOffset = inStream.readByte();
-            nextOffset = Utility.uBytesToInt(hibyteOffset, lowbyteOffset, false);
+            nextOffset = Utility.uBytesToInt(hibyteOffset, lowbyteOffset, swapBytes);
             // account for the 4 bytes above
             currOffset += 4;
             if(nextOffset != 0) {
@@ -169,7 +171,7 @@ public class DataRecord extends SeedRecord implements Serializable {
             fullBlocketteBytes[1] = lowbyteType;
             fullBlocketteBytes[2] = hibyteOffset;
             fullBlocketteBytes[3] = lowbyteOffset;
-            Blockette b = Blockette.parseBlockette(type, fullBlocketteBytes);
+            Blockette b = Blockette.parseBlockette(type, fullBlocketteBytes, swapBytes);
             dataRec.addBlockette(b);
             if(nextOffset == 0) {
                 break;

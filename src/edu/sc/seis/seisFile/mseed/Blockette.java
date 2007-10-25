@@ -23,19 +23,19 @@ public abstract class Blockette {
      */
     public abstract void writeASCII(Writer out) throws IOException;
 
-    public static Blockette parseBlockette(int type, byte[] bytes)
+    public static Blockette parseBlockette(int type, byte[] bytes, boolean swapBytes)
             throws IOException, SeedFormatException {
         switch(type){
             case 100:
-                return new Blockette100(bytes);
+                return new Blockette100(bytes, swapBytes);
             case 200:
-                return new Blockette200(bytes);
+                return new Blockette200(bytes, swapBytes);
             case 1000:
-                return new Blockette1000(bytes);
+                return new Blockette1000(bytes, swapBytes);
             case 2000:
-                return new Blockette2000(bytes);
+                return new Blockette2000(bytes, swapBytes);
             default:
-                return new BlocketteUnknown(bytes, type);
+                return new BlocketteUnknown(bytes, type, swapBytes);
         }
     }
 

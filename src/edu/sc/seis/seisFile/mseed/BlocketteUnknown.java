@@ -14,9 +14,10 @@ import java.io.Writer;
 
 public class BlocketteUnknown extends Blockette {
 
-    public BlocketteUnknown(byte[] info, int type) {
+    public BlocketteUnknown(byte[] info, int type, boolean swapBytes) {
         this.info = info;
         this.type = type;
+        this.swapBytes = swapBytes;
     }
 
     public int getType() {
@@ -38,8 +39,14 @@ public class BlocketteUnknown extends Blockette {
     public void writeASCII(Writer out) throws IOException {
         out.write("Blockette UNKNOWN");
     }
+    
+    public boolean getSwapBytes() {
+        return swapBytes;
+    }
 
     protected int type;
 
     protected byte[] info;
+    
+    protected boolean swapBytes;
 } // BlocketteUnknown

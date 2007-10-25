@@ -484,6 +484,7 @@ public class SacTimeSeries {
         BufferedInputStream buf = new BufferedInputStream(fis);
         DataInputStream dis = new DataInputStream(buf);
         readHeader(dis);
+        System.out.println("before swap: "+gcarc);
         if(sacFile.length() != npts * 4 + data_offset) {
             if(sacFile.length() == swapBytes(npts) * 4 + data_offset) {
                 // must be little endian
@@ -492,6 +493,7 @@ public class SacTimeSeries {
                         + ") =  file length=" + sacFile.length());
                 byteOrder = IntelByteOrder;
                 swapHeader();
+                System.out.println("after swap: "+gcarc);
             } else {
                 throw new IOException(sacFile.getName()
                         + " does not appear to be a sac file! npts(" + npts
