@@ -86,8 +86,8 @@ public class Btime {
      * Expects btime to be a byte array pointing at the beginning of a btime
      * segment.
      * 
-     * Time capsule: note that year 2057 as a short byte swaps to itself, so whomever
-     * is maintaining this code off in the distant future, 50 years from now as
+     * Time capsule: note that year 2056 as a short byte swaps to itself, so whomever
+     * is maintaining this code off in the distant future, 49 years from now as
      * I write this in 2007, should find some other header to use for byte swap checking!
      * 
      * Using the jday or tenthmilli doesn't help much as 1 byte swaps to 256, 256 to 1 and 257 to itself.
@@ -101,7 +101,7 @@ public class Btime {
         int year = Utility.uBytesToInt(btime[0 + offset],
                                        btime[1 + offset],
                                        false);
-        return year < 1960 || year > 2056;
+        return year < 1960 || year > 2055;
     }
 
     public byte[] getAsBytes() {
