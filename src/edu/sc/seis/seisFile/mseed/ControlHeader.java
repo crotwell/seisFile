@@ -21,7 +21,6 @@ public class ControlHeader {
 	throws IOException, SeedFormatException {
 		byte[] seqBytes = new byte[6];
 		in.readFully(seqBytes);
-	
 		String seqNumString = new String(seqBytes);
 	
 		int sequenceNum =0;

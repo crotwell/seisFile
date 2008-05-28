@@ -27,6 +27,31 @@ public abstract class SeedRecord {
         return allB;
     }
 
+    public Blockette getUniqueBlockette(int type) throws SeedFormatException {
+        Blockette[] b = getBlockettes(type);
+        if (b.length == 1) {
+            return b[0];
+        } else if (b.length == 0) {
+            if (type == 1000) {
+                // special case as b1000 is required in mseed
+                throw new MissingBlockette1000();
+            }
+            throw new SeedFormatException("No blockettes of type "+type);
+        } else {
+            throw new SeedFormatException("Multiple blockettes of type "+type);
+        }
+    }
+
+    public int getNumBlockettes(int type) throws SeedFormatException {
+        int out = 0;
+        for(int i = 0; i < blockettes.size(); i++) {
+            if(((Blockette)blockettes.elementAt(i)).getType() == type) {
+                out++;
+            }
+        }
+        return out;
+    }
+
     public Blockette[] getBlockettes(int type) {
         Vector v = new Vector();
         for(int i = 0; i < blockettes.size(); i++) {
