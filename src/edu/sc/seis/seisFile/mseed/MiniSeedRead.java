@@ -20,7 +20,7 @@ public class MiniSeedRead {
 
     protected MiniSeedRead() {}
 
-    public MiniSeedRead(DataInput inStream) throws IOException {
+    public MiniSeedRead(DataInputStream inStream) throws IOException {
         this.inStream = inStream;
     }
 
@@ -34,13 +34,15 @@ public class MiniSeedRead {
      * "continued" records will be concatinated to avoid partial blockettes.
      */
     public DataRecord getNextRecord() throws SeedFormatException, IOException {
-        ControlHeader header = ControlHeader.read(inStream);
-        if(header instanceof DataHeader) {
-            return DataRecord.readDataRecord(inStream, (DataHeader)header);
-        } else {
-            throw new SeedFormatException("Found a control record in miniseed");
-            // return readControlRecord(header);
-        }
+        return getNextRecord(0);
+    }
+    /**
+     * gets the next logical record int the seed volume. This may not exactly
+     * correspond to the logical record structure within the volume as
+     * "continued" records will be concatinated to avoid partial blockettes.
+     */
+    public DataRecord getNextRecord(int defaultRecordSize) throws SeedFormatException, IOException {
+        return DataRecord.read(inStream, defaultRecordSize);
     }
 
     public int getNumRecordsRead() {
@@ -49,7 +51,7 @@ public class MiniSeedRead {
 
     protected int numRead = 0;
 
-    protected DataInput inStream;
+    protected DataInputStream inStream;
 
     protected int recordSize;
 
@@ -64,21 +66,22 @@ public class MiniSeedRead {
                 ls = new DataInputStream(new BufferedInputStream(lissConnect.getInputStream(),
                                                                  1024));
             } else {
-                ls = new DataInputStream(new BufferedInputStream(new FileInputStream(args[0])));
+                ls = new DataInputStream(new BufferedInputStream(new FileInputStream(args[0]), 4096));
             }
             MiniSeedRead rf = new MiniSeedRead(ls);
             for(int i = 0; i < 10; i++) {
-                SeedRecord sr = rf.getNextRecord();
+                SeedRecord sr;
+                try {
+                    sr = rf.getNextRecord();
+                } catch(MissingBlockette1000 e) {
+                    System.out.println("Missing Blockette1000, trying with record size of 4096");
+                    // try with 4096 as default
+                    sr = rf.getNextRecord(4096);
+                }
                 System.out.println(sr);
                 if(sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
                     byte[] data = dr.getData();
-                    Blockette[] blockettes = dr.getBlockettes(1000);
-                    Blockette1000 b1000 = (Blockette1000)blockettes[0];
-                    if((int)b1000.getEncodingFormat() == 0) {
-                        String s = new String(data);
-                        System.out.println(s);
-                    }
                 }
             }
         } catch(Exception e) {
