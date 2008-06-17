@@ -13,6 +13,7 @@ import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.Writer;
 
@@ -161,11 +162,12 @@ public class DataRecord extends SeedRecord implements Serializable {
      * exception. A buffer sized to be the largest seed record expected is sufficient
      * and so 4096 is a reasonable buffer size.
      */
-    public static DataRecord read(DataInputStream inStream,
+    public static DataRecord read(DataInput inStream,
                                   int defaultRecordSize) throws IOException,
             SeedFormatException {
-        if(inStream.markSupported()) {
-            inStream.mark(4096);
+        boolean resetOnError = inStream instanceof DataInputStream && ((InputStream)inStream).markSupported();
+        if(resetOnError) {
+            ((InputStream)inStream).mark(4096);
         }
         try {
             ControlHeader header = ControlHeader.read(inStream);
@@ -177,18 +179,18 @@ public class DataRecord extends SeedRecord implements Serializable {
                 throw new SeedFormatException("Found a control header in a miniseed file");
             }
         } catch(SeedFormatException e) {
-            if(inStream.markSupported()) {
-                inStream.reset();
+            if(resetOnError) {
+                ((InputStream)inStream).reset();
             }
             throw e;
         } catch(IOException e) {
-            if(inStream.markSupported()) {
-                inStream.reset();
+            if(resetOnError) {
+                ((InputStream)inStream).reset();
             }
             throw e;
         } catch(RuntimeException e) {
-            if(inStream.markSupported()) {
-                inStream.reset();
+            if(resetOnError) {
+                ((InputStream)inStream).reset();
             }
             throw e;
         }
