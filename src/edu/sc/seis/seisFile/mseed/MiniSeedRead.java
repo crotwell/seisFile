@@ -20,7 +20,7 @@ public class MiniSeedRead {
 
     protected MiniSeedRead() {}
 
-    public MiniSeedRead(DataInputStream inStream) throws IOException {
+    public MiniSeedRead(DataInput inStream) throws IOException {
         this.inStream = inStream;
     }
 
@@ -51,7 +51,7 @@ public class MiniSeedRead {
 
     protected int numRead = 0;
 
-    protected DataInputStream inStream;
+    protected DataInput inStream;
 
     protected int recordSize;
 
