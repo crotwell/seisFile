@@ -24,7 +24,7 @@
   <distributionSite>hopalong.seis.sc.edu</distributionSite>
   <distributionDirectory>/var/www/html/software/mavenRepository</distributionDirectory>
   <repository>
-        <url>http://roo.seis.sc.edu/fisheye/viewrep/seis/trunk/${pom.artifactId}</url>
+        <url>http://www.seis.sc.edu/fisheye/viewrep/seis/trunk/${pom.artifactId}</url>
     </repository>
   <mailingLists>
   </mailingLists>
