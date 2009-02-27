@@ -12,7 +12,6 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import org.apache.log4j.Logger;
 
 public class MultiFileMSeedRead extends MiniSeedRead {
 
@@ -60,11 +59,8 @@ public class MultiFileMSeedRead extends MiniSeedRead {
                 current.close();
                 current = null;
             }
-            logger.debug("Loading next mseed file: "+currentIndex+" of "+files.length+" "+files[currentIndex].getName());
             current = new MiniSeedRead(new DataInputStream(new BufferedInputStream(new FileInputStream(files[currentIndex]))));
             currentIndex++;
-        } else {
-            logger.debug("Last loaded "+currentIndex);
         }
     }
 
@@ -78,7 +74,6 @@ public class MultiFileMSeedRead extends MiniSeedRead {
 
     int current_record = 0;
 
-    private static final Logger logger = Logger.getLogger(MultiFileMSeedRead.class);
 
 }
 
