@@ -487,9 +487,6 @@ public class SacTimeSeries {
         if(sacFile.length() != npts * 4 + data_offset) {
             if(sacFile.length() == swapBytes(npts) * 4 + data_offset) {
                 // must be little endian
-                System.out.println("Swap bytes for linux: swapBytes(npts) ("
-                        + swapBytes(npts) + "*4) + header(" + data_offset
-                        + ") =  file length=" + sacFile.length());
                 byteOrder = IntelByteOrder;
                 swapHeader();
             } else {
@@ -562,7 +559,7 @@ public class SacTimeSeries {
     }
 
     /** Swaps the byte order of the header values. */
-    public void swapHeader() {
+    void swapHeader() {
         delta = swapBytes(delta);
         depmin = swapBytes(depmin);
         depmax = swapBytes(depmax);
