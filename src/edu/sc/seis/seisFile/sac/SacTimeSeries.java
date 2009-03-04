@@ -459,12 +459,16 @@ public class SacTimeSeries {
 
     public static final int data_offset = 632;
 
-    public boolean byteOrder = SunByteOrder;
+    boolean byteOrder = SunByteOrder;
 
     public static final boolean SunByteOrder = true;
 
     public static final boolean IntelByteOrder = false;
 
+    public boolean getByteOrder() {
+        return byteOrder;
+    }
+    
     /**
      * reads the sac file specified by the filename. Only a very simple check is
      * made to be sure the file really is a sac file.
@@ -1538,7 +1542,7 @@ public class SacTimeSeries {
             //     }
             //     data.npts = data.y.length;
             data.printHeader();
-            data.byteOrder = IntelByteOrder;
+            data.littleEndian();
             data.write("outsacfile");
             System.out.println("Done writing");
         } catch(FileNotFoundException e) {
