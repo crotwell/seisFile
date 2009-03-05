@@ -18,9 +18,9 @@ public class PSNSensorAmpAtoD{
     public PSNSensorAmpAtoD(DataInputStream data) throws IOException{
         dis = data;
 
-        sensorOutputVoltage = SacTimeSeries.swapBytes(dis.readDouble());
-        amplifierGain = SacTimeSeries.swapBytes(dis.readDouble());
-        aToDInputVoltage = SacTimeSeries.swapBytes(dis.readDouble());
+        sensorOutputVoltage = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        amplifierGain = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        aToDInputVoltage = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
     }
 
     public double getSensorOutputVoltage() {

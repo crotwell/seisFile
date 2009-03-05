@@ -19,6 +19,7 @@ package edu.sc.seis.seisFile.sac;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -458,6 +459,10 @@ public class SacTimeSeries {
     public static final int INIV60 = 60;
 
     public static final int data_offset = 632;
+    
+    public static final int NVHDR_OFFSET = 76*4;
+    
+    public static final int NPTS_OFFSET = 79*4;
 
     boolean byteOrder = SunByteOrder;
 
@@ -484,23 +489,22 @@ public class SacTimeSeries {
     }
 
     public void read(File sacFile) throws FileNotFoundException, IOException {
+        if (sacFile.length() < data_offset) {
+            throw new IOException(sacFile.getName()
+                                  + " does not appear to be a sac file! File size ("
+                                  +sacFile.length()+" is less than sac's header size ("+data_offset+")");
+        }
         FileInputStream fis = new FileInputStream(sacFile);
         BufferedInputStream buf = new BufferedInputStream(fis);
         DataInputStream dis = new DataInputStream(buf);
         readHeader(dis);
         if(sacFile.length() != npts * 4 + data_offset) {
-            if(sacFile.length() == swapBytes(npts) * 4 + data_offset) {
-                // must be little endian
-                byteOrder = IntelByteOrder;
-                swapHeader();
-            } else {
-                throw new IOException(sacFile.getName()
-                        + " does not appear to be a sac file! npts(" + npts
-                        + ") + header(" + data_offset + ") !=  file length="
-                        + sacFile.length() + "\n  as linux: npts("
-                        + swapBytes(npts) + ")*4 + header(" + data_offset
-                        + ") !=  file length=" + sacFile.length());
-            } // end of else
+            throw new IOException(sacFile.getName()
+                                  + " does not appear to be a sac file! npts(" + npts
+                                  + ") + header(" + data_offset + ") !=  file length="
+                                  + sacFile.length() + "\n  as linux: npts("
+                                  + swapBytes(npts) + ")*4 + header(" + data_offset
+                                  + ") !=  file length=" + sacFile.length());
         }
         readData(dis);
         dis.close();
@@ -515,17 +519,9 @@ public class SacTimeSeries {
         return (short)(((val & 0xff00) >> 8) + ((val & 0x00ff) << 8));
     }
 
-    public final static float swapBytes(float val) {
-        return Float.intBitsToFloat(swapBytes(Float.floatToRawIntBits(val)));
-    }
-
     public final static int swapBytes(int val) {
         return ((val & 0xff000000) >>> 24) + ((val & 0x00ff0000) >> 8)
                 + ((val & 0x0000ff00) << 8) + ((val & 0x000000ff) << 24);
-    }
-
-    public final static double swapBytes(double val) {
-        return Double.longBitsToDouble(swapBytes(Double.doubleToRawLongBits(val)));
     }
 
     public final static long swapBytes(long val) {
@@ -537,17 +533,6 @@ public class SacTimeSeries {
 
     public void read(DataInputStream dis) throws IOException {
         readHeader(dis);
-        if(nvhdr != DEFAULT_NVHDR) {
-            if(swapBytes(nvhdr) == DEFAULT_NVHDR) {
-                //          must be little endian
-                byteOrder = IntelByteOrder;
-                swapHeader();
-            } else {
-                throw new IOException("InputStream does not appear to be a sac file! nvhdr(" + nvhdr
-                                      + ")  !=  DEFAULT_NVHDR="+DEFAULT_NVHDR+" and as linux nvhdr(" + swapBytes(nvhdr)
-                                      + ")  !=  DEFAULT_NVHDR="+DEFAULT_NVHDR);
-            }
-        }
         readData(dis);
     }
 
@@ -562,123 +547,32 @@ public class SacTimeSeries {
         dis.close();
     }
 
-    /** Swaps the byte order of the header values. */
-    void swapHeader() {
-        delta = swapBytes(delta);
-        depmin = swapBytes(depmin);
-        depmax = swapBytes(depmax);
-        scale = swapBytes(scale);
-        odelta = swapBytes(odelta);
-        b = swapBytes(b);
-        e = swapBytes(e);
-        o = swapBytes(o);
-        a = swapBytes(a);
-        fmt = swapBytes(fmt);
-        t0 = swapBytes(t0);
-        t1 = swapBytes(t1);
-        t2 = swapBytes(t2);
-        t3 = swapBytes(t3);
-        t4 = swapBytes(t4);
-        t5 = swapBytes(t5);
-        t6 = swapBytes(t6);
-        t7 = swapBytes(t7);
-        t8 = swapBytes(t8);
-        t9 = swapBytes(t9);
-        f = swapBytes(f);
-        resp0 = swapBytes(resp0);
-        resp1 = swapBytes(resp1);
-        resp2 = swapBytes(resp2);
-        resp3 = swapBytes(resp3);
-        resp4 = swapBytes(resp4);
-        resp5 = swapBytes(resp5);
-        resp6 = swapBytes(resp6);
-        resp7 = swapBytes(resp7);
-        resp8 = swapBytes(resp8);
-        resp9 = swapBytes(resp9);
-        stla = swapBytes(stla);
-        stlo = swapBytes(stlo);
-        stel = swapBytes(stel);
-        stdp = swapBytes(stdp);
-        evla = swapBytes(evla);
-        evlo = swapBytes(evlo);
-        evel = swapBytes(evel);
-        evdp = swapBytes(evdp);
-        mag = swapBytes(mag);
-        user0 = swapBytes(user0);
-        user1 = swapBytes(user1);
-        user2 = swapBytes(user2);
-        user3 = swapBytes(user3);
-        user4 = swapBytes(user4);
-        user5 = swapBytes(user5);
-        user6 = swapBytes(user6);
-        user7 = swapBytes(user7);
-        user8 = swapBytes(user8);
-        user9 = swapBytes(user9);
-        dist = swapBytes(dist);
-        az = swapBytes(az);
-        baz = swapBytes(baz);
-        gcarc = swapBytes(gcarc);
-        sb = swapBytes(sb);
-        sdelta = swapBytes(sdelta);
-        depmen = swapBytes(depmen);
-        cmpaz = swapBytes(cmpaz);
-        cmpinc = swapBytes(cmpinc);
-        xminimum = swapBytes(xminimum);
-        xmaximum = swapBytes(xmaximum);
-        yminimum = swapBytes(yminimum);
-        ymaximum = swapBytes(ymaximum);
-        unused6 = swapBytes(unused6);
-        unused7 = swapBytes(unused7);
-        unused8 = swapBytes(unused8);
-        unused9 = swapBytes(unused9);
-        unused10 = swapBytes(unused10);
-        unused11 = swapBytes(unused11);
-        unused12 = swapBytes(unused12);
-        nzyear = swapBytes(nzyear);
-        nzjday = swapBytes(nzjday);
-        nzhour = swapBytes(nzhour);
-        nzmin = swapBytes(nzmin);
-        nzsec = swapBytes(nzsec);
-        nzmsec = swapBytes(nzmsec);
-        nvhdr = swapBytes(nvhdr);
-        norid = swapBytes(norid);
-        nevid = swapBytes(nevid);
-        npts = swapBytes(npts);
-        nsnpts = swapBytes(nsnpts);
-        nwfid = swapBytes(nwfid);
-        nxsize = swapBytes(nxsize);
-        nysize = swapBytes(nysize);
-        unused15 = swapBytes(unused15);
-        iftype = swapBytes(iftype);
-        idep = swapBytes(idep);
-        iztype = swapBytes(iztype);
-        unused16 = swapBytes(unused16);
-        iinst = swapBytes(iinst);
-        istreg = swapBytes(istreg);
-        ievreg = swapBytes(ievreg);
-        ievtyp = swapBytes(ievtyp);
-        iqual = swapBytes(iqual);
-        isynth = swapBytes(isynth);
-        imagtyp = swapBytes(imagtyp);
-        imagsrc = swapBytes(imagsrc);
-        unused19 = swapBytes(unused19);
-        unused20 = swapBytes(unused20);
-        unused21 = swapBytes(unused21);
-        unused22 = swapBytes(unused22);
-        unused23 = swapBytes(unused23);
-        unused24 = swapBytes(unused24);
-        unused25 = swapBytes(unused25);
-        unused26 = swapBytes(unused26);
-        leven = swapBytes(leven);
-        lpspol = swapBytes(lpspol);
-        lovrok = swapBytes(lovrok);
-        lcalda = swapBytes(lcalda);
-        unused27 = swapBytes(unused27);
-    }
-
-    /** reads the header from the given stream. */
-    public void readHeader(DataInputStream dis) throws FileNotFoundException,
+    /** reads the header from the given stream. The NVHDR value (shoudld be 6) is checked to
+     * see if byte swapping is needed. If so, all header values are byte swapped and the 
+     * byteOrder is set to IntelByteOrder (false) so that the data section will also be byte
+     * swapped on read. Extra care is taken to do all byte swapping before the byte values are
+     * transformed into floats as java can do very funny things if the byte-swapped float 
+     * happens to be a NaN. */
+    public void readHeader(DataInputStream indis) throws FileNotFoundException,
             IOException {
+        byte[] headerBuf = new byte[data_offset];
+        indis.readFully(headerBuf);
+        if (headerBuf[NVHDR_OFFSET]==6 && headerBuf[NVHDR_OFFSET+1]==0
+                && headerBuf[NVHDR_OFFSET+2]==0 && headerBuf[NVHDR_OFFSET+3]==0) {
+            byteOrder = IntelByteOrder;
+            // little endian byte order, swap bytes on first 110 4-byte values in header, rest are text
+            for (int i = 0; i < 110*4; i+=4) {
+                byte tmp = headerBuf[i];
+                headerBuf[i] = headerBuf[i+3];
+                headerBuf[i+3] = tmp;
+                tmp = headerBuf[i+1];
+                headerBuf[i+1] = headerBuf[i+2];
+                headerBuf[i+2] = tmp;
+            }
+        }
+
+        DataInputStream dis = new DataInputStream(new ByteArrayInputStream(headerBuf));
+        
         delta = dis.readFloat();
         depmin = dis.readFloat();
         depmax = dis.readFloat();
@@ -883,8 +777,11 @@ public class SacTimeSeries {
                     temp <<= 8;
                     temp += (buf[i] & 0xff);
                 }
-                y[numAdded] = Float.intBitsToFloat(temp);
-                numAdded++;
+                if (byteOrder == IntelByteOrder) {
+                    y[numAdded++] = Float.intBitsToFloat(swapBytes(temp));
+                } else {
+                    y[numAdded++] = Float.intBitsToFloat(temp);
+                }
             }
             // i is now set to first unused byte in buf
             while(i <= numRead - 4) {
@@ -1541,14 +1438,21 @@ public class SacTimeSeries {
             //         //System.out.println("point is " + data.y[i]);
             //     }
             //     data.npts = data.y.length;
-            data.printHeader();
+            
+            //data.printHeader();
+            
+            System.out.println("stla original: "+data.stla+" npts="+data.npts);
             data.littleEndian();
             data.write("outsacfile");
+            data.read("outsacfile");
+            System.out.println("stla after read little endian: "+data.stla+" npts="+data.npts);
+            
             System.out.println("Done writing");
         } catch(FileNotFoundException e) {
             System.out.println("File " + args[0] + " doesn't exist.");
         } catch(IOException e) {
             System.out.println("IOException: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

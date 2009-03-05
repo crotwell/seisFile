@@ -25,14 +25,14 @@ public class PSNPolesAndZeros{
         zeros = new double[numZeros][2];
         for (int i = 0; i < numZeros; i++) {
             for (int j = 0; j < 2; j++) {
-                zeros[i][j] = SacTimeSeries.swapBytes(dis.readDouble());
+                zeros[i][j] = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
             }
         }
 
         poles = new double[numPoles][2];
         for (int i = 0; i < numZeros; i++) {
             for (int j = 0; j < 2; j++) {
-                poles[i][j] = SacTimeSeries.swapBytes(dis.readDouble());
+                poles[i][j] = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
             }
         }
     }
