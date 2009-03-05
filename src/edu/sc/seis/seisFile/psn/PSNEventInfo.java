@@ -28,9 +28,9 @@ public class PSNEventInfo {
 
         time = new PSNDateTime(dis);
         //System.out.println(time.toString());
-        lat = SacTimeSeries.swapBytes(dis.readDouble());
-        lon = SacTimeSeries.swapBytes(dis.readDouble());
-        depthKM = SacTimeSeries.swapBytes(dis.readDouble());
+        lat = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        lon = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        depthKM = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
 
         magnitudes = new double[6];
         for (int i = 0; i < magnitudes.length; i++) {

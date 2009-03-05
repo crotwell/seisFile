@@ -61,14 +61,18 @@ public class PSNEventRecord {
                 isFloat = true;
                 samplesFloat = new float[fixedHeader.getSampleCount()];
                 for (int i = 0; i < samplesFloat.length; i++) {
-                    samplesFloat[i] = SacTimeSeries.swapBytes(dis.readFloat());
+                    // careful here to swap on int then make it a float
+                    // byte swapping a float is dangerous as a bit pattern that is
+                    // NaN will not always remain the same on conversion to/from a float
+                    // see javadocs for intBitsToFloat
+                    samplesFloat[i] = Float.intBitsToFloat(SacTimeSeries.swapBytes(dis.readInt()));
                 }
                 break;
             case 3:
                 isDouble = true;
                 samplesDouble = new double[fixedHeader.getSampleCount()];
                 for (int i = 0; i < samplesDouble.length; i++) {
-                    samplesDouble[i] = SacTimeSeries.swapBytes(dis.readDouble());
+                    samplesDouble[i] = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
                 }
                 break;
             default:
