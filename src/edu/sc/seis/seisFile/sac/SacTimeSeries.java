@@ -498,12 +498,19 @@ public class SacTimeSeries {
         BufferedInputStream buf = new BufferedInputStream(fis);
         DataInputStream dis = new DataInputStream(buf);
         readHeader(dis);
-        if(sacFile.length() != npts * 4 + data_offset) {
+        if(leven == 1 && sacFile.length() != npts * 4 + data_offset) {
             throw new IOException(sacFile.getName()
                                   + " does not appear to be a sac file! npts(" + npts
-                                  + ") + header(" + data_offset + ") !=  file length="
+                                  + ") * 4 + header(" + data_offset + ") !=  file length="
                                   + sacFile.length() + "\n  as linux: npts("
                                   + swapBytes(npts) + ")*4 + header(" + data_offset
+                                  + ") !=  file length=" + sacFile.length());
+        } else if(leven == 0 && sacFile.length() != npts * 4 * 2 + data_offset) {
+            throw new IOException(sacFile.getName()
+                                  + " does not appear to be a uneven sac file! npts(" + npts
+                                  + ") * 4 *2 + header(" + data_offset + ") !=  file length="
+                                  + sacFile.length() + "\n  as linux: npts("
+                                  + swapBytes(npts) + ")*4*2 + header(" + data_offset
                                   + ") !=  file length=" + sacFile.length());
         }
         readData(dis);
@@ -746,6 +753,46 @@ public class SacTimeSeries {
 
     /** read the data portion of the given File */
     public void readData(DataInputStream fis) throws IOException {
+        y = new float[npts];
+        readDataArray(fis, y);
+        
+        if(leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM
+                || iftype == SacTimeSeries.IAMPH) {
+            x = new float[npts];
+            readDataArray(fis, x);
+            if(iftype == SacTimeSeries.IRLIM) {
+                real = y;
+                imaginary = x;
+            }
+            if(iftype == SacTimeSeries.IAMPH) {
+                amp = y;
+                phase = x;
+            }
+        }
+    }
+    
+    private void readDataArray(DataInputStream fis, float[] d) throws IOException {
+        byte[] dataBytes = new byte[d.length*4];
+        int numAdded = 0;
+        int i=0;
+        fis.readFully(dataBytes);
+        while(i < dataBytes.length - 4 && numAdded < d.length) {
+            if (byteOrder == IntelByteOrder) {
+                y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 0)
+                                                     + ((dataBytes[i++] & 0xff) << 8)
+                                                     + ((dataBytes[i++] & 0xff) << 16)
+                                                     + ((dataBytes[i++] & 0xff) << 24));
+            } else {
+                y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 24)
+                                                     + ((dataBytes[i++] & 0xff) << 16)
+                                                     + ((dataBytes[i++] & 0xff) << 8)
+                                                     + ((dataBytes[i++] & 0xff) << 0));
+            }
+        }
+    }
+
+    /** read the data portion of the given File */
+    public void readDataNewOld(DataInputStream fis) throws IOException {
         InputStream in = fis;
         y = new float[npts];
         int numAdded = 0;
@@ -795,7 +842,7 @@ public class SacTimeSeries {
                 }
             }
             // i is now set to first unused byte in buf
-            while(i <= numRead - 4) {
+            while(i <= numRead - 4 && numAdded < npts) {
                 if (byteOrder == IntelByteOrder) {
                     y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 0)
                                                          + ((buf[i++] & 0xff) << 8)
@@ -1453,7 +1500,7 @@ public class SacTimeSeries {
             //data.printHeader();
             
             System.out.println("stla original: "+data.stla+" npts="+data.npts);
-            data.littleEndian();
+            //data.setLittleEndian();
             data.write("outsacfile");
             data.read("outsacfile");
             System.out.println("stla after read little endian: "+data.stla+" npts="+data.npts);
