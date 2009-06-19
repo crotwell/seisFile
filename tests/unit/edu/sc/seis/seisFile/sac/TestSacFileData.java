@@ -32,17 +32,8 @@ public class TestSacFileData extends TestCase
 
         sts.read(new DataInputStream(TestSacFileData.class.getClassLoader().getResourceAsStream("edu/sc/seis/seisFile/sac/control.sac")));
 
-        // This test will pass, since there are 20 data points in the .sac file.
         assertEquals(20, sts.npts);
 
-        /*
-         * This test will fail on the 20th pass of the loop.  The value should
-         * be -16.0, but the SacTimeSeries incorrectly reads 0.0 as the final value.
-         *
-         * This failure is consistent with other .sac files we tested that were
-         * read in by the SacTimeSeries,in which the final data point is always
-         * 0.0 instead of the correct value.
-         */
         for (int i = 0; i < sts.npts; i++)
         {
             assertEquals(data[i], sts.y[i], TOL);
@@ -82,10 +73,3 @@ public class TestSacFileData extends TestCase
 
     }
 }
-
-/*
- * From this test, each output of data is exactly the same, save for the final
- * data point.  The SacTimeSeries, for whatever reason, replaces the final point
- * with 0.0, which does not coincide with what the graphical representation of the
- * data shows.
- */
