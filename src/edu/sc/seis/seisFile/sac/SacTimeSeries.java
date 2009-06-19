@@ -776,7 +776,7 @@ public class SacTimeSeries {
         int numAdded = 0;
         int i=0;
         fis.readFully(dataBytes);
-        while(i < dataBytes.length - 4 && numAdded < d.length) {
+        while(numAdded < d.length) {
             if (byteOrder == IntelByteOrder) {
                 y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 0)
                                                      + ((dataBytes[i++] & 0xff) << 8)
