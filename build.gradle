@@ -1,3 +1,9 @@
 
+dependencies {
+    compile group: 'log4j', name: 'log4j', version: '1.2.15', transitive: false
+}
+
+
+group = 'edu.sc.seis'
 version = '1.0.6'
 
