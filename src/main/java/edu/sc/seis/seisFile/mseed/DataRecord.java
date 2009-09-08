@@ -276,6 +276,7 @@ public class DataRecord extends SeedRecord implements Serializable {
             // otherwise use default
             recordSize = defaultRecordSize;
         }
+        dataRec.RECORD_SIZE = recordSize;
         // read garbage between blockettes and data
         if(header.getDataOffset() != 0) {
             byte[] garbage = new byte[header.getDataOffset() - currOffset];
@@ -292,7 +293,6 @@ public class DataRecord extends SeedRecord implements Serializable {
         }
         inStream.readFully(timeseries);
         dataRec.setData(timeseries);
-        dataRec.RECORD_SIZE = recordSize;
         return dataRec;
     }
 
