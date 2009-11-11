@@ -3,24 +3,25 @@
 group = 'edu.sc.seis'
 version = '1.0.7'
 
-task zipDist(type: Zip, dependsOn: ['copyToLib']) {
+task tarDist(type: Tar, dependsOn: ['copyToLib']) {
     dirName = project.name+'-'+version+'-src'
-    zipFileSet(dir: 'build/output') {
+    compression = Compression.GZIP
+    from('build/output') {
         include('bin/**')
         include('lib/**')
-        prefix = dirName
+        into dirName
     }
-    zipFileSet(dir: 'build/docs') {
+    from('build/docs') {
         include('javadoc/**')
-        prefix = dirName
+        into dirName
     }
-    zipFileSet(dir: '.') {
+    from('.') {
         include('gpl-3.0.txt')
         include('build.gradle')
         include('doc/**')
         include('src/**')
         exclude('**/*.svn')
-        prefix = dirName
+        into dirName
     }
 }
 
