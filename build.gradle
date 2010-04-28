@@ -1,6 +1,6 @@
 
 
-group = 'edu.sc.seis'
+group = 'edu.sc.seis.seisFile'
 version = '1.0.7'
 
 task tarDist(type: Tar, dependsOn: ['copyToLib']) {
@@ -23,5 +23,8 @@ task tarDist(type: Tar, dependsOn: ['copyToLib']) {
         exclude('**/*.svn')
         into dirName
     }
+
 }
+
+assemble.dependsOn(tarDist)
 
