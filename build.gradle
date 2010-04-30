@@ -3,8 +3,8 @@
 group = 'edu.sc.seis.seisFile'
 version = '1.0.7'
 
-task tarDist(type: Tar, dependsOn: ['copyToLib']) {
-    dirName = project.name+'-'+version+'-src'
+task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper']) {
+    dirName = project.name+'-'+version
     compression = Compression.GZIP
     from('build/output') {
         include('bin/**')
@@ -20,6 +20,9 @@ task tarDist(type: Tar, dependsOn: ['copyToLib']) {
         include('build.gradle')
         include('doc/**')
         include('src/**')
+        include('gradleWrapper/**')
+        include('gradlew')
+        include('gradlew.bat')
         exclude('**/*.svn')
         into dirName
     }
