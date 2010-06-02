@@ -1,9 +1,9 @@
 
 
-group = 'edu.sc.seis.seisFile'
+group = 'edu.sc.seis'
 version = '1.0.8'
 
-task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper']) {
+task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBuildScript']) {
     dirName = project.name+'-'+version
     compression = Compression.GZIP
     from('build/output') {
@@ -17,7 +17,7 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper']) {
     }
     from('.') {
         include('gpl-3.0.txt')
-        include('build.gradle')
+        include('readme.txt')
         include('doc/**')
         include('src/**')
         include('gradleWrapper/**')
@@ -26,7 +26,10 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper']) {
         exclude('**/*.svn')
         into dirName
     }
-
+    from('build') {
+        include('build.gradle')
+        into dirName
+    }
 }
 
 assemble.dependsOn(tarDist)
