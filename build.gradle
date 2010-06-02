@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis.seisFile'
-version = '1.0.7'
+version = '1.0.8'
 
 task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper']) {
     dirName = project.name+'-'+version
