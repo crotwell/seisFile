@@ -40,6 +40,20 @@ import java.text.DecimalFormat;
  * @author H. Philip Crotwell
  */
 public class SacTimeSeries {
+    
+    public SacTimeSeries() {}
+    
+    public SacTimeSeries(File file) throws FileNotFoundException, IOException {
+        read(file);
+    }
+    
+    public SacTimeSeries(String filename) throws FileNotFoundException, IOException {
+        read(filename);
+    }
+    
+    public SacTimeSeries(DataInputStream inStream) throws FileNotFoundException, IOException {
+        read(inStream);
+    }
 
     public float delta = FLOAT_UNDEF;
 
