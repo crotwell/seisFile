@@ -51,7 +51,7 @@ public class SacTimeSeries {
         read(filename);
     }
     
-    public SacTimeSeries(DataInputStream inStream) throws FileNotFoundException, IOException {
+    public SacTimeSeries(DataInputStream inStream) throws IOException {
         read(inStream);
     }
 
