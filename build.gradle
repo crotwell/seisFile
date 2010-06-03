@@ -15,6 +15,11 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBu
         include('javadoc/**')
         into dirName
     }
+    from('build') {
+        include('build.gradle')
+        include('settings.gradle')
+        into dirName
+    }
     from('.') {
         include('gpl-3.0.txt')
         include('readme.txt')
