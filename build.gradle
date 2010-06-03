@@ -22,7 +22,7 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBu
     }
     from('.') {
         include('gpl-3.0.txt')
-        include('readme.txt')
+        include('README.txt')
         include('doc/**')
         include('src/**')
         include('gradleWrapper/**')
