@@ -7,7 +7,11 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBu
     dirName = project.name+'-'+version
     compression = Compression.GZIP
     from('build/output') {
+        fileMode=0755
         include('bin/**')
+        into dirName
+    }
+    from('build/output') {
         include('lib/**')
         into dirName
     }
@@ -26,9 +30,13 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBu
         include('doc/**')
         include('src/**')
         include('gradleWrapper/**')
-        include('gradlew')
         include('gradlew.bat')
         exclude('**/*.svn')
+        into dirName
+    }
+    from('.') {
+        fileMode=0755
+        include('gradlew')
         into dirName
     }
     from('build') {
