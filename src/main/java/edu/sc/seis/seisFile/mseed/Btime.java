@@ -8,6 +8,15 @@ package edu.sc.seis.seisFile.mseed;
 public class Btime {
 
     public Btime() {}
+    
+    public Btime(int year, int jday, int hour, int min, int sec, int tenthMilli) {
+        this.year = year;
+        this.jday = jday;
+        this.hour = hour;
+        this.min = min;
+        this.sec = sec;
+        this.tenthMilli = tenthMilli;
+    }
 
     public Btime(byte[] bytes) {
         this(bytes, 0);
@@ -71,6 +80,39 @@ public class Btime {
     public int sec = 0;
 
     public int tenthMilli = 0;
+
+    
+    public int getYear() {
+        return year;
+    }
+
+    public int getDayOfYear() {
+        return getJDay();
+    }
+    
+    public int getJDay() {
+        return jday;
+    }
+
+    
+    public int getHour() {
+        return hour;
+    }
+
+    
+    public int getMin() {
+        return min;
+    }
+
+    
+    public int getSec() {
+        return sec;
+    }
+
+    
+    public int getTenthMilli() {
+        return tenthMilli;
+    }
 
     /**
      * Expects btime to be a byte array pointing at the beginning of a btime
