@@ -9,6 +9,7 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
+import java.io.ByteArrayInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -147,6 +148,12 @@ public class DataRecord extends SeedRecord implements Serializable {
     public static DataRecord read(DataInputStream inStream) throws IOException,
             SeedFormatException {
         return read(inStream, 0);
+    }
+    
+    public static DataRecord read(byte[] bytes) throws IOException, SeedFormatException {
+        DataInputStream seedIn = new DataInputStream(new ByteArrayInputStream(bytes));
+        return DataRecord.read(seedIn);
+        
     }
 
     /**
