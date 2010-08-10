@@ -46,7 +46,7 @@ public class ControlHeader {
 		    throw new SeedFormatException("ControlHeader, expected space or *, but got"+b);
 		}
 			
-		if (typeCode == (byte)'D' || typeCode == (byte)'R' || typeCode == (byte)'Q') {
+		if (typeCode == (byte)'D' || typeCode == (byte)'R' || typeCode == (byte)'Q' || typeCode == (byte)'M') {
 		    // Data Header
 		    return DataHeader.read(in, sequenceNum, (char)typeCode, continuationCode);
 		} else {
