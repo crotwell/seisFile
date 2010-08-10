@@ -183,7 +183,7 @@ public class DataRecord extends SeedRecord implements Serializable {
                                       (DataHeader)header,
                                       defaultRecordSize);
             } else {
-                throw new SeedFormatException("Found a control header in a miniseed file");
+                throw new SeedFormatException("Found a control header in a miniseed file: "+header.typeCode);
             }
         } catch(SeedFormatException e) {
             if(resetOnError) {
