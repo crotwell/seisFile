@@ -45,5 +45,17 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBu
     }
 }
 
+task makeScript(dependsOn: copyToLib) << { task ->
+    group = 'build'
+    dExtras = getDExtras()
+    doBat = false
+//    ScriptBuilder.create('seedlinktest', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat, yourkit:true)
+    ScriptBuilder.create('seedlinktest', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
+}
+
+def getDExtras() {
+    return [ 'seisFile':getVersion()]
+}
+
 assemble.dependsOn(tarDist)
 
