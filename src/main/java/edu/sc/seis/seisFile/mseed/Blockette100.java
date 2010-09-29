@@ -19,21 +19,10 @@ public class Blockette100 extends DataBlockette {
         trimToSize(B100_SIZE);
     }
 
-    /**
-     * Sets ActualSampleRate
-     * 
-     * @param ActualSampleRate
-     *            a float
-     */
     public void setActualSampleRate(float actualSampleRate) {
         Utility.insertFloat(actualSampleRate, info, 4);
     }
 
-    /**
-     * Returns ActualSampleRate
-     * 
-     * @return a float
-     */
     public float getActualSampleRate() {
         int bits = Utility.bytesToInt(info[4], info[5], info[6], info[7], false);
         return Float.intBitsToFloat(bits);

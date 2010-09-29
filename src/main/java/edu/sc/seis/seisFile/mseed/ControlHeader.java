@@ -57,11 +57,7 @@ public class ControlHeader {
 	
     /**
      * This method writes Control Header into the output stream
-     * While writing, it will conform to the format of MiniSeed 
-     * @param ControlHeader controlHeaderObject
-     * @param DataOutputStream dos
-     * @return void
-     * @exception IOException
+     * While writing, it will conform to the format of MiniSeed
       */	
     protected void write(DataOutput dos) throws IOException {
 	DecimalFormat sequenceNumFormat = new DecimalFormat("000000");
@@ -109,13 +105,6 @@ public class ControlHeader {
 			 boolean continuationCode) {
 	this(sequenceNum, (byte)typeCode, continuationCode);
     }
-	
-    //	public void write(outputStream out) {
-    //		String s = new String(sequenceNum);
-    //		byte[] seqBytes = new byte[6];
-    //		seqBytes[0] = (byte)32;  // a space
-    //	}
-
 
     public short getSize() { return 8;}
 	

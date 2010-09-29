@@ -1,23 +1,14 @@
 package edu.sc.seis.seisFile.mseed;
 
-/**
- * BlocketteUnknown.java
- * 
- * 
- * Created: Mon Apr 5 15:48:51 1999
- * 
- * @author Philip Crotwell
- * @version
- */
 import java.io.IOException;
 import java.io.Writer;
 
-public class BlocketteUnknown extends Blockette {
 
-    public BlocketteUnknown(byte[] info, int type, boolean swapBytes) {
-        this.info = info;
+public class DataBlocketteUnknown extends DataBlockette {
+
+    public DataBlocketteUnknown(byte[] info, int type, boolean swapBytes) {
+        super(info, swapBytes);
         this.type = type;
-        this.swapBytes = swapBytes;
     }
 
     public int getType() {
@@ -37,7 +28,7 @@ public class BlocketteUnknown extends Blockette {
     }
 
     public void writeASCII(Writer out) throws IOException {
-        out.write("Blockette UNKNOWN"+getType());
+        out.write("Blockette UNKNOWN: "+getType());
     }
     
     public boolean getSwapBytes() {
@@ -46,7 +37,4 @@ public class BlocketteUnknown extends Blockette {
 
     protected int type;
 
-    protected byte[] info;
-    
-    protected boolean swapBytes;
-} // BlocketteUnknown
+}
