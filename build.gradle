@@ -1,28 +1,26 @@
 
 
 group = 'edu.sc.seis'
-version = '1.1.0'
+version = '1.1.0alpha'
 
-task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBuildScript']) {
-    dirName = project.name+'-'+version
-    compression = Compression.GZIP
+binDistFiles = copySpec {
     from('build/output') {
         fileMode=0755
         include('bin/**')
-        into dirName
     }
     from('build/output') {
         include('lib/**')
-        into dirName
     }
+}
+
+distFiles = copySpec {
+    with(binDistFiles)
     from('build/docs') {
         include('javadoc/**')
-        into dirName
     }
     from('build') {
         include('build.gradle')
         include('settings.gradle')
-        into dirName
     }
     from('.') {
         include('gpl-3.0.txt')
@@ -32,16 +30,34 @@ task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBu
         include('gradleWrapper/**')
         include('gradlew.bat')
         exclude('**/*.svn')
-        into dirName
     }
     from('.') {
         fileMode=0755
         include('gradlew')
-        into dirName
     }
     from('build') {
         include('build.gradle')
-        into dirName
+    }
+}
+
+
+task explodeBin(type: Sync, dependsOn: ['makeScript' ]) {
+    group = 'dist'
+    with binDistFiles
+    into file("$buildDir/explode")
+}
+task explodeDist(type: Sync, dependsOn: ['makeScript', 'javadoc', 'wrapper', 'createBuildScript']) {
+    group = 'dist'
+    with distFiles
+    into file("$buildDir/explode")
+}
+
+
+task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBuildScript']) {
+    dirName = project.name+'-'+version
+    compression = Compression.GZIP
+    into(dirName) {
+        with distFiles
     }
 }
 
