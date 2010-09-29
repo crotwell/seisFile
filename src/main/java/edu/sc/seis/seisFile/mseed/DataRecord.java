@@ -64,7 +64,10 @@ public class DataRecord extends SeedRecord implements Serializable {
         if(b == null) {
             throw new IllegalArgumentException("Blockette cannot be null");
         }
-        if(b instanceof DataBlockette || b instanceof BlocketteUnknown) {
+        if (b instanceof BlocketteUnknown) {
+            b = new DataBlocketteUnknown(((BlocketteUnknown)b).info, b.getType(), ((BlocketteUnknown)b).getSwapBytes());
+        }
+        if(b instanceof DataBlockette) {
             super.addBlockette(b);
             getHeader().setNumBlockettes((byte)(getHeader().getNumBlockettes() + 1));
         } else {
