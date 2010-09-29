@@ -710,12 +710,6 @@ public class SacTimeSeries {
         dis.close();
     }
     
-    /** Sets the byte order when writing to output. Does not change the internal representation of the data.
-     * @deprecated see setLittleEndian() */
-    public final void littleEndian() {
-        byteOrder = IntelByteOrder;
-    }
-    
     /** Sets the byte order when writing to output. Does not change the internal representation of the data.*/
     public final void setLittleEndian() {
         byteOrder = IntelByteOrder;
