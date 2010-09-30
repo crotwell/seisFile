@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.sc.seis.seisFile.mseed.Blockette;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
@@ -20,8 +21,10 @@ public class Client {
         String station = "*";
         String location = "";
         String channel = "BHZ";
+        String outFile = null;
         int maxRecords = 10;
         boolean verbose = false;
+        DataOutputStream dos = null;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-n")) {
                 network = args[i+1];
@@ -31,6 +34,9 @@ public class Client {
                 location = args[i+1];
             } else if (args[i].equals("-c")) {
                 channel = args[i+1];
+            } else if (args[i].equals("-o")) {
+                outFile = args[i+1];
+                dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
             } else if (args[i].equals("-m")) {
                 maxRecords = Integer.parseInt(args[i+1]);
                 if (maxRecords < 1) {maxRecords = 1;}
@@ -46,7 +52,6 @@ public class Client {
         int i=0;
         DataRecord firstdr = null;
         Date firstDate = null;
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("mini.seed")));
         SeedlinkPacket slp = null;
         while(i<maxRecords) {
             slp = reader.next();
@@ -55,7 +60,13 @@ public class Client {
                 firstDate = new Date();
             }
             DataRecord dr = slp.getMiniSeed();
-            dr.write(dos);
+            if (dos != null) {
+                dr.write(dos);
+            }
+            Blockette[] blockettes = dr.getBlockettes();
+            for (int j = 0; j < blockettes.length; j++) {
+                System.out.println("Blockette: "+blockettes[j].getType()+" "+blockettes[j].getName());
+            }
             i++;
         }
         dos.close();
