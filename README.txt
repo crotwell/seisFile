@@ -32,6 +32,22 @@ try {
 } catch (EOFException e) {
 }
 
+Seedlink
+
+An example of seedlink support is in
+src/main/java/edu/sc/seis/seisFile/seedlink/Client.java
+which can also be run as a client. For example:
+
+bin/seedlinkclient -n II -c BHZ  -m 8
+
+will print a summary of 8 packets from the II network and
+
+bin/seedlinkclient -n IU -s KONO -c BHZ -o kono.mseed  -m 8
+
+will store the next 8 packets for KONO in a miniseed file.
+
+Usage is:
+java edu.sc.seis.seisFile.seedlink.Client [-n net][-s sta][-l loc][-c chan][-h host][-p port][-o outfile][-m maxpackets][--verbose][--version][--help]
 
 seisFile can be recompiled with the gradlew script, like
 ./gradlew jar
