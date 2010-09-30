@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 
 /**
@@ -15,13 +16,20 @@ public abstract class Blockette {
     public Blockette() {}
 
     /**
-     * Method writeASCII
+     * Writes an ASCII version of the blockette. This is not meant to be a definitive ascii representation,
+     * merely to give something to print for debugging purposes. Ideally each field of each blockette should
+     * be printed in the order they appear in the blockette in a visually appealing way.
      * 
      * @param out
      *            a Writer
      * 
      */
     public abstract void writeASCII(Writer out) throws IOException;
+
+    public void writeASCII(Writer out, String indent) throws IOException {
+        out.write(indent);
+        writeASCII(out);
+    }
 
     public static Blockette parseBlockette(int type, byte[] bytes, boolean swapBytes)
             throws IOException, SeedFormatException {

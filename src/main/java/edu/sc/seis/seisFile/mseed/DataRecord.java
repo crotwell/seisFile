@@ -328,13 +328,19 @@ public class DataRecord extends SeedRecord implements Serializable {
     }
 
     public void writeASCII(Writer out) throws IOException {
-        out.write("DataRecord\n");
-        getHeader().writeASCII(out);
+        writeASCII(out, "");
+    }
+    
+    public void writeASCII(Writer out, String indent) throws IOException {
+        out.write(indent+"DataRecord\n");
+        getHeader().writeASCII(out, indent+"  ");
+        out.write("\n");
         Blockette[] b = getBlockettes();
         for(int i = 0; i < b.length; i++) {
-            b[i].writeASCII(out);
+            b[i].writeASCII(out, indent+"    ");
+            out.write("\n");
         }
-        out.write("End DataRecord\n");
+        out.write(indent+"End DataRecord\n");
     }
 
     protected byte[] data;

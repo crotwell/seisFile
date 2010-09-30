@@ -2,11 +2,13 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Writer;
 import java.text.DecimalFormat;
 
 public class ControlHeader {
@@ -61,7 +63,7 @@ public class ControlHeader {
       */	
     protected void write(DataOutput dos) throws IOException {
 	DecimalFormat sequenceNumFormat = new DecimalFormat("000000");
-        String sequenceNumString = sequenceNumFormat.format(sequenceNum);
+        String sequenceNumString = sequenceNumFormat.format(getSequenceNum());
 	byte[] sequenceNumByteArray = null;
 	try{
 	    sequenceNumByteArray = sequenceNumString.getBytes("ASCII");
@@ -90,10 +92,28 @@ public class ControlHeader {
 	    e.printStackTrace();	
 	}
          
-
-
-
  }
+
+
+    /**
+     * Writes an ASCII version of the record header. This is not meant to be a definitive ascii representation,
+     * merely to give something to print for debugging purposes. Ideally each field of the header should
+     * be printed in the order is appears in the header in a visually appealing way.
+     * 
+     * @param out
+     *            a Writer
+     * 
+     */
+    public void writeASCII(Writer out) throws IOException {
+        writeASCII(out, "");
+    }
+
+    public void writeASCII(Writer out, String indent) throws IOException {
+        out.write(indent+"seq=" + getSequenceNum());
+        out.write(" type=" + getTypeCode());
+        out.write(" cont=" + isContinuation());
+    }
+    
     public ControlHeader(int sequenceNum, byte typeCode, 
 			 boolean continuationCode) {
 	this.sequenceNum = sequenceNum;
