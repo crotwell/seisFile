@@ -53,7 +53,7 @@ task explodeDist(type: Sync, dependsOn: ['makeScript', 'javadoc', 'wrapper', 'cr
 }
 
 
-task tarDist(type: Tar, dependsOn: ['copyToLib', 'javadoc', 'wrapper', 'createBuildScript']) {
+task tarDist(type: Tar, dependsOn: ['makeScript', 'javadoc', 'wrapper', 'createBuildScript']) {
     dirName = project.name+'-'+version
     compression = Compression.GZIP
     into(dirName) {
