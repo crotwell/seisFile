@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 
 
 public class DataBlocketteUnknown extends DataBlockette {
@@ -27,7 +27,7 @@ public class DataBlocketteUnknown extends DataBlockette {
         return info;
     }
 
-    public void writeASCII(Writer out) throws IOException {
+    public void writeASCII(PrintWriter out) throws IOException {
         out.write("Blockette UNKNOWN: "+getType());
     }
     

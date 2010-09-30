@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 
 
 public class Blockette1001 extends DataBlockette {
@@ -53,8 +53,8 @@ public class Blockette1001 extends DataBlockette {
     public void setFrameCount(byte  v) {info[7] = v;}
     
     @Override
-    public void writeASCII(Writer out) throws IOException {
-        out.write("Blockette1001 "+getTimingQuality()+" "+getMicrosecond()+" "+getFrameCount());
+    public void writeASCII(PrintWriter out) throws IOException {
+        out.println("Blockette1001 "+getTimingQuality()+" "+getMicrosecond()+" "+getFrameCount());
     }
     
     

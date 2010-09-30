@@ -11,6 +11,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 
@@ -79,24 +80,22 @@ public class DataHeader extends ControlHeader {
      *            a Writer
      * 
      */
-    public void writeASCII(Writer out) throws IOException {
+    public void writeASCII(PrintWriter out) throws IOException {
         writeASCII(out, "");
     }
 
-    public void writeASCII(Writer out, String indent) throws IOException {
+    public void writeASCII(PrintWriter out, String indent) throws IOException {
         super.writeASCII(out, indent);
-        out.write("\n");
-        out.write(indent+"start=" + getStartTime());
-        out.write(" numPTS=" + getNumSamples());
-        out.write(" sampFac=" + getSampleRateFactor());
-        out.write(" sampMul=" + getSampleRateMultiplier());
-        out.write(" ac=" + getActivityFlags());
-        out.write(" io=" + getIOClockFlags());
-        out.write(" qual=" + getDataQualityFlags());
-        out.write(" numBlockettes=" + getNumBlockettes());
-        out.write(" tcor=" + getTimeCorrection());
-        out.write(" beginData=" + getDataOffset());
-        out.write(" firstBlockette=" + getDataBlocketteOffset());
+        out.print(indent+getNetworkCode().trim()+"."+getStationIdentifier().trim()+"."+getLocationIdentifier()+"."+getChannelIdentifier());
+        out.print(" start=" + getStartTime());
+        out.print(" numPTS=" + getNumSamples());
+        out.print(" sampFac=" + getSampleRateFactor());
+        out.print(" sampMul=" + getSampleRateMultiplier());
+        out.print(" ac=" + getActivityFlags());
+        out.print(" io=" + getIOClockFlags());
+        out.print(" qual=" + getDataQualityFlags());
+        out.print(" numBlockettes=" + getNumBlockettes());
+        out.println(" tcor=" + getTimeCorrection());
     }
 
     void outwrite() {}

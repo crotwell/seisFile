@@ -9,7 +9,8 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class SeedRecord {
 
@@ -18,13 +19,11 @@ public abstract class SeedRecord {
     }
 
     public void addBlockette(Blockette b) throws SeedFormatException {
-        blockettes.addElement(b);
+        blockettes.add(b);
     }
 
     public Blockette[] getBlockettes() {
-        Blockette[] allB = new Blockette[blockettes.size()];
-        blockettes.copyInto(allB);
-        return allB;
+        return blockettes.toArray(new Blockette[0]);
     }
 
     public Blockette getUniqueBlockette(int type) throws SeedFormatException {
@@ -44,8 +43,8 @@ public abstract class SeedRecord {
 
     public int getNumBlockettes(int type) throws SeedFormatException {
         int out = 0;
-        for(int i = 0; i < blockettes.size(); i++) {
-            if(((Blockette)blockettes.elementAt(i)).getType() == type) {
+        for (Blockette b : blockettes) {
+            if(b.getType() == type) {
                 out++;
             }
         }
@@ -53,27 +52,25 @@ public abstract class SeedRecord {
     }
 
     public Blockette[] getBlockettes(int type) {
-        Vector v = new Vector();
-        for(int i = 0; i < blockettes.size(); i++) {
-            if(((Blockette)blockettes.elementAt(i)).getType() == type) {
-                v.addElement(blockettes.elementAt(i));
+        List<Blockette> out = new ArrayList<Blockette>();
+        for (Blockette b : blockettes) {
+            if(b.getType() == type) {
+                out.add(b);
             }
         }
-        Blockette[] allB = new Blockette[v.size()];
-        v.copyInto(allB);
-        return allB;
+        return out.toArray(new Blockette[0]);
     }
 
     public String toString() {
         String s = "Record for " + header + "\n";
         s += "Blockettes:\n";
         for(int i = 0; i < blockettes.size(); i++) {
-            s += blockettes.elementAt(i) + "\n";
+            s += blockettes.get(i) + "\n";
         }
         return s;
     }
 
     protected ControlHeader header;
 
-    protected Vector blockettes = new Vector();
+    protected List<Blockette> blockettes = new ArrayList<Blockette>();
 } // SeedRecord

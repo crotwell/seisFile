@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.Writer;
 
@@ -53,7 +54,7 @@ public class DataRecord extends SeedRecord implements Serializable {
         try {
             setData(record.getData());
             for(int j = 0; j < record.getBlockettes().length; j++) {
-                addBlockette(record.getBlockettes()[j]);
+                blockettes.add(record.getBlockettes()[j]);
             }
         } catch(SeedFormatException e) {
             throw new RuntimeException("Shouldn't happen as record was valid and we are copying it");
@@ -270,7 +271,7 @@ public class DataRecord extends SeedRecord implements Serializable {
             Blockette b = Blockette.parseBlockette(type,
                                                    fullBlocketteBytes,
                                                    swapBytes);
-            dataRec.addBlockette(b);
+            dataRec.blockettes.add(b);
             if(nextOffset == 0) {
                 break;
             }
@@ -327,20 +328,17 @@ public class DataRecord extends SeedRecord implements Serializable {
         return s;
     }
 
-    public void writeASCII(Writer out) throws IOException {
+    public void writeASCII(PrintWriter out) throws IOException {
         writeASCII(out, "");
     }
     
-    public void writeASCII(Writer out, String indent) throws IOException {
-        out.write(indent+"DataRecord\n");
+    public void writeASCII(PrintWriter out, String indent) throws IOException {
+        out.print(indent+"DataRecord");
         getHeader().writeASCII(out, indent+"  ");
-        out.write("\n");
         Blockette[] b = getBlockettes();
         for(int i = 0; i < b.length; i++) {
             b[i].writeASCII(out, indent+"    ");
-            out.write("\n");
         }
-        out.write(indent+"End DataRecord\n");
     }
 
     protected byte[] data;
