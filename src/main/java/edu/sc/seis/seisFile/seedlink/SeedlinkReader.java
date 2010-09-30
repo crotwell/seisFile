@@ -3,9 +3,13 @@ package edu.sc.seis.seisFile.seedlink;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.PushbackInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -14,61 +18,79 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
 public class SeedlinkReader {
     
-    public SeedlinkReader(List<String> config) throws UnknownHostException, IOException, SeedlinkException {
-        this(config, "rtserve.iris.washington.edu");
-    }
-    
     /** uses the default port of 18000*/
-    public SeedlinkReader(List<String> config, String host) throws UnknownHostException, IOException, SeedlinkException {
-        this(config, host, 18000);
+    public SeedlinkReader(String host) throws UnknownHostException, IOException, SeedlinkException {
+        this(host, DEFAULT_PORT);
     }
 
-    public SeedlinkReader(List<String> config, String host, int port) throws UnknownHostException, IOException, SeedlinkException {
-        this(config, host, port, false);
+    public SeedlinkReader(String host, int port) throws UnknownHostException, IOException, SeedlinkException {
+        this(host, port, false);
     }
     
-    public SeedlinkReader(List<String> config, String host, int port, boolean verbose) throws UnknownHostException, IOException, SeedlinkException {
+    public SeedlinkReader(String host, int port, boolean verbose) throws UnknownHostException, IOException, SeedlinkException {
         this.host = host;
         this.port = port;
         this.verbose = verbose;
-        if (verbose) { System.out.println("configure connection to "+host+" at port="+port); }
         socket = new Socket(host, port);
         out = new BufferedOutputStream(socket.getOutputStream());
-        in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-        if (verbose) {
-            String[] lines = sendHello();
-            System.out.println("line 1 :"+lines[0]);
-            System.out.println("line 2 :"+lines[1]);
-        }
-        for (String command : config) {
-            sendCmd(command);
-        }
-        endHandshake();
+        in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
+        inData = new DataInputStream(in);
     }
     
-    public SeedlinkPacket next() throws IOException {
-        if (verbose) { System.out.println("next(): blocking read for "+SeedlinkPacket.PACKET_SIZE+" bytes, available="+in.available()); }
+    public boolean hasNext() throws IOException {
+        // check for closed connection and server sending END
+        if (! isConnected()) {return false;}
+        byte[] startBits = new byte[3];
+        startBits[0] = (byte)in.read();
+        startBits[1] = (byte)in.read();
+        startBits[2] = (byte)in.read();
+        String start = new String(startBits);
+        if (start.equals("END")) {
+            return false;
+        } else {
+            in.unread(startBits);
+            return true;
+        }
+        
+    }
+    
+    public SeedlinkPacket next() throws IOException, SeedlinkException {
+        if (isVerbose()) { verboseWriter.println("next(): blocking read for "+SeedlinkPacket.PACKET_SIZE+" bytes, available="+in.available()); }
+        // check for END
+        if ( ! hasNext()) {
+            throw new SeedlinkException("no more seed link packets from last command");
+        }
         byte[] bits = new byte[SeedlinkPacket.PACKET_SIZE];
-        in.readFully(bits);
+        inData.readFully(bits);
         SeedlinkPacket slp = new SeedlinkPacket(bits);
-        if (verbose) {
-            DataRecord dr;
+        if (isVerbose()) {
+            String packetString = "";
             try {
-                dr = slp.getMiniSeed();
-                System.out.println(" Got a packet: "+slp.getSeqNum()+
+                DataRecord dr = slp.getMiniSeed();
+                packetString = " Got a packet: "+slp.getSeqNum()+
                                    "  "+ dr.getHeader().getNetworkCode()+
                                    "  "+ dr.getHeader().getStationIdentifier()+
                                    "  "+ dr.getHeader().getLocationIdentifier()+
                                    "  "+ dr.getHeader().getChannelIdentifier()+
-                                   "  "+ dr.getHeader().getStartTime());
+                                   "  "+ dr.getHeader().getStartTime();
             } catch(SeedFormatException e) {
-                e.printStackTrace();
+                packetString = "SeedFormatExcpetion parsing packet: "+slp.getSeqNum()+e.getMessage();
             }
+            verboseWriter.println(packetString);
         }
         return slp;
     }
     
-    void endHandshake() throws IOException {
+    /** send an INFO command. The resulting packets can be retrieved with calls to next(), although it seems there
+     * is no good way to determine how many packets will be returned or when they have all arrived without parsing the xml. 
+     * This appears to be a shortcoming of the seedlink protocol. INFO requests should probably not
+     * be sent after the end of the handshake as real data packets may arrive causing confusion.
+     */
+    public void info(String level) throws IOException {
+        send("INFO "+level);
+    }
+    
+    public void endHandshake() throws IOException {
         send("END");
     }
     
@@ -77,6 +99,10 @@ public class SeedlinkReader {
         in.close();
         out.close();
         socket.close();
+    }
+    
+    public boolean isConnected() {
+        return socket.isConnected();
     }
     
     String[] sendHello() throws IOException, SeedlinkException {
@@ -91,12 +117,17 @@ public class SeedlinkReader {
         StringBuffer buf = new StringBuffer();
         int next = in.read();
         while (next !=  '\r') {
-            buf.append((char)next);
-            if (verbose) { System.out.println(buf); }
-            next = in.read();
-            if (next == -1) {
-                // oops, no more bytes in stream
-                throw new SeedlinkException("read returned -1, socket closed???");
+            while (next !=  '\r' && in.available() > 0) {
+                // only do the verbose printing when either hit end of line or no more chars available
+                buf.append((char)next);
+                next = in.read();
+                if (next == -1) {
+                    // oops, no more bytes in stream
+                    throw new SeedlinkException("read returned -1, socket closed???");
+                }
+            }
+            if (isVerbose()) { 
+                verboseWriter.println(buf);
             }
         }
         //next should now be a \n, so just eat it
@@ -107,6 +138,9 @@ public class SeedlinkReader {
         return buf.toString();
     }
     
+    /**
+    * sends a seedlink modifier command, generally should be limited to STATION, SELECT FETCH and DATA. TIME may work but has not been tested. 
+    */
     void sendCmd(String cmd) throws IOException, SeedlinkException {
         send(cmd);
         String line = readLine();
@@ -116,12 +150,13 @@ public class SeedlinkReader {
     }
     
     void send(String cmd) throws IOException {
-        if (verbose) { System.out.println("send '"+cmd+"'"); }
+        if (isVerbose()) { verboseWriter.println("send '"+cmd+"'"); }
         out.write((cmd+"\r").getBytes());
         out.flush();
     }
     
-    DataInputStream in;
+    PushbackInputStream in;
+    DataInputStream inData;
     BufferedOutputStream out;
     private Socket socket;
     
@@ -130,4 +165,40 @@ public class SeedlinkReader {
     String host;
     
     int port;
+    
+    private PrintWriter verboseWriter;
+
+    
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    
+    public PrintWriter getVerboseWriter() {
+        return verboseWriter;
+    }
+
+    
+    public void setVerboseWriter(PrintWriter verboseWriter) {
+        this.verboseWriter = verboseWriter;
+    }
+
+    
+    public String getHost() {
+        return host;
+    }
+
+    
+    public int getPort() {
+        return port;
+    }
+
+    public static final String DEFAULT_HOST = "rtserve.iris.washington.edu";
+    
+    public static final int DEFAULT_PORT = 18000;
 }
