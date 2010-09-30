@@ -5,15 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 
-/**
- * DataBlockette.java
- *
- *
- * Created: Thu Apr  8 12:40:56 1999
- *
- * @author Philip Crotwell
- * @version
- */
 public abstract class DataBlockette extends Blockette
     implements Serializable {
 

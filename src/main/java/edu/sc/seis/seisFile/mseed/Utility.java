@@ -7,7 +7,6 @@ package edu.sc.seis.seisFile.mseed;
  * Created: Fri Apr 2 14:28:55 1999
  * 
  * @author Philip Crotwell
- * @version
  */
 public class Utility {
 

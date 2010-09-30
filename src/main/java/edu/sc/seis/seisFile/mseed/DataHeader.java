@@ -47,7 +47,7 @@ public class DataHeader extends ControlHeader {
 
     protected byte numBlockettes;
 
-    protected byte[] timeCorrection = new byte[4];
+    protected int timeCorrection;
 
     protected int dataOffset;
 
@@ -71,45 +71,32 @@ public class DataHeader extends ControlHeader {
     }
 
     /**
-     * Method writeASCII
+     * Writes an ASCII version of the record header. This is not meant to be a definitive ascii representation,
+     * merely to give something to print for debugging purposes. Ideally each field of the header should
+     * be printed in the order is appears in the header in a visually appealing way.
      * 
      * @param out
      *            a Writer
      * 
      */
     public void writeASCII(Writer out) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream(4096);
-        write(new DataOutputStream(bos));
-        byte[] bytes = bos.toByteArray();
-        for(int i = 0; i < 20; i++) {
-            char c = (char)bytes[i];
-            out.write(c);
-        }
+        writeASCII(out, "");
+    }
+
+    public void writeASCII(Writer out, String indent) throws IOException {
+        super.writeASCII(out, indent);
         out.write("\n");
-        out.write("year=" + Utility.bytesToShort(bytes[20], bytes[21], false));
-        out.write("jday=" + Utility.bytesToShort(bytes[22], bytes[23], false));
-        out.write("hour=" + bytes[24]);
-        out.write("min=" + bytes[25]);
-        out.write("sec=" + bytes[26]);
-        out.write("unused=" + bytes[27]);
-        out.write("tsec=" + Utility.bytesToShort(bytes[28], bytes[29], false));
-        out.write("numPTS=" + Utility.bytesToShort(bytes[30], bytes[31], false));
-        out.write("sampFac="
-                + Utility.bytesToShort(bytes[32], bytes[33], false));
-        out.write("sampMul="
-                + Utility.bytesToShort(bytes[34], bytes[35], false));
-        out.write("ac=" + bytes[36]);
-        out.write("io=" + bytes[37]);
-        out.write("qual=" + bytes[38]);
-        out.write("numBlockettes=" + bytes[39]);
-        out.write("ac=" + bytes[40]);
-        out.write("ac=" + bytes[41]);
-        out.write("ac=" + bytes[42]);
-        out.write("ac=" + bytes[43]);
-        out.write("beginData="
-                + Utility.bytesToShort(bytes[44], bytes[45], false));
-        out.write("firstBlockette="
-                + Utility.bytesToShort(bytes[46], bytes[47], false));
+        out.write(indent+"start=" + getStartTime());
+        out.write(" numPTS=" + getNumSamples());
+        out.write(" sampFac=" + getSampleRateFactor());
+        out.write(" sampMul=" + getSampleRateMultiplier());
+        out.write(" ac=" + getActivityFlags());
+        out.write(" io=" + getIOClockFlags());
+        out.write(" qual=" + getDataQualityFlags());
+        out.write(" numBlockettes=" + getNumBlockettes());
+        out.write(" tcor=" + getTimeCorrection());
+        out.write(" beginData=" + getDataOffset());
+        out.write(" firstBlockette=" + getDataBlocketteOffset());
     }
 
     void outwrite() {}
@@ -203,11 +190,11 @@ public class DataHeader extends ControlHeader {
         ioClockFlags = buf[offset + 29];
         dataQualityFlags = buf[offset + 30];
         numBlockettes = buf[offset + 31];
-        System.arraycopy(buf,
-                         offset + 32,
-                         timeCorrection,
-                         0,
-                         timeCorrection.length);
+        timeCorrection = Utility.bytesToInt(buf[offset + 32],
+                                            buf[offset + 33],
+                                            buf[offset + 34],
+                                            buf[offset + 35],
+                                            byteSwapFlag);
         dataOffset = Utility.uBytesToInt(buf[offset + 36],
                                          buf[offset + 37],
                                          byteSwapFlag);
@@ -219,8 +206,6 @@ public class DataHeader extends ControlHeader {
     /**
      * write DataHeader contents to a DataOutput stream
      * 
-     * @param dh
-     *            DataHeader to read values from
      * @param dos
      *            DataOutput stream to write to
      */
@@ -244,7 +229,7 @@ public class DataHeader extends ControlHeader {
         dos.writeByte(getIOClockFlags());
         dos.writeByte(getDataQualityFlags());
         dos.writeByte(getNumBlockettes());
-        dos.write(getTimeCorrection());
+        dos.writeInt(getTimeCorrection());
         dos.writeShort((short)getDataOffset());
         dos.writeShort((short)getDataBlocketteOffset());
     }
@@ -687,7 +672,7 @@ public class DataHeader extends ControlHeader {
      * 
      * @return Value of timeCorrection.
      */
-    public byte[] getTimeCorrection() {
+    public int getTimeCorrection() {
         return timeCorrection;
     }
 
@@ -697,17 +682,8 @@ public class DataHeader extends ControlHeader {
      * @param v
      *            Value to assign to timeCorrection.
      */
-    public void setTimeCorrection(byte[] v) {
-        byte[] timeCorrectionBytes = new byte[4];
-        if(v.length != 4) {
-            if(v.length < 4)
-                timeCorrectionBytes = Utility.pad(v, 4, (byte)0);
-            else
-                timeCorrectionBytes = Utility.format(v, v.length - 4, v.length);
-            this.timeCorrection = timeCorrectionBytes;
-        } else {
-            this.timeCorrection = v;
-        }
+    public void setTimeCorrection(int v) {
+        this.timeCorrection = v;
     }
 
     /**
