@@ -6,7 +6,7 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 
 public class Blockette100 extends DataBlockette {
 
@@ -40,8 +40,8 @@ public class Blockette100 extends DataBlockette {
         return "Sample Rate Blockette";
     }
 
-    public void writeASCII(Writer out) throws IOException {
-        out.write("Blockette100 " + getActualSampleRate());
+    public void writeASCII(PrintWriter out) throws IOException {
+        out.println("Blockette100 " + getActualSampleRate());
     }
 
     public static final int B100_SIZE = 12;

@@ -1,8 +1,8 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 public class Blockette200 extends DataBlockette {
 
@@ -89,8 +89,8 @@ public class Blockette200 extends DataBlockette {
         return new String(info, EVENT_DETECTOR, EVENT_DETECTOR_LENGTH);
     }
 
-    public void writeASCII(Writer out) throws IOException {
-        out.write("Blockette200");
+    public void writeASCII(PrintWriter out) throws IOException {
+        out.println("Blockette200 sig="+getSignal()+" per="+getPeriod()+" bkgrd="+getBackground());
     }
 
     public boolean equals(Object o) {

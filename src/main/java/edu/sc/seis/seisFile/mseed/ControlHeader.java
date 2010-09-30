@@ -8,6 +8,7 @@ import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 
@@ -104,14 +105,14 @@ public class ControlHeader {
      *            a Writer
      * 
      */
-    public void writeASCII(Writer out) throws IOException {
+    public void writeASCII(PrintWriter out) throws IOException {
         writeASCII(out, "");
     }
 
-    public void writeASCII(Writer out, String indent) throws IOException {
-        out.write(indent+"seq=" + getSequenceNum());
-        out.write(" type=" + getTypeCode());
-        out.write(" cont=" + isContinuation());
+    public void writeASCII(PrintWriter out, String indent) throws IOException {
+        out.print(indent+"seq=" + getSequenceNum());
+        out.print(" type=" + getTypeCode());
+        out.println(" cont=" + isContinuation());
     }
     
     public ControlHeader(int sequenceNum, byte typeCode, 

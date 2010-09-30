@@ -1,8 +1,8 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * Superclass of all seed blockettes. The actual blockettes do not store either
@@ -24,9 +24,9 @@ public abstract class Blockette {
      *            a Writer
      * 
      */
-    public abstract void writeASCII(Writer out) throws IOException;
+    public abstract void writeASCII(PrintWriter out) throws IOException;
 
-    public void writeASCII(Writer out, String indent) throws IOException {
+    public void writeASCII(PrintWriter out, String indent) throws IOException {
         out.write(indent);
         writeASCII(out);
     }
