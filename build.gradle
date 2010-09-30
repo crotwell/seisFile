@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.1.0alpha'
+version = '1.1.0beta'
 
 binDistFiles = copySpec {
     from('build/output') {
@@ -66,7 +66,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     dExtras = getDExtras()
     doBat = false
 //    ScriptBuilder.create('seedlinktest', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat, yourkit:true)
-    ScriptBuilder.create('seedlinktest', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
