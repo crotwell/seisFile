@@ -12,8 +12,10 @@ package edu.sc.seis.seisFile.mseed;
 import java.io.BufferedInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class MiniSeedRead {
@@ -59,9 +61,12 @@ public class MiniSeedRead {
 
     public static void main(String[] args) {
         DataInputStream ls = null;
+        PrintWriter out = new PrintWriter(System.out, true);
         try {
-            System.out.println("open socket");
+            out.println("open socket");
             if(args.length == 0) {
+                out.println("Usage: java "+MiniSeedRead.class.getName()+" [-l lisshost][filename]");
+            } else if (args[0].equals("-l")) {
                 Socket lissConnect = new Socket("anmo.iu.liss.org", 4000);
                 ls = new DataInputStream(new BufferedInputStream(lissConnect.getInputStream(),
                                                                  1024));
@@ -74,16 +79,19 @@ public class MiniSeedRead {
                 try {
                     sr = rf.getNextRecord();
                 } catch(MissingBlockette1000 e) {
-                    System.out.println("Missing Blockette1000, trying with record size of 4096");
+                    out.println("Missing Blockette1000, trying with record size of 4096");
                     // try with 4096 as default
                     sr = rf.getNextRecord(4096);
                 }
-                System.out.println(sr);
+                sr.writeASCII(out, "    ");
                 if(sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
                     byte[] data = dr.getData();
+                    // should use seedCodec to do something with the data...
                 }
             }
+        } catch(EOFException e) {
+            System.out.println("EOF, so done.");
         } catch(Exception e) {
             System.out.println(e);
             e.printStackTrace();
