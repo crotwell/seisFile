@@ -201,4 +201,12 @@ public class SeedlinkReader {
     public static final String DEFAULT_HOST = "rtserve.iris.washington.edu";
     
     public static final int DEFAULT_PORT = 18000;
+    
+    public static final String INFO_ID = "ID";
+    public static final String INFO_CAPABILITIES = "CAPABILITIES";
+    public static final String INFO_STATIONS = "STATIONS";
+    public static final String INFO_STREAMS = "STREAMS";
+    public static final String INFO_GAPS = "GAPS";
+    public static final String INFO_CONNECTIONS = "CONNECTIONS";
+    public static final String INFO_ALL = "ALL";
 }
