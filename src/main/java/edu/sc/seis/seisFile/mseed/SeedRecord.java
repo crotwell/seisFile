@@ -9,6 +9,8 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +62,10 @@ public abstract class SeedRecord {
         }
         return out.toArray(new Blockette[0]);
     }
+    
+    public ControlHeader getControlHeader() {
+        return header;
+    }
 
     public String toString() {
         String s = "Record for " + header + "\n";
@@ -68,6 +74,15 @@ public abstract class SeedRecord {
             s += blockettes.get(i) + "\n";
         }
         return s;
+    }
+
+    public void writeASCII(PrintWriter out, String indent) throws IOException {
+        out.print(indent+"SeedRecord");
+        getControlHeader().writeASCII(out, indent+"  ");
+        Blockette[] b = getBlockettes();
+        for(int i = 0; i < b.length; i++) {
+            b[i].writeASCII(out, indent+"    ");
+        }
     }
 
     protected ControlHeader header;
