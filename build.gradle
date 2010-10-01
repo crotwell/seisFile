@@ -68,6 +68,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
 //    ScriptBuilder.create('seedlinktest', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat, yourkit:true)
     ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('saclh', 'edu.sc.seis.seisFile.sac.ListHeader', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('miniseedread', 'edu.sc.seis.seisFile.mseed.MiniSeedRead', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
