@@ -1346,167 +1346,29 @@ public class SacTimeSeries {
         writeInt(dos, lovrok);
         writeInt(dos, lcalda);
         writeInt(dos, unused27);
-        if (kstnm.length() > 8) {
-            kstnm = kstnm.substring(0, 7);
-        }
-        while (kstnm.length() < 8) {
-            kstnm += " ";
-        }
-        dos.writeBytes(kstnm);
-        if (kevnm.length() > 16) {
-            kevnm = kevnm.substring(0, 15);
-        }
-        while (kevnm.length() < 16) {
-            kevnm += " ";
-        }
-        dos.writeBytes(kevnm);
-        if (khole.length() > 8) {
-            khole = khole.substring(0, 7);
-        }
-        while (khole.length() < 8) {
-            khole += " ";
-        }
-        dos.writeBytes(khole);
-        if (ko.length() > 8) {
-            ko = ko.substring(0, 7);
-        }
-        while (ko.length() < 8) {
-            ko += " ";
-        }
-        dos.writeBytes(ko);
-        if (ka.length() > 8) {
-            ka = ka.substring(0, 7);
-        }
-        while (ka.length() < 8) {
-            ka += " ";
-        }
-        dos.writeBytes(ka);
-        if (kt0.length() > 8) {
-            kt0 = kt0.substring(0, 7);
-        }
-        while (kt0.length() < 8) {
-            kt0 += " ";
-        }
-        dos.writeBytes(kt0);
-        if (kt1.length() > 8) {
-            kt1 = kt1.substring(0, 7);
-        }
-        while (kt1.length() < 8) {
-            kt1 += " ";
-        }
-        dos.writeBytes(kt1);
-        if (kt2.length() > 8) {
-            kt2 = kt2.substring(0, 7);
-        }
-        while (kt2.length() < 8) {
-            kt2 += " ";
-        }
-        dos.writeBytes(kt2);
-        if (kt3.length() > 8) {
-            kt3 = kt3.substring(0, 7);
-        }
-        while (kt3.length() < 8) {
-            kt3 += " ";
-        }
-        dos.writeBytes(kt3);
-        if (kt4.length() > 8) {
-            kt4 = kt4.substring(0, 7);
-        }
-        while (kt4.length() < 8) {
-            kt4 += " ";
-        }
-        dos.writeBytes(kt4);
-        if (kt5.length() > 8) {
-            kt5 = kt5.substring(0, 7);
-        }
-        while (kt5.length() < 8) {
-            kt5 += " ";
-        }
-        dos.writeBytes(kt5);
-        if (kt6.length() > 8) {
-            kt6 = kt6.substring(0, 7);
-        }
-        while (kt6.length() < 8) {
-            kt6 += " ";
-        }
-        dos.writeBytes(kt6);
-        if (kt7.length() > 8) {
-            kt7 = kt7.substring(0, 7);
-        }
-        while (kt7.length() < 8) {
-            kt7 += " ";
-        }
-        dos.writeBytes(kt7);
-        if (kt8.length() > 8) {
-            kt8 = kt8.substring(0, 7);
-        }
-        while (kt8.length() < 8) {
-            kt8 += " ";
-        }
-        dos.writeBytes(kt8);
-        if (kt9.length() > 8) {
-            kt9 = kt9.substring(0, 7);
-        }
-        while (kt9.length() < 8) {
-            kt9 += " ";
-        }
-        dos.writeBytes(kt9);
-        if (kf.length() > 8) {
-            kf = kf.substring(0, 7);
-        }
-        while (kf.length() < 8) {
-            kf += " ";
-        }
-        dos.writeBytes(kf);
-        if (kuser0.length() > 8) {
-            kuser0 = kuser0.substring(0, 7);
-        }
-        while (kuser0.length() < 8) {
-            kuser0 += " ";
-        }
-        dos.writeBytes(kuser0);
-        if (kuser1.length() > 8) {
-            kuser1 = kuser1.substring(0, 7);
-        }
-        while (kuser1.length() < 8) {
-            kuser1 += " ";
-        }
-        dos.writeBytes(kuser1);
-        if (kuser2.length() > 8) {
-            kuser2 = kuser2.substring(0, 7);
-        }
-        while (kuser2.length() < 8) {
-            kuser2 += " ";
-        }
-        dos.writeBytes(kuser2);
-        if (kcmpnm.length() > 8) {
-            kcmpnm = kcmpnm.substring(0, 7);
-        }
-        while (kcmpnm.length() < 8) {
-            kcmpnm += " ";
-        }
-        dos.writeBytes(kcmpnm);
-        if (knetwk.length() > 8) {
-            knetwk = knetwk.substring(0, 7);
-        }
-        while (knetwk.length() < 8) {
-            knetwk += " ";
-        }
-        dos.writeBytes(knetwk);
-        if (kdatrd.length() > 8) {
-            kdatrd = kdatrd.substring(0, 7);
-        }
-        while (kdatrd.length() < 8) {
-            kdatrd += " ";
-        }
-        dos.writeBytes(kdatrd);
-        if (kinst.length() > 8) {
-            kinst = kinst.substring(0, 7);
-        }
-        while (kinst.length() < 8) {
-            kinst += " ";
-        }
-        dos.writeBytes(kinst);
+        dos.writeBytes(trimLen(kstnm, 8));
+        dos.writeBytes(trimLen(kevnm, 16));
+        dos.writeBytes(trimLen(khole, 8));
+        dos.writeBytes(trimLen(ko, 8));
+        dos.writeBytes(trimLen(ka, 8));
+        dos.writeBytes(trimLen(kt0, 8));
+        dos.writeBytes(trimLen(kt1, 8));
+        dos.writeBytes(trimLen(kt2, 8));
+        dos.writeBytes(trimLen(kt3, 8));
+        dos.writeBytes(trimLen(kt4, 8));
+        dos.writeBytes(trimLen(kt5, 8));
+        dos.writeBytes(trimLen(kt6, 8));
+        dos.writeBytes(trimLen(kt7, 8));
+        dos.writeBytes(trimLen(kt8, 8));
+        dos.writeBytes(trimLen(kt9, 8));
+        dos.writeBytes(trimLen(kf, 8));
+        dos.writeBytes(trimLen(kuser0, 8));
+        dos.writeBytes(trimLen(kuser1, 8));
+        dos.writeBytes(trimLen(kuser2, 8));
+        dos.writeBytes(trimLen(kcmpnm, 8));
+        dos.writeBytes(trimLen(knetwk, 8));
+        dos.writeBytes(trimLen(kdatrd, 8));
+        dos.writeBytes(trimLen(kinst, 8));
     }
 
     public void writeData(DataOutputStream dos) throws IOException {
@@ -1520,19 +1382,30 @@ public class SacTimeSeries {
         }
     }
 
+    public static String trimLen(String s, int len) {
+        if (s.length() > len) {
+            s = s.substring(0, len - 1);
+        }
+        while (s.length() < len) {
+            s += " ";
+        }
+        return s;
+    }
+
     public static final DecimalFormat decimalFormat = new DecimalFormat("#####.####");
 
     public static String format(String label, float f) {
-        String s = label + " = ";
-        String fString = decimalFormat.format(f);
-        while (fString.length() < 8) {
-            fString = " " + fString;
+        return format(label, decimalFormat.format(f), 10, 8);
+    }
+
+    public static String format(String label, String val, int labelWidth, int valWidth) {
+        while (label.length() < labelWidth) {
+            label = " " + label;
         }
-        s = s + fString;
-        while (s.length() < 21) {
-            s = " " + s;
+        while (val.length() < valWidth) {
+            val = " " + val;
         }
-        return s;
+        return label + " = " + val;
     }
 
     public static String formatLine(String s1,
@@ -1638,12 +1511,21 @@ public class SacTimeSeries {
                                lcalda,
                                "unused27",
                                unused27));
-        out.println(" kstnm = " + kstnm + " kevnm = " + kevnm + " khole = " + khole + " ko = " + ko);
-        out.println(" ka = " + ka + " kt0 = " + kt0 + " kt1 = " + kt1 + " kt2 = " + kt2);
-        out.println(" kt3 = " + kt3 + " kt4 = " + kt4 + " kt5 = " + kt5 + " kt6 = " + kt6);
-        out.println(" kt7 = " + kt7 + " kt8 = " + kt8 + " kt9 = " + kt9 + " kf = " + kf);
-        out.println(" kuser0 = " + kuser0 + " kuser1 = " + kuser1 + " kuser2 = " + kuser2 + " kcmpnm = " + kcmpnm);
-        out.println(" knetwk = " + knetwk + " kdatrd = " + kdatrd + " kinst = " + kinst);
+        int labelWidth = 10;
+        int wideValWidth = 31;
+        int valWidth = 10;
+        out.println(format("kstnm", kstnm, labelWidth, valWidth) + format("kevnm", kevnm, labelWidth, wideValWidth)
+                + format("khole", khole, labelWidth+2, valWidth));
+        out.println(format("ko", ko, labelWidth, valWidth) + format("ka = ", ka, labelWidth, valWidth)
+                + format("kt0", kt0, labelWidth, valWidth) + format("kt1", kt1, labelWidth, valWidth));
+        out.println(format("kt2", kt2, labelWidth, valWidth) + format("kt3 = ", kt3, labelWidth, valWidth)
+                + format("kt4", kt4, labelWidth, valWidth) + format("kt5", kt5, labelWidth, valWidth));
+        out.println(format("kt6", kt6, labelWidth, valWidth) + format("kt7 = ", kt7, labelWidth, valWidth)
+                + format("kt8", kt8, labelWidth, valWidth) + format("kt9", kt9, labelWidth, valWidth));
+        out.println(format("kf", kf, labelWidth, valWidth) + format("kuser0 = ", kuser0, labelWidth, valWidth)
+                + format("kuser1", kuser1, labelWidth, valWidth) + format("kuser2", kuser2, labelWidth, valWidth));
+        out.println(format("kcmpnm", kcmpnm, labelWidth, valWidth) + format("knetwk = ", knetwk, labelWidth, valWidth)
+                + format("kdatrd", kdatrd, labelWidth, valWidth) + format("kinst", kinst, labelWidth, valWidth));
     }
 
     /**
