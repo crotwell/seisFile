@@ -62,19 +62,27 @@ public class MiniSeedRead {
     public static void main(String[] args) {
         DataInputStream ls = null;
         PrintWriter out = new PrintWriter(System.out, true);
+        int maxPackets = -1;
         try {
             out.println("open socket");
             if(args.length == 0) {
-                out.println("Usage: java "+MiniSeedRead.class.getName()+" [-l lisshost][filename]");
-            } else if (args[0].equals("-l")) {
-                Socket lissConnect = new Socket("anmo.iu.liss.org", 4000);
+                out.println("Usage: java "+MiniSeedRead.class.getName()+" [-l lisshost [maxPackets]][filename]");
+                out.println(" lisshost is like anmo.iu.liss.org");
+                out.println(" See www.liss.org");
+             } else if (args[0].equals("-l")) {
+                Socket lissConnect = new Socket(args[1], 4000);
                 ls = new DataInputStream(new BufferedInputStream(lissConnect.getInputStream(),
                                                                  1024));
+                if (args.length >2) {
+                    maxPackets = Integer.parseInt(args[2]);
+                } else {
+                    maxPackets = 10;
+                }
             } else {
                 ls = new DataInputStream(new BufferedInputStream(new FileInputStream(args[0]), 4096));
             }
             MiniSeedRead rf = new MiniSeedRead(ls);
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; maxPackets == -1 || i < maxPackets; i++) {
                 SeedRecord sr;
                 try {
                     sr = rf.getNextRecord();
