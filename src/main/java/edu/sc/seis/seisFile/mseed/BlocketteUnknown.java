@@ -37,7 +37,7 @@ public class BlocketteUnknown extends Blockette {
     }
 
     public void writeASCII(PrintWriter out) throws IOException {
-        out.write("Blockette UNKNOWN"+getType());
+        out.write("Blockette UNKNOWN "+getType());
     }
     
     public boolean getSwapBytes() {
