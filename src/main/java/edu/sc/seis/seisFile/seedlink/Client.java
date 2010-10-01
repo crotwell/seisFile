@@ -31,6 +31,7 @@ public class Client {
         String host = SeedlinkReader.DEFAULT_HOST;
         int port = SeedlinkReader.DEFAULT_PORT;
         int maxRecords = 10;
+        String infoType = "";
         boolean verbose = false;
         DataOutputStream dos = null;
         PrintWriter out = new PrintWriter(System.out, true);
@@ -43,6 +44,8 @@ public class Client {
                 location = args[i+1];
             } else if (args[i].equals("-c")) {
                 channel = args[i+1];
+            } else if (args[i].equals("-i")) {
+                infoType = args[i+1];
             } else if (args[i].equals("-h")) {
                 host = args[i+1];
             } else if (args[i].equals("-p")) {
@@ -52,7 +55,7 @@ public class Client {
                 dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
             } else if (args[i].equals("-m")) {
                 maxRecords = Integer.parseInt(args[i+1]);
-                if (maxRecords < 1) {maxRecords = 1;}
+                if (maxRecords < -1) {maxRecords = -1;}
             } else if (args[i].equals("--verbose")) {
                 verbose = true;
             } else if (args[i].equals("--version")) {
@@ -70,21 +73,14 @@ public class Client {
             out.println("line 1 :"+lines[0]);
             out.println("line 2 :"+lines[1]);
             out.flush();
-
-            reader.info(SeedlinkReader.INFO_ID);
+        }
+        if (infoType != null && infoType.length() != 0) {
+            reader.info(infoType);
             SeedlinkPacket infoPacket;
             // ID only returns 1 packet, others might return more, careful
             // especially if data is flowing at the same time
             do {
                 infoPacket = reader.next(); 
-                infoPacket.getMiniSeed().writeASCII(out, "    ");
-                out.println("    "+new String(infoPacket.getMiniSeed().getData()));
-            } while( infoPacket.isInfoContinuesPacket());
-
-
-            reader.info(SeedlinkReader.INFO_CAPABILITIES);
-            do {
-                infoPacket = reader.next();
                 infoPacket.getMiniSeed().writeASCII(out, "    ");
                 out.println("    "+new String(infoPacket.getMiniSeed().getData()));
             } while( infoPacket.isInfoContinuesPacket());
