@@ -36,6 +36,18 @@ public class SeedlinkPacket {
     public String getSeqNum() {
         return seqNum;
     }
+    
+    public boolean isInfoPacket() {
+        return seqNum.startsWith("INFO ");
+    }
+    
+    public boolean isInfoTerminationPacket() {
+        return seqNum.equals("INFO  ");
+    }
+    
+    public boolean isInfoContinuesPacket() {
+        return seqNum.equals("INFO *");
+    }
 
     private byte[] mseed;
     
