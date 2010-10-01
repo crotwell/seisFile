@@ -71,11 +71,23 @@ public class Client {
             out.println("line 2 :"+lines[1]);
             out.flush();
 
-            reader.info("ID");
-            out.println("ID");
-            SeedlinkPacket infoPacket = reader.next(); // ID only returns 1 packet, others might return more, careful.
-            infoPacket.getMiniSeed().writeASCII(out, "    ");
-            out.println("    "+new String(infoPacket.getMiniSeed().getData()));
+            reader.info(SeedlinkReader.INFO_ID);
+            SeedlinkPacket infoPacket;
+            // ID only returns 1 packet, others might return more, careful
+            // especially if data is flowing at the same time
+            do {
+                infoPacket = reader.next(); 
+                infoPacket.getMiniSeed().writeASCII(out, "    ");
+                out.println("    "+new String(infoPacket.getMiniSeed().getData()));
+            } while( infoPacket.isInfoContinuesPacket());
+
+
+            reader.info(SeedlinkReader.INFO_CAPABILITIES);
+            do {
+                infoPacket = reader.next();
+                infoPacket.getMiniSeed().writeASCII(out, "    ");
+                out.println("    "+new String(infoPacket.getMiniSeed().getData()));
+            } while( infoPacket.isInfoContinuesPacket());
         }
         
         reader.sendCmd("STATION "+station+" "+network);
