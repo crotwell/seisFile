@@ -8,13 +8,13 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE. See the GNU General Public License for more details. You
  * should have received a copy of the GNU General Public License along with this
- * program; if not, write to the Free Software Foundation, Inc., 59 Temple Place -
- * Suite 330, Boston, MA 02111-1307, USA. The current version can be found at <A
- * HREF="www.seis.sc.edu">http://www.seis.sc.edu </A> Bug reports and comments
- * should be directed to H. Philip Crotwell, crotwell@seis.sc.edu or Tom Owens,
- * owens@seis.sc.edu
+ * program; if not, write to the Free Software Foundation, Inc., 59 Temple Place
+ * - Suite 330, Boston, MA 02111-1307, USA. The current version can be found at
+ * <A HREF="www.seis.sc.edu">http://www.seis.sc.edu </A> Bug reports and
+ * comments should be directed to H. Philip Crotwell, crotwell@seis.sc.edu or
+ * Tom Owens, owens@seis.sc.edu
  */
-//package edu.sc.seis.TauP;
+// package edu.sc.seis.TauP;
 package edu.sc.seis.seisFile.sac;
 
 import java.io.BufferedInputStream;
@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
 /**
@@ -36,289 +37,431 @@ import java.text.DecimalFormat;
  * within the Sac program. Can read the whole file or just the header as well as
  * write a file.
  * 
+ * This reflects the sac header as of version 101.4 in utils/sac.h
+ * 
+ * Notes: Key to comment flags describing each field: Column 1: R required by
+ * SAC (blank) optional Column 2: A = settable from a priori knowledge D =
+ * available in data F = available in or derivable from SEED fixed data header T
+ * = available in SEED header tables (blank) = not directly available from SEED
+ * data, header tables, or elsewhere
+ * 
+ * 
  * @version 1.1 Wed Feb 2 20:40:49 GMT 2000
  * @author H. Philip Crotwell
  */
 public class SacTimeSeries {
-    
+
     public SacTimeSeries() {}
-    
+
     public SacTimeSeries(File file) throws FileNotFoundException, IOException {
         read(file);
     }
-    
+
     public SacTimeSeries(String filename) throws FileNotFoundException, IOException {
         read(filename);
     }
-    
+
     public SacTimeSeries(DataInputStream inStream) throws IOException {
         read(inStream);
     }
 
+    /** RF time increment, sec */
     public float delta = FLOAT_UNDEF;
 
+    /** minimum amplitude */
     public float depmin = FLOAT_UNDEF;
 
+    /** maximum amplitude */
     public float depmax = FLOAT_UNDEF;
 
+    /** amplitude scale factor */
     public float scale = FLOAT_UNDEF;
 
+    /** observed time inc */
     public float odelta = FLOAT_UNDEF;
 
+    /** RD initial time - wrt nz* */
     public float b = FLOAT_UNDEF;
 
+    /** RD end time */
     public float e = FLOAT_UNDEF;
 
+    /** event start */
     public float o = FLOAT_UNDEF;
 
+    /** 1st arrival time */
     public float a = FLOAT_UNDEF;
 
+    /** internal use */
     public float fmt = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t0 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t1 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t2 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t3 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t4 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t5 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t6 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t7 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t8 = FLOAT_UNDEF;
 
+    /** user-defined time pick */
     public float t9 = FLOAT_UNDEF;
 
+    /** event end, sec > 0 */
     public float f = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp0 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp1 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp2 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp3 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp4 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp5 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp6 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp7 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp8 = FLOAT_UNDEF;
 
+    /** instrument respnse parm */
     public float resp9 = FLOAT_UNDEF;
 
+    /** T station latititude */
     public float stla = FLOAT_UNDEF;
 
+    /** T station longitude */
     public float stlo = FLOAT_UNDEF;
 
+    /** T station elevation, m */
     public float stel = FLOAT_UNDEF;
 
+    /** T station depth, m */
     public float stdp = FLOAT_UNDEF;
 
+    /** event latitude */
     public float evla = FLOAT_UNDEF;
 
+    /** event longitude */
     public float evlo = FLOAT_UNDEF;
 
+    /** event elevation */
     public float evel = FLOAT_UNDEF;
 
+    /** event depth */
     public float evdp = FLOAT_UNDEF;
 
+    /** magnitude value */
     public float mag = FLOAT_UNDEF;
 
+    /** available to user */
     public float user0 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user1 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user2 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user3 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user4 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user5 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user6 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user7 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user8 = FLOAT_UNDEF;
 
+    /** available to user */
     public float user9 = FLOAT_UNDEF;
 
+    /** stn-event distance, km */
     public float dist = FLOAT_UNDEF;
 
+    /** event-stn azimuth */
     public float az = FLOAT_UNDEF;
 
+    /** stn-event azimuth */
     public float baz = FLOAT_UNDEF;
 
+    /** stn-event dist, degrees */
     public float gcarc = FLOAT_UNDEF;
 
+    /** saved b value */
     public float sb = FLOAT_UNDEF;
 
+    /** saved delta value */
     public float sdelta = FLOAT_UNDEF;
 
+    /** mean value, amplitude */
     public float depmen = FLOAT_UNDEF;
 
+    /** T component azimuth */
     public float cmpaz = FLOAT_UNDEF;
 
+    /** T component inclination */
     public float cmpinc = FLOAT_UNDEF;
 
+    /** XYZ X minimum value */
     public float xminimum = FLOAT_UNDEF;
 
+    /** XYZ X maximum value */
     public float xmaximum = FLOAT_UNDEF;
 
+    /** XYZ Y minimum value */
     public float yminimum = FLOAT_UNDEF;
 
+    /** XYZ Y maximum value */
     public float ymaximum = FLOAT_UNDEF;
 
+    /** reserved for future use */
     public float unused6 = FLOAT_UNDEF;
 
+    /** reserved for future use */
     public float unused7 = FLOAT_UNDEF;
 
+    /** reserved for future use */
     public float unused8 = FLOAT_UNDEF;
 
+    /** reserved for future use */
     public float unused9 = FLOAT_UNDEF;
 
+    /** reserved for future use */
     public float unused10 = FLOAT_UNDEF;
 
+    /** reserved for future use */
     public float unused11 = FLOAT_UNDEF;
 
+    /** reserved for future use */
     public float unused12 = FLOAT_UNDEF;
 
+    /** F zero time of file, yr */
     public int nzyear = INT_UNDEF;
 
+    /** F zero time of file, day */
     public int nzjday = INT_UNDEF;
 
+    /** F zero time of file, hr */
     public int nzhour = INT_UNDEF;
 
+    /** F zero time of file, min */
     public int nzmin = INT_UNDEF;
 
+    /** F zero time of file, sec */
     public int nzsec = INT_UNDEF;
 
+    /** F zero time of file, msec */
     public int nzmsec = INT_UNDEF;
 
+    /** R header version number */
     public int nvhdr = DEFAULT_NVHDR;
 
+    /** Origin ID */
     public int norid = INT_UNDEF;
 
+    /** Event ID */
     public int nevid = INT_UNDEF;
 
+    /** RF number of samples */
     public int npts = INT_UNDEF;
 
+    /** saved npts */
     public int nsnpts = INT_UNDEF;
 
+    /** Waveform ID */
     public int nwfid = INT_UNDEF;
 
+    /** XYZ X size */
     public int nxsize = INT_UNDEF;
 
+    /** XYZ Y size */
     public int nysize = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused15 = INT_UNDEF;
 
+    /** RA type of file */
     public int iftype = INT_UNDEF;
 
+    /** type of amplitude */
     public int idep = INT_UNDEF;
 
+    /** zero time equivalence */
     public int iztype = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused16 = INT_UNDEF;
 
+    /** recording instrument */
     public int iinst = INT_UNDEF;
 
+    /** stn geographic region */
     public int istreg = INT_UNDEF;
 
+    /** event geographic region */
     public int ievreg = INT_UNDEF;
 
+    /** event type */
     public int ievtyp = INT_UNDEF;
 
+    /** quality of data */
     public int iqual = INT_UNDEF;
 
+    /** synthetic data flag */
     public int isynth = INT_UNDEF;
 
+    /** magnitude type */
     public int imagtyp = INT_UNDEF;
 
+    /** magnitude source */
     public int imagsrc = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused19 = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused20 = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused21 = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused22 = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused23 = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused24 = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused25 = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused26 = INT_UNDEF;
 
+    /** RA data-evenly-spaced flag */
     public int leven = INT_UNDEF;
 
+    /** station polarity flag */
     public int lpspol = INT_UNDEF;
 
+    /** overwrite permission */
     public int lovrok = INT_UNDEF;
 
+    /** calc distance, azimuth */
     public int lcalda = INT_UNDEF;
 
+    /** reserved for future use */
     public int unused27 = INT_UNDEF;
 
+    /** F station name */
     public String kstnm = STRING8_UNDEF;
 
+    /** event name */
     public String kevnm = STRING16_UNDEF;
 
+    /** man-made event name */
     public String khole = STRING8_UNDEF;
 
+    /** event origin time id */
     public String ko = STRING8_UNDEF;
 
+    /** 1st arrival time ident */
     public String ka = STRING8_UNDEF;
 
+    /** time pick 0 ident */
     public String kt0 = STRING8_UNDEF;
 
+    /** time pick 1 ident */
     public String kt1 = STRING8_UNDEF;
 
+    /** time pick 2 ident */
     public String kt2 = STRING8_UNDEF;
 
+    /** time pick 3 ident */
     public String kt3 = STRING8_UNDEF;
 
+    /** time pick 4 ident */
     public String kt4 = STRING8_UNDEF;
 
+    /** time pick 5 ident */
     public String kt5 = STRING8_UNDEF;
 
+    /** time pick 6 ident */
     public String kt6 = STRING8_UNDEF;
 
+    /** time pick 7 ident */
     public String kt7 = STRING8_UNDEF;
 
+    /** time pick 8 ident */
     public String kt8 = STRING8_UNDEF;
 
+    /** time pick 9 ident */
     public String kt9 = STRING8_UNDEF;
 
+    /** end of event ident */
     public String kf = STRING8_UNDEF;
 
+    /** available to user */
     public String kuser0 = STRING8_UNDEF;
 
+    /** available to user */
     public String kuser1 = STRING8_UNDEF;
 
+    /** available to user */
     public String kuser2 = STRING8_UNDEF;
 
+    /** F component name */
     public String kcmpnm = STRING8_UNDEF;
 
+    /** network name */
     public String knetwk = STRING8_UNDEF;
 
+    /** date data read */
     public String kdatrd = STRING8_UNDEF;
 
+    /** instrument name */
     public String kinst = STRING8_UNDEF;
 
     public float[] y;
@@ -349,228 +492,225 @@ public class SacTimeSeries {
 
     public static final int FALSE = 0;
 
-    /* Constants used by sac. This corresponds to utils/sac.h in sac 101.4*/
-
-    /** Undocumented                */
+    /* Constants used by sac. This corresponds to utils/sac.h in sac 101.4 */
+    /** Undocumented */
     public static final int IREAL = 0;
 
-    /** Time series file            */
+    /** Time series file */
     public static final int ITIME = 1;
 
-    /** Spectral file-real/imag     */
+    /** Spectral file-real/imag */
     public static final int IRLIM = 2;
 
-    /** Spectral file-ampl/phase    */
+    /** Spectral file-ampl/phase */
     public static final int IAMPH = 3;
 
-    /** General x vs y file         */
+    /** General x vs y file */
     public static final int IXY = 4;
 
-    /** Unknown                     */
+    /** Unknown */
     public static final int IUNKN = 5;
 
-    /** Displacement (NM)           */
+    /** Displacement (NM) */
     public static final int IDISP = 6;
 
-    /** Velocity (NM/SEC)           */
+    /** Velocity (NM/SEC) */
     public static final int IVEL = 7;
 
-    /** Acceleration (NM/SEC/SEC)   */
+    /** Acceleration (NM/SEC/SEC) */
     public static final int IACC = 8;
 
-    /** Begin time                  */
+    /** Begin time */
     public static final int IB = 9;
 
-    /** GMT day                     */
+    /** GMT day */
     public static final int IDAY = 10;
 
-    /** Event origin time           */
+    /** Event origin time */
     public static final int IO = 11;
 
-    /** First arrival time          */
+    /** First arrival time */
     public static final int IA = 12;
 
-    /** User defined time pick 0    */
+    /** User defined time pick 0 */
     public static final int IT0 = 13;
 
-    /** User defined time pick 1    */
+    /** User defined time pick 1 */
     public static final int IT1 = 14;
 
-    /** User defined time pick 2    */
+    /** User defined time pick 2 */
     public static final int IT2 = 15;
 
-    /** User defined time pick 3    */
+    /** User defined time pick 3 */
     public static final int IT3 = 16;
 
-    /** User defined time pick 4    */
+    /** User defined time pick 4 */
     public static final int IT4 = 17;
 
-    /** User defined time pick 5    */
+    /** User defined time pick 5 */
     public static final int IT5 = 18;
 
-    /** User defined time pick 6    */
+    /** User defined time pick 6 */
     public static final int IT6 = 19;
 
-    /** User defined time pick 7    */
+    /** User defined time pick 7 */
     public static final int IT7 = 20;
 
-    /** User defined time pick 8    */
+    /** User defined time pick 8 */
     public static final int IT8 = 21;
 
-    /** User defined time pick 9    */
+    /** User defined time pick 9 */
     public static final int IT9 = 22;
 
-    /** Radial (NTS)                */
+    /** Radial (NTS) */
     public static final int IRADNV = 23;
 
-    /** Tangential (NTS)            */
+    /** Tangential (NTS) */
     public static final int ITANNV = 24;
 
-    /** Radial (EVENT)              */
+    /** Radial (EVENT) */
     public static final int IRADEV = 25;
 
-    /** Tangential (EVENT)          */
+    /** Tangential (EVENT) */
     public static final int ITANEV = 26;
 
-    /** North positive              */
+    /** North positive */
     public static final int INORTH = 27;
 
-    /** East positive               */
+    /** East positive */
     public static final int IEAST = 28;
 
-    /** Horizontal (ARB)            */
+    /** Horizontal (ARB) */
     public static final int IHORZA = 29;
 
-    /** Down positive               */
+    /** Down positive */
     public static final int IDOWN = 30;
 
-    /** Up positive                 */
+    /** Up positive */
     public static final int IUP = 31;
 
-    /** LLL broadband               */
+    /** LLL broadband */
     public static final int ILLLBB = 32;
 
-    /** WWSN 15-100                 */
+    /** WWSN 15-100 */
     public static final int IWWSN1 = 33;
 
-    /** WWSN 30-100                 */
+    /** WWSN 30-100 */
     public static final int IWWSN2 = 34;
 
-    /** High-gain long-period       */
+    /** High-gain long-period */
     public static final int IHGLP = 35;
 
-    /** SRO                         */
+    /** SRO */
     public static final int ISRO = 36;
 
-    /** Nuclear event               */
+    /** Nuclear event */
     public static final int INUCL = 37;
 
-    /** Nuclear pre-shot event      */
+    /** Nuclear pre-shot event */
     public static final int IPREN = 38;
 
-    /** Nuclear post-shot event     */
+    /** Nuclear post-shot event */
     public static final int IPOSTN = 39;
 
-    /** Earthquake                  */
+    /** Earthquake */
     public static final int IQUAKE = 40;
 
-    /** Foreshock                   */
+    /** Foreshock */
     public static final int IPREQ = 41;
 
-    /** Aftershock                  */
+    /** Aftershock */
     public static final int IPOSTQ = 42;
 
-    /** Chemical explosion          */
+    /** Chemical explosion */
     public static final int ICHEM = 43;
 
-    /** Other                       */
+    /** Other */
     public static final int IOTHER = 44;
 
-    /** Good                        */
+    /** Good */
     public static final int IGOOD = 45;
 
-    /** Gliches                     */
+    /** Gliches */
     public static final int IGLCH = 46;
 
-    /** Dropouts                    */
+    /** Dropouts */
     public static final int IDROP = 47;
 
-    /** Low signal to noise ratio   */
+    /** Low signal to noise ratio */
     public static final int ILOWSN = 48;
 
-    /** Real data                   */
+    /** Real data */
     public static final int IRLDTA = 49;
 
-    /** Velocity (volts)            */
+    /** Velocity (volts) */
     public static final int IVOLTS = 50;
 
-    /** General XYZ (3-D) file      */
+    /** General XYZ (3-D) file */
     public static final int IXYZ = 51;
 
     /* These 18 added to describe magnitude type and source maf 970205 */
-
-    /** Bodywave Magnitude          */
+    /** Bodywave Magnitude */
     public static final int IMB = 52;
 
-    /** Surface Magnitude           */
+    /** Surface Magnitude */
     public static final int IMS = 53;
 
-    /** Local Magnitude             */
+    /** Local Magnitude */
     public static final int IML = 54;
 
-    /** Moment Magnitude            */
+    /** Moment Magnitude */
     public static final int IMW = 55;
 
-    /** Duration Magnitude          */
+    /** Duration Magnitude */
     public static final int IMD = 56;
 
-    /** User Defined Magnitude      */
+    /** User Defined Magnitude */
     public static final int IMX = 57;
 
-    /** INEIC                       */
+    /** INEIC */
     public static final int INEIC = 58;
 
-    /** IPDEQ                       */
+    /** IPDEQ */
     public static final int IPDEQ = 59;
 
-    /** IPDEW                       */
+    /** IPDEW */
     public static final int IPDEW = 60;
 
-    /** IPDE                        */
+    /** IPDE */
     public static final int IPDE = 61;
 
-    /** IISC                        */
+    /** IISC */
     public static final int IISC = 62;
 
-    /** IREB                        */
+    /** IREB */
     public static final int IREB = 63;
 
-    /** IUSGS                       */
+    /** IUSGS */
     public static final int IUSGS = 64;
 
-    /** IBRK                        */
+    /** IBRK */
     public static final int IBRK = 65;
 
-    /** ICALTECH                    */
+    /** ICALTECH */
     public static final int ICALTECH = 66;
 
-    /** ILLNL                       */
+    /** ILLNL */
     public static final int ILLNL = 67;
 
-    /** IEVLOC                      */
+    /** IEVLOC */
     public static final int IEVLOC = 68;
 
-    /** IJSOP                       */
+    /** IJSOP */
     public static final int IJSOP = 69;
 
-    /** IUSER                       */
+    /** IUSER */
     public static final int IUSER = 70;
 
-    /** IUNKNOWN                    */
+    /** IUNKNOWN */
     public static final int IUNKNOWN = 71;
 
-    /* These  17 added for ievtyp. maf 970325 */
-
+    /* These 17 added for ievtyp. maf 970325 */
     /** Quarry or mine blast confirmed by quarry */
     public static final int IQB = 72;
 
@@ -586,25 +726,25 @@ public class SacTimeSeries {
     /** Quarry or mining-induced events: tremors and rockbursts */
     public static final int IQMT = 76;
 
-    /** Earthquake                  */
+    /** Earthquake */
     public static final int IEQ = 77;
 
     /** Earthquakes in a swarm or aftershock sequence */
     public static final int IEQ1 = 78;
 
-    /** Felt earthquake             */
+    /** Felt earthquake */
     public static final int IEQ2 = 79;
 
-    /** Marine explosion            */
+    /** Marine explosion */
     public static final int IME = 80;
 
-    /** Other explosion             */
+    /** Other explosion */
     public static final int IEX = 81;
 
-    /** Nuclear explosion           */
+    /** Nuclear explosion */
     public static final int INU = 82;
 
-    /** Nuclear cavity collapse     */
+    /** Nuclear cavity collapse */
     public static final int INC = 83;
 
     /** Other source of known origin */
@@ -619,43 +759,42 @@ public class SacTimeSeries {
     /** Teleseismic event of unknown origin */
     public static final int IT = 87;
 
-    /** Undetermined or conflicting information  */
+    /** Undetermined or conflicting information */
     public static final int IU = 88;
 
     /* These 9 added for ievtype to keep up with database. maf 000530 */
-
-    /** Damaging Earthquake         */
+    /** Damaging Earthquake */
     public static final int IEQ3 = 89;
 
-    /** Probable earthquake         */
+    /** Probable earthquake */
     public static final int IEQ0 = 90;
 
-    /** Probable explosion          */
+    /** Probable explosion */
     public static final int IEX0 = 91;
 
-    /** Mine collapse               */
+    /** Mine collapse */
     public static final int IQC = 92;
 
-    /** Probable Mine Blast         */
+    /** Probable Mine Blast */
     public static final int IQB0 = 93;
 
-    /** Geyser                      */
+    /** Geyser */
     public static final int IGEY = 94;
 
-    /** Light                       */
+    /** Light */
     public static final int ILIT = 95;
 
-    /** Meteroic event              */
+    /** Meteroic event */
     public static final int IMET = 96;
 
-    /** Odors                       */
+    /** Odors */
     public static final int IODOR = 97;
 
     public static final int data_offset = 632;
-    
-    public static final int NVHDR_OFFSET = 76*4;
-    
-    public static final int NPTS_OFFSET = 79*4;
+
+    public static final int NVHDR_OFFSET = 76 * 4;
+
+    public static final int NPTS_OFFSET = 79 * 4;
 
     boolean byteOrder = SunByteOrder;
 
@@ -666,7 +805,7 @@ public class SacTimeSeries {
     public boolean getByteOrder() {
         return byteOrder;
     }
-    
+
     /**
      * reads the sac file specified by the filename. Only a very simple check is
      * made to be sure the file really is a sac file.
@@ -683,39 +822,39 @@ public class SacTimeSeries {
 
     public void read(File sacFile) throws FileNotFoundException, IOException {
         if (sacFile.length() < data_offset) {
-            throw new IOException(sacFile.getName()
-                                  + " does not appear to be a sac file! File size ("
-                                  +sacFile.length()+" is less than sac's header size ("+data_offset+")");
+            throw new IOException(sacFile.getName() + " does not appear to be a sac file! File size ("
+                    + sacFile.length() + " is less than sac's header size (" + data_offset + ")");
         }
         FileInputStream fis = new FileInputStream(sacFile);
         BufferedInputStream buf = new BufferedInputStream(fis);
         DataInputStream dis = new DataInputStream(buf);
         readHeader(dis);
-        if(leven == 1 && sacFile.length() != npts * 4 + data_offset) {
-            throw new IOException(sacFile.getName()
-                                  + " does not appear to be a sac file! npts(" + npts
-                                  + ") * 4 + header(" + data_offset + ") !=  file length="
-                                  + sacFile.length() + "\n  as linux: npts("
-                                  + swapBytes(npts) + ")*4 + header(" + data_offset
-                                  + ") !=  file length=" + sacFile.length());
-        } else if(leven == 0 && sacFile.length() != npts * 4 * 2 + data_offset) {
-            throw new IOException(sacFile.getName()
-                                  + " does not appear to be a uneven sac file! npts(" + npts
-                                  + ") * 4 *2 + header(" + data_offset + ") !=  file length="
-                                  + sacFile.length() + "\n  as linux: npts("
-                                  + swapBytes(npts) + ")*4*2 + header(" + data_offset
-                                  + ") !=  file length=" + sacFile.length());
+        if (leven == 1 && sacFile.length() != npts * 4 + data_offset) {
+            throw new IOException(sacFile.getName() + " does not appear to be a sac file! npts(" + npts
+                    + ") * 4 + header(" + data_offset + ") !=  file length=" + sacFile.length() + "\n  as linux: npts("
+                    + swapBytes(npts) + ")*4 + header(" + data_offset + ") !=  file length=" + sacFile.length());
+        } else if (leven == 0 && sacFile.length() != npts * 4 * 2 + data_offset) {
+            throw new IOException(sacFile.getName() + " does not appear to be a uneven sac file! npts(" + npts
+                    + ") * 4 *2 + header(" + data_offset + ") !=  file length=" + sacFile.length()
+                    + "\n  as linux: npts(" + swapBytes(npts) + ")*4*2 + header(" + data_offset + ") !=  file length="
+                    + sacFile.length());
         }
         readData(dis);
         dis.close();
     }
-    
-    /** Sets the byte order when writing to output. Does not change the internal representation of the data.*/
+
+    /**
+     * Sets the byte order when writing to output. Does not change the internal
+     * representation of the data.
+     */
     public final void setLittleEndian() {
         byteOrder = IntelByteOrder;
     }
-    
-    /** Sets the byte order when writing to output. Does not change the internal representation of the data.*/
+
+    /**
+     * Sets the byte order when writing to output. Does not change the internal
+     * representation of the data.
+     */
     public final void setBigEndian() {
         byteOrder = SunByteOrder;
     }
@@ -725,14 +864,13 @@ public class SacTimeSeries {
     }
 
     public final static int swapBytes(int val) {
-        return ((val & 0xff000000) >>> 24) + ((val & 0x00ff0000) >> 8)
-                + ((val & 0x0000ff00) << 8) + ((val & 0x000000ff) << 24);
+        return ((val & 0xff000000) >>> 24) + ((val & 0x00ff0000) >> 8) + ((val & 0x0000ff00) << 8)
+                + ((val & 0x000000ff) << 24);
     }
 
     public final static long swapBytes(long val) {
-        return ((val & 0xffl << 56) >>> 56) + ((val & 0xffl << 48) >> 40)
-                + ((val & 0xffl << 40) >> 24) + ((val & 0xffl << 32) >> 8)
-                + ((val & 0xffl << 24) << 8) + ((val & 0xffl << 16) << 24)
+        return ((val & 0xffl << 56) >>> 56) + ((val & 0xffl << 48) >> 40) + ((val & 0xffl << 40) >> 24)
+                + ((val & 0xffl << 32) >> 8) + ((val & 0xffl << 24) << 8) + ((val & 0xffl << 16) << 24)
                 + ((val & 0xffl << 8) << 40) + ((val & 0xffl) << 56);
     }
 
@@ -745,39 +883,39 @@ public class SacTimeSeries {
      * reads just the sac header specified by the filename. No checks are made
      * to be sure the file really is a sac file.
      */
-    public void readHeader(String filename) throws FileNotFoundException,
-            IOException {
+    public void readHeader(String filename) throws FileNotFoundException, IOException {
         DataInputStream dis = new DataInputStream(new BufferedInputStream(new FileInputStream(filename)));
         readHeader(dis);
         dis.close();
     }
 
-    /** reads the header from the given stream. The NVHDR value (shoudld be 6) is checked to
-     * see if byte swapping is needed. If so, all header values are byte swapped and the 
-     * byteOrder is set to IntelByteOrder (false) so that the data section will also be byte
-     * swapped on read. Extra care is taken to do all byte swapping before the byte values are
-     * transformed into floats as java can do very funny things if the byte-swapped float 
-     * happens to be a NaN. */
-    public void readHeader(DataInputStream indis) throws FileNotFoundException,
-            IOException {
+    /**
+     * reads the header from the given stream. The NVHDR value (shoudld be 6) is
+     * checked to see if byte swapping is needed. If so, all header values are
+     * byte swapped and the byteOrder is set to IntelByteOrder (false) so that
+     * the data section will also be byte swapped on read. Extra care is taken
+     * to do all byte swapping before the byte values are transformed into
+     * floats as java can do very funny things if the byte-swapped float happens
+     * to be a NaN.
+     */
+    public void readHeader(DataInputStream indis) throws FileNotFoundException, IOException {
         byte[] headerBuf = new byte[data_offset];
         indis.readFully(headerBuf);
-        if (headerBuf[NVHDR_OFFSET]==6 && headerBuf[NVHDR_OFFSET+1]==0
-                && headerBuf[NVHDR_OFFSET+2]==0 && headerBuf[NVHDR_OFFSET+3]==0) {
+        if (headerBuf[NVHDR_OFFSET] == 6 && headerBuf[NVHDR_OFFSET + 1] == 0 && headerBuf[NVHDR_OFFSET + 2] == 0
+                && headerBuf[NVHDR_OFFSET + 3] == 0) {
             byteOrder = IntelByteOrder;
-            // little endian byte order, swap bytes on first 110 4-byte values in header, rest are text
-            for (int i = 0; i < 110*4; i+=4) {
+            // little endian byte order, swap bytes on first 110 4-byte values
+            // in header, rest are text
+            for (int i = 0; i < 110 * 4; i += 4) {
                 byte tmp = headerBuf[i];
-                headerBuf[i] = headerBuf[i+3];
-                headerBuf[i+3] = tmp;
-                tmp = headerBuf[i+1];
-                headerBuf[i+1] = headerBuf[i+2];
-                headerBuf[i+2] = tmp;
+                headerBuf[i] = headerBuf[i + 3];
+                headerBuf[i + 3] = tmp;
+                tmp = headerBuf[i + 1];
+                headerBuf[i + 1] = headerBuf[i + 2];
+                headerBuf[i + 2] = tmp;
             }
         }
-
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(headerBuf));
-        
         delta = dis.readFloat();
         depmin = dis.readFloat();
         depmax = dis.readFloat();
@@ -942,38 +1080,32 @@ public class SacTimeSeries {
     public void readData(DataInputStream fis) throws IOException {
         y = new float[npts];
         readDataArray(fis, y);
-        
-        if(leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM
-                || iftype == SacTimeSeries.IAMPH) {
+        if (leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM || iftype == SacTimeSeries.IAMPH) {
             x = new float[npts];
             readDataArray(fis, x);
-            if(iftype == SacTimeSeries.IRLIM) {
+            if (iftype == SacTimeSeries.IRLIM) {
                 real = y;
                 imaginary = x;
             }
-            if(iftype == SacTimeSeries.IAMPH) {
+            if (iftype == SacTimeSeries.IAMPH) {
                 amp = y;
                 phase = x;
             }
         }
     }
-    
+
     private void readDataArray(DataInputStream fis, float[] d) throws IOException {
-        byte[] dataBytes = new byte[d.length*4];
+        byte[] dataBytes = new byte[d.length * 4];
         int numAdded = 0;
-        int i=0;
+        int i = 0;
         fis.readFully(dataBytes);
-        while(numAdded < d.length) {
+        while (numAdded < d.length) {
             if (byteOrder == IntelByteOrder) {
-                y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 0)
-                                                     + ((dataBytes[i++] & 0xff) << 8)
-                                                     + ((dataBytes[i++] & 0xff) << 16)
-                                                     + ((dataBytes[i++] & 0xff) << 24));
+                y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 0) + ((dataBytes[i++] & 0xff) << 8)
+                        + ((dataBytes[i++] & 0xff) << 16) + ((dataBytes[i++] & 0xff) << 24));
             } else {
-                y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 24)
-                                                     + ((dataBytes[i++] & 0xff) << 16)
-                                                     + ((dataBytes[i++] & 0xff) << 8)
-                                                     + ((dataBytes[i++] & 0xff) << 0));
+                y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 24) + ((dataBytes[i++] & 0xff) << 16)
+                        + ((dataBytes[i++] & 0xff) << 8) + ((dataBytes[i++] & 0xff) << 0));
             }
         }
     }
@@ -992,33 +1124,29 @@ public class SacTimeSeries {
         byte[] buf = new byte[4096]; // buf length must be == 0 % 4
         // and for efficiency, should be
         // a multiple of the disk sector size
-        while(numAdded < npts) {
-            if((numRead = in.read(buf)) == 0) {
+        while (numAdded < npts) {
+            if ((numRead = in.read(buf)) == 0) {
                 continue;
-            } else if(numRead == -1) {
+            } else if (numRead == -1) {
                 // EOF
                 throw new EOFException();
             }
             overflowBytes = (numRead + prevoverflowBytes) % 4;
-            if(overflowBytes != 0) {
+            if (overflowBytes != 0) {
                 // partial read of bytes for last value
                 // save in overflow
-                System.arraycopy(buf,
-                                 numRead - overflowBytes,
-                                 overflow,
-                                 0,
-                                 overflowBytes);
+                System.arraycopy(buf, numRead - overflowBytes, overflow, 0, overflowBytes);
             }
             i = 0;
-            if(prevoverflowBytes != 0) {
+            if (prevoverflowBytes != 0) {
                 int temp = 0;
                 // use leftover bytes
-                for(i = 0; i < prevoverflowBytes; i++) {
+                for (i = 0; i < prevoverflowBytes; i++) {
                     temp <<= 8;
                     temp += (prevoverflow[i] & 0xff);
                 }
                 // use first new bytes as needed
-                for(i = 0; i < 4 - prevoverflowBytes; i++) {
+                for (i = 0; i < 4 - prevoverflowBytes; i++) {
                     temp <<= 8;
                     temp += (buf[i] & 0xff);
                 }
@@ -1029,17 +1157,13 @@ public class SacTimeSeries {
                 }
             }
             // i is now set to first unused byte in buf
-            while(i <= numRead - 4 && numAdded < npts) {
+            while (i <= numRead - 4 && numAdded < npts) {
                 if (byteOrder == IntelByteOrder) {
-                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 0)
-                                                         + ((buf[i++] & 0xff) << 8)
-                                                         + ((buf[i++] & 0xff) << 16)
-                                                         + ((buf[i++] & 0xff) << 24));
+                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 0) + ((buf[i++] & 0xff) << 8)
+                            + ((buf[i++] & 0xff) << 16) + ((buf[i++] & 0xff) << 24));
                 } else {
-                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 24)
-                                                         + ((buf[i++] & 0xff) << 16)
-                                                         + ((buf[i++] & 0xff) << 8)
-                                                         + ((buf[i++] & 0xff) << 0));
+                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 24) + ((buf[i++] & 0xff) << 16)
+                            + ((buf[i++] & 0xff) << 8) + ((buf[i++] & 0xff) << 0));
                 }
             }
             System.arraycopy(overflow, 0, prevoverflow, 0, overflowBytes);
@@ -1052,23 +1176,21 @@ public class SacTimeSeries {
      * resulting in MUCH slower read times than the slightly more confusing
      * method above.
      */
-    protected void readDataOld(DataInputStream dis)
-            throws FileNotFoundException, IOException {
+    protected void readDataOld(DataInputStream dis) throws FileNotFoundException, IOException {
         y = new float[npts];
-        for(int i = 0; i < npts; i++) {
+        for (int i = 0; i < npts; i++) {
             y[i] = dis.readFloat();
         }
-        if(leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM
-                || iftype == SacTimeSeries.IAMPH) {
+        if (leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM || iftype == SacTimeSeries.IAMPH) {
             x = new float[npts];
-            for(int i = 0; i < npts; i++) {
+            for (int i = 0; i < npts; i++) {
                 x[i] = dis.readFloat();
             }
-            if(iftype == SacTimeSeries.IRLIM) {
+            if (iftype == SacTimeSeries.IRLIM) {
                 real = y;
                 imaginary = x;
             }
-            if(iftype == SacTimeSeries.IAMPH) {
+            if (iftype == SacTimeSeries.IAMPH) {
                 amp = y;
                 phase = x;
             }
@@ -1076,8 +1198,7 @@ public class SacTimeSeries {
     }
 
     /** writes this object out as a sac file. */
-    public void write(String filename) throws FileNotFoundException,
-            IOException {
+    public void write(String filename) throws FileNotFoundException, IOException {
         File f = new File(filename);
         write(f);
     }
@@ -1091,13 +1212,14 @@ public class SacTimeSeries {
     }
 
     /** write the float to the stream, swapping bytes if needed. */
-    private final void writeFloat(DataOutputStream dos, float val)
-            throws IOException {
-        if(byteOrder == IntelByteOrder) {
+    private final void writeFloat(DataOutputStream dos, float val) throws IOException {
+        if (byteOrder == IntelByteOrder) {
             // careful here as dos.writeFloat() will collapse all NaN floats to
-            // a single NaN value. But we are trying to write out byte swapped values
+            // a single NaN value. But we are trying to write out byte swapped
+            // values
             // so different floats that are all NaN are different values in the
-            // other byte order. Solution is to swap on the integer bits, not the float
+            // other byte order. Solution is to swap on the integer bits, not
+            // the float
             dos.writeInt(swapBytes(Float.floatToRawIntBits(val)));
         } else {
             dos.writeFloat(val);
@@ -1105,9 +1227,8 @@ public class SacTimeSeries {
     }
 
     /** write the float to the stream, swapping bytes if needed. */
-    private final void writeInt(DataOutputStream dos, int val)
-            throws IOException {
-        if(byteOrder == IntelByteOrder) {
+    private final void writeInt(DataOutputStream dos, int val) throws IOException {
+        if (byteOrder == IntelByteOrder) {
             dos.writeInt(swapBytes(val));
         } else {
             dos.writeInt(val);
@@ -1225,176 +1346,175 @@ public class SacTimeSeries {
         writeInt(dos, lovrok);
         writeInt(dos, lcalda);
         writeInt(dos, unused27);
-        if(kstnm.length() > 8) {
+        if (kstnm.length() > 8) {
             kstnm = kstnm.substring(0, 7);
         }
-        while(kstnm.length() < 8) {
+        while (kstnm.length() < 8) {
             kstnm += " ";
         }
         dos.writeBytes(kstnm);
-        if(kevnm.length() > 16) {
+        if (kevnm.length() > 16) {
             kevnm = kevnm.substring(0, 15);
         }
-        while(kevnm.length() < 16) {
+        while (kevnm.length() < 16) {
             kevnm += " ";
         }
         dos.writeBytes(kevnm);
-        if(khole.length() > 8) {
+        if (khole.length() > 8) {
             khole = khole.substring(0, 7);
         }
-        while(khole.length() < 8) {
+        while (khole.length() < 8) {
             khole += " ";
         }
         dos.writeBytes(khole);
-        if(ko.length() > 8) {
+        if (ko.length() > 8) {
             ko = ko.substring(0, 7);
         }
-        while(ko.length() < 8) {
+        while (ko.length() < 8) {
             ko += " ";
         }
         dos.writeBytes(ko);
-        if(ka.length() > 8) {
+        if (ka.length() > 8) {
             ka = ka.substring(0, 7);
         }
-        while(ka.length() < 8) {
+        while (ka.length() < 8) {
             ka += " ";
         }
         dos.writeBytes(ka);
-        if(kt0.length() > 8) {
+        if (kt0.length() > 8) {
             kt0 = kt0.substring(0, 7);
         }
-        while(kt0.length() < 8) {
+        while (kt0.length() < 8) {
             kt0 += " ";
         }
         dos.writeBytes(kt0);
-        if(kt1.length() > 8) {
+        if (kt1.length() > 8) {
             kt1 = kt1.substring(0, 7);
         }
-        while(kt1.length() < 8) {
+        while (kt1.length() < 8) {
             kt1 += " ";
         }
         dos.writeBytes(kt1);
-        if(kt2.length() > 8) {
+        if (kt2.length() > 8) {
             kt2 = kt2.substring(0, 7);
         }
-        while(kt2.length() < 8) {
+        while (kt2.length() < 8) {
             kt2 += " ";
         }
         dos.writeBytes(kt2);
-        if(kt3.length() > 8) {
+        if (kt3.length() > 8) {
             kt3 = kt3.substring(0, 7);
         }
-        while(kt3.length() < 8) {
+        while (kt3.length() < 8) {
             kt3 += " ";
         }
         dos.writeBytes(kt3);
-        if(kt4.length() > 8) {
+        if (kt4.length() > 8) {
             kt4 = kt4.substring(0, 7);
         }
-        while(kt4.length() < 8) {
+        while (kt4.length() < 8) {
             kt4 += " ";
         }
         dos.writeBytes(kt4);
-        if(kt5.length() > 8) {
+        if (kt5.length() > 8) {
             kt5 = kt5.substring(0, 7);
         }
-        while(kt5.length() < 8) {
+        while (kt5.length() < 8) {
             kt5 += " ";
         }
         dos.writeBytes(kt5);
-        if(kt6.length() > 8) {
+        if (kt6.length() > 8) {
             kt6 = kt6.substring(0, 7);
         }
-        while(kt6.length() < 8) {
+        while (kt6.length() < 8) {
             kt6 += " ";
         }
         dos.writeBytes(kt6);
-        if(kt7.length() > 8) {
+        if (kt7.length() > 8) {
             kt7 = kt7.substring(0, 7);
         }
-        while(kt7.length() < 8) {
+        while (kt7.length() < 8) {
             kt7 += " ";
         }
         dos.writeBytes(kt7);
-        if(kt8.length() > 8) {
+        if (kt8.length() > 8) {
             kt8 = kt8.substring(0, 7);
         }
-        while(kt8.length() < 8) {
+        while (kt8.length() < 8) {
             kt8 += " ";
         }
         dos.writeBytes(kt8);
-        if(kt9.length() > 8) {
+        if (kt9.length() > 8) {
             kt9 = kt9.substring(0, 7);
         }
-        while(kt9.length() < 8) {
+        while (kt9.length() < 8) {
             kt9 += " ";
         }
         dos.writeBytes(kt9);
-        if(kf.length() > 8) {
+        if (kf.length() > 8) {
             kf = kf.substring(0, 7);
         }
-        while(kf.length() < 8) {
+        while (kf.length() < 8) {
             kf += " ";
         }
         dos.writeBytes(kf);
-        if(kuser0.length() > 8) {
+        if (kuser0.length() > 8) {
             kuser0 = kuser0.substring(0, 7);
         }
-        while(kuser0.length() < 8) {
+        while (kuser0.length() < 8) {
             kuser0 += " ";
         }
         dos.writeBytes(kuser0);
-        if(kuser1.length() > 8) {
+        if (kuser1.length() > 8) {
             kuser1 = kuser1.substring(0, 7);
         }
-        while(kuser1.length() < 8) {
+        while (kuser1.length() < 8) {
             kuser1 += " ";
         }
         dos.writeBytes(kuser1);
-        if(kuser2.length() > 8) {
+        if (kuser2.length() > 8) {
             kuser2 = kuser2.substring(0, 7);
         }
-        while(kuser2.length() < 8) {
+        while (kuser2.length() < 8) {
             kuser2 += " ";
         }
         dos.writeBytes(kuser2);
-        if(kcmpnm.length() > 8) {
+        if (kcmpnm.length() > 8) {
             kcmpnm = kcmpnm.substring(0, 7);
         }
-        while(kcmpnm.length() < 8) {
+        while (kcmpnm.length() < 8) {
             kcmpnm += " ";
         }
         dos.writeBytes(kcmpnm);
-        if(knetwk.length() > 8) {
+        if (knetwk.length() > 8) {
             knetwk = knetwk.substring(0, 7);
         }
-        while(knetwk.length() < 8) {
+        while (knetwk.length() < 8) {
             knetwk += " ";
         }
         dos.writeBytes(knetwk);
-        if(kdatrd.length() > 8) {
+        if (kdatrd.length() > 8) {
             kdatrd = kdatrd.substring(0, 7);
         }
-        while(kdatrd.length() < 8) {
+        while (kdatrd.length() < 8) {
             kdatrd += " ";
         }
         dos.writeBytes(kdatrd);
-        if(kinst.length() > 8) {
+        if (kinst.length() > 8) {
             kinst = kinst.substring(0, 7);
         }
-        while(kinst.length() < 8) {
+        while (kinst.length() < 8) {
             kinst += " ";
         }
         dos.writeBytes(kinst);
     }
 
     public void writeData(DataOutputStream dos) throws IOException {
-        for(int i = 0; i < npts; i++) {
+        for (int i = 0; i < npts; i++) {
             writeFloat(dos, y[i]);
         }
-        if(leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM
-                || iftype == SacTimeSeries.IAMPH) {
-            for(int i = 0; i < npts; i++) {
+        if (leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM || iftype == SacTimeSeries.IAMPH) {
+            for (int i = 0; i < npts; i++) {
                 writeFloat(dos, x[i]);
             }
         }
@@ -1405,11 +1525,11 @@ public class SacTimeSeries {
     public static String format(String label, float f) {
         String s = label + " = ";
         String fString = decimalFormat.format(f);
-        while(fString.length() < 8) {
+        while (fString.length() < 8) {
             fString = " " + fString;
         }
         s = s + fString;
-        while(s.length() < 21) {
+        while (s.length() < 21) {
             s = " " + s;
         }
         return s;
@@ -1425,243 +1545,105 @@ public class SacTimeSeries {
                                     float f4,
                                     String s5,
                                     float f5) {
-        return format(s1, f1) + format(s2, f2) + format(s3, f3)
-                + format(s4, f4) + format(s5, f5);
+        return format(s1, f1) + format(s2, f2) + format(s3, f3) + format(s4, f4) + format(s5, f5);
     }
 
     public void printHeader() {
-        System.out.println(formatLine("delta",
-                                      delta,
-                                      "depmin",
-                                      depmin,
-                                      "depmax",
-                                      depmax,
-                                      "scale",
-                                      scale,
-                                      "odelta",
-                                      odelta));
-        System.out.println(formatLine("b",
-                                      b,
-                                      "e",
-                                      e,
-                                      "o",
-                                      o,
-                                      "a",
-                                      a,
-                                      "fmt",
-                                      fmt));
-        System.out.println(formatLine("t0",
-                                      t0,
-                                      "t1",
-                                      t1,
-                                      "t2",
-                                      t2,
-                                      "t3",
-                                      t3,
-                                      "t4",
-                                      t4));
-        System.out.println(formatLine("t5",
-                                      t5,
-                                      "t6",
-                                      t6,
-                                      "t7",
-                                      t7,
-                                      "t8",
-                                      t8,
-                                      "t9",
-                                      t9));
-        System.out.println(formatLine("f",
-                                      f,
-                                      "resp0",
-                                      resp0,
-                                      "resp1",
-                                      resp1,
-                                      "resp2",
-                                      resp2,
-                                      "resp3",
-                                      resp3));
-        System.out.println(formatLine("resp4",
-                                      resp4,
-                                      "resp5",
-                                      resp5,
-                                      "resp6",
-                                      resp6,
-                                      "resp7",
-                                      resp7,
-                                      "resp8",
-                                      resp8));
-        System.out.println(formatLine("resp9",
-                                      resp9,
-                                      "stla",
-                                      stla,
-                                      "stlo",
-                                      stlo,
-                                      "stel",
-                                      stel,
-                                      "stdp",
-                                      stdp));
-        System.out.println(formatLine("evla",
-                                      evla,
-                                      "evlo",
-                                      evlo,
-                                      "evel",
-                                      evel,
-                                      "evdp",
-                                      evdp,
-                                      "mag",
-                                      mag));
-        System.out.println(formatLine("user0",
-                                      user0,
-                                      "user1",
-                                      user1,
-                                      "user2",
-                                      user2,
-                                      "user3",
-                                      user3,
-                                      "user4",
-                                      user4));
-        System.out.println(formatLine("user5",
-                                      user5,
-                                      "user6",
-                                      user6,
-                                      "user7",
-                                      user7,
-                                      "user8",
-                                      user8,
-                                      "user9",
-                                      user9));
-        System.out.println(formatLine("dist",
-                                      dist,
-                                      "az",
-                                      az,
-                                      "baz",
-                                      baz,
-                                      "gcarc",
-                                      gcarc,
-                                      "sb",
-                                      sb));
-        System.out.println(formatLine("sdelta",
-                                      sdelta,
-                                      "depmen",
-                                      depmen,
-                                      "cmpaz",
-                                      cmpaz,
-                                      "cmpinc",
-                                      cmpinc,
-                                      "xminimum",
-                                      xminimum));
-        System.out.println(formatLine("xmaximum",
-                                      xmaximum,
-                                      "yminimum",
-                                      yminimum,
-                                      "ymaximum",
-                                      ymaximum,
-                                      "unused6",
-                                      unused6,
-                                      "unused7",
-                                      unused7));
-        System.out.println(formatLine("unused8",
-                                      unused8,
-                                      "unused9",
-                                      unused9,
-                                      "unused10",
-                                      unused10,
-                                      "unused11",
-                                      unused11,
-                                      "unused12",
-                                      unused12));
-        System.out.println(formatLine("nzyear",
-                                      nzyear,
-                                      "nzjday",
-                                      nzjday,
-                                      "nzhour",
-                                      nzhour,
-                                      "nzmin",
-                                      nzmin,
-                                      "nzsec",
-                                      nzsec));
-        System.out.println(formatLine("nzmsec",
-                                      nzmsec,
-                                      "nvhdr",
-                                      nvhdr,
-                                      "norid",
-                                      norid,
-                                      "nevid",
-                                      nevid,
-                                      "npts",
-                                      npts));
-        System.out.println(formatLine("nsnpts",
-                                      nsnpts,
-                                      "nwfid",
-                                      nwfid,
-                                      "nxsize",
-                                      nxsize,
-                                      "nysize",
-                                      nysize,
-                                      "unused15",
-                                      unused15));
-        System.out.println(formatLine("iftype",
-                                      iftype,
-                                      "idep",
-                                      idep,
-                                      "iztype",
-                                      iztype,
-                                      "unused16",
-                                      unused16,
-                                      "iinst",
-                                      iinst));
-        System.out.println(formatLine("istreg",
-                                      istreg,
-                                      "ievreg",
-                                      ievreg,
-                                      "ievtyp",
-                                      ievtyp,
-                                      "iqual",
-                                      iqual,
-                                      "isynth",
-                                      isynth));
-        System.out.println(formatLine("imagtyp",
-                                      imagtyp,
-                                      "imagsrc",
-                                      imagsrc,
-                                      "unused19",
-                                      unused19,
-                                      "unused20",
-                                      unused20,
-                                      "unused21",
-                                      unused21));
-        System.out.println(formatLine("unused22",
-                                      unused22,
-                                      "unused23",
-                                      unused23,
-                                      "unused24",
-                                      unused24,
-                                      "unused25",
-                                      unused25,
-                                      "unused26",
-                                      unused26));
-        System.out.println(formatLine("leven",
-                                      leven,
-                                      "lpspol",
-                                      lpspol,
-                                      "lovrok",
-                                      lovrok,
-                                      "lcalda",
-                                      lcalda,
-                                      "unused27",
-                                      unused27));
-        System.out.println(" kstnm = " + kstnm + " kevnm = " + kevnm
-                + " khole = " + khole + " ko = " + ko);
-        System.out.println(" ka = " + ka + " kt0 = " + kt0 + " kt1 = " + kt1
-                + " kt2 = " + kt2);
-        System.out.println(" kt3 = " + kt3 + " kt4 = " + kt4 + " kt5 = " + kt5
-                + " kt6 = " + kt6);
-        System.out.println(" kt7 = " + kt7 + " kt8 = " + kt8 + " kt9 = " + kt9
-                + " kf = " + kf);
-        System.out.println(" kuser0 = " + kuser0 + " kuser1 = " + kuser1
-                + " kuser2 = " + kuser2 + " kcmpnm = " + kcmpnm);
-        System.out.println(" knetwk = " + knetwk + " kdatrd = " + kdatrd
-                + " kinst = " + kinst);
+        printHeader(new PrintWriter(System.out, true));
+    }
+
+    public void printHeader(PrintWriter out) {
+        out.println(formatLine("delta", delta, "depmin", depmin, "depmax", depmax, "scale", scale, "odelta", odelta));
+        out.println(formatLine("b", b, "e", e, "o", o, "a", a, "fmt", fmt));
+        out.println(formatLine("t0", t0, "t1", t1, "t2", t2, "t3", t3, "t4", t4));
+        out.println(formatLine("t5", t5, "t6", t6, "t7", t7, "t8", t8, "t9", t9));
+        out.println(formatLine("f", f, "resp0", resp0, "resp1", resp1, "resp2", resp2, "resp3", resp3));
+        out.println(formatLine("resp4", resp4, "resp5", resp5, "resp6", resp6, "resp7", resp7, "resp8", resp8));
+        out.println(formatLine("resp9", resp9, "stla", stla, "stlo", stlo, "stel", stel, "stdp", stdp));
+        out.println(formatLine("evla", evla, "evlo", evlo, "evel", evel, "evdp", evdp, "mag", mag));
+        out.println(formatLine("user0", user0, "user1", user1, "user2", user2, "user3", user3, "user4", user4));
+        out.println(formatLine("user5", user5, "user6", user6, "user7", user7, "user8", user8, "user9", user9));
+        out.println(formatLine("dist", dist, "az", az, "baz", baz, "gcarc", gcarc, "sb", sb));
+        out.println(formatLine("sdelta",
+                               sdelta,
+                               "depmen",
+                               depmen,
+                               "cmpaz",
+                               cmpaz,
+                               "cmpinc",
+                               cmpinc,
+                               "xminimum",
+                               xminimum));
+        out.println(formatLine("xmaximum",
+                               xmaximum,
+                               "yminimum",
+                               yminimum,
+                               "ymaximum",
+                               ymaximum,
+                               "unused6",
+                               unused6,
+                               "unused7",
+                               unused7));
+        out.println(formatLine("unused8",
+                               unused8,
+                               "unused9",
+                               unused9,
+                               "unused10",
+                               unused10,
+                               "unused11",
+                               unused11,
+                               "unused12",
+                               unused12));
+        out.println(formatLine("nzyear", nzyear, "nzjday", nzjday, "nzhour", nzhour, "nzmin", nzmin, "nzsec", nzsec));
+        out.println(formatLine("nzmsec", nzmsec, "nvhdr", nvhdr, "norid", norid, "nevid", nevid, "npts", npts));
+        out.println(formatLine("nsnpts",
+                               nsnpts,
+                               "nwfid",
+                               nwfid,
+                               "nxsize",
+                               nxsize,
+                               "nysize",
+                               nysize,
+                               "unused15",
+                               unused15));
+        out.println(formatLine("iftype", iftype, "idep", idep, "iztype", iztype, "unused16", unused16, "iinst", iinst));
+        out.println(formatLine("istreg", istreg, "ievreg", ievreg, "ievtyp", ievtyp, "iqual", iqual, "isynth", isynth));
+        out.println(formatLine("imagtyp",
+                               imagtyp,
+                               "imagsrc",
+                               imagsrc,
+                               "unused19",
+                               unused19,
+                               "unused20",
+                               unused20,
+                               "unused21",
+                               unused21));
+        out.println(formatLine("unused22",
+                               unused22,
+                               "unused23",
+                               unused23,
+                               "unused24",
+                               unused24,
+                               "unused25",
+                               unused25,
+                               "unused26",
+                               unused26));
+        out.println(formatLine("leven",
+                               leven,
+                               "lpspol",
+                               lpspol,
+                               "lovrok",
+                               lovrok,
+                               "lcalda",
+                               lcalda,
+                               "unused27",
+                               unused27));
+        out.println(" kstnm = " + kstnm + " kevnm = " + kevnm + " khole = " + khole + " ko = " + ko);
+        out.println(" ka = " + ka + " kt0 = " + kt0 + " kt1 = " + kt1 + " kt2 = " + kt2);
+        out.println(" kt3 = " + kt3 + " kt4 = " + kt4 + " kt5 = " + kt5 + " kt6 = " + kt6);
+        out.println(" kt7 = " + kt7 + " kt8 = " + kt8 + " kt9 = " + kt9 + " kf = " + kf);
+        out.println(" kuser0 = " + kuser0 + " kuser1 = " + kuser1 + " kuser2 = " + kuser2 + " kcmpnm = " + kcmpnm);
+        out.println(" knetwk = " + knetwk + " kdatrd = " + kdatrd + " kinst = " + kinst);
     }
 
     /**
@@ -1670,28 +1652,25 @@ public class SacTimeSeries {
      */
     public static void main(String[] args) {
         SacTimeSeries data = new SacTimeSeries();
-        if(args.length != 1) {
+        if (args.length != 1) {
             System.out.println("Usage: java SacTimeSeries sacsourcefile ");
             return;
         }
         try {
             data.read(args[0]);
-            //    data.y = new float[100000];
-            //     for (int i=0; i<100000; i++) {
-            //         data.y[i] = (float)Math.sin(Math.PI*i/18000)/1000000.0f;
-            //         data.y[i] = (float)Math.sin(Math.PI*i/18000);
-            //         //System.out.println("point is " + data.y[i]);
-            //     }
-            //     data.npts = data.y.length;
-            
-            //data.printHeader();
-            
-            System.out.println("stla original: "+data.stla+" npts="+data.npts);
-            //data.setLittleEndian();
+            // data.y = new float[100000];
+            // for (int i=0; i<100000; i++) {
+            // data.y[i] = (float)Math.sin(Math.PI*i/18000)/1000000.0f;
+            // data.y[i] = (float)Math.sin(Math.PI*i/18000);
+            // //System.out.println("point is " + data.y[i]);
+            // }
+            // data.npts = data.y.length;
+            // data.printHeader();
+            System.out.println("stla original: " + data.stla + " npts=" + data.npts);
+            // data.setLittleEndian();
             data.write("outsacfile");
             data.read("outsacfile");
-            System.out.println("stla after read little endian: "+data.stla+" npts="+data.npts);
-            
+            System.out.println("stla after read little endian: " + data.stla + " npts=" + data.npts);
             System.out.println("Done writing");
         } catch(FileNotFoundException e) {
             System.out.println("File " + args[0] + " doesn't exist.");
