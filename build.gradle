@@ -64,11 +64,10 @@ task tarDist(type: Tar, dependsOn: ['makeScript', 'javadoc', 'wrapper', 'createB
 task makeScript(dependsOn: copyToLib) << { task ->
     group = 'build'
     dExtras = getDExtras()
-    doBat = false
-//    ScriptBuilder.create('seedlinktest', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat, yourkit:true)
-    ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
+    doBat = true
     ScriptBuilder.create('saclh', 'edu.sc.seis.seisFile.sac.ListHeader', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('miniseedread', 'edu.sc.seis.seisFile.mseed.MiniSeedRead', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('mseedlh', 'edu.sc.seis.seisFile.mseed.MiniSeedRead', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
 }
 
