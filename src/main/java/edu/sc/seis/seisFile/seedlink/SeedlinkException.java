@@ -1,6 +1,8 @@
 package edu.sc.seis.seisFile.seedlink;
 
-public class SeedlinkException extends Exception {
+import edu.sc.seis.seisFile.SeisFileException;
+
+public class SeedlinkException extends SeisFileException {
 
     public SeedlinkException() {}
 
