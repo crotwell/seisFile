@@ -66,18 +66,7 @@ public class MiniSeedRead {
         try {
             out.println("open socket");
             if(args.length == 0) {
-                out.println("Usage: java "+MiniSeedRead.class.getName()+" [-l lisshost [maxPackets]][filename]");
-                out.println(" lisshost is like anmo.iu.liss.org");
-                out.println(" See www.liss.org");
-             } else if (args[0].equals("-l")) {
-                Socket lissConnect = new Socket(args[1], 4000);
-                ls = new DataInputStream(new BufferedInputStream(lissConnect.getInputStream(),
-                                                                 1024));
-                if (args.length >2) {
-                    maxPackets = Integer.parseInt(args[2]);
-                } else {
-                    maxPackets = 10;
-                }
+                out.println("Usage: java "+MiniSeedRead.class.getName()+" filename");
             } else {
                 ls = new DataInputStream(new BufferedInputStream(new FileInputStream(args[0]), 4096));
             }
