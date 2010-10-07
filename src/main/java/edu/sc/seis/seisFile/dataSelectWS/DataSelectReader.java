@@ -31,7 +31,7 @@ public class DataSelectReader {
         query += "&sta=" + station;
         query += "&loc=" + location;
         query += "&cha=" + channel;
-        return query
+        return query;
     }
     public URL createQuery(String network, String station, String location, String channel, Date begin, float durationSeconds) throws IOException, DataSelectException, SeedFormatException {
         String query = createQuery(network, station, location, channel);

@@ -1,13 +1,9 @@
 package edu.sc.seis.seisFile.dataSelectWS;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +17,7 @@ import edu.sc.seis.seisFile.mseed.DataRecord;
 
 public class Client {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String network = "IU";
         String station = "ANMO";
         String location = null;
@@ -30,7 +26,7 @@ public class Client {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         cal.add(cal.MINUTE, -10);
         Date begin = cal.getTime();
-        Float duration = 600;
+        Float duration = 600f;
         DataSelectReader dsReader = new DataSelectReader();
         int maxRecords = 10;
         boolean verbose = false;
