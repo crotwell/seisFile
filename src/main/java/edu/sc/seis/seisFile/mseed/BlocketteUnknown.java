@@ -31,13 +31,20 @@ public class BlocketteUnknown extends Blockette {
     public int getSize() {
         return info.length;
     }
+    
+    public int calcSize() {
+        byte[] lengthBytes = new byte[4];
+        System.arraycopy(info, 3, lengthBytes, 0, 4);
+        return Integer.parseInt(new String(lengthBytes));
+    }
 
     public byte[] toBytes() {
         return info;
     }
 
     public void writeASCII(PrintWriter out) throws IOException {
-        out.write("Blockette UNKNOWN "+getType());
+        String infoStr = new String(info);
+        out.print("Blockette UNKNOWN "+getType()+": "+infoStr);
     }
     
     public boolean getSwapBytes() {

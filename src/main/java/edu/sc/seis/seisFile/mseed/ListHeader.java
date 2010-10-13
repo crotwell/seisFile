@@ -80,6 +80,7 @@ public class ListHeader {
                 SeedRecord sr;
                 sr = SeedRecord.read(inStream, 4096);
                 sr.writeASCII(out, "    ");
+                out.flush();
                 if (sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
                     if ((location == null || location.equals(dr.getHeader().getLocationIdentifier()))
