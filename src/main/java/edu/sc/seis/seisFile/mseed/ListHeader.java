@@ -73,6 +73,11 @@ public class ListHeader {
             out.println("Cannot load " + filename + ", exists=" + f.exists() + " isFile=" + f.isFile());
             return;
         }
+        
+        // if you wish to customize the blockette creation, for example to add new types of Blockettes, 
+        // create an object that implements BlocketteFactory and then
+        // SeedRecord.setBlocketteFactory(myBlocketteFactory);
+        // see DefaultBlocketteFactory for an example
         DataInputStream inStream = new DataInputStream(new BufferedInputStream(new FileInputStream(filename), 1024));
         int i = 0;
         try {

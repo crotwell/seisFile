@@ -19,6 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SeedRecord {
+    
+    protected static BlocketteFactory blocketteFactory = new DefaultBlocketteFactory();
+    
+    public static void setBlocketteFactory(BlocketteFactory bf) {
+        blocketteFactory = bf;
+    }
+    
+    public static BlocketteFactory getBlocketteFactory() {
+        return blocketteFactory;
+    }
 
     public static SeedRecord read(DataInputStream inStream) throws IOException, SeedFormatException {
         return read(inStream, 0);
