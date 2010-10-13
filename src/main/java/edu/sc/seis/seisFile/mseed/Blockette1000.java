@@ -14,7 +14,7 @@ package edu.sc.seis.seisFile.mseed;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class Blockette1000 extends  DataBlockette {
+public class Blockette1000 extends  DataBlockette implements RecordLengthBlockette {
 
     public static final int B1000_SIZE = 8;
     
@@ -78,6 +78,19 @@ public class Blockette1000 extends  DataBlockette {
     public boolean isLittleEndian() {
         return ! isBigEndian();
     }
+    
+
+
+    @Override
+    public int getLogicalRecordLengthByte() {
+        return getDataRecordLengthByte();
+    }
+
+    @Override
+    public int getLogicalRecordLength() {
+        return getDataRecordLength();
+    }
+    
     /**
      * Get the value of dataRecordLengthByte.
      * @return Value of dataRecordLengthByte.

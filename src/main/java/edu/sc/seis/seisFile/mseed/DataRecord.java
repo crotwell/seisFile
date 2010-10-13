@@ -9,15 +9,10 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
-import java.io.ByteArrayInputStream;
 import java.io.DataInput;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.io.Writer;
 
 public class DataRecord extends SeedRecord implements Serializable {
 
@@ -149,65 +144,7 @@ public class DataRecord extends SeedRecord implements Serializable {
         } // end of for ()
     }
 
-    public static DataRecord read(DataInputStream inStream) throws IOException,
-            SeedFormatException {
-        return read(inStream, 0);
-    }
-    
-    public static DataRecord read(byte[] bytes) throws IOException, SeedFormatException {
-        DataInputStream seedIn = new DataInputStream(new ByteArrayInputStream(bytes));
-        return DataRecord.read(seedIn);
-        
-    }
-
-    /**
-     * allows setting of a default record size, making reading of miniseed that
-     * lack a Blockette1000. Compression is still unknown, but at least the
-     * record can be read in and manipulated. A value of 0 for defaultRecordSize
-     * means there must be a blockette 1000 or a MissingBlockette1000 will be
-     * thrown.
-     * 
-     * If an exception is thrown and the underlying stream supports it, the stream
-     * will be reset to its state prior to any bytes being read. The buffer in the
-     * underlying stream must be large enough buffer any values read prior to the
-     * exception. A buffer sized to be the largest seed record expected is sufficient
-     * and so 4096 is a reasonable buffer size.
-     */
-    public static DataRecord read(DataInput inStream,
-                                  int defaultRecordSize) throws IOException,
-            SeedFormatException {
-        boolean resetOnError = inStream instanceof DataInputStream && ((InputStream)inStream).markSupported();
-        if(resetOnError) {
-            ((InputStream)inStream).mark(4096);
-        }
-        try {
-            ControlHeader header = ControlHeader.read(inStream);
-            if(header instanceof DataHeader) {
-                return readDataRecord(inStream,
-                                      (DataHeader)header,
-                                      defaultRecordSize);
-            } else {
-                throw new SeedFormatException("Found a control header in a miniseed file: "+header.typeCode);
-            }
-        } catch(SeedFormatException e) {
-            if(resetOnError) {
-                ((InputStream)inStream).reset();
-            }
-            throw e;
-        } catch(IOException e) {
-            if(resetOnError) {
-                ((InputStream)inStream).reset();
-            }
-            throw e;
-        } catch(RuntimeException e) {
-            if(resetOnError) {
-                ((InputStream)inStream).reset();
-            }
-            throw e;
-        }
-    }
-
-    protected static DataRecord readDataRecord(DataInput inStream,
+    public static SeedRecord readDataRecord(DataInput inStream,
                                                DataHeader header,
                                                int defaultRecordSize)
             throws IOException, SeedFormatException {
@@ -307,10 +244,6 @@ public class DataRecord extends SeedRecord implements Serializable {
         return dataRec;
     }
 
-    public int getRecordSize() {
-        return RECORD_SIZE;
-    }
-
     public void setRecordSize(int recordSize) throws SeedFormatException {
         int tmp = RECORD_SIZE;
         RECORD_SIZE = recordSize;
@@ -328,22 +261,7 @@ public class DataRecord extends SeedRecord implements Serializable {
         return s;
     }
 
-    public void writeASCII(PrintWriter out) throws IOException {
-        writeASCII(out, "");
-    }
-    
-    public void writeASCII(PrintWriter out, String indent) throws IOException {
-        out.print(indent+"DataRecord");
-        getHeader().writeASCII(out, indent+"  ");
-        Blockette[] b = getBlockettes();
-        for(int i = 0; i < b.length; i++) {
-            b[i].writeASCII(out, indent+"    ");
-        }
-    }
-
     protected byte[] data;
 
     byte ZERO_BYTE = 0;
-
-    int RECORD_SIZE = 4096;
 } // DataRecord

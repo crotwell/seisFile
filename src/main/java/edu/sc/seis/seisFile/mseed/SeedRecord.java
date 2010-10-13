@@ -9,12 +9,75 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
+import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SeedRecord {
+
+    public static SeedRecord read(DataInputStream inStream) throws IOException, SeedFormatException {
+        return read(inStream, 0);
+    }
+
+    public static SeedRecord read(byte[] bytes) throws IOException, SeedFormatException {
+        DataInputStream seedIn = new DataInputStream(new ByteArrayInputStream(bytes));
+        return DataRecord.read(seedIn);
+        
+    }
+
+    /**
+     * allows setting of a default record size, making reading of miniseed that
+     * lack a Blockette1000. Compression is still unknown, but at least the
+     * record can be read in and manipulated. A value of 0 for defaultRecordSize
+     * means there must be a blockette 1000 or a MissingBlockette1000 will be
+     * thrown.
+     * 
+     * If an exception is thrown and the underlying stream supports it, the stream
+     * will be reset to its state prior to any bytes being read. The buffer in the
+     * underlying stream must be large enough buffer any values read prior to the
+     * exception. A buffer sized to be the largest seed record expected is sufficient
+     * and so 4096 is a reasonable buffer size.
+     */
+    public static SeedRecord read(DataInput inStream, int defaultRecordSize) throws IOException, SeedFormatException {
+        boolean resetOnError = inStream instanceof DataInputStream && ((InputStream)inStream).markSupported();
+        if(resetOnError) {
+            ((InputStream)inStream).mark(4096);
+        }
+        try {
+            ControlHeader header = ControlHeader.read(inStream);
+            if(header instanceof DataHeader) {
+                return DataRecord.readDataRecord(inStream,
+                                      (DataHeader)header,
+                                      defaultRecordSize);
+            } else {
+                ControlRecord contRec =  ControlRecord.readControlRecord(inStream,
+                                      header,
+                                      defaultRecordSize);
+                defaultRecordSize = contRec.getRecordSize(); // in case of b8 or b5 setting record size
+                return contRec;
+            }
+        } catch(SeedFormatException e) {
+            if(resetOnError) {
+                ((InputStream)inStream).reset();
+            }
+            throw e;
+        } catch(IOException e) {
+            if(resetOnError) {
+                ((InputStream)inStream).reset();
+            }
+            throw e;
+        } catch(RuntimeException e) {
+            if(resetOnError) {
+                ((InputStream)inStream).reset();
+            }
+            throw e;
+        }
+    }
 
     public SeedRecord(ControlHeader header) {
         this.header = header;
@@ -76,16 +139,32 @@ public abstract class SeedRecord {
         return s;
     }
 
+    public void writeASCII(PrintWriter out) throws IOException {
+        writeASCII(out, "");
+    }
+    
     public void writeASCII(PrintWriter out, String indent) throws IOException {
-        out.print(indent+"SeedRecord");
+        if (this instanceof DataRecord) {
+            out.print(indent+"DataRecord");
+        } else if (this instanceof ControlRecord) {
+            out.print(indent+"ControlRecord");
+        } else {
+            out.print(indent+"SeedRecord");
+        }
         getControlHeader().writeASCII(out, indent+"  ");
         Blockette[] b = getBlockettes();
         for(int i = 0; i < b.length; i++) {
             b[i].writeASCII(out, indent+"    ");
         }
     }
+    
+    public int getRecordSize() {
+        return RECORD_SIZE;
+    }
 
     protected ControlHeader header;
 
     protected List<Blockette> blockettes = new ArrayList<Blockette>();
+
+    protected int RECORD_SIZE = 4096;
 } // SeedRecord

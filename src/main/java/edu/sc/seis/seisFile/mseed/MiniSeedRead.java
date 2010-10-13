@@ -16,7 +16,6 @@ import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.Socket;
 
 public class MiniSeedRead {
 
@@ -35,7 +34,7 @@ public class MiniSeedRead {
      * correspond to the logical record structure within the volume as
      * "continued" records will be concatinated to avoid partial blockettes.
      */
-    public DataRecord getNextRecord() throws SeedFormatException, IOException {
+    public SeedRecord getNextRecord() throws SeedFormatException, IOException {
         return getNextRecord(0);
     }
     /**
@@ -43,8 +42,8 @@ public class MiniSeedRead {
      * correspond to the logical record structure within the volume as
      * "continued" records will be concatinated to avoid partial blockettes.
      */
-    public DataRecord getNextRecord(int defaultRecordSize) throws SeedFormatException, IOException {
-        return DataRecord.read(inStream, defaultRecordSize);
+    public SeedRecord getNextRecord(int defaultRecordSize) throws SeedFormatException, IOException {
+        return SeedRecord.read(inStream, defaultRecordSize);
     }
 
     public int getNumRecordsRead() {

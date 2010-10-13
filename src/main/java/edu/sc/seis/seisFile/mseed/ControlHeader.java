@@ -2,14 +2,12 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.text.DecimalFormat;
 
 public class ControlHeader {
@@ -27,13 +25,14 @@ public class ControlHeader {
 		String seqNumString = new String(seqBytes);
 	
 		int sequenceNum =0;
-		try {
-		   sequenceNum = Integer.valueOf(seqNumString).intValue();
-		     
-		} catch (NumberFormatException e) {
-		    System.err.println("seq num unreadable, setting to 0 "+e.toString());
-		} // end of try-catch
-		
+		// check for blank string, leave as zero if so
+		if ( ! seqNumString.equals("      ")) {
+		    try {
+		        sequenceNum = Integer.valueOf(seqNumString).intValue();
+		    } catch (NumberFormatException e) {
+		        System.err.println("seq num unreadable, setting to 0 "+e.toString());
+		    } // end of try-catch
+        }
 			
 		byte typeCode = in.readByte();
 			

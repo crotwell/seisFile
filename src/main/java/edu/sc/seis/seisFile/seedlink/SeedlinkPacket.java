@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
+import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 public class SeedlinkPacket {
 
@@ -26,7 +27,7 @@ public class SeedlinkPacket {
     }
 
     public DataRecord getMiniSeed() throws IOException, SeedFormatException {
-        return DataRecord.read(mseed);
+        return (DataRecord)SeedRecord.read(mseed); // seed link only uses data records
     }
 
     public byte[] getMseedBytes() {
