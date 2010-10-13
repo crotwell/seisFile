@@ -106,7 +106,7 @@ public class ControlRecord extends SeedRecord {
                              readBytes.length);
             Blockette b;
             if (length == fullBlocketteBytes.length) {
-                b = Blockette.parseBlockette(type,
+                b = SeedRecord.getBlocketteFactory().parseBlockette(type,
                                              fullBlocketteBytes,
                                              true);
             } else {

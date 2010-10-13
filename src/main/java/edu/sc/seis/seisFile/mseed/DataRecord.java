@@ -205,7 +205,7 @@ public class DataRecord extends SeedRecord implements Serializable {
             fullBlocketteBytes[1] = lowbyteType;
             fullBlocketteBytes[2] = hibyteOffset;
             fullBlocketteBytes[3] = lowbyteOffset;
-            Blockette b = Blockette.parseBlockette(type,
+            Blockette b = SeedRecord.getBlocketteFactory().parseBlockette(type,
                                                    fullBlocketteBytes,
                                                    swapBytes);
             dataRec.blockettes.add(b);
