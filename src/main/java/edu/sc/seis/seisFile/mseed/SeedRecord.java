@@ -50,17 +50,20 @@ public abstract class SeedRecord {
         }
         try {
             ControlHeader header = ControlHeader.read(inStream);
+            SeedRecord newRecord;
             if(header instanceof DataHeader) {
-                return DataRecord.readDataRecord(inStream,
+                newRecord = DataRecord.readDataRecord(inStream,
                                       (DataHeader)header,
                                       defaultRecordSize);
             } else {
                 ControlRecord contRec =  ControlRecord.readControlRecord(inStream,
                                       header,
-                                      defaultRecordSize);
+                                      defaultRecordSize, priorRecord);
                 defaultRecordSize = contRec.getRecordSize(); // in case of b8 or b5 setting record size
-                return contRec;
+                newRecord = contRec;
             }
+            priorRecord = newRecord;
+            return priorRecord;
         } catch(SeedFormatException e) {
             if(resetOnError) {
                 ((InputStream)inStream).reset();
@@ -78,6 +81,8 @@ public abstract class SeedRecord {
             throw e;
         }
     }
+    
+    protected static SeedRecord priorRecord = null;
 
     public SeedRecord(ControlHeader header) {
         this.header = header;
@@ -126,6 +131,34 @@ public abstract class SeedRecord {
         return out.toArray(new Blockette[0]);
     }
     
+    /** 
+     * if a seed blockette is continued in this record, a PartialBlockette will
+     * exist here. It will know its type and length, but will not have all its needed
+     * bytes. The prior Seed Record, possibly with reading the subsequent Seed Record should allow the remaining portion
+     * of the data to be read. This returns null in the case of no first partial blockette
+     * existing.
+     */
+    public PartialBlockette getFirstPartialBlockette() {
+        if (blockettes.get(0) instanceof PartialBlockette) {
+            return (PartialBlockette)blockettes.get(0);
+        }
+        return null;
+    }
+    
+    /** 
+     * if a seed blockette is continued in the next record, a PartialBlockette will
+     * exist here. It will know its type and length, but will not have all its needed
+     * bytes. Reading the subsequent Seed Record should allow the remaining portion
+     * of the data to be read. This returns null in the case of no partial blockette
+     * existing.
+     */
+    public PartialBlockette getLastPartialBlockette() {
+        if (blockettes.get(blockettes.size()-1) instanceof PartialBlockette) {
+            return (PartialBlockette)blockettes.get(blockettes.size()-1);
+        }
+        return null;
+    }
+    
     public ControlHeader getControlHeader() {
         return header;
     }
@@ -152,9 +185,9 @@ public abstract class SeedRecord {
             out.print(indent+"SeedRecord");
         }
         getControlHeader().writeASCII(out, indent+"  ");
-        Blockette[] b = getBlockettes();
-        for(int i = 0; i < b.length; i++) {
-            b[i].writeASCII(out, indent+"    ");
+        for (Blockette b : blockettes) {
+            b.writeASCII(out, indent+"    ");
+            out.println();
         }
     }
     
