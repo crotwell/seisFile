@@ -13,7 +13,7 @@ public class DataRecordTest {
 
     @Test
     public void read512RecordSize() throws IOException, SeedFormatException {
-        DataRecord dr = DataRecord.read(new DataInputStream(TestSacFileData.class.getClassLoader()
+        SeedRecord dr = DataRecord.read(new DataInputStream(TestSacFileData.class.getClassLoader()
                 .getResourceAsStream("edu/sc/seis/seisFile/mseed/test_no1001_512_steim2")));
         assertEquals(dr.getRecordSize(), 512);
     }

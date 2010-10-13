@@ -78,7 +78,7 @@ public class ListHeader {
         try {
             while (maxRecords == -1 || i < maxRecords) {
                 SeedRecord sr;
-                sr = DataRecord.read(inStream, 4096);
+                sr = SeedRecord.read(inStream, 4096);
                 sr.writeASCII(out, "    ");
                 if (sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;

@@ -14,6 +14,7 @@ import java.util.Date;
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
+import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 public class Client {
 
@@ -79,7 +80,14 @@ public class Client {
         int i = 0;
         try {
             while ((maxRecords == -1 || i < maxRecords) && lissConnect.isConnected()) {
-                DataRecord dr = DataRecord.read(ls, 512);;
+                SeedRecord sr = SeedRecord.read(ls, 512);
+                DataRecord dr;
+                if (sr instanceof DataRecord) {
+                    dr = (DataRecord)sr;
+                } else {
+                    System.err.println("None data record found, skipping...");
+                    continue;
+                }
                 if ((location == null || location.equals(dr.getHeader().getLocationIdentifier()))
                         && (channel == null || channel.equals(dr.getHeader().getChannelIdentifier()))) {
                     if (dos != null) {

@@ -6,13 +6,10 @@
 // Modified 8/9/2000 by Robert Casey, IRIS DMC
 package edu.sc.seis.seisFile.mseed;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.text.DecimalFormat;
 
 /**

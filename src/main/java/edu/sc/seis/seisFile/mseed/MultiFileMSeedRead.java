@@ -31,19 +31,19 @@ public class MultiFileMSeedRead extends MiniSeedRead {
      exactly correspond to the logical record structure within the
      volume as "continued" records will be concatinated to avoid
      partial blockettes. */
-    public DataRecord getNextRecord()
+    public SeedRecord getNextRecord()
         throws SeedFormatException, IOException {
         if (current == null) {
             throw new EOFException("Cannot read past end of file list");
         }
         try {
-            DataRecord d = current.getNextRecord();
+            SeedRecord d = current.getNextRecord();
             numReadTotal++;
             return d;
         } catch (EOFException e) {
             // try next file
             initNextFile();
-            DataRecord d = current.getNextRecord();
+            SeedRecord d = current.getNextRecord();
             numReadTotal++;
             return d;
         }

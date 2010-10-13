@@ -14,6 +14,7 @@ import java.util.List;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
+import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 
 public class DataSelectReader {
@@ -57,7 +58,12 @@ public class DataSelectReader {
         List<DataRecord> records = new ArrayList<DataRecord>();
         while (true) {
             try {
-                records.add(DataRecord.read(in));
+                SeedRecord sr = SeedRecord.read(in);
+                if (sr instanceof DataRecord) {
+                    records.add((DataRecord)sr);
+                } else {
+                    System.err.println("None data record found, skipping...");
+                }
             } catch (EOFException e) {
                 // end of data?
                 break;
