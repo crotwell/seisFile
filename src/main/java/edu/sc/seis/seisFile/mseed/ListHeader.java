@@ -28,7 +28,7 @@ public class ListHeader {
         String filename = null;
         String outFile = null;
         int port = DEFAULT_PORT;
-        int maxRecords = 10;
+        int maxRecords = -1;
         boolean verbose = false;
         DataOutputStream dos = null;
         PrintWriter out = new PrintWriter(System.out, true);
