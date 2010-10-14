@@ -17,7 +17,6 @@ public class ControlRecord extends SeedRecord {
                                                SeedRecord priorRecord)
             throws IOException, SeedFormatException {
         PrintWriter out = new PrintWriter(System.out, true);
-        header.writeASCII(out);
         
         /*
          * Assert.isTrue(header.getDataBlocketteOffset()>= header.getSize(),
@@ -33,7 +32,6 @@ public class ControlRecord extends SeedRecord {
             if (pb != null) {
                 Blockette b;
                 int length = pb.getTotalSize()-pb.getSoFarSize();
-                System.out.println("Blockette cont: "+pb.getTotalSize()+" "+pb.getSoFarSize()+" "+length+"  "+currOffset+"  "+(length+currOffset)+" "+recordSize);
                 if (length+currOffset < recordSize) {
                     readBytes = new byte[length];
                 } else {
@@ -43,9 +41,6 @@ public class ControlRecord extends SeedRecord {
                 currOffset+= readBytes.length;
                 b = new PartialBlockette(pb.getType(), readBytes, pb.getSwapBytes(), pb.getSoFarSize(), pb.getTotalSize());
 
-                b.writeASCII(out, "    ");
-                out.println();
-
                 if (b instanceof ControlRecordLengthBlockette) {
                     recordSize = ((ControlRecordLengthBlockette)b).getLogicalRecordLength();
                 }
@@ -54,7 +49,6 @@ public class ControlRecord extends SeedRecord {
                     // have used up rest of record
                     controlRec.RECORD_SIZE = recordSize;
                     // read garbage between blockettes and end
-                    System.out.println("Garbage read: "+recordSize +"  "+ currOffset+"  "+(recordSize - currOffset));
                     byte[] garbage = new byte[recordSize - currOffset];
                     if(garbage.length != 0) {
                         inStream.readFully(garbage);
@@ -73,13 +67,11 @@ public class ControlRecord extends SeedRecord {
             typeStr = THREESPACE;
         }
         while ( ! typeStr.equals(THREESPACE) && (defaultRecordSize == 0 || currOffset <= recordSize-7)) {
-            System.out.println(typeStr+"  "+recordSize+"  "+currOffset);
             int type = Integer.parseInt(typeStr);
             byte[] lengthBytes = new byte[4];
             inStream.readFully(lengthBytes);
             String lengthStr = new String(lengthBytes);
             currOffset+= lengthBytes.length;
-            System.out.println("type: "+typeStr+"  len="+lengthStr);
             int length = Integer.parseInt(lengthStr);
             if (length+currOffset-7 < recordSize) {
                 readBytes = new byte[length-7];
@@ -117,9 +109,6 @@ public class ControlRecord extends SeedRecord {
                 recordSize = ((ControlRecordLengthBlockette)b).getLogicalRecordLength();
             }
 
-            b.writeASCII(out, "    ");
-            out.println();
-
             controlRec.addBlockette(b);
             if (defaultRecordSize == 0 || currOffset < recordSize-3) {
                 inStream.readFully(typeBytes);
@@ -138,7 +127,6 @@ public class ControlRecord extends SeedRecord {
         }
         controlRec.RECORD_SIZE = recordSize;
         // read garbage between blockettes and end
-        System.out.println("Garbage read: "+recordSize +"  "+ currOffset+"  "+(recordSize - currOffset));
         byte[] garbage = new byte[recordSize - currOffset];
         if(garbage.length != 0) {
             inStream.readFully(garbage);
