@@ -21,13 +21,12 @@ import edu.sc.seis.seisFile.sac.SacTimeSeries;
 public class ListHeader {
 
     public static void main(String[] args) throws IOException, SeedFormatException {
-        String network = "IU";
-        String station = "ANMO";
+        String network = null;
+        String station = null;
         String location = null;
         String channel = null;
         String filename = null;
         String outFile = null;
-        int port = DEFAULT_PORT;
         int maxRecords = -1;
         boolean verbose = false;
         DataOutputStream dos = null;
@@ -57,9 +56,7 @@ public class ListHeader {
             } else if (args[i].equals("--help")) {
                 out.println("java "
                         + ListHeader.class.getName()
-                        + " [-n net][-s sta][-l loc][-c chan][-p port][-o outfile][-m maxpackets][--verbose][--version][--help]");
-                out.println(" host is formed from sta.net.liss.org if not given directly.");
-                out.println(" See www.liss.org for more information.");
+                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][--verbose][--version][--help] <filename>");
                 System.exit(0);
             } else {
                 filename = args[i];
@@ -82,13 +79,12 @@ public class ListHeader {
         int i = 0;
         try {
             while (maxRecords == -1 || i < maxRecords) {
-                SeedRecord sr;
-                sr = SeedRecord.read(inStream, 4096);
-                sr.writeASCII(out, "    ");
-                out.flush();
+                SeedRecord sr = SeedRecord.read(inStream, 4096);
                 if (sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
-                    if ((location == null || location.equals(dr.getHeader().getLocationIdentifier()))
+                    if ((network == null || network.equals(dr.getHeader().getNetworkCode()))
+                            && (station == null || station.equals(dr.getHeader().getStationIdentifier()))
+                            && (location == null || location.equals(dr.getHeader().getLocationIdentifier()))
                             && (channel == null || channel.equals(dr.getHeader().getChannelIdentifier()))) {
                         if (dos != null) {
                             dr.write(dos);
@@ -101,6 +97,9 @@ public class ListHeader {
                         }
                         i++;
                     }
+                } else {
+                    sr.writeASCII(out, "    ");
+                    out.flush();
                 }
             }
         } catch(EOFException e) {
