@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.mseed;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 
 
 public class Blockette5 extends ControlRecordLengthBlockette {
@@ -16,5 +19,14 @@ public class Blockette5 extends ControlRecordLengthBlockette {
     @Override
     public String getName() {
         return "Field Volume Identifier Blockette";
+    }
+
+    public String getBeginningOfVolume() {
+        return Utility.extractVarString(info, 13, 22);
+    }
+    
+    public void writeASCII(PrintWriter out) throws IOException {
+        super.writeASCIINoNewline(out);
+        out.println(" beg vol="+getBeginningOfVolume());
     }
 }

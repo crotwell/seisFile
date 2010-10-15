@@ -95,12 +95,13 @@ public class ListHeader {
                             dr.writeASCII(out, "    ");
                             out.flush();
                         }
-                        i++;
                     }
                 } else {
+                    // print non-data records just because...
                     sr.writeASCII(out, "    ");
                     out.flush();
                 }
+                i++;
             }
         } catch(EOFException e) {
             // done I guess
