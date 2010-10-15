@@ -9,6 +9,25 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  */
 public class Utility {
+    
+    public static int extractInteger(byte[] info, int start, int length) {
+        return Integer.parseInt(extractString(info, start, length));
+    }
+    
+    public static String extractString(byte[] info, int start, int length) {
+        byte[] subbytes = new byte[2];
+        System.arraycopy(info, start, subbytes, 0, length);
+        return new String(subbytes);
+    }
+    
+    public static String extractVarString(byte[] info, int start, int length) {
+        String substring = "";
+        int i=0;
+        while (i<length && i<info.length && info[i] != 126) {
+            substring += new String(new byte[] {info[i]});
+        }
+        return substring;
+    }
 
     public static short bytesToShort(byte hi, byte low, boolean swapBytes) {
         if(swapBytes) {

@@ -10,12 +10,14 @@ public abstract class ControlRecordLengthBlockette extends ControlBlockette impl
     public ControlRecordLengthBlockette(byte[] info) {
         super(info);
     }
+    
+    public String getVersionOfFormat() {
+        return Utility.extractString(info, 7, 4);
+    }
 
     @Override
     public int getLogicalRecordLengthByte() {
-        byte[] subbytes = new byte[2];
-        System.arraycopy(info, 11, subbytes, 0, 2);
-        return Integer.parseInt(new String(subbytes));
+        return Utility.extractInteger(info, 11, 2);
     }
 
     @Override
@@ -29,6 +31,11 @@ public abstract class ControlRecordLengthBlockette extends ControlBlockette impl
     
 
     public void writeASCII(PrintWriter out) throws IOException {
-        out.println("Blockette"+getType()+" record length="+getLogicalRecordLength()+" ("+getLogicalRecordLengthByte()+")");
+        writeASCIINoNewline(out);
+        out.println();
+    }
+    
+    public void writeASCIINoNewline(PrintWriter out) throws IOException {
+        out.print("Blockette"+getType()+" record length="+getLogicalRecordLength()+" ("+getLogicalRecordLengthByte()+") "+new String(info));
     }
 }

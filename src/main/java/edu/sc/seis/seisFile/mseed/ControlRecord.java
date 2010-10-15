@@ -72,7 +72,7 @@ public class ControlRecord extends SeedRecord {
             inStream.readFully(lengthBytes);
             String lengthStr = new String(lengthBytes);
             currOffset+= lengthBytes.length;
-            int length = Integer.parseInt(lengthStr);
+            int length = Integer.parseInt(lengthStr.trim());
             if (length+currOffset-7 < recordSize) {
                 readBytes = new byte[length-7];
             } else {
