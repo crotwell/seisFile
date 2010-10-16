@@ -67,7 +67,7 @@ public class ControlRecord extends SeedRecord {
             typeStr = THREESPACE;
         }
         while ( ! typeStr.equals(THREESPACE) && (defaultRecordSize == 0 || currOffset <= recordSize-7)) {
-            int type = Integer.parseInt(typeStr);
+            int type = Integer.parseInt(typeStr.trim());
             byte[] lengthBytes = new byte[4];
             inStream.readFully(lengthBytes);
             String lengthStr = new String(lengthBytes);
