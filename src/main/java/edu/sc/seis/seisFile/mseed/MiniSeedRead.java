@@ -17,6 +17,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * @deprecated See ListHeader for an example client and SeedRecord.read for reading
+ * 
+ * @author crotwell
+ *
+ */
 public class MiniSeedRead {
 
     protected MiniSeedRead() {}
