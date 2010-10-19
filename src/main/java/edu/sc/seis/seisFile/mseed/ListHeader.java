@@ -7,16 +7,16 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.Socket;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import edu.sc.seis.seisFile.BuildVersion;
-import edu.sc.seis.seisFile.mseed.DataRecord;
-import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
 
 public class ListHeader {
 
@@ -65,21 +65,34 @@ public class ListHeader {
         if (filename == null) {
             return;
         }
+        
         File f = new File(filename);
-        if (!f.exists() || !f.isFile()) {
-            out.println("Cannot load " + filename + ", exists=" + f.exists() + " isFile=" + f.isFile());
-            return;
+        InputStream inStream;
+        if (f.exists() && f.isFile()) {
+            inStream = new FileInputStream(filename);
+        } else {
+            // maybe a url?
+            try {
+                URL url = new URL(filename);
+                inStream = url.openStream();
+            } catch (MalformedURLException e) {
+                out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile=" + f.isFile()+" "+e.getMessage());
+                return;
+            } catch (FileNotFoundException e) {
+                out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile=" + f.isFile()+" "+e.getMessage());
+                return;
+            }
         }
         
         // if you wish to customize the blockette creation, for example to add new types of Blockettes, 
         // create an object that implements BlocketteFactory and then
         // SeedRecord.setBlocketteFactory(myBlocketteFactory);
         // see DefaultBlocketteFactory for an example
-        DataInputStream inStream = new DataInputStream(new BufferedInputStream(new FileInputStream(filename), 1024));
+        DataInputStream dataInStream = new DataInputStream(new BufferedInputStream(inStream, 1024));
         int i = 0;
         try {
             while (maxRecords == -1 || i < maxRecords) {
-                SeedRecord sr = SeedRecord.read(inStream, 4096);
+                SeedRecord sr = SeedRecord.read(dataInStream, 4096);
                 if (sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
                     if ((network == null || network.equals(dr.getHeader().getNetworkCode()))
@@ -109,9 +122,8 @@ public class ListHeader {
         if (dos != null) {
             dos.close();
         }
-        inStream.close();
+        dataInStream.close();
         out.println("Finished: " + new Date());
     }
 
-    public static final int DEFAULT_PORT = 4000;
 }
