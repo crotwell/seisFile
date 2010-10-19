@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.sac;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -10,6 +11,16 @@ import java.util.Iterator;
  * @author crotwell Created on Jul 15, 2005
  */
 public class SacPoleZero {
+
+    public SacPoleZero(BufferedReader in) throws IOException {
+        read(in);
+    }
+
+    public SacPoleZero(String filename) throws IOException {
+        BufferedReader in = new BufferedReader(new FileReader(filename));
+        read(in);
+        in.close();
+    }
 
     public SacPoleZero(Complex[] poles, Complex[] zeros, float constant) {
         this.poles = poles;
@@ -42,7 +53,7 @@ public class SacPoleZero {
         return out;
     }
 
-    public static SacPoleZero read(BufferedReader in) throws IOException {
+    protected void read(BufferedReader in) throws IOException {
         ArrayList<String> lines = new ArrayList<String>();
         String s;
         while((s = in.readLine()) != null) {
@@ -90,7 +101,9 @@ public class SacPoleZero {
                         + line);
             }
         }
-        return new SacPoleZero(poles, zeros, constant);
+        this.poles = poles;
+        this.zeros = zeros;
+        this.constant = constant;
     }
 
     private static String nextLine(Iterator it) {
@@ -229,11 +242,11 @@ public class SacPoleZero {
         return i;
     }
 
-    private final Complex[] poles;
+    private Complex[] poles;
 
-    private final Complex[] zeros;
+    private Complex[] zeros;
 
-    private final float constant;
+    private float constant;
 
     static String POLES = "POLES";
 
