@@ -20,15 +20,15 @@ package edu.sc.seis.seisFile.sac;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
@@ -61,7 +61,7 @@ public class SacTimeSeries {
         read(filename);
     }
 
-    public SacTimeSeries(DataInputStream inStream) throws IOException {
+    public SacTimeSeries(DataInput inStream) throws IOException {
         read(inStream);
     }
 
@@ -874,7 +874,7 @@ public class SacTimeSeries {
                 + ((val & 0xffl << 8) << 40) + ((val & 0xffl) << 56);
     }
 
-    public void read(DataInputStream dis) throws IOException {
+    public void read(DataInput dis) throws IOException {
         readHeader(dis);
         readData(dis);
     }
@@ -898,7 +898,7 @@ public class SacTimeSeries {
      * floats as java can do very funny things if the byte-swapped float happens
      * to be a NaN.
      */
-    public void readHeader(DataInputStream indis) throws FileNotFoundException, IOException {
+    public void readHeader(DataInput indis) throws FileNotFoundException, IOException {
         byte[] headerBuf = new byte[data_offset];
         indis.readFully(headerBuf);
         if (headerBuf[NVHDR_OFFSET] == 6 && headerBuf[NVHDR_OFFSET + 1] == 0 && headerBuf[NVHDR_OFFSET + 2] == 0
@@ -1077,7 +1077,7 @@ public class SacTimeSeries {
     }
 
     /** read the data portion of the given File */
-    public void readData(DataInputStream fis) throws IOException {
+    public void readData(DataInput fis) throws IOException {
         y = new float[npts];
         readDataArray(fis, y);
         if (leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM || iftype == SacTimeSeries.IAMPH) {
@@ -1094,7 +1094,7 @@ public class SacTimeSeries {
         }
     }
 
-    private void readDataArray(DataInputStream fis, float[] d) throws IOException {
+    private void readDataArray(DataInput fis, float[] d) throws IOException {
         byte[] dataBytes = new byte[d.length * 4];
         int numAdded = 0;
         int i = 0;
@@ -1106,93 +1106,6 @@ public class SacTimeSeries {
             } else {
                 y[numAdded++] = Float.intBitsToFloat(((dataBytes[i++] & 0xff) << 24) + ((dataBytes[i++] & 0xff) << 16)
                         + ((dataBytes[i++] & 0xff) << 8) + ((dataBytes[i++] & 0xff) << 0));
-            }
-        }
-    }
-
-    /** read the data portion of the given File */
-    public void readDataNewOld(DataInputStream fis) throws IOException {
-        InputStream in = fis;
-        y = new float[npts];
-        int numAdded = 0;
-        int numRead;
-        int i;
-        byte[] overflow = new byte[4];
-        byte[] prevoverflow = new byte[4];
-        int overflowBytes = 0;
-        int prevoverflowBytes = 0;
-        byte[] buf = new byte[4096]; // buf length must be == 0 % 4
-        // and for efficiency, should be
-        // a multiple of the disk sector size
-        while (numAdded < npts) {
-            if ((numRead = in.read(buf)) == 0) {
-                continue;
-            } else if (numRead == -1) {
-                // EOF
-                throw new EOFException();
-            }
-            overflowBytes = (numRead + prevoverflowBytes) % 4;
-            if (overflowBytes != 0) {
-                // partial read of bytes for last value
-                // save in overflow
-                System.arraycopy(buf, numRead - overflowBytes, overflow, 0, overflowBytes);
-            }
-            i = 0;
-            if (prevoverflowBytes != 0) {
-                int temp = 0;
-                // use leftover bytes
-                for (i = 0; i < prevoverflowBytes; i++) {
-                    temp <<= 8;
-                    temp += (prevoverflow[i] & 0xff);
-                }
-                // use first new bytes as needed
-                for (i = 0; i < 4 - prevoverflowBytes; i++) {
-                    temp <<= 8;
-                    temp += (buf[i] & 0xff);
-                }
-                if (byteOrder == IntelByteOrder) {
-                    y[numAdded++] = Float.intBitsToFloat(swapBytes(temp));
-                } else {
-                    y[numAdded++] = Float.intBitsToFloat(temp);
-                }
-            }
-            // i is now set to first unused byte in buf
-            while (i <= numRead - 4 && numAdded < npts) {
-                if (byteOrder == IntelByteOrder) {
-                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 0) + ((buf[i++] & 0xff) << 8)
-                            + ((buf[i++] & 0xff) << 16) + ((buf[i++] & 0xff) << 24));
-                } else {
-                    y[numAdded++] = Float.intBitsToFloat(((buf[i++] & 0xff) << 24) + ((buf[i++] & 0xff) << 16)
-                            + ((buf[i++] & 0xff) << 8) + ((buf[i++] & 0xff) << 0));
-                }
-            }
-            System.arraycopy(overflow, 0, prevoverflow, 0, overflowBytes);
-            prevoverflowBytes = overflowBytes;
-        }
-    }
-
-    /**
-     * reads the data portion from the given stream. Uses readFloat repeatedly
-     * resulting in MUCH slower read times than the slightly more confusing
-     * method above.
-     */
-    protected void readDataOld(DataInputStream dis) throws FileNotFoundException, IOException {
-        y = new float[npts];
-        for (int i = 0; i < npts; i++) {
-            y[i] = dis.readFloat();
-        }
-        if (leven == SacTimeSeries.FALSE || iftype == SacTimeSeries.IRLIM || iftype == SacTimeSeries.IAMPH) {
-            x = new float[npts];
-            for (int i = 0; i < npts; i++) {
-                x[i] = dis.readFloat();
-            }
-            if (iftype == SacTimeSeries.IRLIM) {
-                real = y;
-                imaginary = x;
-            }
-            if (iftype == SacTimeSeries.IAMPH) {
-                amp = y;
-                phase = x;
             }
         }
     }
@@ -1212,7 +1125,7 @@ public class SacTimeSeries {
     }
 
     /** write the float to the stream, swapping bytes if needed. */
-    private final void writeFloat(DataOutputStream dos, float val) throws IOException {
+    private final void writeFloat(DataOutput dos, float val) throws IOException {
         if (byteOrder == IntelByteOrder) {
             // careful here as dos.writeFloat() will collapse all NaN floats to
             // a single NaN value. But we are trying to write out byte swapped
@@ -1227,7 +1140,7 @@ public class SacTimeSeries {
     }
 
     /** write the float to the stream, swapping bytes if needed. */
-    private final void writeInt(DataOutputStream dos, int val) throws IOException {
+    private final void writeInt(DataOutput dos, int val) throws IOException {
         if (byteOrder == IntelByteOrder) {
             dos.writeInt(swapBytes(val));
         } else {
@@ -1235,7 +1148,7 @@ public class SacTimeSeries {
         } // end of else
     }
 
-    public void writeHeader(DataOutputStream dos) throws IOException {
+    public void writeHeader(DataOutput dos) throws IOException {
         writeFloat(dos, delta);
         writeFloat(dos, depmin);
         writeFloat(dos, depmax);
@@ -1371,7 +1284,7 @@ public class SacTimeSeries {
         dos.writeBytes(trimLen(kinst, 8));
     }
 
-    public void writeData(DataOutputStream dos) throws IOException {
+    public void writeData(DataOutput dos) throws IOException {
         for (int i = 0; i < npts; i++) {
             writeFloat(dos, y[i]);
         }
