@@ -30,7 +30,7 @@ public abstract class SeedRecord {
         return blocketteFactory;
     }
 
-    public static SeedRecord read(DataInputStream inStream) throws IOException, SeedFormatException {
+    public static SeedRecord read(DataInput inStream) throws IOException, SeedFormatException {
         return read(inStream, 0);
     }
 
