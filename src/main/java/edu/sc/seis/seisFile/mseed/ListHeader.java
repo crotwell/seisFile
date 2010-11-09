@@ -29,6 +29,7 @@ public class ListHeader {
         String outFile = null;
         int maxRecords = -1;
         boolean verbose = false;
+        boolean dumpData = false;
         DataOutputStream dos = null;
         PrintWriter out = new PrintWriter(System.out, true);
         for (int i = 0; i < args.length; i++) {
@@ -40,6 +41,8 @@ public class ListHeader {
                 location = args[i + 1];
             } else if (args[i].equals("-c")) {
                 channel = args[i + 1];
+            } else if (args[i].equals("-d")) {
+                dumpData = true;
             } else if (args[i].equals("-o")) {
                 outFile = args[i + 1];
                 dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
@@ -108,6 +111,9 @@ public class ListHeader {
                             dr.writeASCII(out, "    ");
                             out.flush();
                         }
+                        if (dumpData) {
+                            dr.writeData(out);
+                        }
                     }
                 } else {
                     // print non-data records just because...
@@ -125,5 +131,6 @@ public class ListHeader {
         dataInStream.close();
         out.println("Finished: " + new Date());
     }
+
 
 }

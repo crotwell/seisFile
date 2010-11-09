@@ -12,7 +12,9 @@ package edu.sc.seis.seisFile.mseed;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class DataRecord extends SeedRecord implements Serializable {
 
@@ -144,6 +146,17 @@ public class DataRecord extends SeedRecord implements Serializable {
         } // end of for ()
     }
 
+    public void writeData(PrintWriter out) {
+        byte[] d = getData();
+        for (int i = 0; i < d.length; i++) {
+            out.write(byteFormat.format(0xff & d[i])+" ");
+            if (i % 4 == 3) {out.write("  ");}
+            if (i % 16 == 15 && i != 0) {
+                out.write("\n");
+            }
+        }
+    }
+
     public static SeedRecord readDataRecord(DataInput inStream,
                                                DataHeader header,
                                                int defaultRecordSize)
@@ -264,4 +277,6 @@ public class DataRecord extends SeedRecord implements Serializable {
     protected byte[] data;
 
     byte ZERO_BYTE = 0;
+    
+    private static DecimalFormat byteFormat = new DecimalFormat("000");
 } // DataRecord
