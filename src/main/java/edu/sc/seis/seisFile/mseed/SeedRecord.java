@@ -197,7 +197,6 @@ public abstract class SeedRecord {
         getControlHeader().writeASCII(out, indent+"  ");
         for (Blockette b : blockettes) {
             b.writeASCII(out, indent+"    ");
-            out.println();
         }
     }
     
