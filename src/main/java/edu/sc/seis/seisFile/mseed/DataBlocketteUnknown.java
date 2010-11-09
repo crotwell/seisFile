@@ -28,7 +28,7 @@ public class DataBlocketteUnknown extends DataBlockette {
     }
 
     public void writeASCII(PrintWriter out) throws IOException {
-        out.write("Blockette: "+getType());
+        out.println("Blockette: "+getType());
     }
     
     public boolean getSwapBytes() {
