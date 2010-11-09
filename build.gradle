@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.1'
+version = '1.1.1beta'
 
 binDistFiles = copySpec {
     from('build/output') {
