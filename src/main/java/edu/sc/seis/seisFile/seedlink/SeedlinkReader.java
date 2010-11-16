@@ -144,7 +144,7 @@ public class SeedlinkReader {
      * sends a seedlink modifier command, generally should be limited to
      * STATION, SELECT FETCH and DATA. TIME may work but has not been tested.
      */
-    void sendCmd(String cmd) throws IOException, SeedlinkException {
+    public void sendCmd(String cmd) throws IOException, SeedlinkException {
         send(cmd);
         String line = readLine();
         if (!line.equals("OK")) {
