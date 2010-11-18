@@ -72,6 +72,9 @@ public class DataRecord extends SeedRecord implements Serializable {
             throw new SeedFormatException("Cannot add non-data blockettes to a DataRecord "
                     + b.getType());
         }
+        if (b instanceof Blockette1000) {
+            RECORD_SIZE = ((Blockette1000)b).getLogicalRecordLength();
+        }
         recheckDataOffset();
     }
 
