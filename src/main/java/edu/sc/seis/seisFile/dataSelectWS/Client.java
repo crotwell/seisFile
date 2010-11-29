@@ -20,8 +20,8 @@ public class Client {
     public static void main(String[] args) throws Exception {
         String network = "IU";
         String station = "ANMO";
-        String location = null;
-        String channel = null;
+        String location = "00";
+        String channel = "BHZ";
         String outFile = null;
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         cal.add(cal.MINUTE, -10);
