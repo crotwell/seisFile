@@ -13,6 +13,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * @deprecated
+ * @author crotwell
+ *
+ */
 public class MultiFileMSeedRead extends MiniSeedRead {
 
     public MultiFileMSeedRead(File[] files) throws IOException {
