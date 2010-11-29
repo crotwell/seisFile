@@ -429,11 +429,18 @@ public class DataHeader extends ControlHeader {
         return projectTime(startBtime, numTenThousandths);
     }
 
+    /** returns the predicted start time of the next record, ie begin + numSample*period
+     * 
+     */
+    public Btime getPredictedNextStartBtime() {
+        return getEndBtime();
+    }
+    
     /**
      * return a Btime structure containing the derived last sample time for this
      * record
      */
-    private Btime getLastSampleBtime() {
+    public Btime getLastSampleBtime() {
         Btime startBtime = getStartBtime();
         // get the number of ten thousandths of seconds of data
         double numTenThousandths = (((double)(getNumSamples() - 1) / getSampleRate()) * 10000.0);
