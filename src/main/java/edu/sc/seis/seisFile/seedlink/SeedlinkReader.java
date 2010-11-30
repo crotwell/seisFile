@@ -14,6 +14,11 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
 public class SeedlinkReader {
 
+    /** default of IRIS DMC */
+    public SeedlinkReader() throws UnknownHostException, IOException, SeedlinkException {
+        this(DEFAULT_HOST, DEFAULT_PORT);
+    }
+    
     /** uses the default port of 18000 */
     public SeedlinkReader(String host) throws UnknownHostException, IOException, SeedlinkException {
         this(host, DEFAULT_PORT);
