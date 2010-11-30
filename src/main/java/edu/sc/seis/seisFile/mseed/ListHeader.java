@@ -28,6 +28,7 @@ public class ListHeader {
         String filename = null;
         String outFile = null;
         int maxRecords = -1;
+        int defaultRecordSize = 4096;
         boolean verbose = false;
         boolean dumpData = false;
         DataOutputStream dos = null;
@@ -46,6 +47,8 @@ public class ListHeader {
             } else if (args[i].equals("-o")) {
                 outFile = args[i + 1];
                 dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
+            } else if (args[i].equals("-r")) {
+                defaultRecordSize = Integer.parseInt(args[i + 1]);
             } else if (args[i].equals("-m")) {
                 maxRecords = Integer.parseInt(args[i + 1]);
                 if (maxRecords < -1) {
@@ -95,7 +98,7 @@ public class ListHeader {
         int i = 0;
         try {
             while (maxRecords == -1 || i < maxRecords) {
-                SeedRecord sr = SeedRecord.read(dataInStream, 4096);
+                SeedRecord sr = SeedRecord.read(dataInStream, defaultRecordSize);
                 if (sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
                     if ((network == null || network.equals(dr.getHeader().getNetworkCode()))
