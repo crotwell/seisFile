@@ -76,17 +76,29 @@ public abstract class SeedRecord {
             return priorRecord;
         } catch(SeedFormatException e) {
             if(resetOnError) {
-                ((InputStream)inStream).reset();
+                try {
+                    ((InputStream)inStream).reset();
+                } catch (IOException ee) {
+                    throw e;
+                }
             }
             throw e;
         } catch(IOException e) {
             if(resetOnError) {
-                ((InputStream)inStream).reset();
+                try {
+                    ((InputStream)inStream).reset();
+                } catch (IOException ee) {
+                    throw e;
+                }
             }
             throw e;
         } catch(RuntimeException e) {
             if(resetOnError) {
-                ((InputStream)inStream).reset();
+                try {
+                    ((InputStream)inStream).reset();
+                } catch (IOException ee) {
+                    throw e;
+                }
             }
             throw e;
         }
