@@ -182,6 +182,9 @@ public class SeedlinkReader {
 
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+        if (verboseWriter == null) {
+            verboseWriter = new PrintWriter(System.out);
+        }
     }
 
     public PrintWriter getVerboseWriter() {
