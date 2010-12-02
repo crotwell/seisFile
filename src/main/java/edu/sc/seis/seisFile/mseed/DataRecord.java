@@ -189,7 +189,6 @@ public class DataRecord extends SeedRecord implements Serializable {
             byte hibyteType = inStream.readByte();
             byte lowbyteType = inStream.readByte();
             type = Utility.uBytesToInt(hibyteType, lowbyteType, swapBytes);
-            // System.out.println("Blockette type "+type);
             byte hibyteOffset = inStream.readByte();
             byte lowbyteOffset = inStream.readByte();
             nextOffset = Utility.uBytesToInt(hibyteOffset,
@@ -253,6 +252,9 @@ public class DataRecord extends SeedRecord implements Serializable {
             // data record with no data, so gobble up the rest of the record
             timeseries = new byte[recordSize - currOffset];
         } else {
+            if (recordSize < header.getDataOffset()) {
+                throw new SeedFormatException("recordSize < header.getDataOffset(): "+recordSize+" < "+header.getDataOffset());
+            }
             timeseries = new byte[recordSize - header.getDataOffset()];
         }
         inStream.readFully(timeseries);
