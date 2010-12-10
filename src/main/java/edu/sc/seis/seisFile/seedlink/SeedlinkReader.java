@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.io.PushbackInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
@@ -111,6 +113,10 @@ public class SeedlinkReader {
         return socket.isConnected();
     }
 
+    public void reconnect() {
+        
+    }
+    
     String[] sendHello() throws IOException, SeedlinkException {
         send("HELLO");
         String[] lines = new String[2];
@@ -150,6 +156,11 @@ public class SeedlinkReader {
      * STATION, SELECT FETCH and DATA. TIME may work but has not been tested.
      */
     public void sendCmd(String cmd) throws IOException, SeedlinkException {
+        internalSendCmd(cmd);
+        sentCommands.add(cmd);
+    }
+
+    protected void internalSendCmd(String cmd) throws IOException, SeedlinkException {
         send(cmd);
         String line = readLine();
         if (!line.equals("OK")) {
@@ -178,6 +189,8 @@ public class SeedlinkReader {
     String host;
 
     int port;
+    
+    List<String> sentCommands = new ArrayList<String>();
 
     private PrintWriter verboseWriter;
 
