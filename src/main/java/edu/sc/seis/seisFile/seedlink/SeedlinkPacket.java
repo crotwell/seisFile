@@ -8,9 +8,9 @@ import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 public class SeedlinkPacket {
 
-    public SeedlinkPacket(byte[] bytes) {
+    public SeedlinkPacket(byte[] bytes) throws SeedlinkException {
         if (bytes.length != HEADER_SIZE + DATA_SIZE) {
-            throw new IllegalArgumentException("Nunber of bytes must be " + (HEADER_SIZE + DATA_SIZE) + " but given "
+            throw new SeedlinkException("Nunber of bytes must be " + (HEADER_SIZE + DATA_SIZE) + " but given "
                     + bytes.length);
         }
         // seedlink packets start with "SL"
@@ -18,7 +18,7 @@ public class SeedlinkPacket {
         System.arraycopy(bytes, 0, headerBytes, 0, HEADER_SIZE);
         String header = new String(headerBytes);
         if (!header.startsWith(SL_PREFIX)) {
-            throw new IllegalArgumentException("SeedLink packets must start with 'SL', not '"
+            throw new SeedlinkException("SeedLink packets must start with 'SL', not '"
                     + header.substring(0, SL_PREFIX.length()));
         }
         seqNum = header.substring(SL_PREFIX.length());
