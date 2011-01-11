@@ -17,24 +17,27 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 public class SeedlinkReader {
 
     /** default of IRIS DMC */
-    public SeedlinkReader() throws UnknownHostException, IOException, SeedlinkException {
+    public SeedlinkReader() throws UnknownHostException, IOException {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
     
     /** uses the default port of 18000 */
-    public SeedlinkReader(String host) throws UnknownHostException, IOException, SeedlinkException {
+    public SeedlinkReader(String host) throws UnknownHostException, IOException {
         this(host, DEFAULT_PORT);
     }
 
-    public SeedlinkReader(String host, int port) throws UnknownHostException, IOException, SeedlinkException {
+    public SeedlinkReader(String host, int port) throws UnknownHostException, IOException {
         this(host, port, false);
     }
 
-    public SeedlinkReader(String host, int port, boolean verbose) throws UnknownHostException, IOException,
-            SeedlinkException {
+    public SeedlinkReader(String host, int port, boolean verbose) throws UnknownHostException, IOException {
         this.host = host;
         this.port = port;
         this.verbose = verbose;
+        initConnection();
+    }
+    
+    private void initConnection() throws UnknownHostException, IOException {
         socket = new Socket(host, port);
         out = new BufferedOutputStream(socket.getOutputStream());
         in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
@@ -113,8 +116,15 @@ public class SeedlinkReader {
         return socket.isConnected();
     }
 
-    public void reconnect() {
-        
+    public void reconnect() throws IOException, SeedlinkException {
+        close();
+        List<String> oldSent = sentCommands;
+        sentCommands = new ArrayList<String>();
+        initConnection();
+        for (String cmd : oldSent) {
+            sendCmd(cmd);
+        }
+        endHandshake();
     }
     
     String[] sendHello() throws IOException, SeedlinkException {
