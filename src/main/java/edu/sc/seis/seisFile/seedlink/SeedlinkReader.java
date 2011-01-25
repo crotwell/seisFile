@@ -156,7 +156,7 @@ public class SeedlinkReader {
         // next should now be a \n, so just eat it
         next = in.read();
         if (next != '\n') {
-            throw new SeedlinkException("Got \r but not followed by \n :" + next);
+            throw new SeedlinkException("Got \\r but not followed by \\n buf: '"+buf.toString()+"' next: " + next);
         }
         return buf.toString();
     }
