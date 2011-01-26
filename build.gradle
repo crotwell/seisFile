@@ -70,6 +70,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('dswsclient', 'edu.sc.seis.seisFile.dataSelectWS.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('styxprint', 'edu.sc.seis.seisFile.stationxml.StyxPrint', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
