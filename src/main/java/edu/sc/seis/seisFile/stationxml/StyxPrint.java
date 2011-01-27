@@ -2,7 +2,6 @@ package edu.sc.seis.seisFile.stationxml;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Iterator;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -26,7 +25,7 @@ public class StyxPrint {
             e = r.nextEvent(); // eat this one
             e = r.peek();  // peek at the next
         }
-        System.out.println("begin StaMessage");
+        System.out.println("StaMessage");
         StaMessage staMessage = new StaMessage(r);
         System.out.println("Source: "+staMessage.getSource());
         System.out.println("Sender: "+staMessage.getSender());
@@ -35,7 +34,7 @@ public class StyxPrint {
         StationIterator it = staMessage.getStations();
         while(it.hasNext()) {
             Station s = it.next();
-            System.out.println("Station: "+s.getNetCode()+"."+s.getStaCode()+" "+s.getStaList().size());
+            System.out.println("Station: "+s.getNetCode()+"."+s.getStaCode()+" "+s.getStationEpochs().size());
         }
         System.out.println("Done station iterate");
     }
