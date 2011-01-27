@@ -8,7 +8,6 @@ public class StaxUtil {
 
     public static String pullText(XMLEventReader reader, String elementName) throws XMLStreamException,
             StationXMLException {
-        System.out.println("PullText: "+elementName);
         String outText = "";
         XMLEvent startElement = reader.nextEvent();
         if (startElement.isStartElement() && startElement.asStartElement().getName().getLocalPart().equals(elementName)) {
@@ -37,18 +36,16 @@ public class StaxUtil {
     }
 
     public static void skipToStartElement(XMLEventReader reader) throws XMLStreamException {
-        XMLEvent cur = reader.peek();
-        while (!cur.isStartElement() && reader.hasNext()) {
+        if (! reader.hasNext()) { return; }
+        while (reader.hasNext() && ! reader.peek().isStartElement()) {
             reader.nextEvent(); // pop this one
-            cur = reader.peek();
         }
     }
 
     public static void skipToMatchingEnd(XMLEventReader reader) throws XMLStreamException {
         int count = 0;
-        skipToStartElement(reader);
         XMLEvent cur = reader.peek();
-        if (!cur.isStartElement() && reader.hasNext()) {
+        if (cur.isStartElement() && reader.hasNext()) {
             count++;
             reader.nextEvent(); // pop this one
         }

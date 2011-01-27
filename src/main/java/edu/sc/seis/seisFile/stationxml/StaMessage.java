@@ -17,7 +17,6 @@ public class StaMessage {
                 e = reader.peek();
                 if (e.isStartElement()) {
                     String elName = e.asStartElement().getName().getLocalPart();
-                    System.out.println("StaMessage <"+elName+">");
                     if (elName.equals(SOURCE)) {
                         source = StaxUtil.pullText(reader, SOURCE);
                     } else if (elName.equals(SENDER)) {

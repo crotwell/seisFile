@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
@@ -18,9 +17,9 @@ public class Station {
         XMLEvent cur = reader.peek();
         if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals(StaMessage.STATION)) {
             XMLEvent e = reader.nextEvent(); // pop Station
-            Iterator it = e.asStartElement().getAttributes();
+            Iterator<Attribute> it = e.asStartElement().getAttributes();
             while(it.hasNext()) {
-                Attribute a = (Attribute)it.next();
+                Attribute a = it.next();
                 if (a.getName().getLocalPart().equals(StaMessage.NET_CODE)) {
                     netCode = a.getValue();
                 } else if (a.getName().getLocalPart().equals(StaMessage.STA_CODE)) {
@@ -31,13 +30,13 @@ public class Station {
                 e = reader.peek();
                 if (e.isStartElement()) {
                     String elName = e.asStartElement().getName().getLocalPart();
-                    System.out.println("Station <"+elName+">");
                     if (elName.equals("StationEpoch")) {
                         staList.add(new StationEpoch(reader));
                     } else {
                         StaxUtil.skipToMatchingEnd(reader);
                     }
                 } else if (e.isEndElement()) {
+                    reader.nextEvent();
                     return;
                 } else  {
                     e = reader.nextEvent();
@@ -73,7 +72,7 @@ public class Station {
     }
 
     
-    public List<StationEpoch> getStaList() {
+    public List<StationEpoch> getStationEpochs() {
         return staList;
     }
 }

@@ -10,7 +10,8 @@ public class StationIterator {
     }
 
     public boolean hasNext() throws XMLStreamException {
-        return reader.peek().isStartElement()
+        StaxUtil.skipToStartElement(reader);
+        return reader.hasNext() && reader.peek().isStartElement()
                 && reader.peek().asStartElement().getName().getLocalPart().equals(StaMessage.STATION);
     }
 

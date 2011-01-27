@@ -22,7 +22,6 @@ public class Site {
                 e = reader.peek();
                 if (e.isStartElement()) {
                     String elName = e.asStartElement().getName().getLocalPart();
-                    System.out.println("GeographicalSite <" + elName + ">");
                     if (elName.equals(TOWN)) {
                         town = StaxUtil.pullText(reader, TOWN);
                     } else if (elName.equals(COUNTY)) {
@@ -35,6 +34,7 @@ public class Site {
                         StaxUtil.skipToMatchingEnd(reader);
                     }
                 } else if (e.isEndElement()) {
+                    reader.nextEvent();
                     return;
                 } else {
                     e = reader.nextEvent();

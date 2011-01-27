@@ -17,7 +17,6 @@ public class StationEpoch {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                System.out.println("StationEpoch <"+elName+">");
                 if (elName.equals(STARTDATE)) {
                     startDate = StaxUtil.pullText(reader, STARTDATE);
                 } else if (elName.equals(ENDDATE)) {
@@ -40,6 +39,7 @@ public class StationEpoch {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
             } else if (e.isEndElement()) {
+                reader.nextEvent();
                 return;
             } else  {
                 e = reader.nextEvent();
@@ -55,7 +55,7 @@ public class StationEpoch {
     public static final String SITE = "Site";
     public static final String NAME = "Name";
     public static final String CREATIONDATE = "CreationDate";
-    public static final String NUMCHANNELS = "NumChannels";
+    public static final String NUMCHANNELS = "NumberChannels";
 
     String startDate, endDate, creationDate;
     float lat, lon, elevation;
