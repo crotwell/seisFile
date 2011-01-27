@@ -2,7 +2,6 @@ package edu.sc.seis.seisFile.mseed;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * Superclass of all seed blockettes. The actual blockettes do not store either
