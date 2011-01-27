@@ -79,14 +79,10 @@ public class Blockette1000 extends  DataBlockette implements RecordLengthBlocket
         return ! isBigEndian();
     }
     
-
-
-    @Override
     public int getLogicalRecordLengthByte() {
         return getDataRecordLengthByte();
     }
 
-    @Override
     public int getLogicalRecordLength() {
         return getDataRecordLength();
     }

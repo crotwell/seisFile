@@ -15,12 +15,10 @@ public abstract class ControlRecordLengthBlockette extends ControlBlockette impl
         return Utility.extractString(info, 7, 4);
     }
 
-    @Override
     public int getLogicalRecordLengthByte() {
         return Utility.extractInteger(info, 11, 2);
     }
 
-    @Override
     public int getLogicalRecordLength() {
         if (getLogicalRecordLengthByte() < 31) {
             return (0x01 << getLogicalRecordLengthByte());
