@@ -1,7 +1,6 @@
 package edu.sc.seis.seisFile.sac;
 
 import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

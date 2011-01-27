@@ -8,6 +8,7 @@ package edu.sc.seis.seisFile.psn;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+
 import edu.sc.seis.seisFile.sac.SacTimeSeries;
 
 public class PSNDateTime {

@@ -1,11 +1,11 @@
 package edu.sc.seis.seisFile.mseed;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
 import org.junit.Test;
-import junit.framework.TestCase;
-import static org.junit.Assert.*;
 
 import edu.sc.seis.seisFile.sac.TestSacFileData;
 

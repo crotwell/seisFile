@@ -7,6 +7,7 @@ package edu.sc.seis.seisFile.mseed;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+
 import junit.framework.TestCase;
 
 public class DataHeaderTest extends TestCase {
