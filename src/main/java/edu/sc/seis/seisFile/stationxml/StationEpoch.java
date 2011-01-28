@@ -47,6 +47,45 @@ public class StationEpoch {
         }
         
     }
+    
+    public String getStartDate() {
+        return startDate;
+    }
+    
+    public String getEndDate() {
+        return endDate;
+    }
+    
+    public String getCreationDate() {
+        return creationDate;
+    }
+    
+    public float getLat() {
+        return lat;
+    }
+    
+    public float getLon() {
+        return lon;
+    }
+    
+    public float getElevation() {
+        return elevation;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public Site getSite() {
+        return site;
+    }
+    
+    public int getNumChannels() {
+        return numChannels;
+    }
+
+
+
     public static final String STARTDATE = "StartDate";
     public static final String ENDDATE = "EndDate";
     public static final String LAT = "Lat";
