@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.stationxml;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -35,6 +36,16 @@ public class StyxPrint {
         while(it.hasNext()) {
             Station s = it.next();
             System.out.println("Station: "+s.getNetCode()+"."+s.getStaCode()+" "+s.getStationEpochs().size());
+            List<StationEpoch> staEpochs = s.getStationEpochs();
+            for (StationEpoch stationEpoch : staEpochs) {
+                List<Channel> chanList = stationEpoch.getChannelList();
+                for (Channel channel : chanList) {
+                    List<Epoch> chanEpochList = channel.getChanEpochList();
+                    for (Epoch epoch : chanEpochList) {
+                        System.out.println("Channel Epoch: "+channel.getLocCode()+"."+channel.getChanCode()+"  "+epoch.getStartDate()+" to "+epoch.getEndDate());
+                    }
+                }
+            }
         }
         System.out.println("Done station iterate");
     }

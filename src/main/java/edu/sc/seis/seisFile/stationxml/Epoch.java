@@ -10,7 +10,7 @@ public class Epoch {
 
     public Epoch(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         XMLEvent cur = reader.peek();
-        if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals("Epoch")) {
+        if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals(Channel.EPOCH)) {
             XMLEvent e = reader.nextEvent();
         }
         while(reader.hasNext()) {
@@ -50,6 +50,55 @@ public class Epoch {
             }
         }
         
+    }
+
+    
+    public String getStartDate() {
+        return startDate;
+    }
+    
+    public String getEndDate() {
+        return endDate;
+    }
+    
+    public String getCreationDate() {
+        return creationDate;
+    }
+    
+    public float getLat() {
+        return lat;
+    }
+    
+    public float getLon() {
+        return lon;
+    }
+    
+    public float getElevation() {
+        return elevation;
+    }
+    
+    public float getDepth() {
+        return depth;
+    }
+    
+    public float getAzimuth() {
+        return azimuth;
+    }
+    
+    public float getDip() {
+        return dip;
+    }
+    
+    public float getSampleRate() {
+        return sampleRate;
+    }
+    
+    public Sensor getSensor() {
+        return sensor;
+    }
+    
+    public InstrumentSensitivity getInstrumentSensitivity() {
+        return instrumentSensitivity;
     }
 
     public static final String DEPTH = "Depth";
