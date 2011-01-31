@@ -17,15 +17,8 @@ public class Station {
         XMLEvent cur = reader.peek();
         if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals(StaMessage.STATION)) {
             XMLEvent e = reader.nextEvent(); // pop Station
-            Iterator<Attribute> it = e.asStartElement().getAttributes();
-            while(it.hasNext()) {
-                Attribute a = it.next();
-                if (a.getName().getLocalPart().equals(StaMessage.NET_CODE)) {
-                    netCode = a.getValue();
-                } else if (a.getName().getLocalPart().equals(StaMessage.STA_CODE)) {
-                    staCode = a.getValue();
-                }
-            }
+            netCode = StaxUtil.pullAttribute(e.asStartElement(), StaMessage.NET_CODE);
+            staCode = StaxUtil.pullAttribute(e.asStartElement(), StaMessage.STA_CODE);
             while(reader.hasNext()) {
                 e = reader.peek();
                 if (e.isStartElement()) {

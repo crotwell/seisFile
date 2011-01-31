@@ -92,6 +92,9 @@ public class StaMessage {
     public static final String NET_CODE = "net_code";
     public static final String STA_CODE = "sta_code";
     public static final String SITE = "Site";
+    public static final String LOC_CODE = "loc_code";
+    public static final String CHAN_CODE = "chan_code";
+    public static final String CHANNEL = "Channel";
 
     String source;
     String sender;
