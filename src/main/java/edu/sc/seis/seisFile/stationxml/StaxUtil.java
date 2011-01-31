@@ -1,7 +1,11 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import java.util.Iterator;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 public class StaxUtil {
@@ -58,5 +62,16 @@ public class StaxUtil {
             }
             reader.nextEvent(); // pop this one
         }
+    }
+    
+    public static String pullAttribute(StartElement start, String name) throws StationXMLException {
+        Iterator<Attribute> it = start.getAttributes();
+        while(it.hasNext()) {
+            Attribute a = it.next();
+            if (a.getName().getLocalPart().equals(name)) {
+                return a.getValue();
+            }
+        }
+        throw new StationXMLException(name+" not found as an attribute");
     }
 }
