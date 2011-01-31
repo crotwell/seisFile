@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
@@ -35,6 +38,8 @@ public class StationEpoch {
                     creationDate = StaxUtil.pullText(reader, CREATIONDATE);
                 } else if (elName.equals(NUMCHANNELS)) {
                     numChannels = StaxUtil.pullInt(reader, NUMCHANNELS);
+                } else if (elName.equals(StaMessage.CHANNEL)) {
+                    channelList.add(new Channel(reader));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -84,6 +89,9 @@ public class StationEpoch {
         return numChannels;
     }
 
+    public List<Channel> getChannelList() {
+        return channelList;
+    }
 
 
     public static final String STARTDATE = "StartDate";
@@ -101,4 +109,5 @@ public class StationEpoch {
     String name;
     Site site;
     int numChannels;
+    List<Channel> channelList = new ArrayList<Channel>();
 }

@@ -20,8 +20,8 @@ public class Channel {
                 e = reader.peek();
                 if (e.isStartElement()) {
                     String elName = e.asStartElement().getName().getLocalPart();
-                    if (elName.equals("Epoch")) {
-                        chanList.add(new Epoch(reader));
+                    if (elName.equals(EPOCH)) {
+                        chanEpochList.add(new Epoch(reader));
                     } else if (elName.equals(StationEpoch.CREATIONDATE)) {
                         creationDate = StaxUtil.pullText(reader, StationEpoch.CREATIONDATE);
                     } else {
@@ -39,7 +39,30 @@ public class Channel {
         }
     }
     
-    List<Epoch> chanList = new ArrayList<Epoch>();
+    
+    
+    
+    public List<Epoch> getChanEpochList() {
+        return chanEpochList;
+    }
+    
+    public String getChanCode() {
+        return chanCode;
+    }
+    
+    public String getLocCode() {
+        return locCode;
+    }
+    
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+
+
+    public static final String EPOCH = "Epoch";
+    
+    List<Epoch> chanEpochList = new ArrayList<Epoch>();
     
     String chanCode, locCode;
     String creationDate;
