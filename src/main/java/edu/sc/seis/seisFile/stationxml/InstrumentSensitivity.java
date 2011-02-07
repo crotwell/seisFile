@@ -7,7 +7,12 @@ import javax.xml.stream.events.XMLEvent;
 
 public class InstrumentSensitivity {
     
-
+    public InstrumentSensitivity(float value, String unit, float frequency) {
+        this.sensitivityValue = value;
+        this.sensitivityUnits = unit;
+        this.frequency = frequency;
+    }
+    
     public InstrumentSensitivity(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         XMLEvent cur = reader.peek();
         if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals(Epoch.INSTRUMENT_SENSITIVITY)) {
@@ -17,9 +22,9 @@ public class InstrumentSensitivity {
                 if (e.isStartElement()) {
                     String elName = e.asStartElement().getName().getLocalPart();
                     if (elName.equals(SENSITIVITY_VALUE)) {
-                        sensitivityValue = StaxUtil.pullText(reader, SENSITIVITY_VALUE);
+                        sensitivityValue = StaxUtil.pullFloat(reader, SENSITIVITY_VALUE);
                     } else if (elName.equals(FREQUENCY)) {
-                        frequency = StaxUtil.pullText(reader, FREQUENCY);
+                        frequency = StaxUtil.pullFloat(reader, FREQUENCY);
                     } else if (elName.equals(SENSITIVITY_UNITS)) {
                         sensitivityUnits = StaxUtil.pullText(reader, SENSITIVITY_UNITS);
                     } else {
@@ -36,8 +41,21 @@ public class InstrumentSensitivity {
             throw new StationXMLException("Not a "+Epoch.INSTRUMENT_SENSITIVITY+" element: " + cur.asStartElement().getName().getLocalPart());
         }
     }
+
+    public float getSensitivityValue() {
+        return sensitivityValue;
+    }
     
-    String sensitivityValue, frequency, sensitivityUnits;
+    public float getFrequency() {
+        return frequency;
+    }
+    
+    public String getSensitivityUnits() {
+        return sensitivityUnits;
+    }
+    
+    float sensitivityValue, frequency;
+    String sensitivityUnits;
 
     public static final String SENSITIVITY_VALUE = "SensitivityValue";
     public static final String FREQUENCY = "Frequency";
