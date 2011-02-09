@@ -25,6 +25,7 @@ public class Client {
         String host = SeedlinkReader.DEFAULT_HOST;
         int port = SeedlinkReader.DEFAULT_PORT;
         int maxRecords = 10;
+        int timeoutSeconds = SeedlinkReader.DEFAULT_TIMEOUT_SECOND;
         String infoType = "";
         boolean verbose = false;
         DataOutputStream dos = null;
@@ -52,6 +53,8 @@ public class Client {
                 if (maxRecords < -1) {
                     maxRecords = -1;
                 }
+            } else if (args[i].equals("--timeout")) {
+                timeoutSeconds = Integer.parseInt(args[i + 1]);
             } else if (args[i].equals("--verbose")) {
                 verbose = true;
             } else if (args[i].equals("--version")) {
@@ -60,11 +63,11 @@ public class Client {
             } else if (args[i].equals("--help")) {
                 out.println("java "
                         + Client.class.getName()
-                        + " [-n net][-s sta][-l loc][-c chan][-h host][-p port][-o outfile][-m maxpackets][--verbose][--version][--help]");
+                        + " [-n net][-s sta][-l loc][-c chan][-h host][-p port][-o outfile][-m maxpackets][--timeout seconds][--verbose][--version][--help]");
                 System.exit(0);
             }
         }
-        SeedlinkReader reader = new SeedlinkReader(host, port, verbose);
+        SeedlinkReader reader = new SeedlinkReader(host, port, timeoutSeconds, verbose);
         if (verbose) {
             reader.setVerboseWriter(out);
             String[] lines = reader.sendHello();

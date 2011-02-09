@@ -27,18 +27,24 @@ public class SeedlinkReader {
     }
 
     public SeedlinkReader(String host, int port) throws UnknownHostException, IOException {
-        this(host, port, false);
+        this(host, port, 10);
     }
 
-    public SeedlinkReader(String host, int port, boolean verbose) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host, int port, int timeoutSeconds) throws UnknownHostException, IOException {
+        this(host, port, timeoutSeconds, false);
+    }
+
+    public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose) throws UnknownHostException, IOException {
         this.host = host;
         this.port = port;
         this.verbose = verbose;
+        this.timeoutSeconds = timeoutSeconds;
         initConnection();
     }
     
     private void initConnection() throws UnknownHostException, IOException {
         socket = new Socket(host, port);
+        socket.setSoTimeout(timeoutSeconds*1000);
         out = new BufferedOutputStream(socket.getOutputStream());
         in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
         inData = new DataInputStream(in);
@@ -200,6 +206,8 @@ public class SeedlinkReader {
 
     int port;
     
+    int timeoutSeconds;
+    
     List<String> sentCommands = new ArrayList<String>();
 
     private PrintWriter verboseWriter;
@@ -234,6 +242,8 @@ public class SeedlinkReader {
     public static final String DEFAULT_HOST = "rtserve.iris.washington.edu";
 
     public static final int DEFAULT_PORT = 18000;
+    
+    public static final int DEFAULT_TIMEOUT_SECOND = 10;
 
     public static final String INFO_ID = "ID";
 
