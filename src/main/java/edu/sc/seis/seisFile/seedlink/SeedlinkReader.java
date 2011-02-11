@@ -27,7 +27,7 @@ public class SeedlinkReader {
     }
 
     public SeedlinkReader(String host, int port) throws UnknownHostException, IOException {
-        this(host, port, 10);
+        this(host, port, DEFAULT_TIMEOUT_SECOND);
     }
 
     public SeedlinkReader(String host, int port, int timeoutSeconds) throws UnknownHostException, IOException {
@@ -243,7 +243,7 @@ public class SeedlinkReader {
 
     public static final int DEFAULT_PORT = 18000;
     
-    public static final int DEFAULT_TIMEOUT_SECOND = 10;
+    public static final int DEFAULT_TIMEOUT_SECOND = 30;
 
     public static final String INFO_ID = "ID";
 
