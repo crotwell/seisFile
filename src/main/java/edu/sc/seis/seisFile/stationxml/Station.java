@@ -1,12 +1,10 @@
 package edu.sc.seis.seisFile.stationxml;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
 
