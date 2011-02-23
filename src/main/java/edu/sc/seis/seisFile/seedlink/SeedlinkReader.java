@@ -111,11 +111,23 @@ public class SeedlinkReader {
         send("END");
     }
 
-    public void close() throws IOException {
-        send("BYE");
-        in.close();
-        out.close();
-        socket.close();
+    public void close() {
+        try {
+            send("BYE");
+        } catch (IOException se) {
+            // oh well, already closed
+        }
+        try {
+            in.close();
+            out.close();
+        } catch (IOException se) {
+            // oh well, already closed
+        }
+        try {
+            socket.close();
+        } catch (IOException se) {
+            // oh well, already closed
+        }
     }
 
     public boolean isConnected() {
