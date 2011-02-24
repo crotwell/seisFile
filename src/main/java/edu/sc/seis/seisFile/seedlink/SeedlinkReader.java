@@ -114,24 +114,27 @@ public class SeedlinkReader {
     public void close() {
         try {
             send("BYE");
-        } catch (IOException se) {
+        } catch (Throwable se) {
             // oh well, already closed
         }
         try {
             in.close();
             out.close();
-        } catch (IOException se) {
+        } catch (Throwable se) {
             // oh well, already closed
         }
         try {
             socket.close();
-        } catch (IOException se) {
+        } catch (Throwable se) {
             // oh well, already closed
         }
+        socket = null;
+        in = null;
+        out = null;
     }
 
     public boolean isConnected() {
-        return socket.isConnected();
+        return socket != null && socket.isConnected();
     }
 
     public void reconnect() throws IOException, SeedlinkException {
