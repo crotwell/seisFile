@@ -15,6 +15,12 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
 public class Client {
 
+    public static void printHelp(PrintWriter out) {
+        out.println("java "
+                    + Client.class.getName()
+                    + " [-n net][-s sta][-l loc][-c chan][-h host][-p port][-o outfile][-m maxpackets][--timeout seconds][--verbose][--version][--help]");
+    }
+    
     public static void main(String[] args) throws UnknownHostException, IOException, SeedlinkException,
             SeedFormatException {
         String network = "TA";
@@ -31,6 +37,7 @@ public class Client {
         DataOutputStream dos = null;
         PrintWriter out = new PrintWriter(System.out, true);
         for (int i = 0; i < args.length; i++) {
+            try {
             if (args[i].equals("-n")) {
                 network = args[i + 1];
             } else if (args[i].equals("-s")) {
@@ -61,10 +68,14 @@ public class Client {
                 out.println(BuildVersion.getDetailedVersion());
                 System.exit(0);
             } else if (args[i].equals("--help")) {
-                out.println("java "
-                        + Client.class.getName()
-                        + " [-n net][-s sta][-l loc][-c chan][-h host][-p port][-o outfile][-m maxpackets][--timeout seconds][--verbose][--version][--help]");
+                printHelp(out);
                 System.exit(0);
+            }
+            } catch(Throwable ex) {
+                // bad arg, so print help
+                out.println("Bad argument "+args[i]);
+                printHelp(out);
+                System.exit(1);
             }
         }
         SeedlinkReader reader = new SeedlinkReader(host, port, timeoutSeconds, verbose);
