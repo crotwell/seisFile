@@ -63,6 +63,14 @@ public class Btime {
         }
         return false;
     }
+    
+    public boolean greaterThan(Btime other) {
+        return comparator.compare(this, other) == 1;
+    }
+    
+    public boolean greaterThanEquals(Btime other) {
+        return comparator.compare(this, other) >= 0;
+    }
 
     public String toString() {
         return "BTime(" + year + ":" + jday + ":" + hour + ":" + min + ":"
@@ -145,6 +153,8 @@ public class Btime {
                                        false);
         return year < 1960 || year > 2055;
     }
+    
+    private static BtimeComparator comparator = new BtimeComparator();
 
     public byte[] getAsBytes() {
         byte[] bytes = new byte[10];
