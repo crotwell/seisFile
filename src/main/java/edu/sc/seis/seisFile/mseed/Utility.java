@@ -132,6 +132,17 @@ public class Utility {
         }
         return returnByteArray;
     }
+    
+    public static boolean areContiguous(DataRecord first, DataRecord second) {
+        Btime fEnd = first.getHeader().getPredictedNextStartBtime();
+        Btime sBegin = second.getHeader().getStartBtime();
+        return fEnd.tenthMilli == sBegin.tenthMilli &&
+            fEnd.sec == sBegin.sec &&
+            fEnd.min == sBegin.min &&
+            fEnd.hour == sBegin.hour &&
+            fEnd.jday == sBegin.jday &&
+            fEnd.year == sBegin.year;
+    }
 
     public static void main(String[] args) {
         int a = 256;
