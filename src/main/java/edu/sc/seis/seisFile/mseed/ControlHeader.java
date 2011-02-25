@@ -45,7 +45,7 @@ public class ControlHeader {
 		    // an asterisk, so is a continuation
 		    continuationCode = true;
 		} else {
-		    throw new SeedFormatException("ControlHeader, expected space or *, but got"+b);
+		    throw new SeedFormatException("ControlHeader, expected space or *, but got "+b);
 		}
 			
 		if (typeCode == (byte)'D' || typeCode == (byte)'R' || typeCode == (byte)'Q' || typeCode == (byte)'M') {
