@@ -734,8 +734,8 @@ public class DataHeader extends ControlHeader {
      */
     public String toString() {
         String s = super.toString() + " ";
-        s += " " + getStationIdentifier() + "." + getLocationIdentifier() + "."
-                + getChannelIdentifier() + "." + getNetworkCode() + "."
+        s += " "+ getNetworkCode() + "." + getStationIdentifier() + "." 
+                + getLocationIdentifier() + "." + getChannelIdentifier() + "." 
                 + getStartTime() + "  " + getSampleRate()*getNumSamples() + " "
                 + getNumBlockettes() + " " + getDataOffset() + " " + getDataBlocketteOffset();
         return s;
