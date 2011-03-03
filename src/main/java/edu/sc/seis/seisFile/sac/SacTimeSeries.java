@@ -802,6 +802,10 @@ public class SacTimeSeries {
 
     public static final boolean IntelByteOrder = false;
 
+    public static final boolean LITTLE_ENDIAN = IntelByteOrder;
+    
+    public static final boolean BIG_ENDIAN = SunByteOrder;
+    
     public boolean getByteOrder() {
         return byteOrder;
     }
@@ -1094,6 +1098,15 @@ public class SacTimeSeries {
         }
     }
 
+    /** reads up to data.length floats. It is up to the caller to insure that the type of
+     * SAC file (iftype = LEVEN, IRLIM, IAMPH) and how many data points remain are compatible
+     * with the size of the float array to be read.
+     * @throws IOException 
+     */
+    public void readSomeData(DataInput dataIn, float[] data) throws IOException {
+        readDataArray(dataIn, data);
+    }
+    
     private void readDataArray(DataInput fis, float[] d) throws IOException {
         byte[] dataBytes = new byte[d.length * 4];
         int numAdded = 0;
