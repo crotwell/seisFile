@@ -64,11 +64,15 @@ public class Btime {
         return false;
     }
     
-    public boolean greaterThan(Btime other) {
+    public boolean before(Btime other) {
+        return comparator.compare(this, other) == -1;
+    }
+    
+    public boolean after(Btime other) {
         return comparator.compare(this, other) == 1;
     }
     
-    public boolean greaterThanEquals(Btime other) {
+    public boolean afterOrEquals(Btime other) {
         return comparator.compare(this, other) >= 0;
     }
 

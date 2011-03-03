@@ -14,9 +14,9 @@ public class BtimeTest extends TestCase {
         Btime s2 = new Btime(2011, 59, 17, 11, 13, 3500);
         Btime p1 = new Btime(2011, 59, 17, 0, 8, 1000);
         Btime p2 = new Btime(2011, 59, 17, 0, 18, 3250);
-        assertTrue(s1.greaterThan(p1));
-        assertTrue(s1.greaterThan(p2));
-        assertTrue(s2.greaterThan(p1));
-        assertTrue(s2.greaterThan(p2));
+        assertTrue(s1.after(p1));
+        assertTrue(s1.after(p2));
+        assertTrue(s2.after(p1));
+        assertTrue(s2.after(p2));
     }
 }
