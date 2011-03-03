@@ -1,5 +1,12 @@
 package edu.sc.seis.seisFile.mseed;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import edu.sc.seis.cormorant.seismogram.BudLightWriter;
+
 /**
  * Utility.java
  * 
@@ -143,6 +150,25 @@ public class Utility {
             fEnd.jday == sBegin.jday &&
             fEnd.year == sBegin.year;
     }
+    
+    /** breaks the List into sublists where the DataRecords are contiguous. Assumes
+     * that the input List is sorted (by begin time?) and does not contain overlaps.
+     */
+    public static List<List<DataRecord>> breakContiguous(List<DataRecord> inList) {
+        List<List<DataRecord>> out = new ArrayList<List<DataRecord>>();
+        List<DataRecord> subout = new ArrayList<DataRecord>();
+        DataRecord prev = null;
+        for (DataRecord dataRecord : inList) {
+            if (prev == null || areContiguous(prev, dataRecord)) {
+                // contiguous
+            } else {
+                subout = new ArrayList<DataRecord>();
+                out.add(subout);
+            }
+            subout.add(dataRecord);
+        }
+        return out;
+    }
 
     public static void main(String[] args) {
         int a = 256;
@@ -164,6 +190,27 @@ public class Utility {
         // }
         for(int k = output.length - 1; k > -1; k--) {
             System.out.println("byte" + k + " " + output[k]);
+        }
+    }
+
+    public static void cleanDuplicatesOverlaps(List<DataRecord> drFromFileList) {
+        Collections.sort(drFromFileList, new DataRecordBeginComparator());
+        DataRecord prev = null;
+        Iterator<DataRecord> itFromFileList = drFromFileList.iterator();
+        while (itFromFileList.hasNext()) {
+            DataRecord dataRecord = itFromFileList.next();
+            if (prev != null && prev.getHeader().getStartBtime().equals(dataRecord.getHeader().getStartBtime())) {
+                //  a duplicate
+                itFromFileList.remove();
+            } else if (prev != null && prev.getHeader().getLastSampleBtime().after(dataRecord.getHeader().getStartBtime())) {
+                //  a overlap
+                logger.debug("overlap: "+prev.getHeader()+"  "+dataRecord.getHeader());
+                logger.debug("overlap:  prev  "+prev.getHeader().getStartTime()+"  "+prev.getHeader().getLastSampleTime());
+                logger.debug("overlap:  curr  "+dataRecord.getHeader().getStartTime()+"  "+dataRecord.getHeader().getLastSampleTime());
+                itFromFileList.remove();
+            } else {
+                prev = dataRecord;
+            }
         }
     }
 } // Utility
