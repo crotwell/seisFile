@@ -258,7 +258,7 @@ public class SeedlinkReader {
 
     public static final int DEFAULT_PORT = 18000;
     
-    public static final int DEFAULT_TIMEOUT_SECOND = 30;
+    public static final int DEFAULT_TIMEOUT_SECOND = 120;
 
     public static final String INFO_ID = "ID";
 
