@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.sc.seis.cormorant.seismogram.BudLightWriter;
-
 /**
  * Utility.java
  * 
@@ -204,9 +202,6 @@ public class Utility {
                 itFromFileList.remove();
             } else if (prev != null && prev.getHeader().getLastSampleBtime().after(dataRecord.getHeader().getStartBtime())) {
                 //  a overlap
-                logger.debug("overlap: "+prev.getHeader()+"  "+dataRecord.getHeader());
-                logger.debug("overlap:  prev  "+prev.getHeader().getStartTime()+"  "+prev.getHeader().getLastSampleTime());
-                logger.debug("overlap:  curr  "+dataRecord.getHeader().getStartTime()+"  "+dataRecord.getHeader().getLastSampleTime());
                 itFromFileList.remove();
             } else {
                 prev = dataRecord;
