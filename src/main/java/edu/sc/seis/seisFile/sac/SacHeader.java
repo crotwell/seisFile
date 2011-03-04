@@ -3,6 +3,8 @@ package edu.sc.seis.seisFile.sac;
 import static edu.sc.seis.seisFile.sac.SacConstants.DEFAULT_NVHDR;
 import static edu.sc.seis.seisFile.sac.SacConstants.FLOAT_UNDEF;
 import static edu.sc.seis.seisFile.sac.SacConstants.INT_UNDEF;
+import static edu.sc.seis.seisFile.sac.SacConstants.ITIME;
+import static edu.sc.seis.seisFile.sac.SacConstants.TRUE;
 import static edu.sc.seis.seisFile.sac.SacConstants.IntelByteOrder;
 import static edu.sc.seis.seisFile.sac.SacConstants.NVHDR_OFFSET;
 import static edu.sc.seis.seisFile.sac.SacConstants.STRING16_UNDEF;
@@ -73,8 +75,8 @@ public class SacHeader {
 
     public static SacHeader createEmptyEvenSampledTimeSeriesHeader() {
         SacHeader header = new SacHeader();
-        header.leven = 1;
-        header.iftype = DaveSACHeader.ITIME;
+        header.leven = TRUE;
+        header.iftype = ITIME;
         header.npts   = 0;
         header.b      = 0.0f;
         header.e      = 0.0f;   

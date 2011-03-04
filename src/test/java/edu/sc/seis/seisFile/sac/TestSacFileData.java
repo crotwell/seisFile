@@ -31,11 +31,11 @@ public class TestSacFileData extends TestCase
 
         sts.read(new DataInputStream(TestSacFileData.class.getClassLoader().getResourceAsStream("edu/sc/seis/seisFile/sac/control.sac")));
 
-        assertEquals(20, sts.npts);
+        assertEquals(20, sts.getHeader().getNpts());
 
-        for (int i = 0; i < sts.npts; i++)
+        for (int i = 0; i < sts.getHeader().getNpts(); i++)
         {
-            assertEquals(data[i], sts.y[i], TOL);
+            assertEquals(data[i], sts.getY()[i], TOL);
         }
     }
 

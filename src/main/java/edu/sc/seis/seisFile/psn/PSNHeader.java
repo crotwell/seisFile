@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
+import edu.sc.seis.seisFile.sac.SacHeader;
 
 /**
  * PSNHeader.java
@@ -47,7 +47,7 @@ public class PSNHeader {
             dis.readFully(twoBytes);
             if ((new String(twoBytes)).equals("E1")){
                 isVolume = true;
-                numRecords = SacTimeSeries.swapBytes(dis.readShort());
+                numRecords = SacHeader.swapBytes(dis.readShort());
                 //System.out.println("Number of records: " + numRecords);
             }
             else throw new FileNotFoundException("File is not of type PSNVOLUME1");
@@ -74,22 +74,22 @@ public class PSNHeader {
     private void readHeader() throws IOException{
         /**Variable Header Length**/
         //varHeadLength = dis.readInt();
-        varHeadLength = SacTimeSeries.swapBytes(dis.readInt());
+        varHeadLength = SacHeader.swapBytes(dis.readInt());
         //System.out.println("varHeadLength = " + Integer.toHexString(varHeadLength)  + " or " + varHeadLength);
 
         dateTime = new PSNDateTime(dis);
 
         /**StartTime offset**/
-        startTimeOffset = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        startTimeOffset = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**SampleRate**/
-        sampleRate = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sampleRate = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**SampleCount**/
-        sampleCount = SacTimeSeries.swapBytes(dis.readInt());
+        sampleCount = SacHeader.swapBytes(dis.readInt());
 
         /**Flags**/
-        flags = SacTimeSeries.swapBytes(dis.readInt());
+        flags = SacHeader.swapBytes(dis.readInt());
 
         /**Timing Ref Type**/
         dis.readFully(threeBytes);
@@ -105,10 +105,10 @@ public class PSNHeader {
         sampleCompression = dis.readByte();
 
         /**Component Incident**/
-        compIncident = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        compIncident = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Component Azimuth**/
-        compAz = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        compAz = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Component Orientation**/
         compOrientation = dis.readByte();
@@ -117,13 +117,13 @@ public class PSNHeader {
         sensorType = dis.readByte();
 
         /**Sensor Latitude**/
-        sensorLat = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sensorLat = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Sensor Longitude**/
-        sensorLong = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sensorLong = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Sensor Elevation**/
-        sensorElevation = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sensorElevation = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Sensor Name**/
         dis.readFully(sixBytes);
@@ -138,22 +138,22 @@ public class PSNHeader {
         sensorNetwork = new String(PSNDataFile.chopToLength(sixBytes));
 
         /**Sensitivity**/
-        sensitivity = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sensitivity = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Magnitude Correction**/
-        magCorrect = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        magCorrect = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**A/D Bit Resolution**/
-        adBitRes = SacTimeSeries.swapBytes(dis.readShort());
+        adBitRes = SacHeader.swapBytes(dis.readShort());
 
         /**Sample Minimum**/
-        sampleMin = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sampleMin = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Sample Maximum**/
-        sampleMax = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sampleMax = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         /**Sample Mean**/
-        sampleMean = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sampleMean = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
     }
 
     public int getVarHeadLength() {

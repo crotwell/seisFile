@@ -9,7 +9,7 @@ package edu.sc.seis.seisFile.psn;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
+import edu.sc.seis.seisFile.sac.SacHeader;
 
 public class PSNDateTime {
     private DataInputStream dis;
@@ -21,14 +21,14 @@ public class PSNDateTime {
     public PSNDateTime(DataInputStream data) throws IOException{
         dis = data;
 
-        year = SacTimeSeries.swapBytes((short)dis.readUnsignedShort());
+        year = SacHeader.swapBytes((short)dis.readUnsignedShort());
         month = dis.readByte();
         day = dis.readByte();
         hour = dis.readByte();
         minute = dis.readByte();
         second = dis.readByte();
         dis.readByte();
-        nanosec = SacTimeSeries.swapBytes(dis.readInt());
+        nanosec = SacHeader.swapBytes(dis.readInt());
     }
 
     //a constructor for testing purposes
