@@ -24,6 +24,10 @@ public class Complex {
     public final double mag() {
         return (Math.sqrt(this.getReal() * this.getReal() + this.getImaginary() * this.getImaginary()));
     }
+    
+    public final Complex conjg() {
+        return new Complex(getReal(), -1*getImaginary());
+    }
 
     public static final Complex add(double a, Complex b) {
         return add(new Complex(a, 0), b);
