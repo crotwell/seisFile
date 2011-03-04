@@ -3,7 +3,7 @@ package edu.sc.seis.seisFile.psn;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
+import edu.sc.seis.seisFile.sac.SacHeader;
 
 /**
  * PSNSensorAmpAtoD.java
@@ -19,9 +19,9 @@ public class PSNSensorAmpAtoD{
     public PSNSensorAmpAtoD(DataInputStream data) throws IOException{
         dis = data;
 
-        sensorOutputVoltage = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
-        amplifierGain = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
-        aToDInputVoltage = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        sensorOutputVoltage = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
+        amplifierGain = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
+        aToDInputVoltage = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
     }
 
     public double getSensorOutputVoltage() {

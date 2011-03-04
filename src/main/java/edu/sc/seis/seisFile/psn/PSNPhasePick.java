@@ -3,7 +3,7 @@ package edu.sc.seis.seisFile.psn;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
+import edu.sc.seis.seisFile.sac.SacHeader;
 
 /**
  * PSNPhasePick.java
@@ -31,13 +31,13 @@ public class PSNPhasePick{
         dis.readFully(eightBytes);
         phase = new String(PSNDataFile.chopToLength(eightBytes));
 
-        flags = SacTimeSeries.swapBytes((short)dis.readUnsignedShort());
-        dispYPosition = SacTimeSeries.swapBytes(dis.readShort());
+        flags = SacHeader.swapBytes((short)dis.readUnsignedShort());
+        dispYPosition = SacHeader.swapBytes(dis.readShort());
 
         dis.readFully(sixteenBytes);
         travelTimeFileName = new String(PSNDataFile.chopToLength(sixteenBytes));
 
-        tableDepth = SacTimeSeries.swapBytes(dis.readShort());
+        tableDepth = SacHeader.swapBytes(dis.readShort());
     }
 
     public PSNDateTime getStartTime() {

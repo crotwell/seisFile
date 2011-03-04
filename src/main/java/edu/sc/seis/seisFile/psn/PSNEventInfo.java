@@ -3,7 +3,7 @@ package edu.sc.seis.seisFile.psn;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
+import edu.sc.seis.seisFile.sac.SacHeader;
 
 /**
  * PSNEventInfo.java
@@ -29,13 +29,13 @@ public class PSNEventInfo {
 
         time = new PSNDateTime(dis);
         //System.out.println(time.toString());
-        lat = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
-        lon = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
-        depthKM = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+        lat = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
+        lon = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
+        depthKM = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
 
         magnitudes = new double[6];
         for (int i = 0; i < magnitudes.length; i++) {
-            magnitudes[i] = (double)SacTimeSeries.swapBytes(dis.readShort())/100.0;
+            magnitudes[i] = (double)SacHeader.swapBytes(dis.readShort())/100.0;
         }
 
         dis.readFully(fourBytes);
@@ -44,7 +44,7 @@ public class PSNEventInfo {
         eventType = dis.readByte();
 
         locationQuality =  dis.readByte();
-        flags = SacTimeSeries.swapBytes((short)dis.readUnsignedShort());
+        flags = SacHeader.swapBytes((short)dis.readUnsignedShort());
 
         dis.readFully(sixBytes);
         reportingAgency = new String(PSNDataFile.chopToLength(sixBytes));

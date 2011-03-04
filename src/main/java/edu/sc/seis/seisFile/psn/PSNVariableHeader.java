@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
+import edu.sc.seis.seisFile.sac.SacHeader;
 
 /**
  * PSNVariableHeader.java
@@ -34,7 +34,7 @@ public class PSNVariableHeader{
 
             //read descriptor id
             byte id = dis.readByte();
-            int fieldLength = SacTimeSeries.swapBytes(dis.readInt());
+            int fieldLength = SacHeader.swapBytes(dis.readInt());
             //System.out.println("varHeader iteration " + i + ", id " + id + ", fieldLength " + fieldLength);
 
             switch (id) {

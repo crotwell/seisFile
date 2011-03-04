@@ -3,7 +3,7 @@ package edu.sc.seis.seisFile.psn;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
+import edu.sc.seis.seisFile.sac.SacHeader;
 
 /**
  * PSNEventRecord.java
@@ -48,14 +48,14 @@ public class PSNEventRecord {
                 isShort = true;
                 samplesShort = new short[fixedHeader.getSampleCount()];
                 for (int i = 0; i < samplesShort.length; i++) {
-                    samplesShort[i] = SacTimeSeries.swapBytes(dis.readShort());
+                    samplesShort[i] = SacHeader.swapBytes(dis.readShort());
                 }
                 break;
             case 1:
                 isInt = true;
                 samplesInt = new int[fixedHeader.getSampleCount()];
                 for (int i = 0; i < samplesInt.length; i++) {
-                    samplesInt[i] = SacTimeSeries.swapBytes(dis.readInt());
+                    samplesInt[i] = SacHeader.swapBytes(dis.readInt());
                 }
                 break;
             case 2:
@@ -66,14 +66,14 @@ public class PSNEventRecord {
                     // byte swapping a float is dangerous as a bit pattern that is
                     // NaN will not always remain the same on conversion to/from a float
                     // see javadocs for intBitsToFloat
-                    samplesFloat[i] = Float.intBitsToFloat(SacTimeSeries.swapBytes(dis.readInt()));
+                    samplesFloat[i] = Float.intBitsToFloat(SacHeader.swapBytes(dis.readInt()));
                 }
                 break;
             case 3:
                 isDouble = true;
                 samplesDouble = new double[fixedHeader.getSampleCount()];
                 for (int i = 0; i < samplesDouble.length; i++) {
-                    samplesDouble[i] = Double.longBitsToDouble(SacTimeSeries.swapBytes(dis.readLong()));
+                    samplesDouble[i] = Double.longBitsToDouble(SacHeader.swapBytes(dis.readLong()));
                 }
                 break;
             default:
