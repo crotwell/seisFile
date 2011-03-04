@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.1.1beta'
+version = '1.2beta'
 
 dependencies {
     compile "stax:stax-api:1.0.1"
@@ -75,7 +75,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('dswsclient', 'edu.sc.seis.seisFile.dataSelectWS.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('styxprint', 'edu.sc.seis.seisFile.stationxml.StyxPrint', task.project, dExtras:dExtras, bat:doBat)
+    //ScriptBuilder.create('styxprint', 'edu.sc.seis.seisFile.stationxml.StyxPrint', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
