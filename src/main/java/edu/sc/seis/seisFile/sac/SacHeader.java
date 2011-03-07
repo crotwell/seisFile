@@ -4,12 +4,12 @@ import static edu.sc.seis.seisFile.sac.SacConstants.DEFAULT_NVHDR;
 import static edu.sc.seis.seisFile.sac.SacConstants.FLOAT_UNDEF;
 import static edu.sc.seis.seisFile.sac.SacConstants.INT_UNDEF;
 import static edu.sc.seis.seisFile.sac.SacConstants.ITIME;
-import static edu.sc.seis.seisFile.sac.SacConstants.TRUE;
 import static edu.sc.seis.seisFile.sac.SacConstants.IntelByteOrder;
 import static edu.sc.seis.seisFile.sac.SacConstants.NVHDR_OFFSET;
 import static edu.sc.seis.seisFile.sac.SacConstants.STRING16_UNDEF;
 import static edu.sc.seis.seisFile.sac.SacConstants.STRING8_UNDEF;
 import static edu.sc.seis.seisFile.sac.SacConstants.SunByteOrder;
+import static edu.sc.seis.seisFile.sac.SacConstants.TRUE;
 import static edu.sc.seis.seisFile.sac.SacConstants.data_offset;
 
 import java.io.BufferedInputStream;
@@ -80,6 +80,7 @@ public class SacHeader {
         header.npts   = 0;
         header.b      = 0.0f;
         header.e      = 0.0f;   
+        header.idep   = SacConstants.IUNKN;
         return header;
     }
     
@@ -1125,6 +1126,185 @@ public class SacHeader {
         this.fmt = fmt;
     }
 
+    public float getTHeader(int index) {
+        switch(index){
+            case 0:
+                return getT0();
+            case 1:
+                return getT1();
+            case 2:
+                return getT2();
+            case 3:
+                return getT3();
+            case 4:
+                return getT4();
+            case 5:
+                return getT5();
+            case 6:
+                return getT6();
+            case 7:
+                return getT7();
+            case 8:
+                return getT8();
+            case 9:
+                return getT9();
+            default:
+                throw new IllegalArgumentException("Illegal T header index, "+index+", must be 0-9");
+        }
+    }
+    
+    public void setTHeader(int index, float val) {
+        switch(index){
+            case 0:
+                setT0(val);
+                break;
+            case 1:
+                setT1(val);
+                break;
+            case 2:
+                setT2(val);
+                break;
+            case 3:
+                setT3(val);
+                break;
+            case 4:
+                setT4(val);
+                break;
+            case 5:
+                setT5(val);
+                break;
+            case 6:
+                setT6(val);
+                break;
+            case 7:
+                setT7(val);
+                break;
+            case 8:
+                setT8(val);
+                break;
+            case 9:
+                setT9(val);
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal T header index, "+index+", must be 0-9");
+        }
+    }
+    
+    /**
+     * Sets T header specified by the index to val, and sets the corresponding
+     * KT header to be the label. indices 0-9 map to T0-T9 and index 10 maps to 
+     * the A header.
+     */
+    public void setTHeader(int index, float val, String kLabel) {
+        switch(index){
+            case 0:
+                setT0(val);
+                setKt0(kLabel);
+                break;
+            case 1:
+                setT1(val);
+                setKt1(kLabel);
+                break;
+            case 2:
+                setT2(val);
+                setKt2(kLabel);
+                break;
+            case 3:
+                setT3(val);
+                setKt3(kLabel);
+                break;
+            case 4:
+                setT4(val);
+                setKt4(kLabel);
+                break;
+            case 5:
+                setT5(val);
+                setKt5(kLabel);
+                break;
+            case 6:
+                setT6(val);
+                setKt6(kLabel);
+                break;
+            case 7:
+                setT7(val);
+                setKt7(kLabel);
+                break;
+            case 8:
+                setT8(val);
+                setKt8(kLabel);
+                break;
+            case 9:
+                setT9(val);
+                setKt9(kLabel);
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal T header index, "+index+", must be 0-9");
+        }
+    }
+
+    public String getKTHeader(int index) {
+        switch(index){
+            case 0:
+                return getKt0();
+            case 1:
+                return getKt1();
+            case 2:
+                return getKt2();
+            case 3:
+                return getKt3();
+            case 4:
+                return getKt4();
+            case 5:
+                return getKt5();
+            case 6:
+                return getKt6();
+            case 7:
+                return getKt7();
+            case 8:
+                return getKt8();
+            case 9:
+                return getKt9();
+            default:
+                throw new IllegalArgumentException("Illegal T header index, "+index+", must be 0-9");
+        }
+    }
+
+    public void setKtHeader(int index, String val) {
+        switch(index){
+            case 0:
+                setKt0(val);
+                break;
+            case 1:
+                setKt1(val);
+                break;
+            case 2:
+                setKt2(val);
+                break;
+            case 3:
+                setKt3(val);
+                break;
+            case 4:
+                setKt4(val);
+                break;
+            case 5:
+                setKt5(val);
+                break;
+            case 6:
+                setKt6(val);
+                break;
+            case 7:
+                setKt7(val);
+                break;
+            case 8:
+                setKt8(val);
+                break;
+            case 9:
+                setKt9(val);
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal T header index, "+index+", must be 0-9");
+        }
+    }
     
     public float getT0() {
         return t0;
@@ -1425,6 +1605,69 @@ public class SacHeader {
         this.mag = mag;
     }
 
+    public float getUserHeader(int index) {
+        switch(index){
+            case 0:
+                return getUser0();
+            case 1:
+                return getUser1();
+            case 2:
+                return getUser2();
+            case 3:
+                return getUser3();
+            case 4:
+                return getUser4();
+            case 5:
+                return getUser5();
+            case 6:
+                return getUser6();
+            case 7:
+                return getUser7();
+            case 8:
+                return getUser8();
+            case 9:
+                return getUser9();
+            default:
+                throw new IllegalArgumentException("Illegal User header index, "+index+", must be 0-9");
+        }
+    }
+    
+    public void setUserHeader(int index, float val) {
+        switch(index){
+            case 0:
+                setUser0(val);
+                break;
+            case 1:
+                setUser1(val);
+                break;
+            case 2:
+                setUser2(val);
+                break;
+            case 3:
+                setUser3(val);
+                break;
+            case 4:
+                setUser4(val);
+                break;
+            case 5:
+                setUser5(val);
+                break;
+            case 6:
+                setUser6(val);
+                break;
+            case 7:
+                setUser7(val);
+                break;
+            case 8:
+                setUser8(val);
+                break;
+            case 9:
+                setUser9(val);
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal User header index, "+index+", must be 0-9");
+        }
+    }
     
     public float getUser0() {
         return user0;
