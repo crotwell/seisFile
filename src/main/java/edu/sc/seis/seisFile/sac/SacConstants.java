@@ -2,6 +2,19 @@ package edu.sc.seis.seisFile.sac;
 
 
 public class SacConstants {
+    
+    public static boolean isUndef(float f) {
+        return f == FLOAT_UNDEF;
+    }
+    
+    public static boolean isUndef(int i) {
+        return i == INT_UNDEF;
+    }
+    
+    public static boolean isUndef(String s) {
+        return (s.length() == 8 && s.equals(STRING8_UNDEF)) ||
+               (s.length() == 16 && s.equals(STRING16_UNDEF));
+    }
 
     // undef values for sac
     public static final float FLOAT_UNDEF = -12345.0f;
