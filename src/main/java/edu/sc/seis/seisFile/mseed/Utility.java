@@ -200,7 +200,7 @@ public class Utility {
             if (prev != null && prev.getHeader().getStartBtime().equals(dataRecord.getHeader().getStartBtime())) {
                 //  a duplicate
                 itFromFileList.remove();
-            } else if (prev != null && prev.getHeader().getLastSampleBtime().after(dataRecord.getHeader().getStartBtime())) {
+            } else if (prev != null && prev.getHeader().getLastSampleBtime().afterOrEquals(dataRecord.getHeader().getStartBtime())) {
                 //  a overlap
                 itFromFileList.remove();
             } else {
