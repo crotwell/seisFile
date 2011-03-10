@@ -436,6 +436,10 @@ public class DataHeader extends ControlHeader {
         return getEndBtime();
     }
     
+    public BtimeRange getBtimeRange() {
+        return new BtimeRange(getStartBtime(), getLastSampleBtime());
+    }
+    
     /**
      * return a Btime structure containing the derived last sample time for this
      * record
