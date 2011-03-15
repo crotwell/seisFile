@@ -67,6 +67,18 @@ public class SeedlinkReader {
             return true;
         }
     }
+    
+    /** true if there is enough data in the instream to possibly read a data record. 
+     * This should not block, unlike hasNext() and next().
+     * 
+     */
+    public boolean available() throws IOException {
+        // check for closed connection and server sending END
+        if (!isConnected()) {
+            return false;
+        }
+        return in.available() > 256;
+    }
 
     public SeedlinkPacket next() throws IOException, SeedlinkException {
         if (isVerbose()) {
