@@ -22,12 +22,20 @@ import java.text.DecimalFormat;
 public class DataHeader extends ControlHeader {
 
     protected byte[] stationIdentifier = new byte[5];
+    
+    protected String stationIdentifierString;
 
     protected byte[] locationIdentifier = new byte[2];
 
+    protected String locationIdentifierString;
+    
     protected byte[] channelIdentifier = new byte[3];
 
+    protected String channelIdentifierString;
+
     protected byte[] networkCode = new byte[2];
+    
+    protected String networkCodeString;
 
     protected byte[] startTime = new byte[10];
 
@@ -240,7 +248,10 @@ public class DataHeader extends ControlHeader {
      * @return Value of stationIdentifier.
      */
     public String getStationIdentifier() {
-        return new String(stationIdentifier);
+        if (stationIdentifierString == null) {
+            stationIdentifierString = new String(stationIdentifier);
+        }
+        return stationIdentifierString;
     }
 
     /**
@@ -250,12 +261,13 @@ public class DataHeader extends ControlHeader {
      *            Value to assign to stationIdentifier.
      */
     public void setStationIdentifier(String v) {
+        stationIdentifierString = v;
         try {
             this.stationIdentifier = Utility.pad(v.getBytes("ASCII"),
                                                  5,
                                                  (byte)32);
         } catch(java.io.UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Shouldn't happen", e);
         }
     }
 
@@ -265,7 +277,10 @@ public class DataHeader extends ControlHeader {
      * @return Value of locationIdentifier.
      */
     public String getLocationIdentifier() {
-        return new String(locationIdentifier);
+        if (locationIdentifierString == null) {
+            locationIdentifierString = new String(locationIdentifier);
+        }
+        return locationIdentifierString;
     }
 
     /**
@@ -275,13 +290,14 @@ public class DataHeader extends ControlHeader {
      *            Value to assign to locationIdentifier.
      */
     public void setLocationIdentifier(String v) {
+        locationIdentifierString = v;
         int requiredBytes = 2; // REFER SEED Format
         try {
             this.locationIdentifier = Utility.pad(v.getBytes("ASCII"),
                                                   requiredBytes,
                                                   (byte)32);
         } catch(java.io.UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Shouldn't happen", e);
         }
     }
 
@@ -291,7 +307,10 @@ public class DataHeader extends ControlHeader {
      * @return Value of channelIdentifier.
      */
     public String getChannelIdentifier() {
-        return new String(channelIdentifier);
+        if (channelIdentifierString == null) {
+            channelIdentifierString = new String(channelIdentifier);
+        }
+        return channelIdentifierString;
     }
 
     /**
@@ -301,13 +320,14 @@ public class DataHeader extends ControlHeader {
      *            Value to assign to channelIdentifier.
      */
     public void setChannelIdentifier(String v) {
+        channelIdentifierString = v;
         int requiredBytes = 3; // REFER SEED Format
         try {
             this.channelIdentifier = Utility.pad(v.getBytes("ASCII"),
                                                  requiredBytes,
                                                  (byte)32);
         } catch(java.io.UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Shouldn't happen", e);
         }
     }
 
@@ -317,7 +337,10 @@ public class DataHeader extends ControlHeader {
      * @return Value of networkCode.
      */
     public String getNetworkCode() {
-        return new String(networkCode);
+        if (networkCodeString == null) {
+            networkCodeString = new String(networkCode);
+        }
+        return networkCodeString;
     }
 
     /**
@@ -327,6 +350,7 @@ public class DataHeader extends ControlHeader {
      *            Value to assign to networkCode.
      */
     public void setNetworkCode(String v) {
+        networkCodeString = v;
         int requiredBytes = 2;// REFER SEED FORMAT
         byte paddingByte = (byte)32;
         try {
@@ -334,7 +358,7 @@ public class DataHeader extends ControlHeader {
                                            requiredBytes,
                                            paddingByte);
         } catch(java.io.UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Shouldn't happen", e);
         }
     }
 
