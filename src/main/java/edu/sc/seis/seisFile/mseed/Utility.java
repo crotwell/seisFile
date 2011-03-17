@@ -157,13 +157,17 @@ public class Utility {
         List<DataRecord> subout = new ArrayList<DataRecord>();
         DataRecord prev = null;
         for (DataRecord dataRecord : inList) {
-            if (prev == null || areContiguous(prev, dataRecord)) {
+            if (prev == null) { 
+                // first one
+                out.add(subout);
+            } else if (areContiguous(prev, dataRecord)) {
                 // contiguous
             } else {
                 subout = new ArrayList<DataRecord>();
                 out.add(subout);
             }
             subout.add(dataRecord);
+            prev = dataRecord;
         }
         return out;
     }
