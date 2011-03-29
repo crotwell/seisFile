@@ -544,28 +544,6 @@ public class DataHeader extends ControlHeader {
     }
 
     /**
-     * Set the value of startTime.
-     * 
-     * @param v
-     *            Value to assign to startTime.
-     */
-    // public void setStartTime(String v) {
-    // byte[] startTimeBytes = new byte[10];
-    // try{
-    // byte[] vBytes = v.getBytes("ASCII");
-    // if(vBytes.length < 10)
-    // {
-    // startTimeBytes = Utility.pad(v.getBytes("ASCII"),10, (byte)0);
-    // }
-    // }catch( java.io.UnsupportedEncodingException e)
-    // {
-    // e.printStackTrace();
-    // }
-    // this.startTime = startTimeBytes;
-    // }
-    static java.text.SimpleDateFormat seedDate = new java.text.SimpleDateFormat("yyyy,DDD,HH,mm,ss.");
-
-    /**
      * Get the value of numSamples.
      * 
      * @return Value of numSamples.
