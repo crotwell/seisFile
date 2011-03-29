@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
@@ -35,6 +36,8 @@ public class DataSelectReader {
     }
     public URL createQuery(String network, String station, String location, String channel, Date begin, float durationSeconds) throws IOException, DataSelectException, SeedFormatException {
         String query = createQuery(network, station, location, channel);
+        SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         query += "&start=" + longFormat.format(begin);
         query += "&dur=" + durationSeconds;
         URL requestURL = new URL(urlBase + "?"+query);
@@ -76,6 +79,5 @@ public class DataSelectReader {
 
     public static final String DEFAULT_WS_URL = "http://www.iris.edu/ws/dataselect/query";
     
-    public static SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 }
