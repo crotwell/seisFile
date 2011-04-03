@@ -151,11 +151,9 @@ public class SeedlinkReader {
 
     public void reconnect() throws IOException, SeedlinkException {
         close();
-        List<String> oldSent = sentCommands;
-        sentCommands = new ArrayList<String>();
         initConnection();
-        for (String cmd : oldSent) {
-            sendCmd(cmd);
+        for (String cmd : sentCommands) {
+            internalSendCmd(cmd);
         }
         endHandshake();
     }
