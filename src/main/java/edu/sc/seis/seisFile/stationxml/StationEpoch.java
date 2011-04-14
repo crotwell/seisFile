@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
@@ -12,33 +13,31 @@ public class StationEpoch {
     
 
     public StationEpoch(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        XMLEvent cur = reader.peek();
-        if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals("StationEpoch")) {
-            XMLEvent e = reader.nextEvent();
-        }
-        while(reader.hasNext()) {
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STATION_EPOCH, reader);
+        while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(STARTDATE)) {
-                    startDate = StaxUtil.pullText(reader, STARTDATE);
-                } else if (elName.equals(ENDDATE)) {
-                    endDate = StaxUtil.pullText(reader, ENDDATE);
-                } else if (elName.equals(LAT)) {
-                    lat = StaxUtil.pullFloat(reader, LAT);
-                } else if (elName.equals(LON)) {
-                    lon = StaxUtil.pullFloat(reader, LON);
-                } else if (elName.equals(ELEVATION)) {
-                    elevation = StaxUtil.pullFloat(reader, ELEVATION);
-                } else if (elName.equals(SITE)) {
+                if (elName.equals(StationXMLTagNames.STARTDATE)) {
+                    startDate = StaxUtil.pullText(reader, StationXMLTagNames.STARTDATE);
+                } else if (elName.equals(StationXMLTagNames.ENDDATE)) {
+                    endDate = StaxUtil.pullText(reader, StationXMLTagNames.ENDDATE);
+                    System.out.println("Parse stationepoch enddate: "+endDate);
+                } else if (elName.equals(StationXMLTagNames.LAT)) {
+                    lat = StaxUtil.pullFloat(reader, StationXMLTagNames.LAT);
+                } else if (elName.equals(StationXMLTagNames.LON)) {
+                    lon = StaxUtil.pullFloat(reader, StationXMLTagNames.LON);
+                } else if (elName.equals(StationXMLTagNames.ELEVATION)) {
+                    elevation = StaxUtil.pullFloat(reader, StationXMLTagNames.ELEVATION);
+                } else if (elName.equals(StationXMLTagNames.SITE)) {
                     site = new Site(reader);
-                } else if (elName.equals(NAME)) {
-                    name = StaxUtil.pullText(reader, NAME);
-                } else if (elName.equals(CREATIONDATE)) {
-                    creationDate = StaxUtil.pullText(reader, CREATIONDATE);
-                } else if (elName.equals(NUMCHANNELS)) {
-                    numChannels = StaxUtil.pullInt(reader, NUMCHANNELS);
-                } else if (elName.equals(StaMessage.CHANNEL)) {
+                } else if (elName.equals(StationXMLTagNames.NAME)) {
+                    name = StaxUtil.pullText(reader, StationXMLTagNames.NAME);
+                } else if (elName.equals(StationXMLTagNames.CREATIONDATE)) {
+                    creationDate = StaxUtil.pullText(reader, StationXMLTagNames.CREATIONDATE);
+                } else if (elName.equals(StationXMLTagNames.NUMCHANNELS)) {
+                    numChannels = StaxUtil.pullInt(reader, StationXMLTagNames.NUMCHANNELS);
+                } else if (elName.equals(StationXMLTagNames.CHANNEL)) {
                     channelList.add(new Channel(reader));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
@@ -92,17 +91,6 @@ public class StationEpoch {
     public List<Channel> getChannelList() {
         return channelList;
     }
-
-
-    public static final String STARTDATE = "StartDate";
-    public static final String ENDDATE = "EndDate";
-    public static final String LAT = "Lat";
-    public static final String LON = "Lon";
-    public static final String ELEVATION = "Elevation";
-    public static final String SITE = "Site";
-    public static final String NAME = "Name";
-    public static final String CREATIONDATE = "CreationDate";
-    public static final String NUMCHANNELS = "NumberChannels";
 
     String startDate, endDate, creationDate;
     float lat, lon, elevation;

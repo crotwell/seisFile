@@ -1,104 +1,84 @@
 package edu.sc.seis.seisFile.stationxml;
 
-
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-
 public class StaMessage {
-    
+
     public StaMessage(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StaxUtil.skipToStartElement(reader);
-        XMLEvent cur = reader.peek();
-        if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals("StaMessage")) {
-            XMLEvent e = reader.nextEvent(); // pop StaMessage
-            while(reader.hasNext()) {
-                e = reader.peek();
-                if (e.isStartElement()) {
-                    String elName = e.asStartElement().getName().getLocalPart();
-                    if (elName.equals(SOURCE)) {
-                        source = StaxUtil.pullText(reader, SOURCE);
-                    } else if (elName.equals(SENDER)) {
-                        sender = StaxUtil.pullText(reader, SENDER);
-                    } else if (elName.equals(MODULE)) {
-                        module = StaxUtil.pullText(reader, MODULE);
-                    } else if (elName.equals(SENTDATE)) {
-                        sentDate = StaxUtil.pullText(reader, SENTDATE);
-                    } else if (elName.equals("Station")) {
-                        stations = new StationIterator(reader);
-                        break;
-                    } else {
-                        StaxUtil.skipToMatchingEnd(reader);
-                    }
-                } else if (e.isEndElement()) {
-                    return;
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STAMESSAGE, reader);
+        while (reader.hasNext()) {
+            XMLEvent e = reader.peek();
+            if (e.isStartElement()) {
+                String elName = e.asStartElement().getName().getLocalPart();
+                if (elName.equals(StationXMLTagNames.SOURCE)) {
+                    source = StaxUtil.pullText(reader, StationXMLTagNames.SOURCE);
+                } else if (elName.equals(StationXMLTagNames.SENDER)) {
+                    sender = StaxUtil.pullText(reader, StationXMLTagNames.SENDER);
+                } else if (elName.equals(StationXMLTagNames.MODULE)) {
+                    module = StaxUtil.pullText(reader, StationXMLTagNames.MODULE);
+                } else if (elName.equals(StationXMLTagNames.SENTDATE)) {
+                    sentDate = StaxUtil.pullText(reader, StationXMLTagNames.SENTDATE);
+                } else if (elName.equals(StationXMLTagNames.NETWORK)) {
+                    networks = new NetworkIterator(reader);
+                    break;
                 } else {
-                    e = reader.nextEvent();
+                    StaxUtil.skipToMatchingEnd(reader);
                 }
-            }
-        } else {
-            if (cur.isStartElement()) {
-                throw new StationXMLException("Not a StartElement: "+cur.isStartElement());
+            } else if (e.isEndElement()) {
+                return;
             } else {
-                throw new StationXMLException("Not a Station element: "+cur.asStartElement().getName().getLocalPart());
+                e = reader.nextEvent();
             }
         }
     }
 
-    
     public String getSource() {
         return source;
     }
-    
+
     public void setSource(String source) {
         this.source = source;
     }
-    
+
     public String getSender() {
         return sender;
     }
-    
+
     public void setSender(String sender) {
         this.sender = sender;
     }
-    
+
     public String getModule() {
         return module;
     }
-    
+
     public void setModule(String module) {
         this.module = module;
     }
-    
+
     public String getSentDate() {
         return sentDate;
     }
-    
+
     public void setSentDate(String sentDate) {
         this.sentDate = sentDate;
     }
-    
-    public StationIterator getStations() {
-        return stations;
+
+    public NetworkIterator getNetworks() {
+        return networks;
     }
 
-    public static final String NAMESPACE = "http://www.data.scec.org/xml/station/";
-    public static final String SOURCE = "Source";
-    public static final String SENDER = "Sender";
-    public static final String MODULE = "Module";
-    public static final String SENTDATE = "SentDate";
-    public static final String STATION = "Station";
-    public static final String NET_CODE = "net_code";
-    public static final String STA_CODE = "sta_code";
-    public static final String SITE = "Site";
-    public static final String LOC_CODE = "loc_code";
-    public static final String CHAN_CODE = "chan_code";
-    public static final String CHANNEL = "Channel";
-
     String source;
+
     String sender;
+
     String module;
+
     String sentDate;
-    StationIterator stations;
+
+    NetworkIterator networks;
 }

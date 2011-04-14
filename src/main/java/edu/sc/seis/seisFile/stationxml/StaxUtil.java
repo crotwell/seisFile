@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.stationxml;
 
 import java.util.Iterator;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
@@ -10,6 +11,17 @@ import javax.xml.stream.events.XMLEvent;
 
 public class StaxUtil {
 
+    public static StartElement expectStartElement(String expected, XMLEventReader reader) throws XMLStreamException, StationXMLException {
+        XMLEvent cur = reader.peek();
+        if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals(expected)) {
+            return reader.nextEvent().asStartElement();
+        } else {
+            Location loc = cur.getLocation();
+            throw new StationXMLException("Expected a start <"+expected+"> element at line "+loc.getLineNumber()+", "+loc.getColumnNumber()+": "+
+                                          (cur.isStartElement()?cur.asStartElement().getName().getLocalPart():cur.getEventType()));
+        }
+    }
+    
     public static String pullText(XMLEventReader reader, String elementName) throws XMLStreamException,
             StationXMLException {
         String outText = "";

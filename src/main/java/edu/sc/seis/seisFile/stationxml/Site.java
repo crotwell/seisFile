@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.stationxml;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 public class Site {
@@ -15,33 +16,28 @@ public class Site {
     }
 
     public Site(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        XMLEvent cur = reader.peek();
-        if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals(StaMessage.SITE)) {
-            XMLEvent e = reader.nextEvent(); // pop Site
-            while (reader.hasNext()) {
-                e = reader.peek();
-                if (e.isStartElement()) {
-                    String elName = e.asStartElement().getName().getLocalPart();
-                    if (elName.equals(TOWN)) {
-                        town = StaxUtil.pullText(reader, TOWN);
-                    } else if (elName.equals(COUNTY)) {
-                        county = StaxUtil.pullText(reader, COUNTY);
-                    } else if (elName.equals(STATE)) {
-                        state = StaxUtil.pullText(reader, STATE);
-                    } else if (elName.equals(COUNTRY)) {
-                        country = StaxUtil.pullText(reader, COUNTRY);
-                    } else {
-                        StaxUtil.skipToMatchingEnd(reader);
-                    }
-                } else if (e.isEndElement()) {
-                    reader.nextEvent();
-                    return;
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.SITE, reader);
+        while (reader.hasNext()) {
+            XMLEvent e = reader.peek();
+            if (e.isStartElement()) {
+                String elName = e.asStartElement().getName().getLocalPart();
+                if (elName.equals(StationXMLTagNames.TOWN)) {
+                    town = StaxUtil.pullText(reader, StationXMLTagNames.TOWN);
+                } else if (elName.equals(StationXMLTagNames.COUNTY)) {
+                    county = StaxUtil.pullText(reader, StationXMLTagNames.COUNTY);
+                } else if (elName.equals(StationXMLTagNames.STATE)) {
+                    state = StaxUtil.pullText(reader, StationXMLTagNames.STATE);
+                } else if (elName.equals(StationXMLTagNames.COUNTRY)) {
+                    country = StaxUtil.pullText(reader, StationXMLTagNames.COUNTRY);
                 } else {
-                    e = reader.nextEvent();
+                    StaxUtil.skipToMatchingEnd(reader);
                 }
+            } else if (e.isEndElement()) {
+                reader.nextEvent();
+                return;
+            } else {
+                e = reader.nextEvent();
             }
-        } else {
-            throw new StationXMLException("Not a Site element: " + cur.asStartElement().getName().getLocalPart());
         }
     }
 
@@ -78,12 +74,4 @@ public class Site {
     }
 
     String town, county, state, country;
-
-    public static final String TOWN = "Town";
-
-    public static final String COUNTY = "County";
-
-    public static final String STATE = "State";
-
-    public static final String COUNTRY = "Country";
 }
