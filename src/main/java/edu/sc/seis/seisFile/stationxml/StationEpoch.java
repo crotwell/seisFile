@@ -22,7 +22,6 @@ public class StationEpoch {
                     startDate = StaxUtil.pullText(reader, StationXMLTagNames.STARTDATE);
                 } else if (elName.equals(StationXMLTagNames.ENDDATE)) {
                     endDate = StaxUtil.pullText(reader, StationXMLTagNames.ENDDATE);
-                    System.out.println("Parse stationepoch enddate: "+endDate);
                 } else if (elName.equals(StationXMLTagNames.LAT)) {
                     lat = StaxUtil.pullFloat(reader, StationXMLTagNames.LAT);
                 } else if (elName.equals(StationXMLTagNames.LON)) {
