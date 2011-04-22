@@ -97,7 +97,9 @@ public class SacTimeSeries {
     public void setY(float[] y) {
         this.y = y;
         getHeader().setNpts(y.length);
-        getHeader().setE(getHeader().getB()+y.length*getHeader().getDelta());
+        if ( ! SacConstants.isUndef(getHeader().getDelta()) && ! SacConstants.isUndef(getHeader().getB())) {
+            getHeader().setE(getHeader().getB()+y.length*getHeader().getDelta());
+        }
     }
 
     public float[] getX() {
