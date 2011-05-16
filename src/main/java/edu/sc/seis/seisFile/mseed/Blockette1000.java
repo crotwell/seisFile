@@ -22,7 +22,7 @@ public class Blockette1000 extends  DataBlockette implements RecordLengthBlocket
         super(B1000_SIZE);
     }
 
-    public Blockette1000(byte[] info, boolean swapBytes) {
+    public Blockette1000(byte[] info, boolean swapBytes) throws SeedFormatException {
         super(info, swapBytes);
         trimToSize(B1000_SIZE);
     }
