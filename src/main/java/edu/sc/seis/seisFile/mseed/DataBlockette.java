@@ -19,11 +19,11 @@ public abstract class DataBlockette extends Blockette
     }
     
     /** For use by subclasses that want to ensure that they are of a given size.
-     * @throws IllegalArgumentException if the size is larger than the number of bytes
+     * @throws SeedFormatException if the size is larger than the number of bytes
      */
-    protected void trimToSize(int size) {
+    protected void trimToSize(int size) throws SeedFormatException {
         if (info.length < size) {
-            throw new IllegalArgumentException("Blockette "+getType()+" must have "+size+" bytes, but got "+info.length);
+            throw new SeedFormatException("Blockette "+getType()+" must have "+size+" bytes, but got "+info.length);
         }
         if (info.length > size) {
             // must be extra junk at end, trim

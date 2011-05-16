@@ -12,7 +12,7 @@ public class Blockette1001 extends DataBlockette {
         super(B1001_SIZE);
     }
 
-    public Blockette1001(byte[] info, boolean swapBytes) {
+    public Blockette1001(byte[] info, boolean swapBytes) throws SeedFormatException {
         super(info, swapBytes);
         trimToSize(B1001_SIZE);
     }

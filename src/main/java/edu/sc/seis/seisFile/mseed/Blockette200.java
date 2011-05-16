@@ -40,7 +40,7 @@ public class Blockette200 extends DataBlockette {
                          detectorBytes.length);
     }
 
-    public Blockette200(byte[] info, boolean swapBytes) {
+    public Blockette200(byte[] info, boolean swapBytes) throws SeedFormatException {
         super(info, swapBytes);
         trimToSize(getSize());
     }

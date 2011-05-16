@@ -164,6 +164,7 @@ public class DataRecord extends SeedRecord implements Serializable {
                                                DataHeader header,
                                                int defaultRecordSize)
             throws IOException, SeedFormatException {
+        try {
         boolean swapBytes = header.flagByteSwap();
         /*
          * Assert.isTrue(header.getDataBlocketteOffset()>= header.getSize(),
@@ -260,6 +261,10 @@ public class DataRecord extends SeedRecord implements Serializable {
         inStream.readFully(timeseries);
         dataRec.setData(timeseries);
         return dataRec;
+        } catch (SeedFormatException e) {
+            e.setHeader(header);
+            throw e;
+        }
     }
 
     public void setRecordSize(int recordSize) throws SeedFormatException {
