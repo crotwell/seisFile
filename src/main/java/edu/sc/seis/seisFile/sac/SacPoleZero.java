@@ -43,13 +43,13 @@ public class SacPoleZero {
     public String toString() {
         String out = ZEROS+" "+zeros.length+"\n";
         for (int i = 0; i < zeros.length; i++) {
-            out += formatter.format(zeros[i].getReal())+" "+formatter.format(zeros[i].getImaginary());
+            out += formatter.format(zeros[i].getReal())+" "+formatter.format(zeros[i].getImaginary())+"\n";
         }
         out += POLES+" "+poles.length+"\n";
         for (int i = 0; i < poles.length; i++) {
-            out += formatter.format(poles[i].getReal())+" "+formatter.format(poles[i].getImaginary());
+            out += formatter.format(poles[i].getReal())+" "+formatter.format(poles[i].getImaginary())+"\n";
         }
-        out += CONSTANT+" "+formatter.format(constant)+"\n";
+        out += CONSTANT+" "+constantFormatter.format(constant)+"\n";
         return out;
     }
 
@@ -254,5 +254,6 @@ public class SacPoleZero {
 
     static String CONSTANT = "CONSTANT";
 
-    protected static DecimalFormat formatter = new DecimalFormat("0.0000;-0.0000");
+    protected static DecimalFormat formatter = new DecimalFormat(" 0.0000;-0.0000");
+    protected static DecimalFormat constantFormatter = new DecimalFormat("0.0#######E00");
 }
