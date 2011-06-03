@@ -9,6 +9,7 @@ public class Network {
 
     public Network(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.NETWORK, reader);
+        netCode = StaxUtil.pullAttribute(startE, StationXMLTagNames.NET_CODE);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -32,6 +33,10 @@ public class Network {
             }
         }
     }
+    
+    public String getNetCode() {
+        return netCode;
+    }
 
     public String getStartDate() {
         return startDate;
@@ -49,7 +54,7 @@ public class Network {
         return stations;
     }
 
-    String startDate, endDate, description;
+    String netCode, startDate, endDate, description;
 
     StationIterator stations;
 }
