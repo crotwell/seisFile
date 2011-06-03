@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile.stationxml;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
@@ -9,19 +9,19 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-public class StyxPrint {
+public class StationXMLClient {
 
-    public static void main(String[] args) throws FileNotFoundException, XMLStreamException, StationXMLException {
-        if (args.length == 0) {
-            System.out.println("Usage: styxprint filename.xml");
+    public static void main(String[] args) throws XMLStreamException, StationXMLException, IOException {
+        if (args.length != 2 || ! args[0].equals("-u")) {
+            System.out.println("Usage: stationxmlclient -u url");
+            System.out.println("       stationxmlclient http://www.iris.edu/ws/station/query?net=IU&sta=SNZO&chan=BHZ&level=chan");
             return;
         }
-        String filename = args[0];
+        URL url = new URL(args[1]);
         XMLInputFactory factory = XMLInputFactory.newInstance();
-        XMLEventReader r = factory.createXMLEventReader(filename, new FileInputStream(filename));
+        XMLEventReader r = factory.createXMLEventReader(url.toString(), url.openStream());
         XMLEvent e = r.peek();
         while (!e.isStartElement()) {
-            System.out.println(e);
             e = r.nextEvent(); // eat this one
             e = r.peek(); // peek at the next
         }
@@ -34,6 +34,7 @@ public class StyxPrint {
         NetworkIterator it = staMessage.getNetworks();
         while (it.hasNext()) {
             Network n = it.next();
+            System.out.println("Network: " +n.getNetCode()+" "+n.getDescription()+" "+n.getStartDate()+" "+n.getEndDate()); 
             StationIterator sit = n.getStations();
             while (sit.hasNext()) {
                 Station s = sit.next();
@@ -41,6 +42,8 @@ public class StyxPrint {
                         + s.getStationEpochs().size());
                 List<StationEpoch> staEpochs = s.getStationEpochs();
                 for (StationEpoch stationEpoch : staEpochs) {
+                    System.out.println("Station Epoch: " + s.getNetCode() + "." + s.getStaCode()
+                                       + "  " + stationEpoch.getStartDate() + " to " + stationEpoch.getEndDate());
                     List<Channel> chanList = stationEpoch.getChannelList();
                     for (Channel channel : chanList) {
                         List<Epoch> chanEpochList = channel.getChanEpochList();
