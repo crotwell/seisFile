@@ -38,23 +38,22 @@ public class StationXMLClient {
             StationIterator sit = n.getStations();
             while (sit.hasNext()) {
                 Station s = sit.next();
-                System.out.println("Station: " + s.getNetCode() + "." + s.getStaCode() + " "
+                System.out.println("  Station: " + s.getNetCode() + "." + s.getStaCode() + " "
                         + s.getStationEpochs().size());
                 List<StationEpoch> staEpochs = s.getStationEpochs();
                 for (StationEpoch stationEpoch : staEpochs) {
-                    System.out.println("Station Epoch: " + s.getNetCode() + "." + s.getStaCode()
+                    System.out.println("    Station Epoch: " + s.getNetCode() + "." + s.getStaCode()
                                        + "  " + stationEpoch.getStartDate() + " to " + stationEpoch.getEndDate());
                     List<Channel> chanList = stationEpoch.getChannelList();
                     for (Channel channel : chanList) {
                         List<Epoch> chanEpochList = channel.getChanEpochList();
                         for (Epoch epoch : chanEpochList) {
-                            System.out.println("Channel Epoch: " + channel.getLocCode() + "." + channel.getChanCode()
+                            System.out.println("      Channel Epoch: " + channel.getLocCode() + "." + channel.getChanCode()
                                     + "  " + epoch.getStartDate() + " to " + epoch.getEndDate());
                         }
                     }
                 }
             }
         }
-        System.out.println("Done station iterate");
     }
 }
