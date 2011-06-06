@@ -5,6 +5,8 @@ import javax.xml.stream.XMLStreamException;
 
 public class StationIterator {
 
+    protected StationIterator() {}
+    
     public StationIterator(XMLEventReader reader) {
         this.reader = reader;
     }
