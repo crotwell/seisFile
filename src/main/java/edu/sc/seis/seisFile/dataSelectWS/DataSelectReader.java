@@ -39,7 +39,7 @@ public class DataSelectReader {
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         query += "&start=" + longFormat.format(begin);
-        query += "&dur=" + durationSeconds;
+        query += "&dur=" + (int)Math.ceil(durationSeconds); // dataselect only takes even integers, ceil make sure we are bigger
         URL requestURL = new URL(urlBase + "?"+query);
         return requestURL;
     }
@@ -52,7 +52,7 @@ public class DataSelectReader {
                 // no data
                 return new ArrayList<DataRecord>();
             } else {
-                throw new DataSelectException("Did not get an OK repsonse code:"+conn.getResponseCode());
+                throw new DataSelectException("Did not get an OK repsonse code, code= :"+conn.getResponseCode());
             }
         }
         BufferedInputStream bif = new BufferedInputStream(conn.getInputStream());
