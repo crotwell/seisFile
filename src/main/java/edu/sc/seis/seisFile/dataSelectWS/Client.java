@@ -70,6 +70,9 @@ public class Client {
         }
         
         URL requestURL = dsReader.createQuery(network, station, location, channel, begin, duration);
+        if (verbose) {
+            out.println("URL: "+requestURL);
+        }
         List<DataRecord> data = dsReader.read(requestURL);
         for (DataRecord dr : data) {
             if (dos != null) {
