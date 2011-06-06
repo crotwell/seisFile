@@ -51,7 +51,7 @@ task explodeBin(type: Sync, dependsOn: ['makeScript' ]) {
     with binDistFiles
     into file("$buildDir/explode")
 }
-task explodeDist(type: Sync, dependsOn: ['makeScript', 'javadoc', 'wrapper', 'createBuildScript']) {
+task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'wrapper', 'createBuildScript']) {
     group = 'dist'
     with distFiles
     into file("$buildDir/explode")
@@ -75,7 +75,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('dswsclient', 'edu.sc.seis.seisFile.dataSelectWS.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
-    //ScriptBuilder.create('styxprint', 'edu.sc.seis.seisFile.stationxml.StyxPrint', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('stationxmlclient', 'edu.sc.seis.seisFile.stationxml.StationXMLClient', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
