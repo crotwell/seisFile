@@ -1,5 +1,7 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import java.util.ArrayList;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -56,5 +58,5 @@ public class Network {
 
     String netCode, startDate, endDate, description;
 
-    StationIterator stations;
+    StationIterator stations = new ListStationIterator(new ArrayList<Station>()); // init to empty
 }
