@@ -43,6 +43,9 @@ distFiles = copySpec {
     from('build') {
         include('build.gradle')
     }
+    from('../seiswww/build/site') {
+        include('seisFile.html')
+    }
 }
 
 
@@ -74,6 +77,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('mseedlh', 'edu.sc.seis.seisFile.mseed.ListHeader', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('dswsclient', 'edu.sc.seis.seisFile.dataSelectWS.Client', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('cwbclient', 'edu.sc.seis.seisFile.usgsCWB.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('stationxmlclient', 'edu.sc.seis.seisFile.stationxml.StationXMLClient', task.project, dExtras:dExtras, bat:doBat)
 }

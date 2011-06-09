@@ -12,12 +12,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.MSeedQueryReader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 
-public class DataSelectReader {
+public class DataSelectReader implements MSeedQueryReader {
     
     public DataSelectReader() {
         this(DEFAULT_WS_URL);
@@ -34,17 +35,23 @@ public class DataSelectReader {
         query += "&cha=" + channel;
         return query;
     }
-    public URL createQuery(String network, String station, String location, String channel, Date begin, float durationSeconds) throws IOException, DataSelectException, SeedFormatException {
+    /* (non-Javadoc)
+     * @see edu.sc.seis.seisFile.dataSelectWS.MSeedQueryReader#createQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Date, float)
+     */
+    public String createQuery(String network, String station, String location, String channel, Date begin, float durationSeconds) throws IOException, DataSelectException, SeedFormatException {
         String query = createQuery(network, station, location, channel);
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         query += "&start=" + longFormat.format(begin);
         query += "&dur=" + (int)Math.ceil(durationSeconds); // dataselect only takes even integers, ceil make sure we are bigger
-        URL requestURL = new URL(urlBase + "?"+query);
-        return requestURL;
+        return query;
     }
     
-    public List<DataRecord> read(URL requestURL) throws IOException, DataSelectException, SeedFormatException {
+    /* (non-Javadoc)
+     * @see edu.sc.seis.seisFile.dataSelectWS.MSeedQueryReader#read(java.lang.String)
+     */
+    public List<DataRecord> read(String query) throws IOException, DataSelectException, SeedFormatException {
+        URL requestURL = new URL(urlBase + "?"+query);
         HttpURLConnection conn = (HttpURLConnection)requestURL.openConnection();
         conn.connect();
         if (conn.getResponseCode() != 200) {
