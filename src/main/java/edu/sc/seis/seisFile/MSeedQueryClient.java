@@ -53,9 +53,9 @@ public abstract class MSeedQueryClient {
             } else if (args[i].equals("-b")) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                String beginStr = args[i+1];
-                if (beginStr.matches(".*[0-9]")) {
-                    beginStr = beginStr+"GMT";
+                String beginStr = args[i+1].trim();
+                if (beginStr.matches(".+\\d")) {
+                    beginStr = beginStr+" GMT";
                 }
                 try {
                     System.out.println("Date string: "+beginStr);
@@ -63,9 +63,9 @@ public abstract class MSeedQueryClient {
                 } catch(ParseException e) {
                     dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
                     try {
-                        begin = dateFormat.parse(args[i + 1]);
+                        begin = dateFormat.parse(beginStr);
                     } catch(ParseException ee) {
-                        throw new SeisFileException("Illegal date format, should be:  yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS");
+                        throw new SeisFileException("Illegal date format, should be:  yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS", ee);
                     }
                 }
                 System.out.println("Date: "+begin);
@@ -93,7 +93,6 @@ public abstract class MSeedQueryClient {
         String request = reader.createQuery(network, station, location, channel, begin, duration);
         if (verbose) {
             out.println("Request: "+request);
-            return;
         }
         List<DataRecord> data = reader.read(request);
         for (DataRecord dr : data) {
