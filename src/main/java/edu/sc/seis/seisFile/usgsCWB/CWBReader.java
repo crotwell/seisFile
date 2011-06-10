@@ -37,7 +37,7 @@ public class CWBReader implements MSeedQueryReader {
 
     protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException, SeedFormatException {
         String query = leftPad(network.trim(), 2);
-        query += leftPad(station.trim(), 5);
+        query += station.trim();  // station not supposed to be left padded, assume anything not N L C is S
         query += leftPad(location.trim(), 2);
         query += leftPad(channel.trim(), 3);
         return query;
