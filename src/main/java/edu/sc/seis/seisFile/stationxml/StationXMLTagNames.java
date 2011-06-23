@@ -36,7 +36,8 @@ public final class StationXMLTagNames {
     public static final String ELEVATION = "Elevation";
     public static final String NAME = "Name";
     public static final String CREATIONDATE = "CreationDate";
-    public static final String NUMCHANNELS = "NumberChannels";
+    public static final String TOTALNUMCHANNELS = "TotalNumberChannels";
+    public static final String SELECTEDNUMCHANNELS = "SelectedNumberChannels";
     public static final String SENSITIVITY_VALUE = "SensitivityValue";
     public static final String FREQUENCY = "Frequency";
     public static final String SENSITIVITY_UNITS = "SensitivityUnits";

@@ -34,8 +34,10 @@ public class StationEpoch {
                     name = StaxUtil.pullText(reader, StationXMLTagNames.NAME);
                 } else if (elName.equals(StationXMLTagNames.CREATIONDATE)) {
                     creationDate = StaxUtil.pullText(reader, StationXMLTagNames.CREATIONDATE);
-                } else if (elName.equals(StationXMLTagNames.NUMCHANNELS)) {
-                    numChannels = StaxUtil.pullInt(reader, StationXMLTagNames.NUMCHANNELS);
+                } else if (elName.equals(StationXMLTagNames.TOTALNUMCHANNELS)) {
+                    totalNumChannels = StaxUtil.pullInt(reader, StationXMLTagNames.TOTALNUMCHANNELS);
+                } else if (elName.equals(StationXMLTagNames.SELECTEDNUMCHANNELS)) {
+                    selectedNumChannels = StaxUtil.pullInt(reader, StationXMLTagNames.SELECTEDNUMCHANNELS);
                 } else if (elName.equals(StationXMLTagNames.CHANNEL)) {
                     channelList.add(new Channel(reader));
                 } else {
@@ -83,8 +85,12 @@ public class StationEpoch {
         return site;
     }
     
-    public int getNumChannels() {
-        return numChannels;
+    public int getTotalNumChannels() {
+        return totalNumChannels;
+    }
+    
+    public int getSelectedNumChannels() {
+        return selectedNumChannels;
     }
 
     public List<Channel> getChannelList() {
@@ -95,6 +101,7 @@ public class StationEpoch {
     float lat, lon, elevation;
     String name;
     Site site;
-    int numChannels;
+    int totalNumChannels;
+    int selectedNumChannels;
     List<Channel> channelList = new ArrayList<Channel>();
 }
