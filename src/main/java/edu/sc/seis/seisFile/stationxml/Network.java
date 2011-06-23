@@ -22,6 +22,10 @@ public class Network {
                     endDate = StaxUtil.pullText(reader, StationXMLTagNames.ENDDATE);
                 } else if (elName.equals(StationXMLTagNames.DESCRIPTION)) {
                     description = StaxUtil.pullText(reader, StationXMLTagNames.DESCRIPTION);
+                } else if (elName.equals(StationXMLTagNames.TOTALNUMSTATIONS)) {
+                    totalNumStations = StaxUtil.pullInt(reader, StationXMLTagNames.TOTALNUMSTATIONS);
+                } else if (elName.equals(StationXMLTagNames.SELECTEDNUMSTATIONS)) {
+                    selectedNumStations = StaxUtil.pullInt(reader, StationXMLTagNames.SELECTEDNUMSTATIONS);
                 } else if (elName.equals(StationXMLTagNames.STATION)) {
                     stations = new StationIterator(reader);
                     break;
@@ -55,8 +59,18 @@ public class Network {
     public StationIterator getStations() {
         return stations;
     }
+    
+    public int getTotalNumStations() {
+        return totalNumStations;
+    }
+
+    public int getSelectedNumStations() {
+        return selectedNumStations;
+    }
 
     String netCode, startDate, endDate, description;
 
+    int totalNumStations, selectedNumStations;
+    
     StationIterator stations = new ListStationIterator(new ArrayList<Station>()); // init to empty
 }

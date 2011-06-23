@@ -13,6 +13,8 @@ public final class StationXMLTagNames {
     public static final String MODULE = "Module";
     public static final String SENTDATE = "SentDate";
     public static final String NETWORK = "Network";
+    public static final String TOTALNUMSTATIONS = "TotalNumberStations";
+    public static final String SELECTEDNUMSTATIONS = "SelectedNumberStations";
     public static final String STATION = "Station";
     public static final String STATION_EPOCH = "StationEpoch";
     public static final String CHANNEL = "Channel";
