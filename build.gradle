@@ -4,7 +4,7 @@ group = 'edu.sc.seis'
 version = '1.2'
 
 dependencies {
-    compile "stax:stax-api:1.0.1"
+    compile "javax.xml.stream:stax-api:1.0-2"
     runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.1.0"
 }
 
@@ -54,7 +54,7 @@ task explodeBin(type: Sync, dependsOn: ['makeScript' ]) {
     with binDistFiles
     into file("$buildDir/explode")
 }
-task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'wrapper', 'createBuildScript']) {
+task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'wrapper', 'createBuildScript', ':seiswww:makeSite']) {
     group = 'dist'
     with distFiles
     into file("$buildDir/explode")
