@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -34,7 +35,7 @@ public abstract class MSeedQueryClient {
         String channel = "BHZ";
         String outFile = null;
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-        cal.add(cal.MINUTE, -10);
+        cal.add(Calendar.MINUTE, -10);
         Date begin = cal.getTime();
         Float duration = 600f;
         int maxRecords = 10;
@@ -58,7 +59,6 @@ public abstract class MSeedQueryClient {
                     beginStr = beginStr+" GMT";
                 }
                 try {
-                    System.out.println("Date string: "+beginStr);
                     begin = dateFormat.parse(beginStr);
                 } catch(ParseException e) {
                     dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
@@ -68,7 +68,6 @@ public abstract class MSeedQueryClient {
                         throw new SeisFileException("Illegal date format, should be:  yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS", ee);
                     }
                 }
-                System.out.println("Date: "+begin);
             } else if (args[i].equals("-d")) {
                 duration = Float.parseFloat(args[i + 1]);
             } else if (args[i].equals("-o")) {
