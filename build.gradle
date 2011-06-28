@@ -29,10 +29,10 @@ distFiles = copySpec {
     }
     from('.') {
         include('gpl-3.0.txt')
-        include('README.txt')
         include('doc/**')
         include('src/**')
-        include('gradleWrapper/**')
+        include('gradle/**')
+        include('gradlew')
         include('gradlew.bat')
         exclude('**/*.svn')
     }
@@ -40,11 +40,12 @@ distFiles = copySpec {
         fileMode=0755
         include('gradlew')
     }
-    from('build') {
-        include('build.gradle')
-    }
     from('../seiswww/build/site') {
         include('seisFile.html')
+    }
+    from('build/generated-src/modVersion') {
+        include('java/**')
+        into('src/main')
     }
 }
 
@@ -54,14 +55,14 @@ task explodeBin(type: Sync, dependsOn: ['makeScript' ]) {
     with binDistFiles
     into file("$buildDir/explode")
 }
-task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'wrapper', 'createBuildScript', ':seiswww:makeSite']) {
+
+task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionClass', 'createBuildScript', ':seiswww:makeSite']) {
     group = 'dist'
     with distFiles
     into file("$buildDir/explode")
 }
 
-
-task tarDist(type: Tar, dependsOn: ['makeScript', 'javadoc', 'wrapper', 'createBuildScript']) {
+task tarDist(type: Tar, dependsOn: ['explodeDist' ]) {
     dirName = project.name+'-'+version
     compression = Compression.GZIP
     into(dirName) {
