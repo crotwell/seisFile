@@ -33,6 +33,7 @@ public class Network {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
             } else if (e.isEndElement()) {
+                reader.nextEvent();
                 return;
             } else {
                 e = reader.nextEvent();
