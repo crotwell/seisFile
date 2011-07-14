@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.2'
+version = '1.2.1alpha'
 
 dependencies {
     compile "javax.xml.stream:stax-api:1.0-2"
