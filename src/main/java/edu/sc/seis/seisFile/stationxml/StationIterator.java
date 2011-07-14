@@ -12,9 +12,7 @@ public class StationIterator {
     }
 
     public boolean hasNext() throws XMLStreamException {
-        StaxUtil.skipToStartElement(reader);
-        return reader.hasNext() && reader.peek().isStartElement()
-                && reader.peek().asStartElement().getName().getLocalPart().equals(StationXMLTagNames.STATION);
+        return StaxUtil.hasNext(reader, StationXMLTagNames.STATION, StationXMLTagNames.NETWORK);
     }
 
     public Station next() throws XMLStreamException, StationXMLException {
