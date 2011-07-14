@@ -76,6 +76,41 @@ public class StaxUtil {
         }
     }
     
+    public static void skipToStartOrEndElement(XMLEventReader reader) throws XMLStreamException {
+        if (! reader.hasNext()) { return; }
+        while (reader.hasNext() && ! (reader.peek().isStartElement() || reader.peek().isEndElement()) ) {
+            reader.nextEvent(); // pop this one
+        }
+    }
+    
+    /** Checks for a next element of name "elementName". Skips over any other elements so
+     * long as it doesn't hit an element of name "endElementName. This is so we don't
+     *  return stations from the next network when passing a ending network tag.
+     * @param reader 
+     * @param elementName element name we are looking for
+     * @param endElementName end element name to not go past, ie the parent element
+     * @return true if there is another element, false otherwise
+     * @throws XMLStreamException
+     */
+    public static boolean hasNext(XMLEventReader reader, String elementName, String endElementName) throws XMLStreamException {
+        while (reader.hasNext()) {
+            if (reader.peek().isStartElement()) {
+                if (reader.peek().asStartElement().getName().getLocalPart().equals(elementName)) {
+                    return true;
+                }
+                // humm, unexpected start element so skip this element and go to the next one and try again
+                reader.next();
+                StaxUtil.skipToMatchingEnd(reader);
+            } else if (reader.peek().isEndElement() && reader.peek().asEndElement().getName().getLocalPart().equals(endElementName)) {
+                return false;
+            } else {
+                // some other type of stax event, skip it
+                reader.next();
+            }
+        }
+        return false;
+    }
+    
     public static String pullAttribute(StartElement start, String name) throws StationXMLException {
         Iterator<Attribute> it = start.getAttributes();
         while(it.hasNext()) {

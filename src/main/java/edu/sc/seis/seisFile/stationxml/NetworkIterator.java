@@ -10,9 +10,7 @@ public class NetworkIterator {
     }
 
     public boolean hasNext() throws XMLStreamException {
-        StaxUtil.skipToStartElement(reader);
-        return reader.hasNext() && reader.peek().isStartElement()
-                && reader.peek().asStartElement().getName().getLocalPart().equals(StationXMLTagNames.NETWORK);
+        return StaxUtil.hasNext(reader, StationXMLTagNames.NETWORK, StationXMLTagNames.STAMESSAGE);
     }
 
     public Network next() throws XMLStreamException, StationXMLException {
