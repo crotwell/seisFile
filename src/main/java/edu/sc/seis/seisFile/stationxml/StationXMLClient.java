@@ -38,6 +38,10 @@ public class StationXMLClient {
             StationIterator sit = n.getStations();
             while (sit.hasNext()) {
                 Station s = sit.next();
+                if ( ! n.getNetCode().equals(s.getNetCode())) {
+                    throw new StationXMLException("Station in wrong network: "+n.getNetCode()+" != "+s.getNetCode()+"  "+r.peek().getLocation());
+                    
+                }
                 System.out.println("  Station: " + s.getNetCode() + "." + s.getStaCode() + " "
                         + s.getStationEpochs().size());
                 List<StationEpoch> staEpochs = s.getStationEpochs();
