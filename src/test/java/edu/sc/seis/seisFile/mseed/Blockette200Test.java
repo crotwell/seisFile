@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class Blockette200Test extends TestCase {
 
-    public void testInternalConsistency() {
+    public void testInternalConsistency() throws SeedFormatException {
         Blockette200 fromParams = new Blockette200(2.0f,
                                              1.0f,
                                              3.0f,
