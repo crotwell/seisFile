@@ -54,6 +54,26 @@ public class StationXMLClient {
                         for (Epoch epoch : chanEpochList) {
                             System.out.println("      Channel Epoch: " + channel.getLocCode() + "." + channel.getChanCode()
                                     + "  " + epoch.getStartDate() + " to " + epoch.getEndDate());
+                            float overallGain = 1;
+                            float stageZeroGain = 1;
+                            for (Response resp : epoch.getResponseList()) {
+                                System.out.print("          Resp "+resp.getStage());
+                                if (resp.getResponseItems().size() > 0) {
+                                    System.out.print(" "+resp.getResponseItems().get(0).getInputUnits()+" "+resp.getResponseItems().get(0).getOutputUnits());
+                                }
+                                if (resp.getStageSensitivity() != null) {
+                                    System.out.print(" "+resp.getStageSensitivity().getSensitivityValue());
+                                    if (resp.getStage() != 0) {
+                                        overallGain *= resp.getStageSensitivity().getSensitivityValue();
+                                    } else {
+                                        stageZeroGain = resp.getStageSensitivity().getSensitivityValue();
+                                    }
+                                }
+                                System.out.println();
+                            }
+                            if (overallGain != stageZeroGain) {
+                                System.out.println("          Overall Gain: "+overallGain+" != "+stageZeroGain);
+                            }
                         }
                     }
                 }

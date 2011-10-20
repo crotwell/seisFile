@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -39,6 +42,8 @@ public class Epoch {
                     sensor = new Sensor(reader);
                 } else if (elName.equals(StationXMLTagNames.INSTRUMENT_SENSITIVITY)) {
                     instrumentSensitivity = new InstrumentSensitivity(reader);
+                } else if (elName.equals(StationXMLTagNames.RESPONSE)) {
+                    responseList.add(new Response(reader));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -105,10 +110,16 @@ public class Epoch {
         return instrumentSensitivity;
     }
 
+    public List<Response> getResponseList() {
+        return responseList;
+    }
+    
     String startDate, endDate, creationDate;
     float lat, lon, elevation, depth, azimuth, dip, sampleRate, clockDrift;
     
 
     Sensor sensor;
     InstrumentSensitivity instrumentSensitivity;
+    List<Response> responseList = new ArrayList<Response>();
+    
 }

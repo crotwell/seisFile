@@ -1,0 +1,32 @@
+
+<StaMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.data.scec.org/xml/station/" xsi:schemaLocation="http://www.data.scec.org/xml/station/ http://www.data.scec.org/xml/station/station.xsd">
+ <Source>IRIS-DMC</Source>
+ <Sender>IRIS-DMC</Sender>
+ <Module>IRIS WEB SERVICE: http://www.iris.edu/ws/station</Module>
+ <ModuleURI>http://www.iris.edu/ws/station/query?net=I*&amp;loc=00&amp;cha=LH%3F%2CBH*&amp;timewindow=1997-06-07%2C2011-06-07&amp;level=net</ModuleURI>
+ <SentDate>2011-10-19T13:53:13</SentDate>
+ <Network net_code="IC">
+  <StartDate>1992-01-01T00:00:00</StartDate>
+  <EndDate>2500-12-12T23:59:59</EndDate>
+  <Description>New China Digital Seismograph Network</Description>
+  <TotalNumberStations>10</TotalNumberStations>
+ </Network>
+ <Network net_code="II">
+  <StartDate>1986-01-01T00:00:00</StartDate>
+  <EndDate>2500-12-12T23:59:59</EndDate>
+  <Description>Global Seismograph Network (GSN - IRIS/IDA)</Description>
+  <TotalNumberStations>46</TotalNumberStations>
+ </Network>
+ <Network net_code="IP">
+  <StartDate>2002-01-01T00:00:00</StartDate>
+  <EndDate>2500-12-12T23:59:59</EndDate>
+  <Description>Instituto Superior Tecnico Broadband Seismic Network</Description>
+  <TotalNumberStations>2</TotalNumberStations>
+ </Network>
+ <Network net_code="IU">
+  <StartDate>1988-01-01T00:00:00</StartDate>
+  <EndDate>2500-12-12T23:59:59</EndDate>
+  <Description>Global Seismograph Network (GSN - IRIS/USGS)</Description>
+  <TotalNumberStations>91</TotalNumberStations>
+ </Network>
+</StaMessage>
