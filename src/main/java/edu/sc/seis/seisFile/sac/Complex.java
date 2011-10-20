@@ -4,9 +4,9 @@ package edu.sc.seis.seisFile.sac;
 
 public class Complex {
 
-    private double real;
+    protected double real;
 
-    private double imaginary;
+    protected double imaginary;
 
     public Complex(double real, double imaginary) {
         this.real = real;
