@@ -1,0 +1,4658 @@
+
+<StaMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.data.scec.org/xml/station/" xsi:schemaLocation="http://www.data.scec.org/xml/station/ http://www.data.scec.org/xml/station/station.xsd">
+ <Source>IRIS-DMC</Source>
+ <Sender>IRIS-DMC</Sender>
+ <Module>IRIS WEB SERVICE: http://www.iris.edu/ws/station</Module>
+ <ModuleURI>http://www.iris.edu/ws/station/query?net=II&amp;sta=AAK&amp;level=chan</ModuleURI>
+ <SentDate>2011-10-19T14:09:44</SentDate>
+ <Network net_code="II">
+  <StartDate>1986-01-01T00:00:00</StartDate>
+  <EndDate>2500-12-12T23:59:59</EndDate>
+  <Description>Global Seismograph Network (GSN - IRIS/IDA)</Description>
+  <TotalNumberStations>46</TotalNumberStations>
+  <Station net_code="II" sta_code="AAK">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1990-10-12T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>42.639</Lat>
+    <Lon>74.494</Lon>
+    <Elevation>1645.0</Elevation>
+    <Site>
+     <Country>Ala Archa, Kyrgyzstan</Country>
+    </Site>
+    <Name>II-AAK</Name>
+    <CreationDate>1990-10-12T00:00:00</CreationDate>
+    <TotalNumberChannels>84</TotalNumberChannels>
+    <Channel chan_code="BH1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.70696E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.77724E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.77724E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.76287E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BH1" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48369E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48369E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BH2" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.82262E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BH2" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48324E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48324E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.68138E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1991-09-10T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.68139E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-09-11T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.83786E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.53016E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.59603E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.98014E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.98188E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>4.22414E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.82262E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHE" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48324E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHE" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.98014E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.70696E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.77724E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.77724E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45341E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.54109E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.70547E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.70546E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>4.08471E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.76287E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHN" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48369E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHN" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.70547E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.96626E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.96627E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.71597E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.70363E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.51813E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.51813E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>4.52141E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.95138E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.95138E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHZ" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48452E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48452E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.48452E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BHZ" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.51813E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BL1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.33249E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.38735E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.38735E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BLE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.31382E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1991-09-10T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.31383E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-09-11T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.43609E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7173470.0</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BLN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.33249E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.38735E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.38735E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6926430.0</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="BLZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.53722E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.53723E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>20.0</SampleRate>
+      <ClockDrift>2.5E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7687150.0</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="EHE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.65147E9</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="EHN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>9.03631E8</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.75301E9</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="EHZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>9.04729E8</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.73882E9</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="ELE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.76523E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="ELN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.4172E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.9015E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="ELZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.41532E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>200.0</SampleRate>
+      <ClockDrift>2.5E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.86786E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="EN1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>180.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>426890.0</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="EN2" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>270.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>426873.0</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="ENE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>270.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1656.74</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>270.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>426873.0</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="ENN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>180.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1662.61</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>180.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>426890.0</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="ENZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>90.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1655.59</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>90.0</Dip>
+      <SampleRate>100.0</SampleRate>
+      <ClockDrift>5.0E-7</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>426912.0</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LCE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494003</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>0.01</ClockDrift>
+      <Sensor>
+       <EquipType>Q330</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1000000.0</SensitivityValue>
+       <Frequency>0.0</Frequency>
+       <SensitivityUnits>USEC - Microseconds</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LCE" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494003</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>0.01</ClockDrift>
+      <Sensor>
+       <EquipType>Q330</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1000000.0</SensitivityValue>
+       <Frequency>0.0</Frequency>
+       <SensitivityUnits>USEC - Microseconds</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LCQ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494003</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>0.01</ClockDrift>
+      <Sensor>
+       <EquipType>Q330</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.0</SensitivityValue>
+       <Frequency>0.0</Frequency>
+       <SensitivityUnits>PERCENT - percentage 0-100</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LCQ" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494003</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>0.01</ClockDrift>
+      <Sensor>
+       <EquipType>Q330</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.0</SensitivityValue>
+       <Frequency>0.0</Frequency>
+       <SensitivityUnits>PERCENT - percentage 0-100</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LDI" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Paroscientific microbarograph</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>10000.1</SensitivityValue>
+       <Frequency>0.0020</Frequency>
+       <SensitivityUnits>PA - Pressure in Pascals</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LH1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.82785E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.10896E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.10896E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.74357E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LH1" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45662E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45662E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LH2" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.80267E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LH2" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45618E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45618E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.72553E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1991-09-10T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.72556E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-09-11T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.35144E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.01206E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.38411E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.19206E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.19275E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.68966E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.80267E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHE" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45618E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHE" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.98014E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.82785E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.10896E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.10896E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>9.81363E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.16438E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.08219E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.08219E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.63388E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.74357E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHN" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45662E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHN" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.70547E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.86502E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.86507E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.08639E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.81451E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.40725E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.40725E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.80857E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.93002E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.93002E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHZ" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45744E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45744E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.45744E9</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LHZ" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.51813E8</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LL1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.32998E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.54942E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.54942E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LLE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.25529E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1991-09-10T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.25532E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-09-11T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.74438E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.15305E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LLN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.32998E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.54942E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>5.54942E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.04459E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LLZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.14888E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>6.14892E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.37881E7</SensitivityValue>
+       <Frequency>0.05</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LN1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>180.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>53500.6</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LN2" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>270.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>53326.8</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LNE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>270.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>26502.4</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>270.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>53326.8</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LNN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>180.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>26596.2</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>180.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>53500.6</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LNZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>26484.1</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>90.0</Dip>
+      <SampleRate>1.0</SampleRate>
+      <ClockDrift>5.0E-5</ClockDrift>
+      <Sensor>
+       <EquipType>Kinemetrics FBA-23 Low-Gain Sensor</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>53331.6</SensitivityValue>
+       <Frequency>0.1</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="LOG" loc_code="  ">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>0.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.0</SampleRate>
+      <ClockDrift>0.0</ClockDrift>
+      <Sensor>
+       <EquipType>Console Log - Error Log</EquipType>
+      </Sensor>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="SHE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.34716E9</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="SHN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.36461E9</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="SHZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.3632E9</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="SLE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.09681E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="SLN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.1072E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="SLZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>40.0</SampleRate>
+      <ClockDrift>1.25E-6</ClockDrift>
+      <Sensor>
+       <EquipType>Geotech GS-13 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.10009E7</SensitivityValue>
+       <Frequency>10.0</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VH1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.13833E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.22851E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.22851E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.0774E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VH1" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13666E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13666E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VH2" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.37056E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VH2" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13645E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13645E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHE" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.10409E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1991-09-10T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.10833E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-09-11T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.30453E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.16601E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.93543E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.46749E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.46776E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.74907E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.28978E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHE" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13721E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHE" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>9.17321E7</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.13833E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.22851E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.22851E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.07137E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.84858E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.4249E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.41061E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>7.5224E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.03811E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHN" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13742E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHN" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.90182E7</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.46051E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.46554E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>1999-03-09T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.38417E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.137E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2002-11-11T09:55:00</StartDate>
+      <EndDate>2003-10-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.56945E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2003-10-17T00:00:00</StartDate>
+      <EndDate>2007-10-25T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.5645E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2007-10-26T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.33931E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.91795E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.96265E8</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHZ" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.1378E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13704E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>1.13704E9</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VHZ" loc_code="XX">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2002-11-11T09:54:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>9.80312E7</SensitivityValue>
+       <Frequency>0.03</Frequency>
+       <SensitivityUnits>M/S - Velocity in Meters Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VM1" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.01284E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VM2" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2010-06-28T19:30:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.31039E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VME" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-09-10T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.65581E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-09-11T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>4.02654E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.39623E11</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>90.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.31039E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VMN" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1991-04-16T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.71523E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1991-04-17T00:00:00</StartDate>
+      <EndDate>1994-01-08T00:00:00</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>6.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.89067E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-08T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>3.89067E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.30634E11</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-06-28T19:29:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>0.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1H/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.01284E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VMU" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-35.3</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>42953.0</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-35.3</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>42953.0</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VMV" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>120.0</Azimuth>
+      <Dip>-35.3</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>42874.3</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>120.0</Azimuth>
+      <Dip>-35.3</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>42874.3</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VMW" loc_code="10">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2010-08-08T06:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>240.0</Azimuth>
+      <Dip>-35.3</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>42900.6</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2010-08-08T07:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>240.0</Azimuth>
+      <Dip>-35.3</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-2 Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>42900.6</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="VMZ" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1990-10-12T00:00:00</StartDate>
+      <EndDate>1994-01-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>4.32382E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>1994-01-12T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>2.57196E11</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+     <Epoch>
+      <StartDate>2008-11-12T00:00:00</StartDate>
+      <EndDate>2599-12-31T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.1</SampleRate>
+      <ClockDrift>5.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Streckeisen STS-1V/VBB Seismometer</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>8.88426E9</SensitivityValue>
+       <Frequency>1.0E-4</Frequency>
+       <SensitivityUnits>M/S**2 - Acceleration in Meters Per Second Per Second</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <Channel chan_code="WDO" loc_code="00">
+     <CreationDate>1990-10-12T00:00:00</CreationDate>
+     <Epoch>
+      <StartDate>1999-03-10T00:00:00</StartDate>
+      <EndDate>2008-11-11T23:59:59</EndDate>
+      <Lat>42.639</Lat>
+      <Lon>74.494</Lon>
+      <Elevation>1645.0</Elevation>
+      <Depth>30.0</Depth>
+      <Azimuth>0.0</Azimuth>
+      <Dip>-90.0</Dip>
+      <SampleRate>0.5</SampleRate>
+      <ClockDrift>1.0E-4</ClockDrift>
+      <Sensor>
+       <EquipType>Paroscientific microbarograph</EquipType>
+      </Sensor>
+      <InstrumentSensitivity>
+       <SensitivityValue>10.0001</SensitivityValue>
+       <Frequency>0.0020</Frequency>
+       <SensitivityUnits>PA - Pressure in Pascals</SensitivityUnits>
+      </InstrumentSensitivity>
+     </Epoch>
+    </Channel>
+    <SelectedNumberChannels>84</SelectedNumberChannels>
+   </StationEpoch>
+  </Station>
+  <SelectedNumberStations>1</SelectedNumberStations>
+ </Network>
+</StaMessage>

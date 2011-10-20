@@ -121,4 +121,9 @@ public class StaxUtil {
         }
         throw new StationXMLException(name+" not found as an attribute");
     }
+    
+
+    public static Integer pullIntAttribute(StartElement start, String name) throws StationXMLException {
+        return Integer.parseInt(pullAttribute(start, name));
+    }
 }
