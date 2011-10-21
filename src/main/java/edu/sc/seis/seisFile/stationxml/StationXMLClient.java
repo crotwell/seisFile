@@ -58,8 +58,8 @@ public class StationXMLClient {
                             float stageZeroGain = 1;
                             for (Response resp : epoch.getResponseList()) {
                                 System.out.print("          Resp "+resp.getStage());
-                                if (resp.getResponseItems().size() > 0) {
-                                    System.out.print(" "+resp.getResponseItems().get(0).getInputUnits()+" "+resp.getResponseItems().get(0).getOutputUnits());
+                                if (resp.getResponseItem() != null) {
+                                    System.out.print(" "+resp.getResponseItem().getInputUnits()+" "+resp.getResponseItem().getOutputUnits());
                                 }
                                 if (resp.getStageSensitivity() != null) {
                                     System.out.print(" "+resp.getStageSensitivity().getSensitivityValue());

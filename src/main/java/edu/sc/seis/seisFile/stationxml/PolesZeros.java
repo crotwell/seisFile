@@ -48,4 +48,31 @@ public class PolesZeros extends AbstractResponseType {
             }
         }
     }
+
+    
+    public String getComment() {
+        return comment;
+    }
+
+    
+    public float getNormalizationFactor() {
+        return normalizationFactor;
+    }
+
+    
+    public float getNormalizationFreq() {
+        return normalizationFreq;
+    }
+
+    
+    public List<Pole> getPoleList() {
+        return poleList;
+    }
+
+    
+    public List<Zero> getZeroList() {
+        return zeroList;
+    }
+    
+    
 }
