@@ -14,7 +14,7 @@ public class Response {
     
     private Integer stage;
     private String stageDescription;
-    private List<AbstractResponseType> responseItems = new ArrayList<AbstractResponseType>();
+    private AbstractResponseType responseItem;
     private Decimation decimation;
     private GainSensitivity stageSensitivity;
 
@@ -29,17 +29,17 @@ public class Response {
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
                 if (elName.equals(StationXMLTagNames.POLESZEROS)) {
-                    responseItems.add( new PolesZeros(reader));
+                    responseItem = new PolesZeros(reader);
                 } else if (elName.equals(StationXMLTagNames.COEFFICIENTS)) {
-                    responseItems.add( new Coefficients(reader));
+                    responseItem = new Coefficients(reader);
                 } else if (elName.equals(StationXMLTagNames.RESPONSELIST)) {
-                    responseItems.add( new ResponseList(reader));
+                    responseItem = new ResponseList(reader);
                 } else if (elName.equals(StationXMLTagNames.GENERIC)) {
-                    responseItems.add( new Generic(reader));
+                    responseItem = new Generic(reader);
                 } else if (elName.equals(StationXMLTagNames.FIR)) {
-                    responseItems.add( new FIR(reader));
+                    responseItem = new FIR(reader);
                 } else if (elName.equals(StationXMLTagNames.POLYNOMIAL)) {
-                    responseItems.add( new Polynomial(reader));
+                    responseItem = new Polynomial(reader);
                 } else if (elName.equals(StationXMLTagNames.DECIMATION)) {
                     decimation = new Decimation(reader);
                 } else if (elName.equals(StationXMLTagNames.STAGESENSITIVITY)) {
@@ -67,8 +67,8 @@ public class Response {
     }
 
     
-    public List<AbstractResponseType> getResponseItems() {
-        return responseItems;
+    public AbstractResponseType getResponseItem() {
+        return responseItem;
     }
 
     

@@ -5,10 +5,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-public class Sensor extends Equipment {
 
-    public Sensor(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.SENSOR, reader);
+public class DataLogger extends Equipment {
+
+    public DataLogger(XMLEventReader reader) throws XMLStreamException, StationXMLException {
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.DATALOGGER, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -31,6 +32,10 @@ public class Sensor extends Equipment {
                     removalDate = StaxUtil.pullText(reader, StationXMLTagNames.REMOVALDATE);
                 } else if (elName.equals(StationXMLTagNames.CALIBRATIONDATE)) {
                     calibrationDate.add( StaxUtil.pullText(reader, StationXMLTagNames.CALIBRATIONDATE));
+                } else if (elName.equals(StationXMLTagNames.TOTALCHANNELS)) {
+                    totalChannels = StaxUtil.pullInt(reader, StationXMLTagNames.TOTALCHANNELS);
+                } else if (elName.equals(StationXMLTagNames.RECORDEDCHANNELS)) {
+                    recordedChannels = StaxUtil.pullInt(reader, StationXMLTagNames.RECORDEDCHANNELS);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -43,4 +48,15 @@ public class Sensor extends Equipment {
         }
     }
 
+    
+    public int getTotalChannels() {
+        return totalChannels;
+    }
+
+    
+    public int getRecordedChannels() {
+        return recordedChannels;
+    }
+
+    protected int totalChannels, recordedChannels;
 }

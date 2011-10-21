@@ -38,6 +38,8 @@ public class Epoch {
                     sampleRate = StaxUtil.pullFloat(reader, StationXMLTagNames.SAMPLE_RATE);
                 } else if (elName.equals(StationXMLTagNames.CLOCK_DRIFT)) {
                     clockDrift = StaxUtil.pullFloat(reader, StationXMLTagNames.CLOCK_DRIFT);
+                } else if (elName.equals(StationXMLTagNames.DATALOGGER)) {
+                    dataLogger = new DataLogger(reader);
                 } else if (elName.equals(StationXMLTagNames.SENSOR)) {
                     sensor = new Sensor(reader);
                 } else if (elName.equals(StationXMLTagNames.INSTRUMENT_SENSITIVITY)) {
@@ -101,6 +103,10 @@ public class Epoch {
     public float getClockDrift() {
         return clockDrift;
     }
+
+    public DataLogger getDataLogger() {
+        return dataLogger;
+    }
     
     public Sensor getSensor() {
         return sensor;
@@ -117,7 +123,7 @@ public class Epoch {
     String startDate, endDate, creationDate;
     float lat, lon, elevation, depth, azimuth, dip, sampleRate, clockDrift;
     
-
+    DataLogger dataLogger;
     Sensor sensor;
     InstrumentSensitivity instrumentSensitivity;
     List<Response> responseList = new ArrayList<Response>();

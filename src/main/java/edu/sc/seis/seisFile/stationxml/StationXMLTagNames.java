@@ -101,4 +101,14 @@ public final class StationXMLTagNames {
     public static final String FREEFREQ = "FreeFreq";
     public static final String HIGHPASS = "HighPass";
     public static final String LOWPASS = "LowPass";
+    public static final String MANUFACTURER = "Manufacturer";
+    public static final String VENDOR = "Vendor";
+    public static final String MODEL = "Model";
+    public static final String SERIALNUMBER = "SerialNumber";
+    public static final String INSTALLATIONDATE = "InstallationDate";
+    public static final String REMOVALDATE = "RemovalDate";
+    public static final String CALIBRATIONDATE = "CalibrationDate";
+    public static final String TOTALCHANNELS = "TotalChannels";
+    public static final String RECORDEDCHANNELS = "RecordedChannels";
+    public static final String DATALOGGER = "DataLogger";
 }
