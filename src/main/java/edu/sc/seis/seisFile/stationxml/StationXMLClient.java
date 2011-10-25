@@ -71,9 +71,7 @@ public class StationXMLClient {
                                 }
                                 System.out.println();
                             }
-                            if (overallGain != stageZeroGain) {
-                                System.out.println("          Overall Gain: "+overallGain+" != "+stageZeroGain);
-                            }
+                            System.out.println("          Overall Gain: "+overallGain);
                         }
                     }
                 }
