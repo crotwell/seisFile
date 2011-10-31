@@ -8,6 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 public class StaMessage {
 
     public StaMessage(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
+        this.reader = reader;
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STAMESSAGE, reader);
         while (reader.hasNext()) {
@@ -71,6 +72,16 @@ public class StaMessage {
     public NetworkIterator getNetworks() {
         return networks;
     }
+    
+    public void closeReader() {
+        try {
+            reader.close();
+        } catch(XMLStreamException e) {
+            logger.warn("problem closing underlying XMLEventReader.", e);
+        }
+    }
+    
+    XMLEventReader reader;
 
     String source;
 
@@ -81,4 +92,6 @@ public class StaMessage {
     String sentDate;
 
     NetworkIterator networks;
+
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(StaMessage.class);
 }
