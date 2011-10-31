@@ -37,6 +37,15 @@ public class Coefficients extends AbstractResponseType {
         }
     }
 
+    
+    public List<Float> getNumeratorList() {
+        return numeratorList;
+    }
+    
+    public List<Float> getDenominatorList() {
+        return denominatorList;
+    }
+
     List<Float> numeratorList = new ArrayList<Float>();
     List<Float> denominatorList = new ArrayList<Float>();
 }
