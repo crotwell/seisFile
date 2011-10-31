@@ -1,0 +1,757 @@
+
+<StaMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.data.scec.org/xml/station/" xsi:schemaLocation="http://www.data.scec.org/xml/station/ http://www.data.scec.org/xml/station/station.xsd">
+ <Source>IRIS-DMC</Source>
+ <Sender>IRIS-DMC</Sender>
+ <Module>IRIS WEB SERVICE: http://www.iris.edu/ws/station</Module>
+ <ModuleURI>http://www.iris.edu/ws/station/query?net=II&amp;level=sta</ModuleURI>
+ <SentDate>2011-10-19T14:08:54</SentDate>
+ <Network net_code="II">
+  <StartDate>1986-01-01T00:00:00</StartDate>
+  <EndDate>2500-12-12T23:59:59</EndDate>
+  <Description>Global Seismograph Network (GSN - IRIS/IDA)</Description>
+  <TotalNumberStations>46</TotalNumberStations>
+  <Station net_code="II" sta_code="AAK">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1990-10-12T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>42.639</Lat>
+    <Lon>74.494</Lon>
+    <Elevation>1645.0</Elevation>
+    <Site>
+     <Country>Ala Archa, Kyrgyzstan</Country>
+    </Site>
+    <Name>II-AAK</Name>
+    <CreationDate>1990-10-12T00:00:00</CreationDate>
+    <TotalNumberChannels>84</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="ABKT">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1993-04-25T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>37.9304</Lat>
+    <Lon>58.1189</Lon>
+    <Elevation>678.0</Elevation>
+    <Site>
+     <Country>Alibek, Turkmenistan</Country>
+    </Site>
+    <Name>II-ABKT</Name>
+    <CreationDate>1993-04-25T00:00:00</CreationDate>
+    <TotalNumberChannels>47</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="ABPO">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2007-04-04T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-19.018</Lat>
+    <Lon>47.229</Lon>
+    <Elevation>1528.0</Elevation>
+    <Site>
+     <Country>Ambohimpanompo, Madagascar</Country>
+    </Site>
+    <Name>II-ABPO</Name>
+    <CreationDate>2007-04-04T00:00:00</CreationDate>
+    <TotalNumberChannels>55</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="ALE">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1990-02-19T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>82.5033</Lat>
+    <Lon>-62.35</Lon>
+    <Elevation>60.0</Elevation>
+    <Site>
+     <Country>Alert, N.W.T., Canada</Country>
+    </Site>
+    <Name>II-ALE</Name>
+    <CreationDate>1990-02-19T00:00:00</CreationDate>
+    <TotalNumberChannels>38</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="ARU">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1988-09-14T00:00:00</StartDate>
+    <EndDate>2009-09-28T00:00:00</EndDate>
+    <Lat>56.4302</Lat>
+    <Lon>58.5625</Lon>
+    <Elevation>250.0</Elevation>
+    <Site>
+     <Country>Arti, Russia</Country>
+    </Site>
+    <Name>II-ARU</Name>
+    <CreationDate>1988-09-14T00:00:00</CreationDate>
+    <TotalNumberChannels>53</TotalNumberChannels>
+   </StationEpoch>
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2009-09-28T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>56.4293</Lat>
+    <Lon>58.5615</Lon>
+    <Elevation>260.0</Elevation>
+    <Site>
+     <Country>Arti, Russia</Country>
+    </Site>
+    <Name>II-ARU</Name>
+    <CreationDate>1988-09-14T00:00:00</CreationDate>
+    <TotalNumberChannels>26</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="ASCN">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-10-01T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-7.9327</Lat>
+    <Lon>-14.3601</Lon>
+    <Elevation>173.0</Elevation>
+    <Site>
+     <Country>Butt Crater, Ascension Island</Country>
+    </Site>
+    <Name>II-ASCN</Name>
+    <CreationDate>1994-10-01T00:00:00</CreationDate>
+    <TotalNumberChannels>69</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="BFO">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1996-05-29T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>48.3319</Lat>
+    <Lon>8.3311</Lon>
+    <Elevation>589.0</Elevation>
+    <Site>
+     <Country>Black Forest Observatory, Schiltach, Germany</Country>
+    </Site>
+    <Name>II-BFO</Name>
+    <CreationDate>1996-05-29T00:00:00</CreationDate>
+    <TotalNumberChannels>33</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="BORG">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-07-30T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>64.7474</Lat>
+    <Lon>-21.3268</Lon>
+    <Elevation>110.0</Elevation>
+    <Site>
+     <Country>Borgarfjordur, Asbjarnarstadir, Iceland</Country>
+    </Site>
+    <Name>II-BORG</Name>
+    <CreationDate>1994-07-30T00:00:00</CreationDate>
+    <TotalNumberChannels>67</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="BRVK">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-09-01T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>53.0581</Lat>
+    <Lon>70.2828</Lon>
+    <Elevation>330.0</Elevation>
+    <Site>
+     <Country>Borovoye, Kazakhstan</Country>
+    </Site>
+    <Name>II-BRVK</Name>
+    <CreationDate>1994-09-01T00:00:00</CreationDate>
+    <TotalNumberChannels>80</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="CMLA">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1996-03-10T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>37.7637</Lat>
+    <Lon>-25.5243</Lon>
+    <Elevation>429.0</Elevation>
+    <Site>
+     <Country>Cha de Macela, Sao Miguel Island, Azores</Country>
+    </Site>
+    <Name>II-CMLA</Name>
+    <CreationDate>1996-03-10T00:00:00</CreationDate>
+    <TotalNumberChannels>72</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="COCO">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1996-12-15T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-12.1901</Lat>
+    <Lon>96.8349</Lon>
+    <Elevation>1.0</Elevation>
+    <Site>
+     <Country>West Island, Cocos (Keeling) Islands</Country>
+    </Site>
+    <Name>II-COCO</Name>
+    <CreationDate>1996-12-15T00:00:00</CreationDate>
+    <TotalNumberChannels>51</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="DGAR">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2004-01-22T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-7.4121</Lat>
+    <Lon>72.4525</Lon>
+    <Elevation>1.0</Elevation>
+    <Site>
+     <Country>Diego Garcia, Chagos Islands, Indian Ocean</Country>
+    </Site>
+    <Name>II-DGAR</Name>
+    <CreationDate>2004-01-22T00:00:00</CreationDate>
+    <TotalNumberChannels>32</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="EFI">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1996-02-16T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-51.6753</Lat>
+    <Lon>-58.0637</Lon>
+    <Elevation>110.0</Elevation>
+    <Site>
+     <Country>Mount Kent, East Falkland Island</Country>
+    </Site>
+    <Name>II-EFI</Name>
+    <CreationDate>1996-02-16T00:00:00</CreationDate>
+    <TotalNumberChannels>53</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="ERM">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1990-05-21T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>42.015</Lat>
+    <Lon>143.1572</Lon>
+    <Elevation>40.0</Elevation>
+    <Site>
+     <Country>Erimo, Hokkaido Island, Japan</Country>
+    </Site>
+    <Name>II-ERM</Name>
+    <CreationDate>1990-05-21T00:00:00</CreationDate>
+    <TotalNumberChannels>44</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="ESK">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1987-11-13T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>55.3167</Lat>
+    <Lon>-3.205</Lon>
+    <Elevation>242.0</Elevation>
+    <Site>
+     <Country>Eskdalemuir, Scotland, UK</Country>
+    </Site>
+    <Name>II-ESK</Name>
+    <CreationDate>1987-11-13T00:00:00</CreationDate>
+    <TotalNumberChannels>64</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="FFC">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1993-08-28T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>54.725</Lat>
+    <Lon>-101.9783</Lon>
+    <Elevation>338.0</Elevation>
+    <Site>
+     <Country>Flin Flon, Canada</Country>
+    </Site>
+    <Name>II-FFC</Name>
+    <CreationDate>1993-08-28T00:00:00</CreationDate>
+    <TotalNumberChannels>64</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="GAR">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1988-09-14T00:00:00</StartDate>
+    <EndDate>1992-05-29T00:00:00</EndDate>
+    <Lat>39.0</Lat>
+    <Lon>70.3167</Lon>
+    <Elevation>1300.0</Elevation>
+    <Site>
+     <Country>Garm, Tajikistan</Country>
+    </Site>
+    <Name>II-GAR</Name>
+    <CreationDate>1988-09-14T00:00:00</CreationDate>
+    <TotalNumberChannels>22</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="HOPE">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1996-12-10T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-54.2836</Lat>
+    <Lon>-36.4879</Lon>
+    <Elevation>20.0</Elevation>
+    <Site>
+     <Country>Hope Point, South Georgia Island</Country>
+    </Site>
+    <Name>II-HOPE</Name>
+    <CreationDate>1996-12-10T00:00:00</CreationDate>
+    <TotalNumberChannels>61</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="JTS">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1995-04-23T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>10.2908</Lat>
+    <Lon>-84.9525</Lon>
+    <Elevation>340.0</Elevation>
+    <Site>
+     <Country>Las Juntas de Abangares, Costa Rica</Country>
+    </Site>
+    <Name>II-JTS</Name>
+    <CreationDate>1995-04-23T00:00:00</CreationDate>
+    <TotalNumberChannels>67</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="KAPI">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1999-02-06T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-5.0142</Lat>
+    <Lon>119.7517</Lon>
+    <Elevation>300.0</Elevation>
+    <Site>
+     <Country>Kappang, Sulawesi, Indonesia</Country>
+    </Site>
+    <Name>II-KAPI</Name>
+    <CreationDate>1999-02-06T00:00:00</CreationDate>
+    <TotalNumberChannels>65</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="KDAK">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1997-06-09T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>57.7828</Lat>
+    <Lon>-152.5835</Lon>
+    <Elevation>152.0</Elevation>
+    <Site>
+     <Country>Kodiak Island, Alaska, USA</Country>
+    </Site>
+    <Name>II-KDAK</Name>
+    <CreationDate>1997-06-09T00:00:00</CreationDate>
+    <TotalNumberChannels>70</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="KIV">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1988-09-14T00:00:00</StartDate>
+    <EndDate>1994-02-01T00:00:00</EndDate>
+    <Lat>43.9562</Lat>
+    <Lon>42.6888</Lon>
+    <Elevation>1210.0</Elevation>
+    <Site>
+     <Country>Kislovodsk, Russia</Country>
+    </Site>
+    <Name>II-KIV</Name>
+    <CreationDate>1988-09-14T00:00:00</CreationDate>
+    <TotalNumberChannels>22</TotalNumberChannels>
+   </StationEpoch>
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-02-01T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>43.9553</Lat>
+    <Lon>42.6863</Lon>
+    <Elevation>1054.0</Elevation>
+    <Site>
+     <Country>Kislovodsk, Russia</Country>
+    </Site>
+    <Name>II-KIV</Name>
+    <CreationDate>1988-09-14T00:00:00</CreationDate>
+    <TotalNumberChannels>47</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="KURK">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1995-03-26T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>50.7154</Lat>
+    <Lon>78.6202</Lon>
+    <Elevation>184.0</Elevation>
+    <Site>
+     <Country>Kurchatov, Kazakhstan</Country>
+    </Site>
+    <Name>II-KURK</Name>
+    <CreationDate>1995-03-26T00:00:00</CreationDate>
+    <TotalNumberChannels>80</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="KWAJ">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1999-06-22T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>8.8019</Lat>
+    <Lon>167.613</Lon>
+    <Elevation>0.0</Elevation>
+    <Site>
+     <Country>Kwajalein Atoll, Pacific Ocean</Country>
+    </Site>
+    <Name>II-KWAJ</Name>
+    <CreationDate>1999-06-22T00:00:00</CreationDate>
+    <TotalNumberChannels>63</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="LVZ">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1992-12-01T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>67.8979</Lat>
+    <Lon>34.6514</Lon>
+    <Elevation>630.0</Elevation>
+    <Site>
+     <Country>Lovozero, Russia</Country>
+    </Site>
+    <Name>II-LVZ</Name>
+    <CreationDate>1992-12-01T00:00:00</CreationDate>
+    <TotalNumberChannels>44</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="MBAR">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1999-09-22T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-0.6019</Lat>
+    <Lon>30.7382</Lon>
+    <Elevation>1390.0</Elevation>
+    <Site>
+     <Country>Mbarara, Uganda</Country>
+    </Site>
+    <Name>II-MBAR</Name>
+    <CreationDate>1999-09-22T00:00:00</CreationDate>
+    <TotalNumberChannels>45</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="MSEY">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1995-05-15T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-4.6737</Lat>
+    <Lon>55.4792</Lon>
+    <Elevation>475.0</Elevation>
+    <Site>
+     <Country>Mahe, Seychelles</Country>
+    </Site>
+    <Name>II-MSEY</Name>
+    <CreationDate>1995-05-15T00:00:00</CreationDate>
+    <TotalNumberChannels>63</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="MSVF">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-05-24T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-17.7448</Lat>
+    <Lon>178.0528</Lon>
+    <Elevation>801.1</Elevation>
+    <Site>
+     <Country>Monasavu, Fiji</Country>
+    </Site>
+    <Name>II-MSVF</Name>
+    <CreationDate>1994-05-24T00:00:00</CreationDate>
+    <TotalNumberChannels>46</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="NIL">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-12-18T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>33.6506</Lat>
+    <Lon>73.2686</Lon>
+    <Elevation>629.0</Elevation>
+    <Site>
+     <Country>Nilore, Pakistan</Country>
+    </Site>
+    <Name>II-NIL</Name>
+    <CreationDate>1994-12-18T00:00:00</CreationDate>
+    <TotalNumberChannels>40</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="NNA">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1988-06-22T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-11.9875</Lat>
+    <Lon>-76.8422</Lon>
+    <Elevation>575.0</Elevation>
+    <Site>
+     <Country>Nana, Peru</Country>
+    </Site>
+    <Name>II-NNA</Name>
+    <CreationDate>1988-06-22T00:00:00</CreationDate>
+    <TotalNumberChannels>88</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="NRIL">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1992-12-15T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>69.5049</Lat>
+    <Lon>88.4414</Lon>
+    <Elevation>92.0</Elevation>
+    <Site>
+     <Country>Norilsk, Russia</Country>
+    </Site>
+    <Name>II-NRIL</Name>
+    <CreationDate>1992-12-15T00:00:00</CreationDate>
+    <TotalNumberChannels>25</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="NVS">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1992-07-15T00:00:00</StartDate>
+    <EndDate>1994-02-16T00:00:00</EndDate>
+    <Lat>54.8404</Lat>
+    <Lon>83.2346</Lon>
+    <Elevation>150.0</Elevation>
+    <Site>
+     <Country>Novosibirsk, Russia</Country>
+    </Site>
+    <Name>II-NVS</Name>
+    <CreationDate>1992-07-15T00:00:00</CreationDate>
+    <TotalNumberChannels>25</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="OBN">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1988-09-14T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>55.1146</Lat>
+    <Lon>36.5674</Lon>
+    <Elevation>160.0</Elevation>
+    <Site>
+     <Country>Obninsk, Russia</Country>
+    </Site>
+    <Name>II-OBN</Name>
+    <CreationDate>1988-09-14T00:00:00</CreationDate>
+    <TotalNumberChannels>47</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="PALK">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2000-08-22T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>7.2728</Lat>
+    <Lon>80.7022</Lon>
+    <Elevation>460.0</Elevation>
+    <Site>
+     <Country>Pallekele, Sri Lanka</Country>
+    </Site>
+    <Name>II-PALK</Name>
+    <CreationDate>2000-08-22T00:00:00</CreationDate>
+    <TotalNumberChannels>59</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="PFO">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1986-10-24T00:00:00</StartDate>
+    <EndDate>2006-07-13T00:00:00</EndDate>
+    <Lat>33.6092</Lat>
+    <Lon>-116.4553</Lon>
+    <Elevation>1280.0</Elevation>
+    <Site>
+     <Country>Pinon Flat, California, USA</Country>
+    </Site>
+    <Name>II-PFO</Name>
+    <CreationDate>1986-10-24T00:00:00</CreationDate>
+    <TotalNumberChannels>64</TotalNumberChannels>
+   </StationEpoch>
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2006-07-13T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>33.6107</Lat>
+    <Lon>-116.4555</Lon>
+    <Elevation>1280.0</Elevation>
+    <Site>
+     <Country>Pinon Flat, California, USA</Country>
+    </Site>
+    <Name>II-PFO</Name>
+    <CreationDate>1986-10-24T00:00:00</CreationDate>
+    <TotalNumberChannels>65</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="RAYN">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1996-01-01T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>23.5225</Lat>
+    <Lon>45.5032</Lon>
+    <Elevation>631.0</Elevation>
+    <Site>
+     <Country>Ar Rayn, Saudi Arabia</Country>
+    </Site>
+    <Name>II-RAYN</Name>
+    <CreationDate>1996-01-01T00:00:00</CreationDate>
+    <TotalNumberChannels>65</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="RPN">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1987-06-15T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-27.1267</Lat>
+    <Lon>-109.3344</Lon>
+    <Elevation>110.0</Elevation>
+    <Site>
+     <Country>Rapanui, Easter Island, Chile</Country>
+    </Site>
+    <Name>II-RPN</Name>
+    <CreationDate>1987-06-15T00:00:00</CreationDate>
+    <TotalNumberChannels>70</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="SACV">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2000-05-29T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>14.9702</Lat>
+    <Lon>-23.6085</Lon>
+    <Elevation>387.0</Elevation>
+    <Site>
+     <Country>Santiago Island, Cape Verde</Country>
+    </Site>
+    <Name>II-SACV</Name>
+    <CreationDate>2000-05-29T00:00:00</CreationDate>
+    <TotalNumberChannels>35</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="SHEL">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1995-06-19T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-15.9588</Lat>
+    <Lon>-5.7457</Lon>
+    <Elevation>537.0</Elevation>
+    <Site>
+     <Country>Horse Pasture, St. Helena Island</Country>
+    </Site>
+    <Name>II-SHEL</Name>
+    <CreationDate>1995-06-19T00:00:00</CreationDate>
+    <TotalNumberChannels>36</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="SUR">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1990-10-30T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-32.3797</Lat>
+    <Lon>20.8117</Lon>
+    <Elevation>1770.0</Elevation>
+    <Site>
+     <Country>Sutherland, South Africa</Country>
+    </Site>
+    <Name>II-SUR</Name>
+    <CreationDate>1990-10-30T00:00:00</CreationDate>
+    <TotalNumberChannels>65</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="TAU">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-01-17T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-42.9099</Lat>
+    <Lon>147.3204</Lon>
+    <Elevation>132.0</Elevation>
+    <Site>
+     <Country>Hobart, Tasmania, Australia</Country>
+    </Site>
+    <Name>II-TAU</Name>
+    <CreationDate>1994-01-17T00:00:00</CreationDate>
+    <TotalNumberChannels>63</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="TLY">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1990-10-12T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>51.6807</Lat>
+    <Lon>103.6438</Lon>
+    <Elevation>579.0</Elevation>
+    <Site>
+     <Country>Talaya, Russia</Country>
+    </Site>
+    <Name>II-TLY</Name>
+    <CreationDate>1990-10-12T00:00:00</CreationDate>
+    <TotalNumberChannels>47</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="UOSS">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2009-05-07T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>24.9453</Lat>
+    <Lon>56.2042</Lon>
+    <Elevation>284.4</Elevation>
+    <Site>
+     <Country>Univ. of Sharjah, Sharjah, United Arab Emirates</Country>
+    </Site>
+    <Name>II-UOSS</Name>
+    <CreationDate>2009-05-07T00:00:00</CreationDate>
+    <TotalNumberChannels>36</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="WRAB">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1994-03-27T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>-19.9336</Lat>
+    <Lon>134.36</Lon>
+    <Elevation>366.0</Elevation>
+    <Site>
+     <Country>Tennant Creek, NT, Australia</Country>
+    </Site>
+    <Name>II-WRAB</Name>
+    <CreationDate>1994-03-27T00:00:00</CreationDate>
+    <TotalNumberChannels>63</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="XPF">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>1993-12-15T00:00:00</StartDate>
+    <EndDate>2005-12-31T00:00:00</EndDate>
+    <Lat>33.6092</Lat>
+    <Lon>-116.4533</Lon>
+    <Elevation>1280.0</Elevation>
+    <Site>
+     <Country>Pinon Flat, California, USA</Country>
+    </Site>
+    <Name>II-XPF</Name>
+    <CreationDate>1993-12-15T00:00:00</CreationDate>
+    <TotalNumberChannels>31</TotalNumberChannels>
+   </StationEpoch>
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2006-01-01T00:00:00</StartDate>
+    <EndDate>2007-06-26T00:00:00</EndDate>
+    <Lat>33.6107</Lat>
+    <Lon>-116.4555</Lon>
+    <Elevation>1280.0</Elevation>
+    <Site>
+     <Country>Pinon Flat, California, USA</Country>
+    </Site>
+    <Name>II-XPF</Name>
+    <CreationDate>1993-12-15T00:00:00</CreationDate>
+    <TotalNumberChannels>32</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <Station net_code="II" sta_code="XPFO">
+   <StationEpoch swap_order_16="BIG_ENDIAN" swap_order_32="BIG_ENDIAN">
+    <StartDate>2007-06-26T00:00:00</StartDate>
+    <EndDate>2599-12-31T23:59:59</EndDate>
+    <Lat>33.6107</Lat>
+    <Lon>-116.4555</Lon>
+    <Elevation>1280.0</Elevation>
+    <Site>
+     <Country>Pinon Flat, California, USA</Country>
+    </Site>
+    <Name>II-XPFO</Name>
+    <CreationDate>2007-06-26T00:00:00</CreationDate>
+    <TotalNumberChannels>44</TotalNumberChannels>
+   </StationEpoch>
+  </Station>
+  <SelectedNumberStations>46</SelectedNumberStations>
+ </Network>
+</StaMessage>
