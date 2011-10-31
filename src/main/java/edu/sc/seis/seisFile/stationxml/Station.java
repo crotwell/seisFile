@@ -18,7 +18,7 @@ public class Station {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals("StationEpoch")) {
+                if (elName.equals(StationXMLTagNames.STATION_EPOCH)) {
                     staList.add(new StationEpoch(reader));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
