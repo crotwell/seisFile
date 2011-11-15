@@ -1,7 +1,12 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
@@ -18,8 +23,34 @@ public class StationXMLClient {
             return;
         }
         URL url = new URL(args[1]);
+        URLConnection urlConn = url.openConnection();
+        if (urlConn instanceof HttpURLConnection) {
+            HttpURLConnection conn = (HttpURLConnection)urlConn;
+            if (conn.getResponseCode() != 200) {
+                String out = "";
+                BufferedReader errReader = null;
+                try {
+                    errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    for (String line; (line = errReader.readLine()) != null;) {
+                        out += line + "\n";
+                    }
+                } finally {
+                    if (errReader != null) try { 
+                        errReader.close(); 
+                        conn.disconnect();
+                    } catch (IOException e) {
+                        throw e;
+                    }
+                }
+                System.err.println("Error in connection with url: "+url);
+                System.err.println(out);
+                return;
+            }
+        }
+        
+        // likely not an error in the http layer, so assume XML is returned
         XMLInputFactory factory = XMLInputFactory.newInstance();
-        XMLEventReader r = factory.createXMLEventReader(url.toString(), url.openStream());
+        XMLEventReader r = factory.createXMLEventReader(url.toString(), urlConn.getInputStream());
         XMLEvent e = r.peek();
         while (!e.isStartElement()) {
             e = r.nextEvent(); // eat this one
