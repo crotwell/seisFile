@@ -241,6 +241,13 @@ public class DataHeader extends ControlHeader {
     public short getSize() {
         return 48;
     }
+    
+    /** same as getTypeCode() in ControlHeader, just a convenience method as the type code is called a
+     * Data header/quality indicator in the seed documentation for data header.
+     */
+    public char getQualityIndicator() {
+        return getTypeCode();
+    }
 
     /**
      * Get the value of stationIdentifier.
