@@ -39,11 +39,15 @@ public class DataSelectReader implements MSeedQueryReader {
      * @see edu.sc.seis.seisFile.dataSelectWS.MSeedQueryReader#createQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Date, float)
      */
     public String createQuery(String network, String station, String location, String channel, Date begin, float durationSeconds) throws IOException, DataSelectException, SeedFormatException {
+        if (durationSeconds <= 0) {
+            throw new DataSelectException("duration must be >= 0");
+        }
         String query = createQuery(network, station, location, channel);
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         query += "&start=" + longFormat.format(begin);
-        query += "&dur=" + (int)Math.ceil(durationSeconds); // dataselect only takes even integers, ceil make sure we are bigger
+        // dataselect only takes even integers, ceil make sure we are bigger
+        query += "&dur=" + (int)Math.round(Math.ceil(durationSeconds));
         return query;
     }
     
