@@ -56,7 +56,7 @@ public class DataSelectReader implements MSeedQueryReader {
         conn.connect();
         if (conn.getResponseCode() != 200) {
             if (conn.getResponseCode() == 404) {
-                // no data
+                logger.debug("reponseCode 404, no data");
                 return new ArrayList<DataRecord>();
             } else {
                 throw new DataSelectException("Did not get an OK repsonse code, code= :"+conn.getResponseCode());
@@ -71,7 +71,7 @@ public class DataSelectReader implements MSeedQueryReader {
                 if (sr instanceof DataRecord) {
                     records.add((DataRecord)sr);
                 } else {
-                    System.err.println("None data record found, skipping...");
+                    logger.warn("Not a data record, skipping..."+sr.getControlHeader().getSequenceNum()+" "+sr.getControlHeader().getTypeCode());
                 }
             } catch (EOFException e) {
                 // end of data?
@@ -86,5 +86,6 @@ public class DataSelectReader implements MSeedQueryReader {
 
     public static final String DEFAULT_WS_URL = "http://www.iris.edu/ws/dataselect/query";
     
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DataSelectReader.class);
 
 }
