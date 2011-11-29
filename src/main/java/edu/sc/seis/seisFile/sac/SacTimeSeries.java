@@ -64,7 +64,7 @@ public class SacTimeSeries {
     /** create a new SAC timeseries from the given header and data. The header values
      * related to the data are set correctly:
      *  npts=data.length<br/>
-     *  e=b+npts*delta<br/>
+     *  e=b+(npts-1)*delta<br/>
      *  iftype=ITIME
      *  leven=TRUE<br/>
      *  Setting of all other headers is the responsibility of the caller.
@@ -98,7 +98,7 @@ public class SacTimeSeries {
         this.y = y;
         getHeader().setNpts(y.length);
         if ( ! SacConstants.isUndef(getHeader().getDelta()) && ! SacConstants.isUndef(getHeader().getB())) {
-            getHeader().setE(getHeader().getB()+y.length*getHeader().getDelta());
+            getHeader().setE(getHeader().getB()+(y.length-1)*getHeader().getDelta());
         }
     }
 
