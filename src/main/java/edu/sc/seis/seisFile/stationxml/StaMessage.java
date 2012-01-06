@@ -11,6 +11,7 @@ public class StaMessage {
         this.reader = reader;
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STAMESSAGE, reader);
+        xmlSchemaLocation = startE.getNamespaceContext().getNamespaceURI("");
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -81,6 +82,23 @@ public class StaMessage {
         }
     }
     
+    
+    public String getXmlSchemaLocation() {
+        return xmlSchemaLocation;
+    }
+
+    
+    public void setXmlSchemaLocation(String xmlns) {
+        this.xmlSchemaLocation = xmlns;
+    }
+    
+    public boolean checkSchemaVersion() {
+        if ( ! xmlSchemaLocation.equals(StationXMLTagNames.SCHEMA_VERSION)) {
+            return false;
+        }
+        return true;
+    }
+    
     XMLEventReader reader;
 
     String source;
@@ -91,6 +109,8 @@ public class StaMessage {
 
     String sentDate;
 
+    String xmlSchemaLocation;
+    
     NetworkIterator networks;
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(StaMessage.class);
