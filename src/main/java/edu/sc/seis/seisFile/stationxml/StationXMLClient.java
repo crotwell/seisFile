@@ -2,7 +2,6 @@ package edu.sc.seis.seisFile.stationxml;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -58,6 +57,12 @@ public class StationXMLClient {
         }
         System.out.println("StaMessage");
         StaMessage staMessage = new StaMessage(r);
+        if ( ! staMessage.checkSchemaVersion()) {
+            System.out.println("");
+            System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
+            System.out.println("XmlSchema (code): "+StationXMLTagNames.SCHEMA_VERSION);
+        }
+        System.out.println("XmlSchema: " + staMessage.getXmlSchemaLocation());
         System.out.println("Source: " + staMessage.getSource());
         System.out.println("Sender: " + staMessage.getSender());
         System.out.println("Module: " + staMessage.getModule());
@@ -85,24 +90,26 @@ public class StationXMLClient {
                         for (Epoch epoch : chanEpochList) {
                             System.out.println("      Channel Epoch: " + channel.getLocCode() + "." + channel.getChanCode()
                                     + "  " + epoch.getStartDate() + " to " + epoch.getEndDate());
-                            float overallGain = 1;
-                            float stageZeroGain = 1;
-                            for (Response resp : epoch.getResponseList()) {
-                                System.out.print("          Resp "+resp.getStage());
-                                if (resp.getResponseItem() != null) {
-                                    System.out.print(" "+resp.getResponseItem().getInputUnits()+" "+resp.getResponseItem().getOutputUnits());
-                                }
-                                if (resp.getStageSensitivity() != null) {
-                                    System.out.print(" "+resp.getStageSensitivity().getSensitivityValue());
-                                    if (resp.getStage() != 0) {
-                                        overallGain *= resp.getStageSensitivity().getSensitivityValue();
-                                    } else {
-                                        stageZeroGain = resp.getStageSensitivity().getSensitivityValue();
+                            if (epoch.getResponseList().size() != 0) {
+                                float overallGain = 1;
+                                float stageZeroGain = 1;
+                                for (Response resp : epoch.getResponseList()) {
+                                    System.out.print("          Resp "+resp.getStage());
+                                    if (resp.getResponseItem() != null) {
+                                        System.out.print(" "+resp.getResponseItem().getInputUnits()+" "+resp.getResponseItem().getOutputUnits());
                                     }
-                                }
+                                    if (resp.getStageSensitivity() != null) {
+                                        System.out.print(" "+resp.getStageSensitivity().getSensitivityValue());
+                                        if (resp.getStage() != 0) {
+                                            overallGain *= resp.getStageSensitivity().getSensitivityValue();
+                                        } else {
+                                            stageZeroGain = resp.getStageSensitivity().getSensitivityValue();
+                                        }
+                                    }
                                 System.out.println();
                             }
-                            System.out.println("          Overall Gain: "+overallGain);
+                            System.out.println("          Overall Gain: "+overallGain+"  Stage Zero Gain: "+stageZeroGain);
+                            }
                         }
                     }
                 }
