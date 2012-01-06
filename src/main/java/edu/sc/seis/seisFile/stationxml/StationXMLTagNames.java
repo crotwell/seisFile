@@ -3,6 +3,8 @@ package edu.sc.seis.seisFile.stationxml;
 
 public final class StationXMLTagNames {
     
+    public static final String SCHEMA_VERSION = "http://www.data.scec.org/xml/station/20111019/";
+    
     private StationXMLTagNames() {}
     
 
@@ -111,4 +113,5 @@ public final class StationXMLTagNames {
     public static final String TOTALCHANNELS = "TotalChannels";
     public static final String RECORDEDCHANNELS = "RecordedChannels";
     public static final String DATALOGGER = "DataLogger";
+    public static final String XMLNS = "xmlns";
 }
