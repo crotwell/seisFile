@@ -14,7 +14,9 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import edu.sc.seis.seisFile.BuildVersion;
 
@@ -25,7 +27,7 @@ public class ListHeader {
         String station = null;
         String location = null;
         String channel = null;
-        String filename = null;
+        List<String> filenameList = new ArrayList<String>();
         String outFile = null;
         int maxRecords = -1;
         int defaultRecordSize = 4096;
@@ -62,16 +64,36 @@ public class ListHeader {
             } else if (args[i].equals("--help")) {
                 out.println("java "
                         + ListHeader.class.getName()
-                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][--verbose][--version][--help] <filename>");
+                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][--verbose][--version][--help] <filename> [<filename>...]");
                 System.exit(0);
             } else {
-                filename = args[i];
+                filenameList.add(args[i]);
             }
         }
-        if (filename == null) {
+        if (filenameList.size() == 0) {
             return;
         }
         
+        for (String filename : filenameList) {
+            processFile(filename, network, station, location, channel, maxRecords, defaultRecordSize, verbose, dumpData, dos, out);
+        }
+        if (dos != null) {
+            dos.close();
+        }
+        out.println("Finished: " + new Date());
+    }
+    
+    public static void processFile(String filename,
+                                   String network,
+                                   String station,
+                                   String location,
+                                   String channel,
+                                   int maxRecords,
+                                   int defaultRecordSize,
+                                   boolean verbose,
+                                   boolean dumpData,
+                                   DataOutputStream dos,
+                                   PrintWriter out) throws IOException, SeedFormatException {
         File f = new File(filename);
         InputStream inStream;
         if (f.exists() && f.isFile()) {
@@ -127,12 +149,11 @@ public class ListHeader {
             }
         } catch(EOFException e) {
             // done I guess
+        } finally {
+            if (dataInStream != null) {
+                dataInStream.close();
+            }
         }
-        if (dos != null) {
-            dos.close();
-        }
-        dataInStream.close();
-        out.println("Finished: " + new Date());
     }
 
 
