@@ -51,6 +51,7 @@ public class SyncFile {
         for (SyncLine line : syncLines) {
             out.println(line.formatLine());
         }
+        out.close();
     }
     
     public List<SyncLine> getSyncLines() {
@@ -63,7 +64,7 @@ public class SyncFile {
     
     String[] extraHeaders;
     
-    List<SyncLine> syncLines = new ArrayList<SyncLine>();
+    ArrayList<SyncLine> syncLines = new ArrayList<SyncLine>();
 
     private float tolerence = 0.01f;
 
