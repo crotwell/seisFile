@@ -31,9 +31,11 @@ public class SyncFile {
     }
 
     public void addLine(SyncLine line, boolean consolidate) {
-        if (consolidate) {
-            if (syncLines.get(syncLines.size()-1).isContiguous(line, tolerence)) {
-                
+        if (consolidate && syncLines.size() != 0) {
+            SyncLine previous = syncLines.get(syncLines.size()-1);
+            if (previous.isContiguous(line, tolerence)) {
+                syncLines.remove(syncLines.size()-1);
+                line = previous.concat(line);
             }
         }
         syncLines.add(line);

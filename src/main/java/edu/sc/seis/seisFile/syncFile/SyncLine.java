@@ -109,6 +109,10 @@ public class SyncLine {
                 ((line.startTime.getTime()-endTime.getTime())/1000.0 + 1/samplesPerSecond) < tolerenceSeconds;
     }
 
+    public SyncLine concat(SyncLine after) {
+        return new SyncLine(this, this.startTime, after.endTime);
+    }
+    
     public static String concatWithSeparator(String[] items, String separator) {
         String out = items[0];
         for (int i = 1; i < items.length; i++) {
