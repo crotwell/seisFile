@@ -47,11 +47,13 @@ public class SyncFile {
     }
     
     public void saveToFile(File f) throws IOException {
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(f)));
-        for (SyncLine line : syncLines) {
-            out.println(line.formatLine());
+        if (syncLines.size() != 0) {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+            for (SyncLine line : syncLines) {
+                out.println(line.formatLine());
+            }
+            out.close();
         }
-        out.close();
     }
     
     public List<SyncLine> getSyncLines() {
