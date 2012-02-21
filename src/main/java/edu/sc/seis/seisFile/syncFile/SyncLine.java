@@ -10,9 +10,7 @@ public class SyncLine {
     
     public static SyncLine parse(String line) throws ParseException, NumberFormatException {
         String[] s = line.split("\\|", -1);
-        System.out.println(line);
-        System.out.println(s[4]);
-        SyncLine out = new SyncLine(s[0], // net
+       SyncLine out = new SyncLine(s[0], // net
                                     s[1], // sta
                                     s[2], // loc
                                     s[3], // chan
@@ -127,8 +125,8 @@ public class SyncLine {
                 sta.equals(line.sta) &&
                 loc.equals(line.loc) &&
                 chan.equals(line.chan) && 
-                line.startTime.after(endTime) && 
-                ((line.startTime.getTime()-endTime.getTime())/1000.0 + 1/samplesPerSecond) < tolerenceSeconds;
+                (line.startTime.getTime() == endTime.getTime() || line.startTime.after(endTime)) && 
+                ((line.startTime.getTime()-endTime.getTime())/1000.0 + 1/samplesPerSecond) <= tolerenceSeconds;
     }
 
     public SyncLine concat(SyncLine after) {
