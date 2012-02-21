@@ -128,7 +128,7 @@ public class SyncLine {
         if (d == null) {
             return "";
         }
-        DateFormat df = new SimpleDateFormat("yyyy,jjj,hh:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy,DDD,hh:mm:ss");
         return df.format(d);
     }
     
