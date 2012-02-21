@@ -1,17 +1,39 @@
 package edu.sc.seis.seisFile.syncFile;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
 public class SyncLine {
     
+    public static SyncLine parse(String line) throws ParseException, NumberFormatException {
+        String[] s = line.split("\\|", -1);
+        System.out.println(line);
+        System.out.println(s[4]);
+        SyncLine out = new SyncLine(s[0], // net
+                                    s[1], // sta
+                                    s[2], // loc
+                                    s[3], // chan
+                                    stringToDate(s[4]), // startTime
+                                    stringToDate(s[5]), // endTime
+                                    stringToFloat(s[6]), // maxClockDrift
+                                    stringToFloat(s[7]), // samplesPerSecond
+                                    s[8], // channelFlag
+                                    s[9], // stationVolume
+                                    s[10], // dccTapeNumber
+                                    s[11], // dmcTapeNumber
+                                    s[12], // comment
+                                    stringToDate(s[13]), // lineModByDMC
+                                    stringToDate(s[14])); // lineModByDCC
+        return out;
+    }
 
     public SyncLine(SyncLine copy,
                     Date startTime,
                     Date endTime,
-                    float samplesPerSecond) {
+                    Float samplesPerSecond) {
         this(copy, startTime, endTime);
         this.samplesPerSecond = samplesPerSecond;
     }
@@ -42,8 +64,8 @@ public class SyncLine {
                     String chan,
                     Date startTime,
                     Date endTime,
-                    float maxClockDrift,
-                    float samplesPerSecond) {
+                    Float maxClockDrift,
+                    Float samplesPerSecond) {
         this(net, sta, loc, chan, startTime, endTime, maxClockDrift, samplesPerSecond, "", "", "", "", "", null, null);
     }
     
@@ -53,8 +75,8 @@ public class SyncLine {
                     String chan,
                     Date startTime,
                     Date endTime,
-                    float maxClockDrift,
-                    float samplesPerSecond,
+                    Float maxClockDrift,
+                    Float samplesPerSecond,
                     String channelFlag,
                     String stationVolume,
                     String dccTapeNumber,
@@ -88,8 +110,8 @@ public class SyncLine {
                                                  chan,
                                                  dateToString(startTime),
                                                  dateToString(endTime),
-                                                 "" + maxClockDrift,
-                                                 "" + samplesPerSecond,
+                                                 maxClockDrift==null?"":"" + maxClockDrift,
+                                                 samplesPerSecond==null?"":"" + samplesPerSecond,
                                                  channelFlag,
                                                  stationVolume,
                                                  dccTapeNumber,
@@ -125,6 +147,37 @@ public class SyncLine {
     }
 
     /**
+     * partse the date from a string, checking for null and empty. If empty, a null Date
+     * is returned.
+     * @throws NumberFormatException if string can not be parsed
+     */
+    public static Float stringToFloat(String s) {
+        if (s == null || s.length() == 0) {
+            return null;
+        }
+        return Float.parseFloat(s);
+    }
+
+    /**
+     * partse the date from a string, checking for null and empty. If empty, a null Date
+     * is returned.
+     * @throws ParseException if string is not of the form "yyyy,DDD,hh:mm:ss"
+     */
+    public static Date stringToDate(String d) throws ParseException {
+        if (d == null || d.length() == 0) {
+            return null;
+        }
+        if (d.length() == 8) {
+            // year and day only
+            DateFormat df = new SimpleDateFormat("yyyy,DDD");
+            return df.parse(d);
+        } else {
+            DateFormat df = new SimpleDateFormat("yyyy,DDD,hh:mm:ss");
+            return df.parse(d);
+        }
+    }
+
+    /**
      * format the date as a string, checking for null. If null, an empty String
      * is returned.
      */
@@ -142,8 +195,8 @@ public class SyncLine {
     String chan;
     Date startTime;
     Date endTime;
-    float maxClockDrift;
-    float samplesPerSecond;
+    Float maxClockDrift;
+    Float samplesPerSecond;
     String channelFlag;
     String stationVolume;
     String dccTapeNumber;
