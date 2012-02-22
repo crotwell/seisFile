@@ -158,7 +158,7 @@ public class SyncLine implements Comparable<SyncLine> {
     }
 
     /**
-     * partse the date from a string, checking for null and empty. If empty, a
+     * parse the date from a string, checking for null and empty. If empty, a
      * null Date is returned.
      * 
      * @throws NumberFormatException
@@ -172,7 +172,7 @@ public class SyncLine implements Comparable<SyncLine> {
     }
 
     /**
-     * partse the date from a string, checking for null and empty. If empty, a
+     * parse the date from a string, checking for null and empty. If empty, a
      * null Date is returned.
      * 
      * @throws ParseException
