@@ -90,15 +90,21 @@ public class SyncFile {
     public void saveToFile(File f) throws IOException {
         if (syncLines.size() != 0) {
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+            appendToWriter(out, true);
+            out.close();
+        }
+    }
+    
+    public void appendToWriter(PrintWriter writer, boolean writeHeader) {
+        if (writeHeader) {
             String extras = "";
             for (int i = 0; i < extraHeaders.length; i++) {
                 extras += "|" + extraHeaders[i];
             }
-            out.println(dccName + "|" + dateModified + extras);
-            for (SyncLine line : syncLines) {
-                out.println(line.formatLine());
-            }
-            out.close();
+            writer.println(dccName + "|" + dateModified + extras);
+        }
+        for (SyncLine line : syncLines) {
+            writer.println(line.formatLine());
         }
     }
 
