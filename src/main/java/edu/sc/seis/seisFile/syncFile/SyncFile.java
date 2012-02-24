@@ -56,6 +56,13 @@ public class SyncFile {
         this(dccName, dateModified, extraHeaders);
         syncLines = lines;
     }
+    
+    public SyncFile concatenate(SyncFile other) {
+        SyncFile out = new SyncFile(getDccName());
+        out.syncLines.addAll(getSyncLines());
+        out.syncLines.addAll(other.getSyncLines());
+        return out;
+    }
 
     public void sort() {
         Collections.sort(syncLines);
