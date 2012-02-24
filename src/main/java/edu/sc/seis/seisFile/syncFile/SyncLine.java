@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class SyncLine implements Comparable<SyncLine> {
 
@@ -61,10 +62,7 @@ public class SyncLine implements Comparable<SyncLine> {
         this(net, sta, loc, chan, startTime, endTime, maxClockDrift, samplesPerSecond, "", "", "", "", "", null, null);
     }
 
-    public SyncLine(String net,
-                    String sta,
-                    String loc,
-                    String chan) {
+    public SyncLine(String net, String sta, String loc, String chan) {
         this(net, sta, loc, chan, null, null, null, null);
     }
 
@@ -132,7 +130,7 @@ public class SyncLine implements Comparable<SyncLine> {
     public SyncLine concat(SyncLine after) {
         return new SyncLine(this, this.startTime, after.endTime);
     }
-    
+
     public int compareTo(SyncLine two) {
         int subComp = getNet().compareToIgnoreCase(two.getNet());
         if (subComp != 0) {
@@ -152,7 +150,7 @@ public class SyncLine implements Comparable<SyncLine> {
         }
         return getStartTime().compareTo(two.getStartTime());
     }
-    
+
     public static String concatWithSeparator(String[] items, String separator) {
         String out = items[0];
         for (int i = 1; i < items.length; i++) {
@@ -191,11 +189,13 @@ public class SyncLine implements Comparable<SyncLine> {
         }
         if (d.length() == 8) {
             // year and day only
-            DateFormat df = new SimpleDateFormat("yyyy,DDD");
-            return df.parse(d);
+            synchronized(dayOnlyDateFormat) {
+                return dayOnlyDateFormat.parse(d);
+            }
         } else {
-            DateFormat df = new SimpleDateFormat("yyyy,DDD,hh:mm:ss");
-            return df.parse(d);
+            synchronized(dateFormat) {
+                return dateFormat.parse(d);
+            }
         }
     }
 
@@ -207,8 +207,18 @@ public class SyncLine implements Comparable<SyncLine> {
         if (d == null) {
             return "";
         }
-        DateFormat df = new SimpleDateFormat("yyyy,DDD,hh:mm:ss");
-        return df.format(d);
+        synchronized(dateFormat) {
+            return dateFormat.format(d);
+        }
+    }
+
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss");
+
+    private static final DateFormat dayOnlyDateFormat = new SimpleDateFormat("yyyy,DDD");
+    
+    static {
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        dayOnlyDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     public String getNet() {
