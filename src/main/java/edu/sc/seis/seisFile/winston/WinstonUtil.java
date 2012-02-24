@@ -37,7 +37,7 @@ public class WinstonUtil {
 
     public List<WinstonSCNL> listChannelDatabases() throws SQLException {
         List<WinstonSCNL> out = new ArrayList<WinstonSCNL>();
-        ResultSet rs = conn.createStatement().executeQuery("SHOW DATABASES");
+        ResultSet rs = getConnection().createStatement().executeQuery("SHOW DATABASES");
         while (rs.next()) {
             String s = rs.getString(1);
             if (s.startsWith(getPrefix()) && !s.equals(getPrefix() + "ROOT")) {
@@ -48,13 +48,13 @@ public class WinstonUtil {
     }
 
     public void useDatabase(WinstonSCNL channel) throws SQLException {
-        conn.createStatement().execute("use " + channel.getDatabaseName());
+        getConnection().createStatement().execute("use " + channel.getDatabaseName());
     }
 
     public List<WinstonTable> listDayTables(WinstonSCNL channel) throws SQLException {
         List<WinstonTable> out = new ArrayList<WinstonTable>();
         useDatabase(channel);
-        ResultSet rs = conn.createStatement().executeQuery("SHOW TABLES");
+        ResultSet rs = getConnection().createStatement().executeQuery("SHOW TABLES");
         while (rs.next()) {
             String s = rs.getString(1);
             if (!s.contains("$$H")) { // skip heli channels as we know how to
@@ -101,7 +101,7 @@ public class WinstonUtil {
                                                 table.getDatabase().getStation(),
                                                 table.getDatabase().getLocId(),
                                                 table.getDatabase().getChannel());
-        ResultSet rs = conn.createStatement().executeQuery("select st, et, sr from " + table.getTableName()
+        ResultSet rs = getConnection().createStatement().executeQuery("select st, et, sr from " + table.getTableName()
                 + " order by st");
         while (rs.next()) {
             out.addLine(new SyncLine(defaultSyncLine,
@@ -135,6 +135,13 @@ public class WinstonUtil {
 
     public String getPrefix() {
         return prefix;
+    }
+    
+    Connection getConnection() throws SQLException {
+        if (conn == null) {
+            createConnection();
+        }
+        return conn;
     }
 
     public Connection createConnection() throws SQLException {
