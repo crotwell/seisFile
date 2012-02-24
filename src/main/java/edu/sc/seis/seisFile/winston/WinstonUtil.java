@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import edu.sc.seis.seisFile.syncFile.SyncFile;
@@ -79,16 +80,18 @@ public class WinstonUtil {
                                                      int endMonth,
                                                      int endDay) throws SQLException {
         List<WinstonTable> out = listDayTables(channel);
-        for (WinstonTable wt : out) {
+        Iterator<WinstonTable> it = out.iterator();
+        while (it.hasNext()) {
+            WinstonTable wt = it.next();
             if (wt.getYear() < startYear || wt.getYear() > endYear) {
-                out.remove(wt);
+                it.remove();
             } else if (wt.getYear() == startYear) {
                 if (wt.getMonth() < startMonth || (wt.getMonth() == startMonth && wt.getDay() < startDay)) {
-                    out.remove(wt);
+                    it.remove();
                 }
             } else if (wt.getYear() == endYear) {
                 if (wt.getMonth() > endMonth || (wt.getMonth() == endMonth && wt.getDay() > endDay)) {
-                    out.remove(wt);
+                    it.remove();
                 }
             }
         }
