@@ -64,6 +64,13 @@ public class SyncLine implements Comparable<SyncLine> {
     public SyncLine(String net,
                     String sta,
                     String loc,
+                    String chan) {
+        this(net, sta, loc, chan, null, null, null, null);
+    }
+
+    public SyncLine(String net,
+                    String sta,
+                    String loc,
                     String chan,
                     Date startTime,
                     Date endTime,
