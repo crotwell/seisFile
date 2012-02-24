@@ -85,13 +85,19 @@ public class WinstonUtil {
             WinstonTable wt = it.next();
             if (wt.getYear() < startYear || wt.getYear() > endYear) {
                 it.remove();
-            } else if (wt.getYear() == startYear) {
-                if (wt.getMonth() < startMonth || (wt.getMonth() == startMonth && wt.getDay() < startDay)) {
-                    it.remove();
-                }
-            } else if (wt.getYear() == endYear) {
-                if (wt.getMonth() > endMonth || (wt.getMonth() == endMonth && wt.getDay() > endDay)) {
-                    it.remove();
+                continue;
+            } else {
+                if (wt.getYear() == startYear) {
+                    if (wt.getMonth() < startMonth || (wt.getMonth() == startMonth && wt.getDay() < startDay)) {
+                        it.remove();
+                        continue;
+                    }
+                } 
+                if (wt.getYear() == endYear) {
+                    if (wt.getMonth() > endMonth || (wt.getMonth() == endMonth && wt.getDay() > endDay)) {
+                        it.remove();
+                        continue;
+                    }
                 }
             }
         }
