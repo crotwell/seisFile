@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.winston;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -94,6 +95,51 @@ public class WinstonUtil {
         return out;
     }
 
+    public SyncFile calculateSyncBetweenDates(WinstonSCNL channel,
+                                              int startYear,
+                                              int startMonth,
+                                              int startDay,
+                                              int endYear,
+                                              int endMonth,
+                                              int endDay,
+                                              String dataCenterName) throws SQLException {
+        SyncFile out = new SyncFile(dataCenterName);
+        List<WinstonTable> tableList = listTablesBetweenDates(channel,
+                                                              startYear,
+                                                              startMonth,
+                                                              startDay,
+                                                              endYear,
+                                                              endMonth,
+                                                              endDay);
+        for (WinstonTable wt : tableList) {
+            out = out.concatenate(calculateSyncForDay(wt));
+        }
+        return out;
+    }
+
+    public void writeSyncBetweenDates(WinstonSCNL channel,
+                                      int startYear,
+                                      int startMonth,
+                                      int startDay,
+                                      int endYear,
+                                      int endMonth,
+                                      int endDay,
+                                      String dataCenterName,
+                                      PrintWriter writer) throws SQLException {
+        SyncFile sync = new SyncFile(dataCenterName);
+        sync.appendToWriter(writer, true); // just to get header
+        List<WinstonTable> tableList = listTablesBetweenDates(channel,
+                                                              startYear,
+                                                              startMonth,
+                                                              startDay,
+                                                              endYear,
+                                                              endMonth,
+                                                              endDay);
+        for (WinstonTable wt : tableList) {
+            calculateSyncForDay(wt).appendToWriter(writer, false);
+        }
+    }
+
     public SyncFile calculateSyncForDay(WinstonTable table) throws SQLException {
         SyncFile out = new SyncFile("Winston " + table.getTableName());
         useDatabase(table.getDatabase());
@@ -136,7 +182,7 @@ public class WinstonUtil {
     public String getPrefix() {
         return prefix;
     }
-    
+
     Connection getConnection() throws SQLException {
         if (conn == null) {
             createConnection();
