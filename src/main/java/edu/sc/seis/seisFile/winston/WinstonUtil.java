@@ -144,7 +144,7 @@ public class WinstonUtil {
         return conn;
     }
 
-    public Connection createConnection() throws SQLException {
+    public void createConnection() throws SQLException {
         try {
             Class.forName(driver).newInstance();
         } catch(Exception e) {
@@ -152,8 +152,7 @@ public class WinstonUtil {
             sql.initCause(e);
             throw sql;
         }
-        Connection conn = DriverManager.getConnection(getDatabaseURL(), getUsername(), getPassword());
-        return conn;
+        conn = DriverManager.getConnection(getDatabaseURL(), getUsername(), getPassword());
     }
 
     public void close() throws SQLException {
