@@ -21,12 +21,12 @@ public class SyncFile {
         // first line is header line with dccName | date | extra | extra...
         line = r.readLine();
         if (line == null) {
-            throw new IOException("empty Sync file: "+f);
+            throw new IOException("empty Sync file: " + f);
         }
         String[] split = line.split("\\|");
         String[] extras = new String[0];
         if (split.length > 2) {
-            extras = new String[split.length-2];
+            extras = new String[split.length - 2];
             System.arraycopy(split, 2, extras, 0, extras.length);
         }
         SyncFile sync = new SyncFile(split[0], split[1], extras);
@@ -56,11 +56,23 @@ public class SyncFile {
         this(dccName, dateModified, extraHeaders);
         syncLines = lines;
     }
-    
+
     public SyncFile concatenate(SyncFile other) {
         SyncFile out = new SyncFile(getDccName());
         out.syncLines.addAll(getSyncLines());
-        out.syncLines.addAll(other.getSyncLines());
+        List<SyncLine> otherLines = new ArrayList<SyncLine>();
+        otherLines.addAll(other.getSyncLines());
+        if (out.getSyncLines().size() != 0 && other.getSyncLines().size() != 0) {
+            SyncLine last = out.getSyncLines().get(getSyncLines().size() - 1);
+            SyncLine otherFirst = otherLines.get(0);
+            if (last.isContiguous(otherFirst, tolerence)) {
+                out.getSyncLines().remove(out.getSyncLines().size() - 1);
+                last = last.concat(otherFirst);
+                out.addLine(last, true);
+                otherLines.remove(0);
+            }
+        }
+        out.syncLines.addAll(otherLines);
         return out;
     }
 
@@ -94,7 +106,7 @@ public class SyncFile {
             out.close();
         }
     }
-    
+
     public void appendToWriter(PrintWriter writer, boolean writeHeader) {
         if (writeHeader) {
             String extras = "";
@@ -106,6 +118,7 @@ public class SyncFile {
         for (SyncLine line : syncLines) {
             writer.println(line.formatLine());
         }
+        writer.flush();
     }
 
     public String getDccName() {
