@@ -59,12 +59,19 @@ public class SyncFileWriter {
 
     public void close() {
         if (writer != null) {
+            flush();
+            writer.close();
+            writer = null;
+        }
+    }
+    
+    public void flush() {
+        if (writer != null) {
             if (previous != null) {
                 writer.println(previous.formatLine());
                 previous = null;
             }
-            writer.close();
-            writer = null;
+            writer.flush();
         }
     }
 
