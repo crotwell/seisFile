@@ -157,7 +157,9 @@ public class SyncFile {
 
     List<SyncLine> syncLines = new ArrayList<SyncLine>();
 
-    private float tolerence = 0.01f;
+    private float tolerence = DEFAULT_TOLERENCE;
+    
+    public static final float DEFAULT_TOLERENCE = 0.01f;
 
     public static final String SEPARATOR = "|";
 }
