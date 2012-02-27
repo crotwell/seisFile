@@ -26,6 +26,7 @@ public class SyncFileWriter {
         this.dateModified = dateModified;
         this.extraHeaders = extraHeaders;
         this.writer = writer;
+        writer.println(new SyncFile(dccName, dateModified, extraHeaders).getHeaderLine())
     }
 
     public void appendAll(SyncFile sFile) {
