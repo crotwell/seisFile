@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -154,7 +155,10 @@ public class WinstonUtil {
                                                 table.getDatabase().getStation(),
                                                 table.getDatabase().getLocId(),
                                                 table.getDatabase().getChannel());
-        ResultSet rs = getConnection().createStatement().executeQuery("select st, et, sr from " + table.getTableName()
+        Statement stmt = getConnection().createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+                                                       java.sql.ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(Integer.MIN_VALUE);
+        ResultSet rs = stmt.executeQuery("select st, et, sr from " + table.getTableName()
                 + " order by st");
         while (rs.next()) {
             out.addLine(new SyncLine(defaultSyncLine,
@@ -163,6 +167,7 @@ public class WinstonUtil {
                                      rs.getFloat(3)),
                         true);
         }
+        stmt.close();
         return out;
     }
 
