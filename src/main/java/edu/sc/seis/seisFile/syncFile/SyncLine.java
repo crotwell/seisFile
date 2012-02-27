@@ -123,8 +123,7 @@ public class SyncLine implements Comparable<SyncLine> {
      */
     public boolean isContiguous(SyncLine line, float tolerenceSeconds) {
         return net.equals(line.net) && sta.equals(line.sta) && loc.equals(line.loc) && chan.equals(line.chan)
-                && (line.startTime.getTime() == endTime.getTime() || line.startTime.after(endTime))
-                && ((line.startTime.getTime() - endTime.getTime()) / 1000.0 ) <= tolerenceSeconds;
+                && Math.abs((line.startTime.getTime() - endTime.getTime()) / 1000.0 ) <= tolerenceSeconds;
     }
 
     public SyncLine concat(SyncLine after) {
