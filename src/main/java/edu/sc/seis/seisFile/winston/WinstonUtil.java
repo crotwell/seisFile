@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.sc.seis.seisFile.syncFile.SyncFile;
+import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 import edu.sc.seis.seisFile.syncFile.SyncLine;
 
 public class WinstonUtil {
@@ -133,10 +134,7 @@ public class WinstonUtil {
                                       int endYear,
                                       int endMonth,
                                       int endDay,
-                                      String dataCenterName,
-                                      PrintWriter writer) throws SQLException {
-        SyncFile sync = new SyncFile(dataCenterName);
-        sync.appendToWriter(writer, true); // just to get header
+                                      SyncFileWriter writer) throws SQLException {
         List<WinstonTable> tableList = listTablesBetweenDates(channel,
                                                               startYear,
                                                               startMonth,
@@ -145,7 +143,7 @@ public class WinstonUtil {
                                                               endMonth,
                                                               endDay);
         for (WinstonTable wt : tableList) {
-            calculateSyncForDay(wt).appendToWriter(writer, false);
+            writer.appendAll(calculateSyncForDay(wt), true);
         }
     }
 
