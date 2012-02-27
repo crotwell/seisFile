@@ -212,7 +212,7 @@ public class SyncLine implements Comparable<SyncLine> {
         }
     }
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss");
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss.SSS");
 
     private static final DateFormat dayOnlyDateFormat = new SimpleDateFormat("yyyy,DDD");
     
