@@ -167,6 +167,7 @@ public class WinstonUtil {
                                      rs.getFloat(3)),
                         true);
         }
+        rs.close();
         stmt.close();
         return out;
     }
