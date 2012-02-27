@@ -109,16 +109,20 @@ public class SyncFile {
 
     public void appendToWriter(PrintWriter writer, boolean writeHeader) {
         if (writeHeader) {
-            String extras = "";
-            for (int i = 0; i < extraHeaders.length; i++) {
-                extras += "|" + extraHeaders[i];
-            }
-            writer.println(dccName + "|" + dateModified + extras);
+            writer.println(getHeaderLine());
         }
         for (SyncLine line : syncLines) {
             writer.println(line.formatLine());
         }
         writer.flush();
+    }
+    
+    public String getHeaderLine() {
+        String extras = "";
+        for (int i = 0; i < extraHeaders.length; i++) {
+            extras += "|" + extraHeaders[i];
+        }
+        return dccName + "|" + dateModified + extras;
     }
 
     public String getDccName() {
