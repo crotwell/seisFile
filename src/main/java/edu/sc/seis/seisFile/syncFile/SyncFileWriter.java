@@ -1,20 +1,25 @@
 package edu.sc.seis.seisFile.syncFile;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
-
 public class SyncFileWriter {
-    
+
+    public SyncFileWriter(String dccName, String filename) throws IOException {
+        this(dccName, new PrintWriter(new BufferedWriter(new FileWriter(filename))));
+    }
 
     public SyncFileWriter(String dccName, PrintWriter writer) {
         this(dccName, SyncLine.dateToString(new Date()), new String[0], writer);
     }
-    
+
     public SyncFileWriter(String dccName, String dateModified, PrintWriter writer) {
         this(dccName, dateModified, new String[0], writer);
     }
-    
+
     public SyncFileWriter(String dccName, String dateModified, String[] extraHeaders, PrintWriter writer) {
         super();
         this.dccName = dccName;
@@ -32,7 +37,7 @@ public class SyncFileWriter {
             appendLine(line, consolidate);
         }
     }
-    
+
     public void appendLine(SyncLine line) {
         appendLine(line, true);
     }
@@ -51,15 +56,22 @@ public class SyncFileWriter {
             writer.println(line.formatLine());
         }
     }
-    
+
     public void close() {
-        if (previous != null) {
-            writer.println(previous.formatLine());
+        if (writer != null) {
+            if (previous != null) {
+                writer.println(previous.formatLine());
+                previous = null;
+            }
+            writer.close();
+            writer = null;
         }
-        writer.close();
     }
-    
-    
+
+    protected void finalize() throws Throwable {
+        close();
+    }
+
     SyncLine previous = null;
 
     String dccName;
@@ -67,7 +79,6 @@ public class SyncFileWriter {
     String dateModified;
 
     String[] extraHeaders;
-    
+
     protected PrintWriter writer;
-    
 }
