@@ -20,7 +20,7 @@ public class Utility {
     }
     
     public static String extractString(byte[] info, int start, int length) {
-        byte[] subbytes = new byte[2];
+        byte[] subbytes = new byte[length];
         System.arraycopy(info, start, subbytes, 0, length);
         return new String(subbytes);
     }
@@ -53,6 +53,10 @@ public class Utility {
 
     public static int bytesToInt(byte[] info, int i, boolean swapBytes) {
         return bytesToInt(info[i], info[i + 1], info[i + 2], info[i + 3], swapBytes);
+    }
+
+    public static int bytesToLong(byte[] info, int i, boolean swapBytes) {
+        return bytesToLong(info[i], info[i + 1], info[i + 2], info[i + 3], info[i + 4], info[i + 5], info[i + 6], info[i + 7], swapBytes);
     }
 
     public static int bytesToInt(byte a, byte b, boolean swapBytes) {
@@ -91,6 +95,26 @@ public class Utility {
         } else {
             return ((a & 0xff) << 24) + ((b & 0xff) << 16) + ((c & 0xff) << 8)
                     + ((d & 0xff));
+        }
+    }
+
+    public static int bytesToLong(byte a,
+                                 byte b,
+                                 byte c,
+                                 byte d,
+                                 byte e,
+                                 byte f,
+                                 byte g,
+                                 byte h,
+                                 boolean swapBytes) {
+        if(swapBytes) {
+            return ((a & 0xff)) + ((b & 0xff) << 8) + ((c & 0xff) << 16)
+                    + ((d & 0xff) << 24) + ((e & 0xff) << 32) + ((f & 0xff) << 40) + ((g & 0xff) << 48)
+                    + ((h & 0xff) << 56);
+        } else {
+            return ((a & 0xff) << 56) + ((b & 0xff) << 48) + ((c & 0xff) << 40)
+                    + ((d & 0xff) << 32) + ((e & 0xff) << 24) + ((f & 0xff) << 16) + ((g & 0xff) << 8)
+                    + ((h & 0xff));
         }
     }
 
