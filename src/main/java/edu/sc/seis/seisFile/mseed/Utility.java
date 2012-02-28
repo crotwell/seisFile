@@ -25,15 +25,24 @@ public class Utility {
         return new String(subbytes);
     }
     
-    public static String extractVarString(byte[] info, int start, int length) {
-        String substring = "";
-        int i=0;
-        while (i<length && i<info.length && info[i] != 126) {
-            substring += new String(new byte[] {info[i]});
-        }
-        return substring;
+    public static String extractVarString(byte[] info, int start, int maxLength) {
+        return extractTermString(info, start, maxLength, (byte)126);
     }
 
+    public static String extractNullTermString(byte[] info, int start, int maxLength) {
+        return extractTermString(info, start, maxLength, (byte)0);
+    }
+
+    static String extractTermString(byte[] info, int start, int maxLength, byte termChar) {
+        int length = 0;
+        while (length<maxLength && start+length<info.length && info[start+length] != termChar) {
+            length++;
+        }
+        byte[] tmp = new byte[length];
+        System.arraycopy(info, start, tmp, 0, length);
+        return new String(tmp);
+    }
+    
     public static short bytesToShort(byte hi, byte low, boolean swapBytes) {
         if(swapBytes) {
             return (short)((hi & 0xff) + (low & 0xff) << 8);
@@ -116,6 +125,26 @@ public class Utility {
                     + ((d & 0xff) << 32) + ((e & 0xff) << 24) + ((f & 0xff) << 16) + ((g & 0xff) << 8)
                     + ((h & 0xff));
         }
+    }
+    
+    public static float bytesToFloat(byte a,
+                                 byte b,
+                                 byte c,
+                                 byte d,
+                                 boolean swapBytes) {
+        return Float.intBitsToFloat(bytesToInt(a, b, c, d, swapBytes));
+    }
+    
+    public static double bytesToDouble(byte a,
+                                 byte b,
+                                 byte c,
+                                 byte d,
+                                 byte e,
+                                 byte f,
+                                 byte g,
+                                 byte h,
+                                 boolean swapBytes) {
+        return Double.longBitsToDouble(bytesToLong(a, b, c, d, e, f, g, h, swapBytes));
     }
 
     public static byte[] intToByteArray(int a) {
