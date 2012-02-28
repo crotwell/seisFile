@@ -1,11 +1,15 @@
 package edu.sc.seis.seisFile.winston;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import edu.sc.seis.seisFile.mseed.Utility;
 
 public class TraceBuf2 {
 
     public TraceBuf2(byte[] data) {
-        dataType = Utility.extractString(data, 57, 3);
+        dataType = Utility.extractNullTermString(data, 57, 3);
         boolean swapBytes = false;
         if (dataType.equals(INTEL_IEEE_DOUBLE_PRECISION_REAL) || dataType.equals(INTEL_IEEE_INTEGER)
                 || dataType.equals(INTEL_IEEE_SHORT_INTEGER) || dataType.equals(INTEL_IEEE_SINGLE_PRECISION_REAL)) {
@@ -13,9 +17,9 @@ public class TraceBuf2 {
         }
         pin = Utility.bytesToInt(data, 0, swapBytes);
         numSamples = Utility.bytesToInt(data, 4, swapBytes);
-        startTime = Double.longBitsToDouble(Utility.bytesToLong(data, 8, swapBytes));
-        endTime = Double.longBitsToDouble(Utility.bytesToLong(data, 16, swapBytes));
-        sampleRate = Double.longBitsToDouble(Utility.bytesToLong(data, 24, swapBytes));
+        startTime = Utility.bytesToDouble(data, 8, swapBytes);
+        endTime = Utility.bytesToDouble(data, 16, swapBytes);
+        sampleRate = Utility.bytesToDouble(data, 24, swapBytes);
         station = Utility.extractNullTermString(data, 32, 7);
         network = Utility.extractNullTermString(data, 39, 9);
         channel = Utility.extractNullTermString(data, 48, 4);
@@ -145,6 +149,14 @@ public class TraceBuf2 {
         return endTime;
     }
 
+    public Date getStartDate() {
+        return new Date(Math.round(getStartTime()*1000)); // convert from seconds to milliseconds
+    }
+
+    public Date getEndDate() {
+        return new Date(Math.round(getEndTime()*1000)); // convert from seconds to milliseconds
+    }
+
     public double getSampleRate() {
         return sampleRate;
     }
@@ -195,6 +207,14 @@ public class TraceBuf2 {
 
     public double[] getDoubleData() {
         return doubleData;
+    }
+    
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return getPin()+" "+network+"."+station+"."+locId+"."+channel+" "+
+                sdf.format(getStartDate())+"("+getStartTime()+") to "+
+                sdf.format(getEndDate())+"("+getEndTime()+") sr="+getSampleRate()+"  npts="+numSamples+" datetype="+getDataType()+" ver="+getVersion();
     }
 
     short[] shortData;
