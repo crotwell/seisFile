@@ -60,12 +60,12 @@ public class Utility {
         return a & 0xff;
     }
 
-    public static int bytesToInt(byte[] info, int i, boolean swapBytes) {
-        return bytesToInt(info[i], info[i + 1], info[i + 2], info[i + 3], swapBytes);
+    public static int bytesToInt(byte[] info, int start, boolean swapBytes) {
+        return bytesToInt(info[start], info[start + 1], info[start + 2], info[start + 3], swapBytes);
     }
 
-    public static int bytesToLong(byte[] info, int i, boolean swapBytes) {
-        return bytesToLong(info[i], info[i + 1], info[i + 2], info[i + 3], info[i + 4], info[i + 5], info[i + 6], info[i + 7], swapBytes);
+    public static long bytesToLong(byte[] info, int start, boolean swapBytes) {
+        return bytesToLong(info[start], info[start + 1], info[start + 2], info[start + 3], info[start + 4], info[start + 5], info[start + 6], info[start + 7], swapBytes);
     }
 
     public static int bytesToInt(byte a, byte b, boolean swapBytes) {
@@ -107,7 +107,7 @@ public class Utility {
         }
     }
 
-    public static int bytesToLong(byte a,
+    public static long bytesToLong(byte a,
                                  byte b,
                                  byte c,
                                  byte d,
@@ -117,13 +117,13 @@ public class Utility {
                                  byte h,
                                  boolean swapBytes) {
         if(swapBytes) {
-            return ((a & 0xff)) + ((b & 0xff) << 8) + ((c & 0xff) << 16)
-                    + ((d & 0xff) << 24) + ((e & 0xff) << 32) + ((f & 0xff) << 40) + ((g & 0xff) << 48)
-                    + ((h & 0xff) << 56);
+            return ((a & 0xffl)) + ((b & 0xffl) << 8) + ((c & 0xffl) << 16)
+                    + ((d & 0xffl) << 24) + ((e & 0xffl) << 32) + ((f & 0xffl) << 40) + ((g & 0xffl) << 48)
+                    + ((h & 0xffl) << 56);
         } else {
-            return ((a & 0xff) << 56) + ((b & 0xff) << 48) + ((c & 0xff) << 40)
-                    + ((d & 0xff) << 32) + ((e & 0xff) << 24) + ((f & 0xff) << 16) + ((g & 0xff) << 8)
-                    + ((h & 0xff));
+            return ((a & 0xffl) << 56) + ((b & 0xffl) << 48) + ((c & 0xffl) << 40)
+                    + ((d & 0xffl) << 32) + ((e & 0xffl) << 24) + ((f & 0xffl) << 16) + ((g & 0xffl) << 8)
+                    + ((h & 0xffl));
         }
     }
     
@@ -146,13 +146,21 @@ public class Utility {
                                  boolean swapBytes) {
         return Double.longBitsToDouble(bytesToLong(a, b, c, d, e, f, g, h, swapBytes));
     }
+    
+    public static double bytesToDouble(byte[] info, int start, boolean swapBytes) {
+        return Double.longBitsToDouble(Utility.bytesToLong(info, start, swapBytes));
+    }
+    
+    public static float bytesToFloat(byte[] info, int start, boolean swapBytes) {
+        return Float.intBitsToFloat(Utility.bytesToInt(info, start, swapBytes));
+    }
 
     public static byte[] intToByteArray(int a) {
         byte[] returnByteArray = new byte[4];// int is 4 bytes
-        returnByteArray[0] = (byte)((a & 0xff000000) >> 24);
-        returnByteArray[1] = (byte)((a & 0x00ff0000) >> 16);
-        returnByteArray[2] = (byte)((a & 0x0000ff00) >> 8);
-        returnByteArray[3] = (byte)((a & 0x000000ff));
+        returnByteArray[0] = (byte)((a >> 24) & 0xff);
+        returnByteArray[1] = (byte)((a >> 16) & 0xff);
+        returnByteArray[2] = (byte)((a >>  8) & 0xff);
+        returnByteArray[3] = (byte)((a      ) & 0xff);
         return returnByteArray;
     }
 
@@ -160,6 +168,24 @@ public class Utility {
         return intToByteArray(Float.floatToIntBits(a));
     }
 
+
+    public static byte[] longToByteArray(long a) {
+        byte[] returnByteArray = new byte[8];// long is 8 bytes
+        returnByteArray[0] = (byte)((a >>> 56) & 0xffl);
+        returnByteArray[1] = (byte)((a >>> 48) & 0xffl);
+        returnByteArray[2] = (byte)((a >>> 40) & 0xffl);
+        returnByteArray[3] = (byte)((a >>> 32) & 0xffl);
+        returnByteArray[4] = (byte)((a >>> 24) & 0xffl);
+        returnByteArray[5] = (byte)((a >>> 16) & 0xffl);
+        returnByteArray[6] = (byte)((a >>>  8) & 0xffl);
+        returnByteArray[7] = (byte)((a       ) & 0xffl);
+        return returnByteArray;
+    }
+    
+    public static byte[] doubleToByteArray(double d) {
+        return longToByteArray(Double.doubleToLongBits(d));
+    }
+    
     /**
      * Inserts float into dest at index pos 
      */
