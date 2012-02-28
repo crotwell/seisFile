@@ -1,6 +1,6 @@
 package edu.sc.seis.seisFile.winston;
 
-import java.io.PrintWriter;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 import edu.sc.seis.seisFile.syncFile.SyncFile;
 import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
@@ -94,7 +96,7 @@ public class WinstonUtil {
                         it.remove();
                         continue;
                     }
-                } 
+                }
                 if (wt.getYear() == endYear) {
                     if (wt.getMonth() > endMonth || (wt.getMonth() == endMonth && wt.getDay() > endDay)) {
                         it.remove();
@@ -156,16 +158,43 @@ public class WinstonUtil {
                                                 table.getDatabase().getLocId(),
                                                 table.getDatabase().getChannel());
         Statement stmt = getConnection().createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
-                                                       java.sql.ResultSet.CONCUR_READ_ONLY);
+                                                         java.sql.ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(Integer.MIN_VALUE);
-        ResultSet rs = stmt.executeQuery("select st, et, sr from " + table.getTableName()
-                + " order by st");
+        ResultSet rs = stmt.executeQuery("select st, et, sr from " + table.getTableName() + " order by st");
         while (rs.next()) {
             out.addLine(new SyncLine(defaultSyncLine,
                                      j2KSecondsToDate(rs.getDouble(1)),
                                      j2KSecondsToDate(rs.getDouble(2)),
                                      rs.getFloat(3)),
                         true);
+        }
+        rs.close();
+        stmt.close();
+        return out;
+    }
+
+    public List<TraceBuf2> extractData(WinstonTable table, Date startTime, Date endTime) throws SQLException, DataFormatException {
+        useDatabase(table.getDatabase());
+        List<TraceBuf2> out = new ArrayList<TraceBuf2>();
+        Statement stmt = getConnection().createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+                                                         java.sql.ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(Integer.MIN_VALUE);
+        double y2kStart = dateToJ2kSeconds(startTime);
+        double y2kEnd = dateToJ2kSeconds(endTime);
+        ResultSet rs = stmt.executeQuery("select tracebuf from " + table.getTableName() + " where ("+y2kStart +" <= st AND st <= "+y2kEnd+") OR ("+y2kStart +" <=et AND et <= "+y2kEnd+") order by st");
+        while (rs.next()) {
+            Blob tbBlob = rs.getBlob("tracebuf");
+            byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
+            Inflater decompresser = new Inflater();
+            decompresser.setInput(tbBytes, 0, tbBytes.length);
+            byte[] result = new byte[TraceBuf2.MAX_TRACEBUF_SIZ]; // should all fit in once decomp cycle
+            int resultLength = decompresser.inflate(result);
+            if (! decompresser.finished()) {
+                throw new RuntimeException("more bytes in Blob than can fit in a TraceBuf2: "+TraceBuf2.MAX_TRACEBUF_SIZ);
+            }
+            byte[] tbResult = new byte[resultLength];
+            System.arraycopy(result, 0, tbResult, 0, tbResult.length);
+            out.add(new TraceBuf2(tbResult));
         }
         rs.close();
         stmt.close();
