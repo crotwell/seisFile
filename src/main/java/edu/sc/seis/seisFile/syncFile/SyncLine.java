@@ -191,6 +191,10 @@ public class SyncLine implements Comparable<SyncLine> {
             synchronized(dayOnlyDateFormat) {
                 return dayOnlyDateFormat.parse(d);
             }
+        } else if (d.length() > 17) {
+            synchronized(dateFormatFracSeconds) {
+                return dateFormatFracSeconds.parse(d);
+            }
         } else {
             synchronized(dateFormat) {
                 return dateFormat.parse(d);
@@ -206,17 +210,19 @@ public class SyncLine implements Comparable<SyncLine> {
         if (d == null) {
             return "";
         }
-        synchronized(dateFormat) {
-            return dateFormat.format(d);
+        synchronized(dateFormatFracSeconds) {
+            return dateFormatFracSeconds.format(d);
         }
     }
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss.SSS");
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss");
+    private static final DateFormat dateFormatFracSeconds = new SimpleDateFormat("yyyy,DDD,HH:mm:ss.SSS");
 
     private static final DateFormat dayOnlyDateFormat = new SimpleDateFormat("yyyy,DDD");
     
     static {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        dateFormatFracSeconds.setTimeZone(TimeZone.getTimeZone("GMT"));
         dayOnlyDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
