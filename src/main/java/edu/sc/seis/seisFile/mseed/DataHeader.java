@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
+import edu.iris.Fissures.model.SamplingImpl;
+import edu.iris.Fissures.model.TimeInterval;
+import edu.iris.Fissures.model.UnitImpl;
+
 /**
  * Container class for SEED Fixed Section Data Header information.
  * 
@@ -606,6 +610,34 @@ public class DataHeader extends ControlHeader {
     public void setSampleRateMultiplier(short v) {
         this.sampleRateMultiplier = v;
     }
+    
+    public void setSampleRate(double samplePerSecond) {
+        short[] tmp = calcSeedMultipilerFactor(samplePerSecond);
+        setSampleRateFactor(tmp[0]);
+        setSampleRateMultiplier(tmp[1]);
+    }
+
+    public static short[] calcSeedMultipilerFactor(double sps) {
+        if (sps >= 1) {
+            // don't get too close to the max for a short, use ceil as neg
+            int divisor = (int)Math.ceil((Short.MIN_VALUE + 2) / sps);
+            // don't get too close to the max for a short
+            if (divisor < Short.MIN_VALUE + 2) {
+                divisor = Short.MIN_VALUE + 2;
+            }
+            int factor = (int)Math.round(-1 * sps * divisor);
+            return new short[] {(short)factor, (short)divisor};
+        } else {
+            // don't get too close to the max for a short, use ceil as neg
+            int factor = -1 * (int)Math.round(Math.floor(1.0 * sps * (Short.MAX_VALUE - 2)) / sps);
+            // don't get too close to the max for a short
+            if (factor > Short.MAX_VALUE - 2) {
+                factor = Short.MAX_VALUE - 2;
+            }
+            int divisor = (int)Math.round(-1 * factor * sps);
+            return new short[] {(short)factor, (short)divisor};
+        }
+    }
 
     /**
      * Get the value of activityFlags.
@@ -739,7 +771,7 @@ public class DataHeader extends ControlHeader {
     public void setDataBlocketteOffset(short v) {
         this.dataBlocketteOffset = v;
     }
-
+    
     /**
      * Present a default string representation of the contents of this object
      * 
