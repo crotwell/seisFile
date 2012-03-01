@@ -4,6 +4,7 @@ group = 'edu.sc.seis'
 version = '1.2.3-SNAPSHOT'
 
 dependencies {
+    compile project(':seedCodec') { transitive = true }
     compile "org.slf4j:slf4j-api:1.6.1"
     runtime group: "org.slf4j", name: "slf4j-log4j12", version: "1.6.1", transitive: false
     compile "javax.xml.stream:stax-api:1.0-2"
