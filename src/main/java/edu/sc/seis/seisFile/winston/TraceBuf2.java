@@ -4,6 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import edu.iris.dmc.seedcodec.Codec;
+import edu.sc.seis.seisFile.mseed.Blockette1000;
+import edu.sc.seis.seisFile.mseed.Btime;
+import edu.sc.seis.seisFile.mseed.DataHeader;
+import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.Utility;
 
 public class TraceBuf2 {
@@ -207,6 +213,51 @@ public class TraceBuf2 {
 
     public double[] getDoubleData() {
         return doubleData;
+    }
+    
+    public byte getSeedEncoding() {
+        if (dataType.equals("s4") || dataType.equals("i4")) {
+            return 3;
+        } else if (dataType.equals("s2") || dataType.equals("i2")) {
+            return 1;
+        } else if (dataType.equals("t4") || dataType.equals("f4")) {
+            return 4;
+        } else if (dataType.equals("t8") || dataType.equals("f8")) {
+            return 5;
+        } else {
+            throw new RuntimeException("Unknown dataType: "+dataType);
+        }
+    }
+    
+    public DataRecord toMiniSeed() throws SeedFormatException {
+        DataHeader dh = new DataHeader(0, 'D', false);
+        dh.setStationIdentifier(getStation());
+        dh.setChannelIdentifier(getChannel());
+        dh.setNetworkCode(getNetwork());
+        dh.setLocationIdentifier(getLocId());
+        dh.setDataQualityFlags((byte)getQuality().charAt(0));
+        dh.setNumSamples((short)getNumSamples());
+        dh.setStartBtime(new Btime(getStartDate()));
+        dh.setSampleRate(getSampleRate());
+        DataRecord dr = new DataRecord(dh);
+        Blockette1000 b1000 = new Blockette1000();
+        b1000.setEncodingFormat(getSeedEncoding());
+        b1000.setDataRecordLength((byte)12); // 12 => 4096
+        b1000.setWordOrder((byte)1); // always do big endian
+        dr.addBlockette(b1000);
+        Codec codec = new Codec();
+        byte[] dataBytes = new byte[0];
+        if (isShortData()) {
+            dataBytes = codec.encodeAsBytes(getShortData());
+        } else if (isIntData()) {
+            dataBytes = codec.encodeAsBytes(getIntData());
+        } else if (isFloatData()) {
+            dataBytes = codec.encodeAsBytes(getFloatData());
+        } else if (isDoubleData()) {
+            dataBytes = codec.encodeAsBytes(getDoubleData());
+        }
+        dr.setData(dataBytes);
+        return dr;
     }
     
     public String toString() {

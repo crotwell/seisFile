@@ -5,8 +5,23 @@
  */
 package edu.sc.seis.seisFile.mseed;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class Btime {
 
+    public Btime(Date date) {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.setTime(date);
+        tenthMilli = (int)(cal.get(Calendar.MILLISECOND) * 10);
+        year = cal.get(Calendar.YEAR);
+        jday = cal.get(Calendar.DAY_OF_YEAR);
+        hour = cal.get(Calendar.HOUR_OF_DAY);
+        min = cal.get(Calendar.MINUTE);
+        sec = cal.get(Calendar.SECOND);
+    }
+    
     public Btime() {}
     
     public Btime(int year, int jday, int hour, int min, int sec, int tenthMilli) {

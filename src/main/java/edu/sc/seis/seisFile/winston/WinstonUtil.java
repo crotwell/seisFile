@@ -8,9 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -173,7 +176,34 @@ public class WinstonUtil {
         return out;
     }
 
-    public List<TraceBuf2> extractData(WinstonTable table, Date startTime, Date endTime) throws SQLException, DataFormatException {
+    public List<TraceBuf2> extractData(WinstonSCNL channel, Date startTime, Date endTime) throws SQLException,
+            DataFormatException {
+        List<TraceBuf2> out = new ArrayList<TraceBuf2>();
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTime(startTime);
+        int startYear = cal.get(Calendar.YEAR);
+        int startMonth = cal.get(Calendar.MONTH);
+        int startDay = cal.get(Calendar.DAY_OF_MONTH);
+        cal.setTime(endTime);
+        int endYear = cal.get(Calendar.YEAR);
+        int endMonth = cal.get(Calendar.MONTH);
+        int endDay = cal.get(Calendar.DAY_OF_MONTH);
+        List<WinstonTable> tableList = listTablesBetweenDates(channel,
+                                                              startYear,
+                                                              startMonth,
+                                                              startDay,
+                                                              endYear,
+                                                              endMonth,
+                                                              endDay);
+        for (WinstonTable wt : tableList) {
+            out.addAll(extractData(wt, startTime, endTime));
+        }
+        return out;
+    }
+
+    public List<TraceBuf2> extractData(WinstonTable table, Date startTime, Date endTime) throws SQLException,
+            DataFormatException {
         useDatabase(table.getDatabase());
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
         Statement stmt = getConnection().createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
@@ -181,16 +211,21 @@ public class WinstonUtil {
         stmt.setFetchSize(Integer.MIN_VALUE);
         double y2kStart = dateToJ2kSeconds(startTime);
         double y2kEnd = dateToJ2kSeconds(endTime);
-        ResultSet rs = stmt.executeQuery("select tracebuf from " + table.getTableName() + " where ("+y2kStart +" <= st AND st <= "+y2kEnd+") OR ("+y2kStart +" <=et AND et <= "+y2kEnd+") order by st");
+        ResultSet rs = stmt.executeQuery("select tracebuf from " + table.getTableName() + " where (" + y2kStart
+                + " <= st AND st <= " + y2kEnd + ") OR (" + y2kStart + " <=et AND et <= " + y2kEnd + ") order by st");
         while (rs.next()) {
             Blob tbBlob = rs.getBlob("tracebuf");
             byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
             Inflater decompresser = new Inflater();
             decompresser.setInput(tbBytes, 0, tbBytes.length);
-            byte[] result = new byte[TraceBuf2.MAX_TRACEBUF_SIZ]; // should all fit in once decomp cycle
+            byte[] result = new byte[TraceBuf2.MAX_TRACEBUF_SIZ]; // should all
+                                                                  // fit in once
+                                                                  // decomp
+                                                                  // cycle
             int resultLength = decompresser.inflate(result);
-            if (! decompresser.finished()) {
-                throw new RuntimeException("more bytes in Blob than can fit in a TraceBuf2: "+TraceBuf2.MAX_TRACEBUF_SIZ);
+            if (!decompresser.finished()) {
+                throw new RuntimeException("more bytes in Blob than can fit in a TraceBuf2: "
+                        + TraceBuf2.MAX_TRACEBUF_SIZ);
             }
             byte[] tbResult = new byte[resultLength];
             System.arraycopy(result, 0, tbResult, 0, tbResult.length);
@@ -233,12 +268,14 @@ public class WinstonUtil {
     }
 
     public void createConnection() throws SQLException {
-        try {
-            Class.forName(driver).newInstance();
-        } catch(Exception e) {
-            SQLException sql = new SQLException("Cannot create driver: " + driver);
-            sql.initCause(e);
-            throw sql;
+        if (driverClass == null) {
+            try {
+                Class.forName(driver).newInstance();
+            } catch(Exception e) {
+                SQLException sql = new SQLException("Cannot create driver: " + driver);
+                sql.initCause(e);
+                throw sql;
+            }
         }
         conn = DriverManager.getConnection(getDatabaseURL(), getUsername(), getPassword());
     }
@@ -249,6 +286,8 @@ public class WinstonUtil {
             conn = null;
         }
     }
+
+    Class driverClass = null;
 
     Connection conn;
 
