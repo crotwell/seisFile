@@ -12,10 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
-import edu.iris.Fissures.model.SamplingImpl;
-import edu.iris.Fissures.model.TimeInterval;
-import edu.iris.Fissures.model.UnitImpl;
-
 /**
  * Container class for SEED Fixed Section Data Header information.
  * 
