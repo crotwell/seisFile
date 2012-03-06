@@ -26,6 +26,9 @@ public class WinstonClient {
 
     protected WinstonClient(String[] args) throws SeisFileException, FileNotFoundException, IOException {
         params = new QueryParams(args);
+        winstonConfig.put("winston.driver", WinstonUtil.MYSQL_DRIVER);
+        winstonConfig.put("winston.prefix", "W");
+        winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser");
 
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-p")) {
@@ -33,11 +36,6 @@ public class WinstonClient {
             } else if (args[i].equals("-u")) {
                 winstonConfig.put("winston.url", args[i + 1]);
             }
-        }
-        if (winstonConfig.getProperty("winston.url") == null) {
-            winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser");
-            winstonConfig.put("winston.driver", WinstonUtil.MYSQL_DRIVER);
-            winstonConfig.put("winston.prefix", "W");
         }
     }
     
