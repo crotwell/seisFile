@@ -49,7 +49,7 @@ public class WinstonUtil {
         ResultSet rs = getConnection().createStatement().executeQuery("SHOW DATABASES");
         while (rs.next()) {
             String s = rs.getString(1);
-            if (s.startsWith(getPrefix()) && !s.equals(getPrefix() + "ROOT")) {
+            if (s.startsWith(getPrefix()+"_") && !s.equals(getPrefix() + "_ROOT")) {
                 out.add(new WinstonSCNL(s, getPrefix()));
             }
         }
