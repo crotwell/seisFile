@@ -49,7 +49,7 @@ public class WinstonUtil {
         ResultSet rs = getConnection().createStatement().executeQuery("SHOW DATABASES");
         while (rs.next()) {
             String s = rs.getString(1);
-            if (s.startsWith(getPrefix()+"_") && !s.equals(getPrefix() + "_ROOT")) {
+            if (s.startsWith(prefixTableName(getPrefix(), "")) && !s.equals(prefixTableName(getPrefix(), "ROOT"))) {
                 out.add(new WinstonSCNL(s, getPrefix()));
             }
         }
@@ -258,6 +258,10 @@ public class WinstonUtil {
 
     public String getPrefix() {
         return prefix;
+    }
+    
+    public static String prefixTableName(String prefix, String tableName) {
+        return prefix+"_"+tableName;
     }
 
     Connection getConnection() throws SQLException {
