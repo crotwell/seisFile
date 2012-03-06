@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -51,7 +53,7 @@ public class WinstonClient {
         client.readData();
     }
 
-    public void readData() throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException {
+    public void readData() throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         if (params.isPrintHelp()) {
             System.out.println(getHelp());
             return;
@@ -74,17 +76,16 @@ public class WinstonClient {
         return winstonConfig.getProperty("winston.url");
     }
     
-    String getUser() throws MalformedURLException, SeisFileException {
+    String getUser() throws URISyntaxException, SeisFileException {
         return getUrlQueryParam("user");
     }
     
-    String getPassword() throws MalformedURLException, SeisFileException {
+    String getPassword() throws URISyntaxException, SeisFileException {
         return getUrlQueryParam("password");
     }
     
-    String getUrlQueryParam(String name) throws MalformedURLException, SeisFileException {
-        URL dburl = new URL(getDbURL());
-        String[] urlParts = dburl.getQuery().split("\\&");
+    String getUrlQueryParam(String name) throws SeisFileException, URISyntaxException {
+        String[] urlParts = getDbURL().split("\\?")[1].split("\\&");
         for (int i = 0; i < urlParts.length; i++) {
             if (urlParts[i].startsWith(name+"=")) {
                 return urlParts[i].substring((name+"=").length());
