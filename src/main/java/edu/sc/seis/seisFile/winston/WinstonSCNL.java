@@ -4,7 +4,7 @@ public class WinstonSCNL {
 
     protected WinstonSCNL(String databaseName, String prefix) {
         this.prefix = prefix;
-        String woPrefix = databaseName.substring(prefix.length());
+        String woPrefix = databaseName.substring(prefix.length()+1);
         String[] s = woPrefix.split("\\$");
         if (s.length == 4) {
             this.locId = s[3];
