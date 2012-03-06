@@ -28,7 +28,7 @@ public class WinstonSCNL {
     }
     
     public String getDatabaseName() {
-        return prefix+concatSCNL();
+        return WinstonUtil.prefixTableName(prefix, concatSCNL());
     }
     
     public String concatSCNL() {
