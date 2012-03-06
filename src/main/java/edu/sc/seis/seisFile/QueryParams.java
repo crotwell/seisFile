@@ -15,10 +15,6 @@ import java.util.TimeZone;
 public class QueryParams {
 
     public QueryParams(String[] args) throws SeisFileException {
-        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-        cal.add(Calendar.SECOND, -1 * Math.round(duration));
-        cal.add(Calendar.MILLISECOND, -1000 * Math.round(duration - Math.round(duration)));
-        begin = cal.getTime();
         PrintWriter out = new PrintWriter(System.out, true);
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-n")) {
@@ -64,8 +60,12 @@ public class QueryParams {
                 printHelp = true;
             }
         }
-        cal.setTime(begin);
+        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         cal.add(Calendar.SECOND, -1 * Math.round(duration));
+        cal.add(Calendar.MILLISECOND, -1000 * Math.round(duration - Math.round(duration)));
+        if (begin == null) {begin = cal.getTime();}
+        cal.setTime(begin);
+        cal.add(Calendar.SECOND, Math.round(duration));
         cal.add(Calendar.MILLISECOND, -1000 * Math.round(duration - Math.round(duration)));
         end = cal.getTime();
     }
@@ -82,7 +82,7 @@ public class QueryParams {
 
     Date end;
 
-    Float duration;
+    Float duration = 600f;
 
     int maxRecords = -1;
 
