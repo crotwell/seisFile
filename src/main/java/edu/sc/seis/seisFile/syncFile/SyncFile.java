@@ -13,9 +13,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import edu.sc.seis.seisFile.SeisFileException;
+
 public class SyncFile {
 
-    public static SyncFile load(File f) throws IOException, NumberFormatException, ParseException {
+    public static SyncFile load(File f) throws IOException, SeisFileException {
         BufferedReader r = new BufferedReader(new FileReader(f));
         String line;
         // first line is header line with dccName | date | extra | extra...
