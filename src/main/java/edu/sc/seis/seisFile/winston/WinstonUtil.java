@@ -183,11 +183,11 @@ public class WinstonUtil {
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
         cal.setTime(startTime);
         int startYear = cal.get(Calendar.YEAR);
-        int startMonth = cal.get(Calendar.MONTH);
+        int startMonth = cal.get(Calendar.MONTH)+1; // why are Calendar months zero based, but days are one based???
         int startDay = cal.get(Calendar.DAY_OF_MONTH);
         cal.setTime(endTime);
         int endYear = cal.get(Calendar.YEAR);
-        int endMonth = cal.get(Calendar.MONTH);
+        int endMonth = cal.get(Calendar.MONTH)+1; // why are Calendar months zero based, but days are one based???
         int endDay = cal.get(Calendar.DAY_OF_MONTH);
         List<WinstonTable> tableList = listTablesBetweenDates(channel,
                                                               startYear,
