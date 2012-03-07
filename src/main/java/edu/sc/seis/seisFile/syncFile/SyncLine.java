@@ -6,9 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.SeisFileException;
+
 public class SyncLine implements Comparable<SyncLine> {
 
-    public static SyncLine parse(String line) throws ParseException, NumberFormatException {
+    public static SyncLine parse(String line) throws SeisFileException {
+        try {
         String[] s = line.split("\\|", -1);
         SyncLine out = new SyncLine(s[0], // net
                                     s[1], // sta
@@ -26,6 +29,10 @@ public class SyncLine implements Comparable<SyncLine> {
                                     stringToDate(s[13]), // lineModByDMC
                                     stringToDate(s[14])); // lineModByDCC
         return out;
+        } catch (Exception e) {
+            // ParseException, NumberFormatException
+            throw new SeisFileException("Trouble parsing line: "+line, e);
+        }
     }
 
     public SyncLine(SyncLine copy, Date startTime, Date endTime, Float samplesPerSecond) {
