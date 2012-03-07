@@ -4,44 +4,43 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.mseed.Blockette1000;
-import edu.sc.seis.seisFile.mseed.DataHeader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 
-
 public class WinstonClient {
-
 
     protected WinstonClient(String[] args) throws SeisFileException, FileNotFoundException, IOException {
         params = new QueryParams(args);
         winstonConfig.put("winston.driver", WinstonUtil.MYSQL_DRIVER);
         winstonConfig.put("winston.prefix", "W");
         winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser");
-
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-p")) {
                 winstonConfig.load(new BufferedReader(new FileReader(args[i + 1])));
             } else if (args[i].equals("-u")) {
                 winstonConfig.put("winston.url", args[i + 1]);
+            } else if (args[i].equals("--sync")) {
+                doSync = true;
             }
         }
     }
-    
+
     QueryParams params;
-    
+
     Properties winstonConfig = new Properties();
+
+    boolean doSync = false;
 
     /**
      * @param args
@@ -51,51 +50,85 @@ public class WinstonClient {
         client.readData();
     }
 
-    public void readData() throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException, URISyntaxException {
+    public void readData() throws SeisFileException, SQLException, DataFormatException, FileNotFoundException,
+            IOException, URISyntaxException {
         if (params.isPrintHelp()) {
             System.out.println(getHelp());
             return;
-        } else if (params.isPrintVersion() || params.getNetwork() == null || params.getStation() == null || params.getLocation() == null || params.getChannel() == null) {
+        } else if (params.isPrintVersion() || params.getNetwork() == null || params.getStation() == null
+                || params.getLocation() == null || params.getChannel() == null) {
             System.out.println(BuildVersion.getDetailedVersion());
             return;
         }
-        WinstonUtil winston = new WinstonUtil(getDbURL(), getUser(), getPassword(), winstonConfig.getProperty("winston.prefix"));
-        WinstonSCNL channel = winston.createWinstonSCNL(params.getStation(), params.getChannel(), params.getNetwork(), params.getLocation());
-        List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
-        for (TraceBuf2 traceBuf2 : tbList) {
-            DataRecord mseed = traceBuf2.toMiniSeed();
-            mseed.write(params.getDataOutputStream());
+        WinstonUtil winston = new WinstonUtil(getDbURL(),
+                                              getUser(),
+                                              getPassword(),
+                                              winstonConfig.getProperty("winston.prefix"));
+        WinstonSCNL channel = winston.createWinstonSCNL(params.getStation(),
+                                                        params.getChannel(),
+                                                        params.getNetwork(),
+                                                        params.getLocation());
+        if (doSync) {
+            Calendar cal = new GregorianCalendar();
+            cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+            cal.setTime(params.getBegin());
+            int startYear = cal.get(Calendar.YEAR);
+            int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
+                                                          // months zero based,
+                                                          // but days are one
+                                                          // based???
+            int startDay = cal.get(Calendar.DAY_OF_MONTH);
+            cal.setTime(params.getEnd());
+            int endYear = cal.get(Calendar.YEAR);
+            int endMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
+                                                        // months zero based,
+                                                        // but days are one
+                                                        // based???
+            int endDay = cal.get(Calendar.DAY_OF_MONTH);
+            winston.calculateSyncBetweenDates(channel,
+                                              startYear,
+                                              startMonth,
+                                              startDay,
+                                              endYear,
+                                              endMonth,
+                                              endDay,
+                                              "winston");
+        } else {
+            List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
+            for (TraceBuf2 traceBuf2 : tbList) {
+                DataRecord mseed = traceBuf2.toMiniSeed();
+                mseed.write(params.getDataOutputStream());
+            }
         }
         winston.close();
         params.getDataOutputStream().close();
     }
-    
+
     String getDbURL() {
         return winstonConfig.getProperty("winston.url");
     }
-    
+
     String getUser() throws URISyntaxException, SeisFileException {
         return getUrlQueryParam("user");
     }
-    
+
     String getPassword() throws URISyntaxException, SeisFileException {
         return getUrlQueryParam("password");
     }
-    
+
     String getUrlQueryParam(String name) throws SeisFileException, URISyntaxException {
         String[] urlParts = getDbURL().split("\\?")[1].split("\\&");
         for (int i = 0; i < urlParts.length; i++) {
-            if (urlParts[i].startsWith(name+"=")) {
-                return urlParts[i].substring((name+"=").length());
+            if (urlParts[i].startsWith(name + "=")) {
+                return urlParts[i].substring((name + "=").length());
             }
         }
-        throw new SeisFileException("Unable to find '"+name+"' query param in database url: "+getDbURL());
+        throw new SeisFileException("Unable to find '" + name + "' query param in database url: " + getDbURL());
     }
-    
+
     public String getHelp() {
         return "java "
-        + WinstonClient.class.getName()
-        + " [-p <winston.config file>][-u databaseURL][-n net][-s sta][-l loc][-c chan][-b yyyy-MM-ddTHH:mm:ss.SSS][-d seconds][-o outfile][-m maxpackets][--verbose][--version][--help]";
+                + WinstonClient.class.getName()
+                + " [-p <winston.config file>][-u databaseURL][-n net][-s sta][-l loc][-c chan][-b yyyy-MM-ddTHH:mm:ss.SSS][-d seconds][-o outfile][-m maxpackets][--verbose][--version][--help]";
     }
-   
 }
