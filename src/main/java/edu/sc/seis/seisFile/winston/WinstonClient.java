@@ -129,6 +129,6 @@ public class WinstonClient {
     public String getHelp() {
         return "java "
                 + WinstonClient.class.getName()
-                + " [-p <winston.config file>][-u databaseURL][-n net][-s sta][-l loc][-c chan][-b yyyy-MM-ddTHH:mm:ss.SSS][-d seconds][-o outfile][-m maxpackets][--sync][--verbose][--version][--help]";
+                + " [-p <winston.config file>][-u databaseURL][-n net][-s sta][-l loc][-c chan][-b yyyy-MM-dd[THH:mm:ss.SSS]][-e yyyy-MM-dd[THH:mm:ss.SSS]][-d seconds][-o outfile][-m maxpackets][--sync][--verbose][--version][--help]";
     }
 }
