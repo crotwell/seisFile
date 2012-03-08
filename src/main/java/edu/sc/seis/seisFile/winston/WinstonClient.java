@@ -1,9 +1,12 @@
 package edu.sc.seis.seisFile.winston;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -17,6 +20,7 @@ import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 
 public class WinstonClient {
 
@@ -85,14 +89,10 @@ public class WinstonClient {
                                                         // but days are one
                                                         // based???
             int endDay = cal.get(Calendar.DAY_OF_MONTH);
-            winston.calculateSyncBetweenDates(channel,
-                                              startYear,
-                                              startMonth,
-                                              startDay,
-                                              endYear,
-                                              endMonth,
-                                              endDay,
-                                              "winston");
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
+            SyncFileWriter syncOut = new SyncFileWriter("winston", out);
+            winston.writeSyncBetweenDates(channel, startYear, startMonth, startDay, endYear, endMonth, endDay, syncOut);
+            syncOut.close();
         } else {
             List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
             for (TraceBuf2 traceBuf2 : tbList) {
