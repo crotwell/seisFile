@@ -38,6 +38,9 @@ public class WinstonClient {
                 doSync = true;
             }
         }
+        if ( ! doSync && params.getOutFile() == null) {
+            params.setOutFile("output.mseed");
+        }
     }
 
     QueryParams params;
