@@ -125,6 +125,10 @@ public class QueryParams {
     public String getOutFile() {
         return outFile;
     }
+    
+    public void setOutFile(String outFile) {
+        this.outFile = outFile;
+    }
 
     public boolean isPrintVersion() {
         return printVersion;
@@ -136,7 +140,11 @@ public class QueryParams {
 
     public DataOutputStream getDataOutputStream() throws FileNotFoundException {
         if (dos == null) {
-            dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
+            if (getOutFile() == null) {
+                dos = new DataOutputStream(System.out);
+            } else {
+                dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
+            }
         }
         return dos;
     }
