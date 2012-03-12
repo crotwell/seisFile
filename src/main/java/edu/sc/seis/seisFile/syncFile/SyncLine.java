@@ -129,7 +129,9 @@ public class SyncLine implements Comparable<SyncLine> {
      * SyncLine.
      */
     public boolean isContiguous(SyncLine line, float tolerenceSeconds) {
-        return net.equals(line.net) && sta.equals(line.sta) && loc.equals(line.loc) && chan.equals(line.chan)
+        return net.equals(line.net) && sta.equals(line.sta) 
+                && ((loc == null && line.loc == null) || (loc != null && loc.equals(line.loc)))
+                && chan.equals(line.chan)
                 && Math.abs((line.startTime.getTime() - endTime.getTime()) / 1000.0 ) <= tolerenceSeconds;
     }
 
