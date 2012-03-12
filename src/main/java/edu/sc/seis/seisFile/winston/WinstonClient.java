@@ -67,6 +67,9 @@ public class WinstonClient {
             System.out.println("LocId null is ok for scn, but needed for scnl");
             return;
         }
+        if (params.isVerbose()) {
+            WinstonUtil.setVerbose(true);
+        }
         WinstonUtil winston = new WinstonUtil(getDbURL(),
                                               getUser(),
                                               getPassword(),
