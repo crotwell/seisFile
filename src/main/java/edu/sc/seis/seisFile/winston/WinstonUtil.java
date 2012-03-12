@@ -149,6 +149,9 @@ public class WinstonUtil {
                                                               endMonth,
                                                               endDay);
         for (WinstonTable wt : tableList) {
+            if (verbose) {
+                System.out.println("Sync for "+wt.getTableName());
+            }
             writer.appendAll(calculateSyncForDay(wt), true);
         }
     }
@@ -304,8 +307,18 @@ public class WinstonUtil {
     String prefix = "W_";
 
     String driver = MYSQL_DRIVER;
+    
+    static boolean verbose = false;
 
     public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
 
     public static final long Y1970_TO_Y2000_SECONDS = 946728000l;
+    
+    public static boolean isVerbose() {
+        return verbose;
+    }
+
+    public static void setVerbose(boolean b) {
+        verbose = b;
+    }
 }
