@@ -12,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 public class PolesZeros extends AbstractResponseType {
 
     private String comment;
+    private String pzTransferType;
     private float normalizationFactor;
     private float normalizationFreq;
     private List<Pole> poleList = new ArrayList<Pole>();
@@ -29,6 +30,8 @@ public class PolesZeros extends AbstractResponseType {
                     inputUnits = StaxUtil.pullText(reader, StationXMLTagNames.INPUTUNITS);
                 } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
                     outputUnits = StaxUtil.pullText(reader, StationXMLTagNames.OUTPUTUNITS);
+                } else if (elName.equals(StationXMLTagNames.PZTRANSFERTYPE)) {
+                    pzTransferType = StaxUtil.pullText(reader, StationXMLTagNames.PZTRANSFERTYPE);
                 } else if (elName.equals(StationXMLTagNames.NORMALIZATIONFACTOR)) {
                     normalizationFactor = StaxUtil.pullFloat(reader, StationXMLTagNames.NORMALIZATIONFACTOR);
                 } else if (elName.equals(StationXMLTagNames.NORMALIZATIONFREQ)) {
@@ -49,12 +52,15 @@ public class PolesZeros extends AbstractResponseType {
         }
     }
 
-    
     public String getComment() {
         return comment;
     }
-
     
+    public String getPzTransferType() {
+        return pzTransferType;
+    }
+
+
     public float getNormalizationFactor() {
         return normalizationFactor;
     }

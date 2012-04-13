@@ -46,6 +46,8 @@ public class Epoch {
                     instrumentSensitivity = new InstrumentSensitivity(reader);
                 } else if (elName.equals(StationXMLTagNames.RESPONSE)) {
                     responseList.add(new Response(reader));
+                } else if (elName.equals(StationXMLTagNames.IRISCHANNELCOMMENTS)) {
+                    irisChannelComments = new IrisCommentList(reader, StationXMLTagNames.IRISCHANNELCOMMENTS);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -120,6 +122,10 @@ public class Epoch {
         return responseList;
     }
     
+    public IrisCommentList getIrisChannelComments() {
+        return irisChannelComments;
+    }
+
     String startDate, endDate, creationDate;
     float lat, lon, elevation, depth, azimuth, dip, sampleRate, clockDrift;
     
@@ -127,5 +133,6 @@ public class Epoch {
     Sensor sensor;
     InstrumentSensitivity instrumentSensitivity;
     List<Response> responseList = new ArrayList<Response>();
+    IrisCommentList irisChannelComments = new IrisCommentList(StationXMLTagNames.IRISCHANNELCOMMENTS);
     
 }
