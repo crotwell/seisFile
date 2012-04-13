@@ -21,6 +21,8 @@ public class Coefficients extends AbstractResponseType {
                     inputUnits = StaxUtil.pullText(reader, StationXMLTagNames.INPUTUNITS);
                 } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
                     outputUnits = StaxUtil.pullText(reader, StationXMLTagNames.OUTPUTUNITS);
+                } else if (elName.equals(StationXMLTagNames.CFTRANSFERTYPE)) {
+                    cfTransferType = StaxUtil.pullText(reader, StationXMLTagNames.CFTRANSFERTYPE);
                 } else if (elName.equals(StationXMLTagNames.NUMERATOR)) {
                     numeratorList.add( StaxUtil.pullFloat(reader, StationXMLTagNames.NUMERATOR));
                 } else if (elName.equals(StationXMLTagNames.DENOMINATOR)) {
@@ -37,7 +39,11 @@ public class Coefficients extends AbstractResponseType {
         }
     }
 
-    
+    public static String getCfTransferType() {
+        return cfTransferType;
+    }
+
+
     public List<Float> getNumeratorList() {
         return numeratorList;
     }
@@ -46,6 +52,7 @@ public class Coefficients extends AbstractResponseType {
         return denominatorList;
     }
 
+    private static String cfTransferType;
     List<Float> numeratorList = new ArrayList<Float>();
     List<Float> denominatorList = new ArrayList<Float>();
 }

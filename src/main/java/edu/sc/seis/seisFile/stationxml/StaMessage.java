@@ -1,7 +1,9 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -11,7 +13,8 @@ public class StaMessage {
         this.reader = reader;
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STAMESSAGE, reader);
-        xmlSchemaLocation = startE.getNamespaceContext().getNamespaceURI("");
+        Attribute schemaLocAttr = startE.getAttributeByName(new QName("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation"));
+        xmlSchemaLocation = schemaLocAttr.getValue();
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -93,7 +96,7 @@ public class StaMessage {
     }
     
     public boolean checkSchemaVersion() {
-        if ( ! xmlSchemaLocation.equals(StationXMLTagNames.SCHEMA_VERSION)) {
+        if ( ! xmlSchemaLocation.split(" ")[0].equals(StationXMLTagNames.SCHEMA_VERSION)) {
             return false;
         }
         return true;

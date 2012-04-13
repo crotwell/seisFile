@@ -61,6 +61,7 @@ public class StationXMLClient {
             System.out.println("");
             System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
             System.out.println("XmlSchema (code): "+StationXMLTagNames.SCHEMA_VERSION);
+            System.out.println("");
         }
         System.out.println("XmlSchema: " + staMessage.getXmlSchemaLocation());
         System.out.println("Source: " + staMessage.getSource());
@@ -84,15 +85,20 @@ public class StationXMLClient {
                 for (StationEpoch stationEpoch : staEpochs) {
                     System.out.println("    Station Epoch: " + s.getNetCode() + "." + s.getStaCode()
                                        + "  " + stationEpoch.getStartDate() + " to " + stationEpoch.getEndDate());
+                    for (IrisComment comment : stationEpoch.getIrisStationComments().getList()) {
+                        System.out.println("          "+comment.getStartDate()+" "+comment.getEndDate()+" "+comment.getCommentClass()+" "+comment.getText());
+                    }
                     List<Channel> chanList = stationEpoch.getChannelList();
                     for (Channel channel : chanList) {
                         List<Epoch> chanEpochList = channel.getChanEpochList();
                         for (Epoch epoch : chanEpochList) {
                             System.out.println("      Channel Epoch: " + channel.getLocCode() + "." + channel.getChanCode()
                                     + "  " + epoch.getStartDate() + " to " + epoch.getEndDate());
+                            for (IrisComment comment : epoch.getIrisChannelComments().getList()) {
+                                System.out.println("          "+comment.getStartDate()+" "+comment.getEndDate()+" "+comment.getCommentClass()+" "+comment.getText());
+                            }
                             if (epoch.getResponseList().size() != 0) {
                                 float overallGain = 1;
-                                float stageZeroGain = 1;
                                 for (Response resp : epoch.getResponseList()) {
                                     System.out.print("          Resp "+resp.getStage());
                                     if (resp.getResponseItem() != null) {
@@ -102,13 +108,12 @@ public class StationXMLClient {
                                         System.out.print(" "+resp.getStageSensitivity().getSensitivityValue());
                                         if (resp.getStage() != 0) {
                                             overallGain *= resp.getStageSensitivity().getSensitivityValue();
-                                        } else {
-                                            stageZeroGain = resp.getStageSensitivity().getSensitivityValue();
                                         }
                                     }
-                                System.out.println();
-                            }
-                            System.out.println("          Overall Gain: "+overallGain+"  Stage Zero Gain: "+stageZeroGain);
+                                    System.out.println();
+                                }    
+                                InstrumentSensitivity instSens = epoch.getInstrumentSensitivity();
+                                System.out.println("          Overall Gain: "+overallGain+"  Inst Sense: "+instSens.getSensitivityValue()+" "+instSens.getSensitivityUnits());
                             }
                         }
                     }

@@ -38,6 +38,8 @@ public class StationEpoch {
                     totalNumChannels = StaxUtil.pullInt(reader, StationXMLTagNames.TOTALNUMCHANNELS);
                 } else if (elName.equals(StationXMLTagNames.SELECTEDNUMCHANNELS)) {
                     selectedNumChannels = StaxUtil.pullInt(reader, StationXMLTagNames.SELECTEDNUMCHANNELS);
+                } else if (elName.equals(StationXMLTagNames.IRISSTATIONCOMMENTS)) {
+                    irisStationComments = new IrisCommentList(reader, StationXMLTagNames.IRISSTATIONCOMMENTS);
                 } else if (elName.equals(StationXMLTagNames.CHANNEL)) {
                     channelList.add(new Channel(reader));
                 } else {
@@ -97,6 +99,10 @@ public class StationEpoch {
         return channelList;
     }
 
+    public IrisCommentList getIrisStationComments() {
+        return irisStationComments;
+    }
+
     String startDate, endDate, creationDate;
     float lat, lon, elevation;
     String name;
@@ -104,4 +110,5 @@ public class StationEpoch {
     int totalNumChannels;
     int selectedNumChannels;
     List<Channel> channelList = new ArrayList<Channel>();
+    IrisCommentList irisStationComments = new IrisCommentList(StationXMLTagNames.IRISSTATIONCOMMENTS);
 }

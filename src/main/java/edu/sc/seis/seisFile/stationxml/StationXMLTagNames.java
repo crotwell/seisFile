@@ -3,7 +3,10 @@ package edu.sc.seis.seisFile.stationxml;
 
 public final class StationXMLTagNames {
     
-    public static final String SCHEMA_VERSION = "http://www.data.scec.org/xml/station/20111019/";
+    public static final String[] OLD_SCHEMA_VERSIONS = {"http://www.data.scec.org/xml/station/20111019/"};
+    public static final String[] OLD_SCHEMA_SEISFILE_VERSIONS = {"1.3.1"};
+    
+    public static final String SCHEMA_VERSION = "http://www.data.scec.org/xml/station/20120307/";
     
     private StationXMLTagNames() {}
     
@@ -59,6 +62,8 @@ public final class StationXMLTagNames {
     public static final String POLESZEROS = "PolesZeros";
     public static final String INPUTUNITS = "InputUnits";
     public static final String OUTPUTUNITS = "OutputUnits";
+    public static final String PZTRANSFERTYPE = "PzTransferFunctionType";
+    public static final String CFTRANSFERTYPE = "CfTransferFunctionType";
     public static final String NORMALIZATIONFACTOR = "NormalizationFactor";
     public static final String NORMALIZATIONFREQ = "NormalizationFreq";
     public static final String POLE = "Pole";
@@ -67,7 +72,9 @@ public final class StationXMLTagNames {
     public static final String IMAGINARY = "Imaginary";
     public static final String STAGESENSITIVITY = "StageSensitivity";
     public static final String SENSITIVITYVALUE = "SensitivityValue";
-    public static final String GAINUNITS = "GainUnits";
+    public static final String SENSITIVITYUNITS = "SensitivityUnits";
+    @Deprecated
+    public static final String GAINUNITS = "GainUnits"; // no longer used
     public static final String DECIMATION = "Decimation";
     public static final String INPUTSAMPLERATE = "InputSampleRate";
     public static final String FACTOR = "Factor";
@@ -114,4 +121,10 @@ public final class StationXMLTagNames {
     public static final String RECORDEDCHANNELS = "RecordedChannels";
     public static final String DATALOGGER = "DataLogger";
     public static final String XMLNS = "xmlns";
-}
+    
+    public static final String IRISSTATIONCOMMENTS = "StationComments";
+    public static final String IRISCHANNELCOMMENTS = "ChannelComments";
+    public static final String IRISCOMMENT = "Comment";
+    public static final String IRISTEXT = "Text";
+    public static final String IRISCLASS = "Class";
+    }
