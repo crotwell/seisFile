@@ -10,7 +10,7 @@ public class GainSensitivity {
 
     public GainSensitivity(float value, String unit, float frequency) {
         this.sensitivityValue = value;
-        this.gainUnits = unit;
+        this.sensitivityUnits = unit;
         this.frequency = frequency;
     }
 
@@ -24,8 +24,8 @@ public class GainSensitivity {
                     sensitivityValue = StaxUtil.pullFloat(reader, StationXMLTagNames.SENSITIVITY_VALUE);
                 } else if (elName.equals(StationXMLTagNames.FREQUENCY)) {
                     frequency = StaxUtil.pullFloat(reader, StationXMLTagNames.FREQUENCY);
-                } else if (elName.equals(StationXMLTagNames.GAINUNITS)) {
-                    gainUnits = StaxUtil.pullText(reader, StationXMLTagNames.GAINUNITS);
+                } else if (elName.equals(StationXMLTagNames.SENSITIVITYUNITS)) {
+                    sensitivityUnits = StaxUtil.pullText(reader, StationXMLTagNames.SENSITIVITYUNITS);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -46,10 +46,19 @@ public class GainSensitivity {
         return frequency;
     }
 
+    public String getSensitivityUnits() {
+        return sensitivityUnits;
+    }
+
+    @Deprecated
+    /** 
+     * renamed getSensitivityUnits
+     * @return
+     */
     public String getGainUnits() {
-        return gainUnits;
+        return getSensitivityUnits();
     }
 
     float sensitivityValue, frequency;
 
-    String gainUnits;}
+    String sensitivityUnits;}

@@ -7,8 +7,10 @@ import javax.xml.stream.events.XMLEvent;
 
 public class Site {
 
-    public Site(String town, String county, String state, String country) {
+    public Site(String name, String description, String town, String county, String state, String country) {
         super();
+        this.name = name;
+        this.description = description;
         this.town = town;
         this.county = county;
         this.state = state;
@@ -23,6 +25,10 @@ public class Site {
                 String elName = e.asStartElement().getName().getLocalPart();
                 if (elName.equals(StationXMLTagNames.TOWN)) {
                     town = StaxUtil.pullText(reader, StationXMLTagNames.TOWN);
+                } else if (elName.equals(StationXMLTagNames.NAME)) {
+                    name = StaxUtil.pullText(reader, StationXMLTagNames.NAME);
+                } else if (elName.equals(StationXMLTagNames.DESCRIPTION)) {
+                    description = StaxUtil.pullText(reader, StationXMLTagNames.DESCRIPTION);
                 } else if (elName.equals(StationXMLTagNames.COUNTY)) {
                     county = StaxUtil.pullText(reader, StationXMLTagNames.COUNTY);
                 } else if (elName.equals(StationXMLTagNames.STATE)) {
@@ -39,6 +45,22 @@ public class Site {
                 e = reader.nextEvent();
             }
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getTown() {
@@ -73,5 +95,5 @@ public class Site {
         this.country = country;
     }
 
-    String town, county, state, country;
+    String name, description, town, county, state, country;
 }
