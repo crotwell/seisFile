@@ -30,11 +30,18 @@ public class WinstonClient {
         winstonConfig.put("winston.prefix", "W");
         winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser");
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-p")) {
-                winstonConfig.load(new BufferedReader(new FileReader(args[i + 1])));
-            } else if (args[i].equals("-u")) {
-                winstonConfig.put("winston.url", args[i + 1]);
+            // arg with value
+            if (i < args.length-1) {
+                if (args[i].equals("-p")) {
+                    winstonConfig.load(new BufferedReader(new FileReader(args[i + 1])));
+                } else if (args[i].equals("-u")) {
+                    winstonConfig.put("winston.url", args[i + 1]);
+                } else if (args[i].equals("--recLen")) {
+                    recordSize = Integer.parseInt(args[i+1]);
+                }
             } else if (args[i].equals("--sync")) {
+                doSync = true;
+            } else if (args[i].equals("--steim1")) {
                 doSync = true;
             }
         }
@@ -48,6 +55,10 @@ public class WinstonClient {
     Properties winstonConfig = new Properties();
 
     boolean doSync = false;
+    
+    int recordSize = 12;
+    
+    boolean doSteim1 = true;
 
     /**
      * @param args
@@ -105,7 +116,7 @@ public class WinstonClient {
         } else {
             List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
             for (TraceBuf2 traceBuf2 : tbList) {
-                DataRecord mseed = traceBuf2.toMiniSeed();
+                DataRecord mseed = traceBuf2.toMiniSeed(recordSize, doSteim1);
                 mseed.write(params.getDataOutputStream());
             }
         }
@@ -138,6 +149,6 @@ public class WinstonClient {
     public String getHelp() {
         return "java "
                 + WinstonClient.class.getName()
-                + " [-p <winston.config file>][-u databaseURL][-n net][-s sta][-l loc][-c chan][-b yyyy-MM-dd[THH:mm:ss.SSS]][-e yyyy-MM-dd[THH:mm:ss.SSS]][-d seconds][-o outfile][-m maxpackets][--sync][--verbose][--version][--help]";
+                + " [-p <winston.config file>][-u databaseURL][-n net][-s sta][-l loc][-c chan][-b yyyy-MM-dd[THH:mm:ss.SSS]][-e yyyy-MM-dd[THH:mm:ss.SSS]][-d seconds][-o outfile][-m maxpackets][--sync][--steim1][--recLen len(8-12)][--verbose][--version][--help]";
     }
 }
