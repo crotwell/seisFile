@@ -42,7 +42,7 @@ public class WinstonClient {
             } else if (args[i].equals("--sync")) {
                 doSync = true;
             } else if (args[i].equals("--steim1")) {
-                doSync = true;
+                doSteim1 = true;
             }
         }
         if ( ! doSync && params.getOutFile() == null) {
