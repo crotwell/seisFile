@@ -77,7 +77,7 @@ public class WinstonClient {
             System.out.println("Version: "+BuildVersion.getDetailedVersion());
             return;
         } else if (params.getNetwork() == null || params.getStation() == null || params.getChannel() == null) {
-            System.out.println(BuildVersion.getDetailedVersion()+" one of scnl is null: n="+params.getNetwork()+" s="+params.getStation() == null+" l="+params.getLocation()+" s="+params.getChannel());
+            System.out.println(BuildVersion.getDetailedVersion()+" one of scnl is null: n="+params.getNetwork()+" s="+params.getStation()+" l="+params.getLocation()+" s="+params.getChannel());
             System.out.println("LocId null is ok for scn, but needed for scnl");
             return;
         }
