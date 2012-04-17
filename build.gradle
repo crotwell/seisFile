@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.4.0'
+version = '1.4.1-SNAPSHOT'
 
 dependencies {
     compile project(':seedCodec')
