@@ -46,6 +46,9 @@ public class QueryParams {
                 printHelp = true;
             }
         }
+        if (args.length == 0) {
+            printHelp = true;
+        }
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         cal.add(Calendar.SECOND, -1 * Math.round(duration));
         cal.add(Calendar.MILLISECOND, -1000 * Math.round(duration - Math.round(duration)));
