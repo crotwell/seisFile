@@ -12,26 +12,29 @@ public class SyncLine implements Comparable<SyncLine> {
 
     public static SyncLine parse(String line) throws SeisFileException {
         try {
-        String[] s = line.split("\\|", -1);
-        SyncLine out = new SyncLine(s[0], // net
-                                    s[1], // sta
-                                    s[2], // loc
-                                    s[3], // chan
-                                    stringToDate(s[4]), // startTime
-                                    stringToDate(s[5]), // endTime
-                                    stringToFloat(s[6]), // maxClockDrift
-                                    stringToFloat(s[7]), // samplesPerSecond
-                                    s[8], // channelFlag
-                                    s[9], // stationVolume
-                                    s[10], // dccTapeNumber
-                                    s[11], // dmcTapeNumber
-                                    s[12], // comment
-                                    stringToDate(s[13]), // lineModByDMC
-                                    stringToDate(s[14])); // lineModByDCC
-        return out;
-        } catch (Exception e) {
+            String[] s = line.split("\\|", -1);
+            SyncLine out = new SyncLine(s[0], // net
+                                        s[1], // sta
+                                        s[2], // loc
+                                        s[3], // chan
+                                        stringToDate(s[4]), // startTime
+                                        stringToDate(s[5]), // endTime
+                                        stringToFloat(s[6]), // maxClockDrift
+                                        stringToFloat(s[7]), // samplesPerSecond
+                                        s[8], // channelFlag
+                                        s[9], // stationVolume
+                                        s[10], // dccTapeNumber
+                                        s[11], // dmcTapeNumber
+                                        s[12], // comment
+                                        stringToDate(s[13]), // lineModByDMC
+                                        stringToDate(s[14])); // lineModByDCC
+            if (out.getStartTime().after(out.getEndTime())) {
+                throw new SeisFileException("Start is after End: "+s[4]+" "+s[5]);
+            }
+            return out;
+        } catch(Exception e) {
             // ParseException, NumberFormatException
-            throw new SeisFileException("Trouble parsing line: "+line, e);
+            throw new SeisFileException("Trouble parsing line: " + line, e);
         }
     }
 
@@ -105,6 +108,10 @@ public class SyncLine implements Comparable<SyncLine> {
         this.lineModByDMC = lineModByDMC;
         this.lineModByDCC = lineModByDCC;
     }
+    
+    public String toString() {
+        return formatLine();
+    }
 
     public String formatLine() {
         return concatWithSeparator(new String[] {net,
@@ -129,10 +136,10 @@ public class SyncLine implements Comparable<SyncLine> {
      * SyncLine.
      */
     public boolean isContiguous(SyncLine line, float tolerenceSeconds) {
-        return net.equals(line.net) && sta.equals(line.sta) 
+        return net.equals(line.net) && sta.equals(line.sta)
                 && ((loc == null && line.loc == null) || (loc != null && loc.equals(line.loc)))
                 && chan.equals(line.chan)
-                && Math.abs((line.startTime.getTime() - endTime.getTime()) / 1000.0 ) <= tolerenceSeconds;
+                && Math.abs((line.startTime.getTime() - endTime.getTime()) / 1000.0) <= tolerenceSeconds;
     }
 
     public SyncLine concat(SyncLine after) {
@@ -156,7 +163,18 @@ public class SyncLine implements Comparable<SyncLine> {
         if (subComp != 0) {
             return subComp;
         }
-        return getStartTime().compareTo(two.getStartTime());
+        subComp = getStartTime().compareTo(two.getStartTime());
+        if (subComp != 0) {
+            return subComp;
+        }
+        return getEndTime().compareTo(two.getEndTime());
+    }
+
+    public SyncLine[] split(Date d) {
+        if (d.before(getStartTime()) || d.after(getEndTime())) {
+            return new SyncLine[] {this};
+        }
+        return new SyncLine[] {new SyncLine(this, getStartTime(), d), new SyncLine(this, d, getEndTime())};
     }
 
     public static String concatWithSeparator(String[] items, String separator) {
@@ -225,10 +243,10 @@ public class SyncLine implements Comparable<SyncLine> {
     }
 
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss");
+
     private static final DateFormat dateFormatFracSeconds = new SimpleDateFormat("yyyy,DDD,HH:mm:ss.SSS");
 
     private static final DateFormat dayOnlyDateFormat = new SimpleDateFormat("yyyy,DDD");
-    
     static {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         dateFormatFracSeconds.setTimeZone(TimeZone.getTimeZone("GMT"));
