@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,12 +19,20 @@ import edu.sc.seis.seisFile.SeisFileException;
 public class SyncFile {
 
     public static SyncFile load(File f) throws IOException, SeisFileException {
+        try {
         BufferedReader r = new BufferedReader(new FileReader(f));
+        return load(r);
+        } catch (IOException e) {
+            throw new IOException("Problem loading from file "+f, e);
+        }
+    }
+
+    public static SyncFile load(BufferedReader r) throws IOException, SeisFileException {
         String line;
         // first line is header line with dccName | date | extra | extra...
         line = r.readLine();
         if (line == null) {
-            throw new IOException("empty Sync file: " + f);
+            throw new IOException("empty Sync file.");
         }
         String[] split = line.split("\\|");
         String[] extras = new String[0];
