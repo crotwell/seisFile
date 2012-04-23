@@ -208,15 +208,60 @@ public class TraceBuf2 {
     }
 
     public int[] getIntData() {
-        return intData;
+        if (isIntData()) {
+            return intData;
+        } else if (isShortData()) {
+            int[] out = new int[shortData.length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = shortData[i];
+            }
+            return out;
+        }
+        return null;
     }
 
     public float[] getFloatData() {
-        return floatData;
+        if (isFloatData()) {
+            return floatData;
+        } else if (isIntData()) {
+            float[] out = new float[intData.length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = intData[i];
+            }
+            return out;
+        } else if (isShortData()) {
+            float[] out = new float[shortData.length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = shortData[i];
+            }
+            return out;
+        }
+        return null;
     }
 
     public double[] getDoubleData() {
-        return doubleData;
+        if (isDoubleData()) {
+            return doubleData;
+        } else if (isFloatData()) {
+            double[] out = new double[floatData.length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = floatData[i];
+            }
+            return out;
+        } else if (isIntData()) {
+            double[] out = new double[intData.length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = intData[i];
+            }
+            return out;
+        } else if (isShortData()) {
+            double[] out = new double[shortData.length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = shortData[i];
+            }
+            return out;
+        }
+        return null;
     }
     
     public byte getSeedEncoding() {
@@ -266,20 +311,26 @@ public class TraceBuf2 {
         byte[] dataBytes = new byte[0];
         if (steim1) {
             try {
-                dataBytes = Steim1.encode(getIntData(), (1 << recLen)/64 - 1).getEncodedData();
+                if (isShortData() || isIntData()) {
+                    dataBytes = Steim1.encode(getIntData(), (1 << recLen)/64 - 1).getEncodedData();
+                } else {
+                    throw new SeedFormatException("Steim1 only applicable to integer data, not float or double: "+getDataType());
+                }
             } catch(SteimException e) {
                 throw new SeedFormatException(e);
             } catch(IOException e) {
                 throw new SeedFormatException(e);
             }
-        } else if (isShortData()) {
-            dataBytes = codec.encodeAsBytes(getShortData());
-        } else if (isIntData()) {
-            dataBytes = codec.encodeAsBytes(getIntData());
-        } else if (isFloatData()) {
-            dataBytes = codec.encodeAsBytes(getFloatData());
-        } else if (isDoubleData()) {
-            dataBytes = codec.encodeAsBytes(getDoubleData());
+        } else {
+            if (isShortData()) {
+                dataBytes = codec.encodeAsBytes(getShortData());
+            } else if (isIntData()) {
+                dataBytes = codec.encodeAsBytes(getIntData());
+            } else if (isFloatData()) {
+                dataBytes = codec.encodeAsBytes(getFloatData());
+            } else if (isDoubleData()) {
+                dataBytes = codec.encodeAsBytes(getDoubleData());
+            }
         }
         // check we can fit it all in
         if (dh.getSize()+b1000.getSize()+dataBytes.length > Math.pow(2, recLen)) {
