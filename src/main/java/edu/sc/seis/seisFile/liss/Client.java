@@ -23,13 +23,17 @@ public class Client {
         String station = "ANMO";
         String location = null;
         String channel = null;
-        String host = network + "." + station + ".liss.org";
+        String host = station + "." + network + ".liss.org";
         String outFile = null;
         int port = DEFAULT_PORT;
         int maxRecords = 10;
         boolean verbose = false;
         DataOutputStream dos = null;
         PrintWriter out = new PrintWriter(System.out, true);
+        if (args.length == 0) {
+            printHelp();
+            return;
+        }
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-n")) {
                 network = args[i + 1];
@@ -64,12 +68,8 @@ public class Client {
                 out.println(BuildVersion.getDetailedVersion());
                 System.exit(0);
             } else if (args[i].equals("--help")) {
-                out.println("java "
-                        + Client.class.getName()
-                        + " [[-n net][-s sta]|[-h host]][-l loc][-c chan][-p port][-o outfile][-m maxpackets][--verbose][--version][--help]");
-                out.println(" host is formed from sta.net.liss.org if not given directly.");
-                out.println(" See www.liss.org for more information.");
-                System.exit(0);
+                printHelp();
+                return;
             }
         }
         if (verbose) {
@@ -110,6 +110,15 @@ public class Client {
         }
         lissConnect.close();
         out.println("Finished: " + new Date());
+    }
+    
+    public static void printHelp() {
+        PrintWriter out = new PrintWriter(System.out, true);
+        out.println("java "
+                + Client.class.getName()
+                + " [[-n net][-s sta]|[-h host]][-l loc][-c chan][-p port][-o outfile][-m maxpackets][--verbose][--version][--help]");
+        out.println(" host is formed from sta.net.liss.org if not given directly.");
+        out.println(" See www.liss.org for more information.");
     }
 
     public static final int DEFAULT_PORT = 4000;
