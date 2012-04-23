@@ -58,7 +58,7 @@ public class WinstonClient {
     
     int recordSize = 12;
     
-    boolean doSteim1 = true;
+    boolean doSteim1 = false;
 
     /**
      * @param args
