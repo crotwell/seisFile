@@ -45,7 +45,7 @@ public class Utility {
     
     public static short bytesToShort(byte hi, byte low, boolean swapBytes) {
         if(swapBytes) {
-            return (short)((hi & 0xff) + (low & 0xff) << 8);
+            return (short)((hi & 0xff) + ((low & 0xff) << 8));
         } else {
             return (short)(((hi & 0xff) << 8) + (low & 0xff));
         }
