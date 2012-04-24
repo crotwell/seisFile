@@ -81,4 +81,16 @@ public class UtilityTest {
         assertEquals("on 2012 jan 1 "+sdf.format(cal.getTime())+" err="+(jan1_2012-d), jan1_2012, d, 10);
         
     }
+    
+    @Test
+    public void testBytesToShort() {
+        short s = Utility.bytesToShort((byte)1, (byte)2, false);
+        assertEquals(258, s);
+        s = Utility.bytesToShort((byte)0, (byte)17, false);
+        assertEquals(17, s);
+        s = Utility.bytesToShort((byte)1, (byte)0, true);
+        assertEquals(1, s);
+        s = Utility.bytesToShort((byte)17, (byte)0, true);
+        assertEquals(17, s);
+    }
 }
