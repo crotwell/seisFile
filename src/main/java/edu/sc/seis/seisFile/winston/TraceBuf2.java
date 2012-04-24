@@ -39,6 +39,7 @@ public class TraceBuf2 {
         quality = Utility.extractString(data, 60, 2);
         pad = Utility.extractString(data, 62, 2);
         int offset = 64;
+        
         if (isShortData()) {
             shortData = new short[numSamples];
             for (int i = 0; i < shortData.length; i++) {
@@ -292,7 +293,9 @@ public class TraceBuf2 {
         dh.setStationIdentifier(getStation());
         dh.setChannelIdentifier(getChannel());
         dh.setNetworkCode(getNetwork());
-        dh.setLocationIdentifier(getLocId());
+        String l = getLocId();
+        if (l == null || l.equals("--")) { l = "  ";}
+        dh.setLocationIdentifier(l);
         dh.setDataQualityFlags((byte)getQuality().charAt(0));
         dh.setNumSamples((short)getNumSamples());
         dh.setStartBtime(new Btime(getStartDate()));
@@ -346,6 +349,28 @@ public class TraceBuf2 {
         return getPin()+" "+network+"."+station+"."+locId+"."+channel+" "+
                 sdf.format(getStartDate())+"("+getStartTime()+") to "+
                 sdf.format(getEndDate())+"("+getEndTime()+") sr="+getSampleRate()+"  npts="+numSamples+" datetype="+getDataType()+" ver="+getVersion();
+    }
+    
+    public String toStringWithData() {
+        String out = toString()+"\n";
+        if (isShortData() || isIntData()) {
+            int[] d = getIntData();
+            for (int i = 0; i < d.length; i++) {
+                out+=d[i]+" ";
+                if (i % 8 == 7) {
+                    out += "\n";
+                }
+            }
+        } else {
+            double[] d = getDoubleData();
+            for (int i = 0; i < d.length; i++) {
+                out+=d[i]+" ";
+                if (i % 8 == 7) {
+                    out += "\n";
+                }
+            }
+        }
+        return out;
     }
 
     short[] shortData;
