@@ -92,5 +92,7 @@ public class UtilityTest {
         assertEquals(1, s);
         s = Utility.bytesToShort((byte)17, (byte)0, true);
         assertEquals(17, s);
+        s = Utility.bytesToShort((byte)253, (byte)255, true);
+        assertEquals(-3, s);
     }
 }
