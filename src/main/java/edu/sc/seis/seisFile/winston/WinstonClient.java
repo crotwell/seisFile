@@ -30,22 +30,22 @@ public class WinstonClient {
         winstonConfig.put("winston.prefix", "W");
         winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser");
         for (int i = 0; i < args.length; i++) {
-            // arg with value
-            if (i < args.length-1) {
+            if (args[i].equals("--sync")) {
+                doSync = true;
+            } else if (args[i].equals("--steim1")) {
+                doSteim1 = true;
+            } else if (i < args.length - 1) {
+                // arg with value
                 if (args[i].equals("-p")) {
                     winstonConfig.load(new BufferedReader(new FileReader(args[i + 1])));
                 } else if (args[i].equals("-u")) {
                     winstonConfig.put("winston.url", args[i + 1]);
                 } else if (args[i].equals("--recLen")) {
-                    recordSize = Integer.parseInt(args[i+1]);
+                    recordSize = Integer.parseInt(args[i + 1]);
                 }
-            } else if (args[i].equals("--sync")) {
-                doSync = true;
-            } else if (args[i].equals("--steim1")) {
-                doSteim1 = true;
             }
         }
-        if ( ! doSync && params.getOutFile() == null) {
+        if (!doSync && params.getOutFile() == null) {
             params.setOutFile("output.mseed");
         }
     }
@@ -55,9 +55,9 @@ public class WinstonClient {
     Properties winstonConfig = new Properties();
 
     boolean doSync = false;
-    
+
     int recordSize = 12;
-    
+
     boolean doSteim1 = false;
 
     /**
@@ -74,10 +74,11 @@ public class WinstonClient {
             System.out.println(getHelp());
             return;
         } else if (params.isPrintVersion()) {
-            System.out.println("Version: "+BuildVersion.getDetailedVersion());
+            System.out.println("Version: " + BuildVersion.getDetailedVersion());
             return;
         } else if (params.getNetwork() == null || params.getStation() == null || params.getChannel() == null) {
-            System.out.println(BuildVersion.getDetailedVersion()+" one of scnl is null: n="+params.getNetwork()+" s="+params.getStation()+" l="+params.getLocation()+" c="+params.getChannel());
+            System.out.println(BuildVersion.getDetailedVersion() + " one of scnl is null: n=" + params.getNetwork()
+                    + " s=" + params.getStation() + " l=" + params.getLocation() + " c=" + params.getChannel());
             System.out.println("LocId null is ok for scn, but needed for scnl");
             return;
         }
