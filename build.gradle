@@ -3,6 +3,8 @@
 group = 'edu.sc.seis'
 version = '1.4.1-SNAPSHOT'
 
+apply plugin: 'maven'
+
 dependencies {
     compile project(':seedCodec')
     compile "org.slf4j:slf4j-api:1.6.1"
@@ -60,7 +62,7 @@ task explodeBin(type: Sync, dependsOn: ['makeScript' ]) {
     into file("$buildDir/explode")
 }
 
-task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionClass', 'createBuildScript', ':seiswww:makeSite']) {
+task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionClass', 'createBuildScript', ':seiswww:makeSite', 'wrapper']) {
     group = 'dist'
     with distFiles
     into file("$buildDir/explode")
@@ -86,11 +88,14 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('winstonclient', 'edu.sc.seis.seisFile.winston.WinstonClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('stationxmlclient', 'edu.sc.seis.seisFile.stationxml.StationXMLClient', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('waveserverclient', 'edu.sc.seis.seisFile.waveserver.WaveServerClient', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
     return [ 'seisFile':getVersion()]
 }
+
+
 
 assemble.dependsOn(tarDist)
 
