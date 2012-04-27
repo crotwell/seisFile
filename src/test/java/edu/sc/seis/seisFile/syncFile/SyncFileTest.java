@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.syncFile;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,5 +40,12 @@ public class SyncFileTest {
         SyncLine joined = first.concat(second);
         assertEquals(first.startTime, joined.startTime);
         assertEquals(second.endTime, joined.endTime);
+    }
+    
+    @Test
+    public void testLoadIrisSyncFile() throws IOException, SeisFileException {
+        SyncFile s = SyncFileCompareTest.loadResource("CO.JSC_Jan2012.sync");
+        s.sort();
+        assertTrue(true);
     }
 }
