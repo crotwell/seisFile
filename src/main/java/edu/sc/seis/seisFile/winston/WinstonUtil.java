@@ -221,14 +221,14 @@ public class WinstonUtil {
             byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
             Inflater decompresser = new Inflater();
             decompresser.setInput(tbBytes, 0, tbBytes.length);
-            byte[] result = new byte[TraceBuf2.MAX_TRACEBUF_SIZ]; // should all
+            byte[] result = new byte[TraceBuf2.MAX_TRACEBUF_SIZE]; // should all
                                                                   // fit in once
                                                                   // decomp
                                                                   // cycle
             int resultLength = decompresser.inflate(result);
             if (!decompresser.finished()) {
                 throw new RuntimeException("more bytes in Blob than can fit in a TraceBuf2: "
-                        + TraceBuf2.MAX_TRACEBUF_SIZ);
+                        + TraceBuf2.MAX_TRACEBUF_SIZE);
             }
             byte[] tbResult = new byte[resultLength];
             System.arraycopy(result, 0, tbResult, 0, tbResult.length);
