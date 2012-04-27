@@ -1,14 +1,19 @@
 package edu.sc.seis.seisFile.syncFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.sc.seis.seisFile.SeisFileException;
+
 /**
- * Compares two sync files, creating 3 psuedo-sync files. In A and In B<br/>
- * In A and Not In B<br/>
- * Not In A and In B<br/>
+ * Compares two sync files, creating 3 psuedo-sync files. 
+ * <ul><li>In A and In B</li>
+ * <li>In A and Not In B</li>
+ * <li>Not In A and In B</li></ul>
  * 
  * @author crotwell
  * 
@@ -130,4 +135,18 @@ public class SyncFileCompare {
     SyncFile notAinB;
 
     SyncFile inAnotB;
+    
+    public static void main(String[] args) throws IOException, SeisFileException {
+        if (args.length != 2) {
+            System.err.println("Usage: syncFileCompare file1.sync file2.sync");
+            return;
+        }
+        SyncFile file1 = SyncFile.load(new File(args[0]));
+        SyncFile file2 = SyncFile.load(new File(args[1]));
+        SyncFileCompare sfc = new SyncFileCompare(file1, file2);
+        sfc.getInAinB().saveToFile("in_"+args[0]+"_in_"+args[1]+".sync");
+        sfc.getNotAinB().saveToFile("not_"+args[0]+"_in_"+args[1]+".sync");
+        sfc.getInAnotB().saveToFile("in_"+args[0]+"_not_"+args[1]+".sync");
+        System.out.println("Done: A: "+file1.getSyncLines().size()+" B: "+file2.getSyncLines().size()+" inAinB: "+sfc.getInAinB().getSyncLines().size()+" notAinB: "+sfc.getNotAinB().getSyncLines().size()+" inAnotB: "+sfc.getInAnotB().getSyncLines().size());
+    }
 }
