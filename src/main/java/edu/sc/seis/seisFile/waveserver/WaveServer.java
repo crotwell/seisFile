@@ -7,12 +7,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.sc.seis.seisFile.mseed.Utility;
 import edu.sc.seis.seisFile.winston.TraceBuf2;
 
 public class WaveServer {
