@@ -79,7 +79,7 @@ public class SyncFileCompareTest {
         assertNull("b", out[1]);
     }
 
-    SyncFile loadResource(String filename) throws IOException, SeisFileException {
+    static SyncFile loadResource(String filename) throws IOException, SeisFileException {
         return SyncFile.load(new BufferedReader(new InputStreamReader(SyncFileCompareTest.class.getClassLoader()
                 .getResourceAsStream("edu/sc/seis/seisFile/syncFile/" + filename))));
     }
