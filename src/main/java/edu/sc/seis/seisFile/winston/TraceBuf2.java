@@ -19,14 +19,10 @@ import edu.sc.seis.seisFile.mseed.Utility;
 public class TraceBuf2 {
 
     public TraceBuf2(byte[] data) {
-        dataType = Utility.extractNullTermString(data, 57, 3);
-        boolean swapBytes = false;
-        if (dataType.equals(INTEL_IEEE_DOUBLE_PRECISION_REAL) || dataType.equals(INTEL_IEEE_INTEGER)
-                || dataType.equals(INTEL_IEEE_SHORT_INTEGER) || dataType.equals(INTEL_IEEE_SINGLE_PRECISION_REAL)) {
-            swapBytes = true;
-        }
+        dataType = extractDataType(data);
+        boolean swapBytes =  isSwapBytes(dataType);
         pin = Utility.bytesToInt(data, 0, swapBytes);
-        numSamples = Utility.bytesToInt(data, 4, swapBytes);
+        numSamples = extractNumSamples(data, swapBytes);
         startTime = Utility.bytesToDouble(data, 8, swapBytes);
         endTime = Utility.bytesToDouble(data, 16, swapBytes);
         sampleRate = Utility.bytesToDouble(data, 24, swapBytes);
@@ -87,6 +83,30 @@ public class TraceBuf2 {
         }
     }
 
+    public static int extractNumSamples(byte[] data, boolean swapBytes) {
+        return Utility.bytesToInt(data, 4, swapBytes);
+    }
+
+    public static String extractDataType(byte[] data) {
+        return Utility.extractNullTermString(data, 57, 3);
+    }
+    
+    public static boolean isSwapBytes(String dataType) {
+        return dataType.equals(INTEL_IEEE_DOUBLE_PRECISION_REAL) || dataType.equals(INTEL_IEEE_INTEGER)
+                || dataType.equals(INTEL_IEEE_SHORT_INTEGER) || dataType.equals(INTEL_IEEE_SINGLE_PRECISION_REAL);
+    }
+
+    public static int getSampleSize(String dataType) {
+        if(TraceBuf2.isShortData(dataType)) {
+            return 2;
+        } else if(TraceBuf2.isIntData(dataType) || TraceBuf2.isFloatData(dataType)) {
+            return 4;
+        } else if(TraceBuf2.isDoubleData(dataType)) {
+            return 8;
+        }
+        throw new RuntimeException("Unknown dataType: '"+dataType+"'");
+    }
+    
     /** Pin number */
     int pin;
 
@@ -129,18 +149,34 @@ public class TraceBuf2 {
     String pad;
 
     public boolean isShortData() {
-        return dataType.equals(INTEL_IEEE_SHORT_INTEGER) || dataType.equals(SUN_IEEE_SHORT_INTEGER);
+        return isShortData(dataType);
     }
 
     public boolean isIntData() {
-        return dataType.equals(INTEL_IEEE_INTEGER) || dataType.equals(SUN_IEEE_INTEGER);
+        return isIntData(dataType);
     }
 
     public boolean isFloatData() {
-        return dataType.equals(INTEL_IEEE_SINGLE_PRECISION_REAL) || dataType.equals(SUN_IEEE_SINGLE_PRECISION_REAL);
+        return isFloatData(dataType);
     }
 
     public boolean isDoubleData() {
+        return isDoubleData(dataType);
+    }
+
+    public static boolean isShortData(String dataType) {
+        return dataType.equals(INTEL_IEEE_SHORT_INTEGER) || dataType.equals(SUN_IEEE_SHORT_INTEGER);
+    }
+
+    public static boolean isIntData(String dataType) {
+        return dataType.equals(INTEL_IEEE_INTEGER) || dataType.equals(SUN_IEEE_INTEGER);
+    }
+
+    public static boolean isFloatData(String dataType) {
+        return dataType.equals(INTEL_IEEE_SINGLE_PRECISION_REAL) || dataType.equals(SUN_IEEE_SINGLE_PRECISION_REAL);
+    }
+
+    public static boolean isDoubleData(String dataType) {
         return dataType.equals(INTEL_IEEE_DOUBLE_PRECISION_REAL) || dataType.equals(SUN_IEEE_DOUBLE_PRECISION_REAL);
     }
 
@@ -342,6 +378,10 @@ public class TraceBuf2 {
         dr.setData(dataBytes);
         return dr;
     }
+
+    public int getSize() {
+        return 64+ getNumSamples()*getSampleSize(getDataType());
+    }
     
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -384,7 +424,7 @@ public class TraceBuf2 {
     /* NULL string for location code field */
     public static final String LOC_NULL_STRING = "--";
 
-    public static final int MAX_TRACEBUF_SIZ = 4096;
+    public static final int MAX_TRACEBUF_SIZE = 4096;
 
     /* Byte 0 of data quality flags, as in SEED format */
     public static final int AMPLIFIER_SATURATED = 0x01;
@@ -421,4 +461,5 @@ public class TraceBuf2 {
     public static final String INTEL_IEEE_SHORT_INTEGER = "i2";
 
     public static final String NORESS_GAIN_RANGED = "g2";
+
 }
