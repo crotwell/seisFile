@@ -27,9 +27,14 @@ public class WaveServer {
     }
 
     public WaveServer(String host, int port) throws UnknownHostException, IOException {
+        this(host, port, DEFAULT_TIMEOUT_SECONDS);
+    }
+    
+    public WaveServer(String host, int port, int timeoutSeconds) throws UnknownHostException, IOException {
         this.host = host;
         this.port = port;
         socket = new Socket(getHost(), getPort());
+        socket.setSoTimeout(timeoutSeconds*1000);
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
     }
@@ -164,6 +169,8 @@ public class WaveServer {
     PrintWriter out;
 
     DataInputStream in;
+    
+    public static final int DEFAULT_TIMEOUT_SECONDS = 60;
 
     boolean verbose = false;
 }
