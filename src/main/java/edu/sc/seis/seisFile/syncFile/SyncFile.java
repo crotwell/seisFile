@@ -7,11 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -68,6 +67,19 @@ public class SyncFile implements Iterable<SyncLine> {
     public SyncFile(String dccName, String dateModified, String[] extraHeaders, List<SyncLine> lines) {
         this(dccName, dateModified, extraHeaders);
         syncLines = lines;
+    }
+    
+    public HashMap<String, SyncFile> splitByChannel() {
+        HashMap<String, SyncFile> out = new HashMap<String, SyncFile>();
+        for (SyncLine sline : this) {
+            String chan = sline.net+"."+sline.sta+"."+sline.loc+"."+sline.chan;
+            if ( ! out.containsKey(chan)) {
+                SyncFile sf = new SyncFile(getDccName()+" "+chan);
+                out.put(chan, sf);
+            }
+            out.get(chan).addLine(sline);
+        }
+        return out;
     }
 
     public SyncFile concatenate(SyncFile other) {
