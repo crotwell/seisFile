@@ -89,6 +89,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('winstonclient', 'edu.sc.seis.seisFile.winston.WinstonClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('stationxmlclient', 'edu.sc.seis.seisFile.stationxml.StationXMLClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('waveserverclient', 'edu.sc.seis.seisFile.waveserver.WaveServerClient', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('syncfilecompare', 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
