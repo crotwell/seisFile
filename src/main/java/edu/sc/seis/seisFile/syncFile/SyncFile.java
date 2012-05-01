@@ -12,11 +12,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.SeisFileRuntimeException;
 
-public class SyncFile {
+public class SyncFile implements Iterable<SyncLine> {
 
     public static SyncFile load(File f) throws IOException, SeisFileException {
         try {
@@ -162,6 +164,47 @@ public class SyncFile {
 
     public List<SyncLine> getSyncLines() {
         return syncLines;
+    }
+    
+    public boolean isEmpty() {
+        return getSyncLines().isEmpty();
+    }
+
+    public int size() {
+        return getSyncLines().size();
+    }
+    
+    /** calculates the earliest time in the syncfile. This assuemes that the
+     * SyncFile has been sorted either before loading or via the sort() method.
+     * @throws SeisFileRuntimeException if empty
+     * @return earliest time
+     */
+    public Date getEarliest() {
+        List<SyncLine> lines = getSyncLines();
+        if (lines.size() != 0) {
+            SyncLine sLine = lines.get(0);
+            return sLine.getStartTime();
+        }
+        throw new SeisFileRuntimeException("SyncFile is empty");
+    }
+    
+    /** calculates the latest time in the syncfile. This assuemes that the
+     * SyncFile has been sorted either before loading or via the sort() method.
+     * @throws SeisFileRuntimeException if empty
+     * @return latest time
+     */
+    public Date getLatest() {
+        List<SyncLine> lines = getSyncLines();
+        if (lines.size() != 0) {
+            SyncLine sLine = lines.get(lines.size() - 1);
+            return sLine.getEndTime();
+        }
+        throw new SeisFileRuntimeException("SyncFile is empty");
+    }
+
+    @Override
+    public Iterator<SyncLine> iterator() {
+        return getSyncLines().iterator();
     }
 
     String dccName;
