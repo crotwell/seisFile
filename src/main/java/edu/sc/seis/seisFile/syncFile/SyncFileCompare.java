@@ -164,13 +164,13 @@ public class SyncFileCompare {
         out.println("PS=${BASE}.ps");
         out.println();
         String labelStep = "1Y";
-        if (latest.getTime()-earliest.getTime() < 1000*86400*180) {
+        if (latest.getTime()-earliest.getTime() < 1000l*86400*180) {
             labelStep = "1O";
         } 
-        if (latest.getTime()-earliest.getTime() < 1000*86400*30) {
+        if (latest.getTime()-earliest.getTime() < 1000l*86400*30) {
             labelStep = "1D";
         } 
-        if (latest.getTime()-earliest.getTime() < 1000*86400*1) {
+        if (latest.getTime()-earliest.getTime() < 1000l*86400*1) {
             labelStep = "1H";
         } 
         out.println("psbasemap -R"+sdf.format(earliest)+"/"+sdf.format(latest)+"/0/3 -JX6i -B"+labelStep+"/1 -K > $PS");
