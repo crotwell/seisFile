@@ -109,6 +109,11 @@ public class SacHeader {
                 headerBuf[i + 1] = headerBuf[i + 2];
                 headerBuf[i + 2] = tmp;
             }
+        } else if ( ! (headerBuf[NVHDR_OFFSET] == 0 && headerBuf[NVHDR_OFFSET + 1] == 0 && headerBuf[NVHDR_OFFSET + 2] == 0
+                &&headerBuf[NVHDR_OFFSET + 3] == 6)) {
+            throw new IOException("Does not appear to be a SAC file, NVHDR header bytes should be (int) 6 but found "+
+                    headerBuf[NVHDR_OFFSET] +" "+ headerBuf[NVHDR_OFFSET + 1] +" "+ headerBuf[NVHDR_OFFSET + 2] +" "+
+                    headerBuf[NVHDR_OFFSET + 3]);
         }
         DataInputStream dis = new DataInputStream(new ByteArrayInputStream(headerBuf));
         delta = dis.readFloat();
