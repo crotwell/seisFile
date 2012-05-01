@@ -2,11 +2,13 @@ package edu.sc.seis.seisFile.syncFile;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.junit.Test;
 
@@ -62,8 +64,27 @@ public class SyncFileCompareTest {
         assertEquals(a.getSyncLines().size(), compare.getInAinB().getSyncLines().size());
         assertEquals(2, compare.getInAnotB().getSyncLines().size());
         assertEquals(4, compare.getNotAinB().getSyncLines().size());
+        SyncFile inAinB = loadResource("in_A_in_overlaps.sync");
+        SyncFile inAnotB = loadResource("in_A_not_overlaps.sync");
+        SyncFile notAinB = loadResource("not_A_in_overlaps.sync");
+        compareTimes(inAinB, compare.getInAinB());
+        compareTimes(inAnotB, compare.getInAnotB());
+        compareTimes(notAinB, compare.getNotAinB());
     }
 
+    public void compareTimes(SyncFile expected, SyncFile actual) {
+        Iterator<SyncLine> expectedIt = expected.iterator();
+        Iterator<SyncLine> actualIt = actual.iterator();
+        while(expectedIt.hasNext() && actualIt.hasNext()) {
+            SyncLine a = actualIt.next();
+            SyncLine e = expectedIt.next();
+            assertEquals("start times", e.getStartTime(), a.getStartTime());
+            assertEquals("end times", e.getEndTime(), a.getEndTime());
+        }
+        assertFalse("expected not empty", expectedIt.hasNext());
+        assertFalse("actual not empty", actualIt.hasNext());
+    }
+    
     @Test
     public void testProcessItem() throws SeisFileException {
         SyncLine a = SyncLine.parse("CO|JSC|00|HHZ|2010,243,08:00:05|2010,244,03:27:34||100.0|||||||");
