@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.syncFile;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -149,81 +150,7 @@ public class SyncFileCompare {
     public SyncFile getInAnotB() {
         return inAnotB;
     }
-
-    public static void headerToGMTScript(PrintWriter out, SyncFile a, SyncFile b, int numChannels, Date earliest, Date latest) throws IOException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        out.println("BASE=\"sync\"");
-        out.println("PS=${BASE}.ps");
-        out.println("THICK=\"obese\"");
-        out.println();
-        String labelStep = "-Bpa3Of1o -Bsa1YS";
-        if (latest.getTime() - earliest.getTime() < 1000l * 86400 * 180) {
-            labelStep = "-Bpa7Rf1d -Bsa1OS";
-        }
-        if (latest.getTime() - earliest.getTime() < 1000l * 86400 * 30) {
-            labelStep = "-Bpa1Rf6h -Bsa1OS";
-        }
-        if (latest.getTime() - earliest.getTime() < 1000l * 86400 * 5) {
-            out.println("gmtset PLOT_CLOCK_FORMAT hh:mm");
-            labelStep = "-Bpa6Hf1h -Bsa1DS";
-        }
-        if (latest.getTime() - earliest.getTime() < 1000l * 86400) {
-            labelStep = "-Bpa15mf5m -Bsa1HS";
-        }
-        out.println("psbasemap -R" + sdf.format(earliest) + "/" + sdf.format(latest) + "/0/"+(numChannels+2)+" -JX10i/6i " + labelStep
-                + " -K > $PS");
-        out.println("pstext -R -JX -Ggreen -O -K >> $PS <<END");
-        out.println(sdf.format(new Date((earliest.getTime()+latest.getTime())/2)) +" "+ (numChannels+1)+" 12 0 1 CM Both");
-        out.println("END");
-        out.println("pstext -R -JX -Gred -O -K >> $PS <<END");
-        out.println(sdf.format(earliest) +" "+ (numChannels+1)+" 12 0 1 LM Only '" + b.getDccName() + "'");
-        out.println("END");
-        out.println("pstext -R -JX -Gblue -O -K >> $PS <<END");
-        out.println(sdf.format(latest) +" "+ (numChannels+1)+" 12 0 1 RM Only '" + a.getDccName() + "'");
-        out.println("END");
-    }
-
-    public void dataToGMTScript(int index, String label, PrintWriter out) throws IOException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        out.println("psxy -R -JX -W${THICK},green -m -O -K >> $PS <<END");
-        for (SyncLine sline : getInAinB()) {
-            out.println("> ");
-            out.println(sdf.format(sline.getStartTime()) + " " + index);
-            out.println(sdf.format(sline.getEndTime()) + " " + index);
-        }
-        out.println("END");
-        out.println("psxy -R -JX -W${THICK},red -m -O -K >> $PS <<END");
-        for (SyncLine sline : getNotAinB()) {
-            out.println("> ");
-            out.println(sdf.format(sline.getStartTime()) + " " + index);
-            out.println(sdf.format(sline.getEndTime()) + " " + index);
-        }
-        out.println("END");
-        out.println("psxy -R -JX -W${THICK},blue -m -O -K >> $PS <<END");
-        for (SyncLine sline : getInAnotB()) {
-            out.println("> ");
-            out.println(sdf.format(sline.getStartTime()) + " " + index);
-            out.println(sdf.format(sline.getEndTime()) + " " + index);
-        }
-        out.println("END");
-        out.println("pstext -R -JX -Wyellow -O -K >> $PS <<END");
-        out.println(sdf.format(earliest) +" "+ (index)+" 12 0 1 LM " + label);
-        out.println("END");
-    }
-
-    public static void tailToGMTScript(PrintWriter out) throws IOException {
-        out.println("psxy -R -JX -O  >> $PS <<END");
-        out.println("END");
-        out.close();
-    }
-
-    public void outputToGMTScript(String filename) throws IOException {
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
-        headerToGMTScript(out, getA(), getB(), 1, earliest, latest);
-        dataToGMTScript(1, "", out);
-        tailToGMTScript(out);
-    }
-
+    
     Date earliest;
     
     Date latest;
@@ -243,9 +170,9 @@ public class SyncFileCompare {
     }
 
     static String trimDotSync(String filename) {
-        String fileBase = filename;
-        if (filename.endsWith(".sync")) {
-            fileBase = filename.substring(0, filename.lastIndexOf(".sync"));
+        String fileBase = new File(filename).getAbsoluteFile().getName();
+        if (fileBase.endsWith(".sync")) {
+            fileBase = fileBase.substring(0, fileBase.lastIndexOf(".sync"));
         }
         return fileBase;
     }
@@ -280,7 +207,7 @@ public class SyncFileCompare {
         HashMap<String, SyncFile> file1Map = file1.splitByChannel();
         HashMap<String, SyncFile> file2Map = file2.splitByChannel();
         Set<String> chanKeys = new HashSet<String>(file1Map.keySet());
-        chanKeys.addAll(file1Map.keySet());
+        chanKeys.addAll(file2Map.keySet());
         List<String> chanKeyList = new ArrayList<String>(chanKeys);
         Collections.sort(chanKeyList);
         HashMap<String, SyncFileCompare> compareMap = new HashMap<String, SyncFileCompare>();
@@ -307,7 +234,8 @@ public class SyncFileCompare {
                     + " inAnotB: " + sfc.getInAnotB().getSyncLines().size());
         }
         if (doGMT) {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("syncCompare.gmt")));Date earliest = null;
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("syncCompare.gmt")));
+            Date earliest = null;
             Date latest = null;
             if (!file1.isEmpty()) {
                 earliest = file1.getEarliest();
@@ -323,16 +251,41 @@ public class SyncFileCompare {
                     latest = tmp;
                 }
             }
+            int numChannels = chanKeyList.size();
             
-            headerToGMTScript(out, file1, file2, chanKeyList.size(), earliest, latest);
+            GMTSyncFile gmtPlotter = new GMTSyncFile(numChannels+2, earliest, latest, out);
+            Color bothColor = new Color(51, 255, 102); // green
+            Color file1Color = new Color(51, 102, 255); // blue
+            Color file2Color = new Color(255, 51, 102); // red
+            
+            gmtPlotter.gmtHeader();
+            gmtPlotter.setTextColor(bothColor);
+            gmtPlotter.setJustify("CM");
+            gmtPlotter.label(new Date((earliest.getTime()+latest.getTime())/2), (numChannels+1),"Both");
+            gmtPlotter.setTextColor(file1Color);
+            gmtPlotter.setJustify("LM");
+            gmtPlotter.label(earliest, (numChannels+1),"Only "+file1Base);
+            gmtPlotter.setTextColor(file2Color);
+            gmtPlotter.setJustify("RM");
+            gmtPlotter.label(latest, (numChannels+1),"Only "+file2Base);
+            
             int chanIndex = 0;
             Collections.reverse(chanKeyList);
             for (String chanKey : chanKeyList) {
                 SyncFileCompare sfc = compareMap.get(chanKey);
                 chanIndex++;
-                sfc.dataToGMTScript(chanIndex, chanKey, out);
+                gmtPlotter.setLineColor(bothColor);
+                gmtPlotter.plot(sfc.getInAinB(), chanIndex);
+                gmtPlotter.setLineColor(file1Color);
+                gmtPlotter.plot(sfc.getInAnotB(), chanIndex);
+                gmtPlotter.setLineColor(file2Color);
+                gmtPlotter.plot(sfc.getNotAinB(), chanIndex);
+                gmtPlotter.setJustify("LB");
+                gmtPlotter.setTextColor(Color.BLACK);
+                gmtPlotter.label(earliest, chanIndex, chanKey);
             }
-            tailToGMTScript(out);
+            gmtPlotter.gmtTrailer();
+            out.close();
         }
     }
 }
