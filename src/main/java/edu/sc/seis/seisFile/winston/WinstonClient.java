@@ -14,6 +14,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
 import edu.sc.seis.seisFile.BuildVersion;
@@ -89,10 +90,23 @@ public class WinstonClient {
                                               getUser(),
                                               getPassword(),
                                               winstonConfig.getProperty("winston.prefix"));
-        WinstonSCNL channel = winston.createWinstonSCNL(params.getStation(),
-                                                        params.getChannel(),
-                                                        params.getNetwork(),
-                                                        params.getLocation());
+        List<WinstonSCNL> allChannels = winston.listChannelDatabases();
+        Pattern staPattern = Pattern.compile(params.getStation());
+        Pattern chanPattern = Pattern.compile(params.getChannel());
+        Pattern netPattern = Pattern.compile(params.getNetwork());
+        Pattern locPattern = Pattern.compile(params.getLocation());
+        for (WinstonSCNL scnl : allChannels) {
+            if (staPattern.matcher(scnl.getStation()).matches() &&
+                    chanPattern.matcher(scnl.getChannel()).matches() &&
+                    netPattern.matcher(scnl.getNetwork()).matches() &&
+                    locPattern.matcher(scnl.getLocId()).matches()) {
+                processChannel(winston, scnl);
+            }
+        }
+    }
+
+    void processChannel(WinstonUtil winston, WinstonSCNL channel) throws SeisFileException, SQLException,
+            DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         if (doSync) {
             Calendar cal = new GregorianCalendar();
             cal.setTimeZone(TimeZone.getTimeZone("GMT"));
