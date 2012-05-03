@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -176,6 +177,35 @@ public class SyncFileCompare {
         }
         return fileBase;
     }
+    
+    static Date earliest(Date earliest, SyncFile sf) {
+        if (!sf.isEmpty()) {
+            Date tmp = sf.getEarliest();
+            if (earliest == null || tmp.before(earliest)) {
+                earliest = tmp;
+            }
+        }
+        return earliest;
+    }
+    static Date latest(Date latest, SyncFile sf) {
+        if (!sf.isEmpty()) {
+            Date tmp = sf.getLatest();
+            if (latest == null || tmp.after(latest)) {
+                latest = tmp;
+            }
+        }
+        return latest;
+    }
+    
+    public static Date[] range(Collection<SyncFile> sfSet) {
+        Date earliest = null;
+        Date latest = null;
+        for (SyncFile syncFile : sfSet) {
+            earliest = earliest(earliest, syncFile);
+            latest = latest(latest, syncFile);
+        }
+        return new Date[] {earliest, latest};
+    }
 
     public static void main(String[] args) throws IOException, SeisFileException {
         boolean doGMT = false;
@@ -211,6 +241,10 @@ public class SyncFileCompare {
         List<String> chanKeyList = new ArrayList<String>(chanKeys);
         Collections.sort(chanKeyList);
         HashMap<String, SyncFileCompare> compareMap = new HashMap<String, SyncFileCompare>();
+        Date[] range1 = range(file1Map.values());
+        Date[] range2 = range(file2Map.values());
+        Date earliest = range1[0].before(range2[0]) ? range1[0] : range2[0];
+        Date latest = range1[1].after(range2[1]) ? range1[1] : range2[1];
         for (String key : chanKeyList) {
             String chanPrefix = "";
             if (chanKeys.size() != 1) {
@@ -224,6 +258,10 @@ public class SyncFileCompare {
             if (b == null) {
                 b = new SyncFile(file2.dccName);
             }
+            earliest = earliest(earliest, a);
+            earliest = earliest(earliest, b);
+            latest = latest(latest, a);
+            latest = latest(latest, b);
             SyncFileCompare sfc = new SyncFileCompare(a, b);
             compareMap.put(key, sfc);
             sfc.getInAinB().saveToFile(chanPrefix + "in_" + file1Base + "_in_" + file2Base + ".sync");
@@ -235,22 +273,6 @@ public class SyncFileCompare {
         }
         if (doGMT) {
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("syncCompare.gmt")));
-            Date earliest = null;
-            Date latest = null;
-            if (!file1.isEmpty()) {
-                earliest = file1.getEarliest();
-                latest = file1.getLatest();
-            }
-            if (!file2.isEmpty()) {
-                Date tmp = file2.getEarliest();
-                if (earliest == null || tmp.before(earliest)) {
-                    earliest = tmp;
-                }
-                tmp = file2.getLatest();
-                if (latest == null || tmp.after(latest)) {
-                    latest = tmp;
-                }
-            }
             int numChannels = chanKeyList.size();
             
             GMTSyncFile gmtPlotter = new GMTSyncFile(numChannels+2, earliest, latest, out);
