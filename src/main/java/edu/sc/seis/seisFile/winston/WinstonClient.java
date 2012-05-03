@@ -91,10 +91,10 @@ public class WinstonClient {
                                               getPassword(),
                                               winstonConfig.getProperty("winston.prefix"));
         List<WinstonSCNL> allChannels = winston.listChannelDatabases();
-        Pattern staPattern = Pattern.compile(params.getStation() == "*" ? ".*" : params.getStation());
-        Pattern chanPattern = Pattern.compile(params.getChannel() == "*" ? ".*" : params.getChannel());
-        Pattern netPattern = Pattern.compile(params.getNetwork() == "*" ? ".*" : params.getNetwork());
-        Pattern locPattern = Pattern.compile(params.getLocation() == "*" ? ".*" : params.getLocation());
+        Pattern staPattern = Pattern.compile("*".equals(params.getStation())  ? ".*" : params.getStation());
+        Pattern chanPattern = Pattern.compile("*".equals(params.getChannel()) ? ".*" : params.getChannel());
+        Pattern netPattern = Pattern.compile("*".equals(params.getNetwork())  ? ".*" : params.getNetwork());
+        Pattern locPattern = Pattern.compile("*".equals(params.getLocation()) ? ".*" : params.getLocation());
         if (doSync) {
             PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
             SyncFileWriter syncOut = new SyncFileWriter("winston", out);
