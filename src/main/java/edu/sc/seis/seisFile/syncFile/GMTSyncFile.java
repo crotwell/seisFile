@@ -1,9 +1,18 @@
 package edu.sc.seis.seisFile.syncFile;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class GMTSyncFile {
 
@@ -173,8 +182,39 @@ public class GMTSyncFile {
     public void setBaseFilename(String baseFilename) {
         this.baseFilename = baseFilename;
     }
+    
+    public static void main(String[] args) throws Exception {
+        String inFilename = args[0];
+        SyncFile sf = SyncFile.load(new File(inFilename));
+        sf.sort();
+        HashMap<String, SyncFile> byChan = sf.splitByChannel();
+        String fileBase = SyncFileCompare.trimDotSync(inFilename);
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileBase+".gmt")));
+        Set<String> chanKeys = new HashSet<String>(byChan.keySet());
+        List<String> chanKeyList = new ArrayList<String>(chanKeys);
+        Collections.sort(chanKeyList);
+        Collections.reverse(chanKeyList);
+        int numChannels = chanKeyList.size();
+        Date[] range = SyncFileCompare.range(byChan.values());
+        Date earliest = range[0];
+        Date latest = range[1];
+        
+        GMTSyncFile gmtPlotter = new GMTSyncFile(numChannels+1, earliest, latest, out);
+        gmtPlotter.setBaseFilename(fileBase);
+        gmtPlotter.gmtHeader();
+        int chanIndex = 0;
+        for (String key : chanKeyList) {
+            chanIndex++;
+            gmtPlotter.plot(byChan.get(key), chanIndex);
+            gmtPlotter.setJustify("LB");
+            gmtPlotter.setTextColor(Color.BLACK);
+            gmtPlotter.label(earliest, chanIndex, key);
+        }
+        gmtPlotter.gmtTrailer();
+        out.close();
+    }
 
-    Color lineColor = Color.GRAY;
+    Color lineColor = new Color(51, 102, 255); // blue
 
     int lineWidth = 18;
 
