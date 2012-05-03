@@ -95,48 +95,58 @@ public class WinstonClient {
         Pattern chanPattern = Pattern.compile(params.getChannel());
         Pattern netPattern = Pattern.compile(params.getNetwork());
         Pattern locPattern = Pattern.compile(params.getLocation());
-        for (WinstonSCNL scnl : allChannels) {
-            if (staPattern.matcher(scnl.getStation()).matches() &&
-                    chanPattern.matcher(scnl.getChannel()).matches() &&
-                    netPattern.matcher(scnl.getNetwork()).matches() &&
-                    locPattern.matcher(scnl.getLocId()).matches()) {
-                processChannel(winston, scnl);
+        if (doSync) {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
+            SyncFileWriter syncOut = new SyncFileWriter("winston", out);
+            for (WinstonSCNL scnl : allChannels) {
+                if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
+                        && netPattern.matcher(scnl.getNetwork()).matches()
+                        && locPattern.matcher(scnl.getLocId()).matches()) {
+                    syncChannel(winston, scnl, syncOut);
+                }
             }
+            syncOut.close();
+        } else {
+            for (WinstonSCNL scnl : allChannels) {
+                if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
+                        && netPattern.matcher(scnl.getNetwork()).matches()
+                        && locPattern.matcher(scnl.getLocId()).matches()) {
+                    processChannel(winston, scnl);
+                }
+            }
+            params.getDataOutputStream().close();
         }
+        winston.close();
+    }
+
+    void syncChannel(WinstonUtil winston, WinstonSCNL channel, SyncFileWriter syncOut) throws SeisFileException,
+            SQLException, DataFormatException, FileNotFoundException, IOException, URISyntaxException {
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTime(params.getBegin());
+        int startYear = cal.get(Calendar.YEAR);
+        int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
+                                                      // months zero based,
+                                                      // but days are one
+                                                      // based???
+        int startDay = cal.get(Calendar.DAY_OF_MONTH);
+        cal.setTime(params.getEnd());
+        int endYear = cal.get(Calendar.YEAR);
+        int endMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
+                                                    // months zero based,
+                                                    // but days are one
+                                                    // based???
+        int endDay = cal.get(Calendar.DAY_OF_MONTH);
+        winston.writeSyncBetweenDates(channel, startYear, startMonth, startDay, endYear, endMonth, endDay, syncOut);
     }
 
     void processChannel(WinstonUtil winston, WinstonSCNL channel) throws SeisFileException, SQLException,
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
-        if (doSync) {
-            Calendar cal = new GregorianCalendar();
-            cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-            cal.setTime(params.getBegin());
-            int startYear = cal.get(Calendar.YEAR);
-            int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
-                                                          // months zero based,
-                                                          // but days are one
-                                                          // based???
-            int startDay = cal.get(Calendar.DAY_OF_MONTH);
-            cal.setTime(params.getEnd());
-            int endYear = cal.get(Calendar.YEAR);
-            int endMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
-                                                        // months zero based,
-                                                        // but days are one
-                                                        // based???
-            int endDay = cal.get(Calendar.DAY_OF_MONTH);
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
-            SyncFileWriter syncOut = new SyncFileWriter("winston", out);
-            winston.writeSyncBetweenDates(channel, startYear, startMonth, startDay, endYear, endMonth, endDay, syncOut);
-            syncOut.close();
-        } else {
-            List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
-            for (TraceBuf2 traceBuf2 : tbList) {
-                DataRecord mseed = traceBuf2.toMiniSeed(recordSize, doSteim1);
-                mseed.write(params.getDataOutputStream());
-            }
+        List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
+        for (TraceBuf2 traceBuf2 : tbList) {
+            DataRecord mseed = traceBuf2.toMiniSeed(recordSize, doSteim1);
+            mseed.write(params.getDataOutputStream());
         }
-        winston.close();
-        params.getDataOutputStream().close();
     }
 
     String getDbURL() {
