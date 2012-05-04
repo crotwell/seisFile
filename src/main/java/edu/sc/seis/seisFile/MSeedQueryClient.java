@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,18 +13,29 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
-import edu.sc.seis.seisFile.dataSelectWS.DataSelectReader;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.usgsCWB.CWBReader;
-import edu.sc.seis.seisFile.usgsCWB.Client;
-
 
 public abstract class MSeedQueryClient {
-    
-    protected MSeedQueryClient(MSeedQueryReader reader) {
-        this.reader = reader;
+
+    public MSeedQueryClient(String[] args) throws SeisFileException {
+        BasicConfigurator.configure();
+        params = new QueryParams(args);
+        Logger.getRootLogger().setLevel(Level.WARN);
+        if (params.isVerbose()) {
+            Logger.getLogger("root").setLevel(Level.DEBUG);
+        }
+        if (params.isPrintHelp()) {
+            System.out.println(getHelp());
+            System.exit(0);
+        } else if (params.isPrintVersion()) {
+            System.out.println("Version: " + BuildVersion.getDetailedVersion());
+            System.exit(0);
+        }
     }
 
     public void readData(String[] args) throws SeisFileException, IOException {
@@ -54,9 +64,9 @@ public abstract class MSeedQueryClient {
             } else if (args[i].equals("-b")) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                String beginStr = args[i+1].trim();
+                String beginStr = args[i + 1].trim();
                 if (beginStr.matches(".+\\d")) {
-                    beginStr = beginStr+" GMT";
+                    beginStr = beginStr + " GMT";
                 }
                 try {
                     begin = dateFormat.parse(beginStr);
@@ -65,7 +75,8 @@ public abstract class MSeedQueryClient {
                     try {
                         begin = dateFormat.parse(beginStr);
                     } catch(ParseException ee) {
-                        throw new SeisFileException("Illegal date format, should be:  yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS", ee);
+                        throw new SeisFileException("Illegal date format, should be:  yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS",
+                                                    ee);
                     }
                 }
             } else if (args[i].equals("-d")) {
@@ -88,34 +99,42 @@ public abstract class MSeedQueryClient {
                 System.exit(0);
             }
         }
-        
-        String request = reader.createQuery(network, station, location, channel, begin, duration);
-        if (verbose) {
-            out.println("Request: "+request);
-        }
-        List<DataRecord> data = reader.read(request);
+    }
+
+    public void readData() throws SeedFormatException, IOException, SeisFileException {
+        PrintWriter out = new PrintWriter(System.out, true);
+        List<DataRecord> data = reader.read(params.getNetwork(),
+                                            params.getStation(),
+                                            params.getLocation(),
+                                            params.getChannel(),
+                                            params.getBegin(),
+                                            params.getEnd());
         for (DataRecord dr : data) {
-            if (dos != null) {
-                dr.write(dos);
+            if (params.getDataOutputStream() != null) {
+                dr.write(params.getDataOutputStream());
             }
-            if (dos == null || verbose) {
+            if (params.getDataOutputStream() == null || params.isVerbose()) {
                 // print something to the screen if we are not saving to
                 // disk
                 dr.writeASCII(out, "    ");
                 out.flush();
             }
         }
-        if (verbose && data.size() == 0) {
+        if (params.isVerbose() && data.size() == 0) {
             out.println("No Data.");
             out.flush();
         }
-        if (dos != null) {
-            dos.close();
+        if (params.getDataOutputStream() != null) {
+            params.getDataOutputStream().flush();
         }
-        out.println("Finished: " + new Date());
+        if (params.isVerbose()) {
+            out.println("Finished: " + new Date());
+        }
     }
-    
-    public abstract String getHelp(); 
-    
-    MSeedQueryReader reader;
+
+    public abstract String getHelp();
+
+    protected QueryParams params;
+
+    protected MSeedQueryReader reader;
 }

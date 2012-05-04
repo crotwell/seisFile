@@ -14,13 +14,14 @@ import java.util.List;
 import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.MSeedQueryReader;
+import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 
-public class CWBReader implements MSeedQueryReader {
+public class CWBReader extends StringMSeedQueryReader {
     
     public CWBReader() {
         this(DEFAULT_HOST);
@@ -43,17 +44,19 @@ public class CWBReader implements MSeedQueryReader {
         return query;
     }
     
-    public String createQuery(String network, String station, String location, String channel, Date begin, float durationSeconds) throws IOException, DataSelectException, SeedFormatException {
+    @Override
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) throws IOException, DataSelectException, SeedFormatException {
         String query = "'-s' '"+createQuery(network, station, location, channel)+"' ";
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         query += "'-b' '" + longFormat.format(begin)+"' ";
-        query += "'-d' '" + (int)Math.ceil(durationSeconds)+"' ";
+        query += "'-d' '" + (int)Math.ceil((end.getTime()-begin.getTime())/1000f)+"' ";
         query += "'-t' 'ms'";
         query += "\t";
         return query;
     }
     
+    @Override
     public List<DataRecord> read(String query) throws IOException, DataSelectException, SeedFormatException {
         Socket socket = new Socket(host, port);
         socket.setReceiveBufferSize(512000);

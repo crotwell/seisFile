@@ -2,13 +2,21 @@ package edu.sc.seis.seisFile.dataSelectWS;
 
 import edu.sc.seis.seisFile.MSeedQueryClient;
 import edu.sc.seis.seisFile.MSeedQueryReader;
+import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.SeisFileException;
 
 
 public class Client extends MSeedQueryClient {
 
 
-    protected Client(MSeedQueryReader reader) {
-        super(reader);
+    protected Client(String[] args) throws SeisFileException {
+        super(args);
+        reader = new DataSelectReader();
+        for (int i = 0; i < args.length; i++) {
+            if (i < args.length-1 && args[i].equals("-u")) {
+                reader = new DataSelectReader(args[i+1]);
+            }
+        }
     }
     
     
@@ -17,21 +25,15 @@ public class Client extends MSeedQueryClient {
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        DataSelectReader reader = new DataSelectReader();
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-u")) {
-                reader = new DataSelectReader(args[i+1]);
-            }
-        }
-        Client client = new Client(reader);
-        client.readData(args);
+        Client client = new Client(args);
+        client.readData();
     }
 
     @Override
     public String getHelp() {
         return "java "
         + Client.class.getName()
-        + " [-n net][-s sta][-l loc][-c chan][-b yyyy-MM-ddTHH:mm:ss.SSS][-d seconds][-u url][-o outfile][-m maxpackets][--verbose][--version][--help]";
+        + " "+QueryParams.getStandardHelpOptions()+"[-u url]";
     }
    
 }
