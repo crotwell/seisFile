@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.waveserver;
 
 import java.io.BufferedInputStream;
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,9 +12,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.sc.seis.seisFile.MSeedQueryClient;
+import edu.sc.seis.seisFile.MSeedQueryReader;
+import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
+import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.winston.TraceBuf2;
 
-public class WaveServer {
+public class WaveServer implements MSeedQueryReader {
 
     /**
      * Mainly for testing
@@ -26,24 +32,22 @@ public class WaveServer {
         this.in = in;
     }
 
-    public WaveServer(String host, int port) throws UnknownHostException, IOException {
+    public WaveServer(String host, int port) {
         this(host, port, DEFAULT_TIMEOUT_SECONDS);
     }
-    
-    public WaveServer(String host, int port, int timeoutSeconds) throws UnknownHostException, IOException {
+
+    public WaveServer(String host, int port, int timeoutSeconds) {
         this.host = host;
         this.port = port;
-        socket = new Socket(getHost(), getPort());
-        socket.setSoTimeout(timeoutSeconds*1000);
-        out = new PrintWriter(socket.getOutputStream(), true);
-        in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        this.timeoutSeconds = timeoutSeconds;
     }
 
     public List<MenuItem> getMenu() throws IOException {
         List<MenuItem> result = new ArrayList<MenuItem>();
         String nextReqId = getNextRequestId();
-        out.println("MENU: " + nextReqId + " SCNL");
-        String all = in.readLine(); // newline ends reply
+        PrintWriter socketOut = getOut();
+        socketOut.println("MENU: " + nextReqId + " SCNL");
+        String all = getIn().readLine(); // newline ends reply
         String[] sections = all.split("  "); // double space separates entries
         String returnReqId = sections[0];
         for (int i = 1; i < sections.length; i++) {
@@ -82,24 +86,27 @@ public class WaveServer {
                                        Date end) throws IOException {
         List<TraceBuf2> ans = new ArrayList<TraceBuf2>();
         String nextReqId = getNextRequestId();
-        DecimalFormat df = new DecimalFormat("0.0###"); 
+        DecimalFormat df = new DecimalFormat("0.0###");
         String cmd = "GETSCNLRAW: " + nextReqId + " " + station + " " + channel + " " + network + " "
-                + (location == null ? "--" : location) + " " + df.format(start.getTime() / 1000.0) + " " + df.format(end.getTime() / 1000.0);
-        if(isVerbose()) {
-            System.out.println("send cmd: "+cmd);
+                + (location == null ? "--" : location) + " " + df.format(start.getTime() / 1000.0) + " "
+                + df.format(end.getTime() / 1000.0);
+        if (isVerbose()) {
+            System.out.println("send cmd: " + cmd);
         }
-        out.println(cmd);
-        out.flush();
-        in.mark(64);
+        PrintWriter socketOut = getOut();
+        socketOut.println(cmd);
+        socketOut.flush();
+        getIn().mark(64);
         int nRead = 0;
-        while(in.available() > 0 && nRead < 64) {
-            System.out.print((char)in.read());
+        DataInputStream dataIn = getIn();
+        while (dataIn.available() > 0 && nRead < 64) {
+            System.out.print((char)dataIn.read());
             nRead++;
         }
         in.reset();
-        String all = in.readLine(); // newline ends ascii part of reply
-        if(isVerbose()) {
-            System.out.println("response: "+all);
+        String all = dataIn.readLine(); // newline ends ascii part of reply
+        if (isVerbose()) {
+            System.out.println("response: " + all);
         }
         String[] splitLine = all.split(" ");
         int byteLengthIndex = 10;
@@ -109,7 +116,7 @@ public class WaveServer {
             int totSize = 0;
             while (totSize < numBytes) {
                 if (verbose) {
-                    System.out.println("Read next traceBuf2: "+totSize + "<" + numBytes);
+                    System.out.println("Read next traceBuf2: " + totSize + "<" + numBytes);
                 }
                 byte[] headerByte = new byte[64];
                 in.readFully(headerByte);
@@ -119,14 +126,14 @@ public class WaveServer {
                 totSamples += numSamples;
                 int sampSize = TraceBuf2.getSampleSize(dataType);
                 byte[] dataBuf = new byte[numSamples * sampSize];
-                in.readFully(dataBuf);
+                dataIn.readFully(dataBuf);
                 byte[] allTraceBuf = new byte[headerByte.length + dataBuf.length];
                 System.arraycopy(headerByte, 0, allTraceBuf, 0, headerByte.length);
                 System.arraycopy(dataBuf, 0, allTraceBuf, headerByte.length, dataBuf.length);
                 TraceBuf2 tb = new TraceBuf2(allTraceBuf);
                 totSize += tb.getSize();
                 if (isVerbose()) {
-                    System.out.println("TraceBuf received: "+tb);
+                    System.out.println("TraceBuf received: " + tb);
                 }
                 ans.add(tb);
             }
@@ -142,8 +149,63 @@ public class WaveServer {
         return port;
     }
 
-    protected Socket getSocket() {
+    protected Socket getSocket() throws IOException {
+        if (socket == null && host != null) {
+            socket = new Socket(getHost(), getPort());
+            socket.setSoTimeout(timeoutSeconds * 1000);
+        }
         return socket;
+    }
+
+    public int getRecordSize() {
+        return recordSize;
+    }
+
+    public void setRecordSize(int recordSize) {
+        this.recordSize = recordSize;
+    }
+
+    public boolean isDoSteim1() {
+        return doSteim1;
+    }
+
+    public void setDoSteim1(boolean doSteim1) {
+        this.doSteim1 = doSteim1;
+    }
+
+    public PrintWriter getOut() throws IOException {
+        if (out == null && getSocket() != null) {
+            out = new PrintWriter(getSocket().getOutputStream(), true);
+        }
+        return out;
+    }
+
+    public DataInputStream getIn() throws IOException {
+        if (in == null && getSocket() != null) {
+            in = new DataInputStream(new BufferedInputStream(getSocket().getInputStream()));
+        }
+        return in;
+    }
+
+    public static int getDefaultTimeoutSeconds() {
+        return DEFAULT_TIMEOUT_SECONDS;
+    }
+
+    @Override
+    public List<DataRecord> read(String network, String station, String location, String channel, Date begin, Date end)
+            throws IOException, DataSelectException, SeedFormatException {
+        List<DataRecord> out = new ArrayList<DataRecord>();
+        List<TraceBuf2> tbList = getTraceBuf(network, station, location, channel, begin, end);
+        for (TraceBuf2 traceBuf2 : tbList) {
+            if (verbose) {
+                System.out.println("tracebuf2 " + traceBuf2.getNetwork() + "." + traceBuf2.getStation() + "."
+                        + traceBuf2.getLocId() + "." + traceBuf2.getChannel() + " " + traceBuf2.getStartDate() + " "
+                        + traceBuf2.getNumSamples());
+            }
+            DataRecord mseed = traceBuf2.toMiniSeed(recordSize, doSteim1);
+            out.add(mseed);
+        }
+        return out;
     }
 
     String getNextRequestId() {
@@ -164,12 +226,18 @@ public class WaveServer {
 
     int port;
 
+    int recordSize = 12;
+
+    boolean doSteim1 = false;
+
     Socket socket;
 
     PrintWriter out;
 
     DataInputStream in;
     
+    int timeoutSeconds = DEFAULT_TIMEOUT_SECONDS;
+
     public static final int DEFAULT_TIMEOUT_SECONDS = 60;
 
     boolean verbose = false;

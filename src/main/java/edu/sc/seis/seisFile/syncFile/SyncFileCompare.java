@@ -151,11 +151,27 @@ public class SyncFileCompare {
     public SyncFile getInAnotB() {
         return inAnotB;
     }
-    
+
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public Date getEarliest() {
+        return earliest;
+    }
+
+    public Date getLatest() {
+        return latest;
+    }
+
     Date earliest;
-    
+
     Date latest;
-    
+
     SyncFile a;
 
     SyncFile b;
@@ -165,6 +181,8 @@ public class SyncFileCompare {
     SyncFile notAinB;
 
     SyncFile inAnotB;
+
+    boolean verbose = false;
 
     static void printUsage() {
         System.err.println("Usage: syncFileCompare [--gmt] -a file1.sync -b file2.sync");
@@ -177,7 +195,7 @@ public class SyncFileCompare {
         }
         return fileBase;
     }
-    
+
     static Date earliest(Date earliest, SyncFile sf) {
         if (!sf.isEmpty()) {
             Date tmp = sf.getEarliest();
@@ -187,6 +205,7 @@ public class SyncFileCompare {
         }
         return earliest;
     }
+
     static Date latest(Date latest, SyncFile sf) {
         if (!sf.isEmpty()) {
             Date tmp = sf.getLatest();
@@ -196,7 +215,7 @@ public class SyncFileCompare {
         }
         return latest;
     }
-    
+
     public static Date[] range(Collection<SyncFile> sfSet) {
         Date earliest = null;
         Date latest = null;
@@ -211,7 +230,10 @@ public class SyncFileCompare {
         boolean doGMT = false;
         String file1Name = "", file2Name = "";
         for (int i = 0; i < args.length; i++) {
-            if ("--gmt".equals(args[i])) {
+            if ("--help".equals(args[i])) {
+                printUsage();
+                return;
+            } else if ("--gmt".equals(args[i])) {
                 doGMT = true;
             } else if ("-a".equals(args[i])) {
                 file1Name = args[i + 1];
@@ -267,30 +289,30 @@ public class SyncFileCompare {
             sfc.getInAinB().saveToFile(chanPrefix + "in_" + file1Base + "_in_" + file2Base + ".sync");
             sfc.getNotAinB().saveToFile(chanPrefix + "not_" + file1Base + "_in_" + file2Base + ".sync");
             sfc.getInAnotB().saveToFile(chanPrefix + "in_" + file1Base + "_not_" + file2Base + ".sync");
-            System.out.println("Done: A: " + a.getSyncLines().size() + " B: " + b.getSyncLines().size() + " inAinB: "
-                    + sfc.getInAinB().getSyncLines().size() + " notAinB: " + sfc.getNotAinB().getSyncLines().size()
-                    + " inAnotB: " + sfc.getInAnotB().getSyncLines().size());
+            if (sfc.isVerbose()) {
+                System.out.println("Done: " + chanPrefix + "A: " + a.getSyncLines().size() + " B: "
+                        + b.getSyncLines().size() + " inAinB: " + sfc.getInAinB().getSyncLines().size() + " notAinB: "
+                        + sfc.getNotAinB().getSyncLines().size() + " inAnotB: "
+                        + sfc.getInAnotB().getSyncLines().size());
+            }
         }
         if (doGMT) {
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("syncCompare.gmt")));
             int numChannels = chanKeyList.size();
-            
-            GMTSyncFile gmtPlotter = new GMTSyncFile(numChannels+2, earliest, latest, out);
+            GMTSyncFile gmtPlotter = new GMTSyncFile(numChannels + 2, earliest, latest, out);
             Color bothColor = new Color(51, 255, 102); // green
             Color file1Color = new Color(51, 102, 255); // blue
             Color file2Color = new Color(255, 51, 102); // red
-            
             gmtPlotter.gmtHeader();
             gmtPlotter.setTextColor(bothColor);
             gmtPlotter.setJustify("CM");
-            gmtPlotter.label(new Date((earliest.getTime()+latest.getTime())/2), (numChannels+1),"Both");
+            gmtPlotter.label(new Date((earliest.getTime() + latest.getTime()) / 2), (numChannels + 1), "Both");
             gmtPlotter.setTextColor(file1Color);
             gmtPlotter.setJustify("LM");
-            gmtPlotter.label(earliest, (numChannels+1),"Only "+file1Base);
+            gmtPlotter.label(earliest, (numChannels + 1), "Only " + file1Base);
             gmtPlotter.setTextColor(file2Color);
             gmtPlotter.setJustify("RM");
-            gmtPlotter.label(latest, (numChannels+1),"Only "+file2Base);
-            
+            gmtPlotter.label(latest, (numChannels + 1), "Only " + file2Base);
             int chanIndex = 0;
             Collections.reverse(chanKeyList);
             for (String chanKey : chanKeyList) {

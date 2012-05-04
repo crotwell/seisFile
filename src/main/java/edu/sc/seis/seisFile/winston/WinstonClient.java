@@ -174,6 +174,6 @@ public class WinstonClient {
     public String getHelp() {
         return "java "
                 + WinstonClient.class.getName()
-                + " [-p <winston.config file>][-u databaseURL][-n net][-s sta][-l loc][-c chan][-b yyyy-MM-dd[THH:mm:ss.SSS]][-e yyyy-MM-dd[THH:mm:ss.SSS]][-d seconds][-o outfile][-m maxpackets][--sync][--steim1][--recLen len(8-12)][--verbose][--version][--help]";
+                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)]";
     }
 }
