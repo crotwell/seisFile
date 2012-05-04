@@ -1,26 +1,28 @@
 package edu.sc.seis.seisFile.usgsCWB;
 
-import edu.sc.seis.seisFile.MSeedQueryReader;
+import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.SeisFileException;
 
 public class Client extends edu.sc.seis.seisFile.MSeedQueryClient {
 
-    protected Client(MSeedQueryReader reader) {
-        super(reader);
+    protected Client(String[] args) throws SeisFileException {
+        super(args);
+        reader = new CWBReader();
     }
 
     /**
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        Client client = new Client(new CWBReader());
-        client.readData(args);
+        Client client = new Client(args);
+        client.readData();
     }
 
     @Override
     public String getHelp() {
         return "java "
         + Client.class.getName()
-        + " [-n net][-s sta][-l loc][-c chan][-b yyyy-MM-ddTHH:mm:ss.SSS][-d seconds][-h host][-p port][-o outfile][-m maxpackets][--verbose][--version][--help]";
+        + " "+QueryParams.getStandardHelpOptions()+"[-h host][-p port]";
     }
     
 }

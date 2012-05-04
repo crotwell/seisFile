@@ -140,6 +140,10 @@ public class QueryParams {
     public boolean isPrintHelp() {
         return printHelp;
     }
+    
+    public static String getStandardHelpOptions() {
+        return "[-n net][-s sta][-l loc][-c chan][-b yyyy-MM-dd[THH:mm:ss.SSS]][-e yyyy-MM-dd[THH:mm:ss.SSS]][-d seconds][-o outfile][-m maxpackets][--verbose][--version][--help]";
+    }
 
     public DataOutputStream getDataOutputStream() throws FileNotFoundException {
         if (dos == null) {

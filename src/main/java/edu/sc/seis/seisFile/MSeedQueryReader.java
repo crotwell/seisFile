@@ -10,13 +10,11 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
 public interface MSeedQueryReader {
 
-    public abstract String createQuery(String network,
-                                       String station,
-                                       String location,
-                                       String channel,
-                                       Date begin,
-                                       float durationSeconds) throws IOException, DataSelectException,
+    public abstract List<DataRecord> read(String network,
+                                          String station,
+                                          String location,
+                                          String channel,
+                                          Date begin,
+                                          Date end) throws IOException, SeisFileException,
             SeedFormatException;
-
-    public abstract List<DataRecord> read(String query) throws IOException, DataSelectException, SeedFormatException;
 }

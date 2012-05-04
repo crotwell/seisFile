@@ -13,12 +13,13 @@ import java.util.List;
 import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.MSeedQueryReader;
+import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 
-public class DataSelectReader implements MSeedQueryReader {
+public class DataSelectReader extends StringMSeedQueryReader {
     
     public DataSelectReader() {
         this(DEFAULT_WS_URL);
@@ -35,19 +36,17 @@ public class DataSelectReader implements MSeedQueryReader {
         query += "&cha=" + channel;
         return query;
     }
+    
     /* (non-Javadoc)
      * @see edu.sc.seis.seisFile.dataSelectWS.MSeedQueryReader#createQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Date, float)
      */
-    public String createQuery(String network, String station, String location, String channel, Date begin, float durationSeconds) throws IOException, DataSelectException, SeedFormatException {
-        if (durationSeconds <= 0) {
-            throw new DataSelectException("duration must be >= 0");
-        }
+    @Override
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) throws IOException, DataSelectException, SeedFormatException {
         String query = createQuery(network, station, location, channel);
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         query += "&start=" + longFormat.format(begin);
-        // dataselect only takes even integers, ceil make sure we are bigger
-        query += "&dur=" + (int)Math.round(Math.ceil(durationSeconds));
+        query += "&end=" + longFormat.format(end);
         return query;
     }
     
