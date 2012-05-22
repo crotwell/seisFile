@@ -9,6 +9,7 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
+import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -118,6 +119,19 @@ public class DataRecord extends SeedRecord implements Serializable {
 
     public DataHeader getHeader() {
         return (DataHeader)header;
+    }
+    
+    public byte[] toByteArray() {
+        try {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(byteStream);
+        write(dos);
+        dos.close();
+        return byteStream.toByteArray();
+        } catch (IOException e) {
+            // shouldn't happen
+            throw new RuntimeException("Caught IOException, should not happen.", e);
+        }
     }
 
     public void write(DataOutputStream dos) throws IOException {
