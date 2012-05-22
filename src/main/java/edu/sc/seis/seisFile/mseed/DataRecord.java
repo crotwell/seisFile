@@ -123,11 +123,11 @@ public class DataRecord extends SeedRecord implements Serializable {
     
     public byte[] toByteArray() {
         try {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(byteStream);
-        write(dos);
-        dos.close();
-        return byteStream.toByteArray();
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            DataOutputStream dos = new DataOutputStream(byteStream);
+            write(dos);
+            dos.close();
+            return byteStream.toByteArray();
         } catch (IOException e) {
             // shouldn't happen
             throw new RuntimeException("Caught IOException, should not happen.", e);
