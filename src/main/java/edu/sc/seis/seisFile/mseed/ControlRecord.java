@@ -16,7 +16,6 @@ public class ControlRecord extends SeedRecord {
                                                int defaultRecordSize,
                                                SeedRecord priorRecord)
             throws IOException, SeedFormatException {
-        PrintWriter out = new PrintWriter(System.out, true);
         
         /*
          * Assert.isTrue(header.getDataBlocketteOffset()>= header.getSize(),
