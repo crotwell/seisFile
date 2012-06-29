@@ -102,6 +102,9 @@ public abstract class MSeedQueryClient {
     }
 
     public void readData() throws SeedFormatException, IOException, SeisFileException {
+        if (params.isVerbose()) {
+            reader.setVerbose(params.isVerbose());
+        }
         PrintWriter out = new PrintWriter(System.out, true);
         List<DataRecord> data = reader.read(params.getNetwork(),
                                             params.getStation(),
