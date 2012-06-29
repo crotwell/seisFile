@@ -38,6 +38,8 @@ public class QueryParams {
                 if (maxRecords < -1) {
                     maxRecords = -1;
                 }
+            } else if (args[i].equals("--append")) {
+                append = true;
             } else if (args[i].equals("--verbose")) {
                 verbose = true;
             } else if (args[i].equals("--version")) {
@@ -88,6 +90,8 @@ public class QueryParams {
     boolean printHelp = false;
 
     DataOutputStream dos = null;
+    
+    boolean append = false;
 
     public String getNetwork() {
         return network;
@@ -111,6 +115,14 @@ public class QueryParams {
 
     public Date getEnd() {
         return end;
+    }
+    
+    public boolean isAppend() {
+        return append;
+    }
+    
+    public void setAppend(boolean append) {
+        this.append = append;
     }
 
     public boolean isVerbose() {
@@ -142,7 +154,7 @@ public class QueryParams {
     }
     
     public static String getStandardHelpOptions() {
-        return "[-n net][-s sta][-l loc][-c chan][-b yyyy-MM-dd[THH:mm:ss.SSS]][-e yyyy-MM-dd[THH:mm:ss.SSS]][-d seconds][-o outfile][-m maxpackets][--verbose][--version][--help]";
+        return "[-n net][-s sta][-l loc][-c chan][-b yyyy-MM-dd[THH:mm:ss.SSS]][-e yyyy-MM-dd[THH:mm:ss.SSS]][-d seconds][-o outfile][-m maxpackets][--append][--verbose][--version][--help]";
     }
 
     public DataOutputStream getDataOutputStream() throws FileNotFoundException {
@@ -150,7 +162,7 @@ public class QueryParams {
             if (getOutFile() == null) {
                 dos = new DataOutputStream(System.out);
             } else {
-                dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
+                dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile, isAppend())));
             }
         }
         return dos;
