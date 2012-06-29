@@ -17,4 +17,6 @@ public interface MSeedQueryReader {
                                           Date begin,
                                           Date end) throws IOException, SeisFileException,
             SeedFormatException;
+    
+    public void setVerbose(boolean verbose);
 }

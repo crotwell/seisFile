@@ -26,5 +26,15 @@ public abstract class StringMSeedQueryReader implements MSeedQueryReader {
 
     public abstract List<DataRecord> read(String query) throws IOException, SeisFileException, SeedFormatException;
 
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    private boolean verbose = false;
+
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(StringMSeedQueryReader.class);
 }

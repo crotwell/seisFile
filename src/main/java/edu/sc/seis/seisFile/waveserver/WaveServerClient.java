@@ -51,12 +51,8 @@ public class WaveServerClient extends MSeedQueryClient {
             System.out.println("LocId null is ok for scn, but needed for scnl");
             return;
         }
-        WaveServer ws = new WaveServer(host, port);
-        if (params.isVerbose()) {
-            ws.setVerbose(params.isVerbose());
-        }
         if (doMenu) {
-            List<MenuItem> ans = ws.getMenu();
+            List<MenuItem> ans = ((WaveServer)reader).getMenu();
             Date now = new Date();
             for (MenuItem item : ans) {
                 long latency = (now.getTime() - item.getEndDate().getTime()) / 1000;
