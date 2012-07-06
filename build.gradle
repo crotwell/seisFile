@@ -7,7 +7,7 @@ apply plugin: 'maven'
 
 dependencies {
     compile project(':seedCodec')
-    compile "org.slf4j:slf4j-api:1.6.1"
+    compile "org.slf4j:slf4j-api:1.6.6"
     runtime group: "org.slf4j", name: "slf4j-log4j12", version: "1.6.1", transitive: false
     compile "javax.xml.stream:stax-api:1.0-2"
     runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.1.0"
