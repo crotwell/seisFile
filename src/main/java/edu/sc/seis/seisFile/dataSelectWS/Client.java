@@ -11,12 +11,18 @@ public class Client extends MSeedQueryClient {
 
     protected Client(String[] args) throws SeisFileException {
         super(args);
-        reader = new DataSelectReader();
+        String url = DataSelectReader.DEFAULT_WS_URL;
+        int timeoutSec = 120;
         for (int i = 0; i < args.length; i++) {
-            if (i < args.length-1 && args[i].equals("-u")) {
-                reader = new DataSelectReader(args[i+1]);
+            if (i < args.length-1) {
+                if (args[i].equals("-u")) {
+                    url = args[i+1];
+                } else if (args[i].equals("--timeout")) {
+                    timeoutSec = Integer.parseInt(args[i + 1]);
+                }
             }
         }
+        reader = new DataSelectReader(url, timeoutSec*1000);
     }
     
     
@@ -33,7 +39,7 @@ public class Client extends MSeedQueryClient {
     public String getHelp() {
         return "java "
         + Client.class.getName()
-        + " "+QueryParams.getStandardHelpOptions()+"[-u url]";
+        + " "+QueryParams.getStandardHelpOptions()+"[-u url][--timeout sec]";
     }
    
 }

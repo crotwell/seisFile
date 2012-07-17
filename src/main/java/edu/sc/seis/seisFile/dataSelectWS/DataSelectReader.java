@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import edu.sc.seis.seisFile.MSeedQueryReader;
+import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
@@ -27,6 +27,11 @@ public class DataSelectReader extends StringMSeedQueryReader {
     
     public DataSelectReader(String urlBase) {
         this.urlBase = urlBase;
+    }
+
+    public DataSelectReader(String urlBase, int timeoutMillis) {
+        this.urlBase = urlBase;
+        this.timeoutMillis = timeoutMillis;
     }
     
     protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException, SeedFormatException {
@@ -56,6 +61,10 @@ public class DataSelectReader extends StringMSeedQueryReader {
     public List<DataRecord> read(String query) throws IOException, DataSelectException, SeedFormatException {
         URL requestURL = new URL(urlBase + "?"+query);
         HttpURLConnection conn = (HttpURLConnection)requestURL.openConnection();
+        if(timeoutMillis != 0) {
+            conn.setReadTimeout(timeoutMillis);
+        }
+        conn.setRequestProperty("User-Agent", userAgent);
         conn.connect();
         if (conn.getResponseCode() != 200) {
             if (conn.getResponseCode() == 404) {
@@ -85,7 +94,31 @@ public class DataSelectReader extends StringMSeedQueryReader {
         return records;
     }
     
+    public int getTimeoutMillis() {
+        return timeoutMillis;
+    }
+    
+    public void setTimeoutMillis(int timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
+    }
+    
+    public String getUserAgent() {
+        return userAgent;
+    }
+    
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+    
+    public String getUrlBase() {
+        return urlBase;
+    }
+
+    protected int timeoutMillis;
+    
     protected String urlBase;
+    
+    protected String userAgent = "SeisFile/"+BuildVersion.getVersion();
 
     public static final String DEFAULT_WS_URL = "http://www.iris.edu/ws/dataselect/query";
     

@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import edu.sc.seis.seisFile.MSeedQueryReader;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -30,12 +29,17 @@ public class CWBReader extends StringMSeedQueryReader {
     public CWBReader(String host) {
         this(host, DEFAULT_PORT);
     }
-    
+
     public CWBReader(String host, int port) {
-        this.host = host;
-        this.port = port;
+        this(host, port, 0);
     }
 
+    public CWBReader(String host, int port, int timeoutMillis) {
+        this.host = host;
+        this.port = port;
+        this.timeoutMillis = timeoutMillis;
+    }
+    
     protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException, SeedFormatException {
         String query = leftPad(network.trim(), 2);
         query += leftPad(station.trim(), 5);
@@ -60,6 +64,9 @@ public class CWBReader extends StringMSeedQueryReader {
     public List<DataRecord> read(String query) throws IOException, DataSelectException, SeedFormatException {
         Socket socket = new Socket(host, port);
         socket.setReceiveBufferSize(512000);
+        if(timeoutMillis != 0) {
+            socket.setSoTimeout(timeoutMillis);
+        }
         OutputStream outtcp = socket.getOutputStream();
         outtcp.write(query.getBytes());
         outtcp.flush();
@@ -99,9 +106,27 @@ public class CWBReader extends StringMSeedQueryReader {
             return leftPad(in+"-", length);
         }
     }
+    
+    public int getTimeoutMillis() {
+        return timeoutMillis;
+    }
+    
+    public void setTimeoutMillis(int timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
 
     private String host;
     private int port;
+    
+    protected int timeoutMillis;
     
     public static final String DEFAULT_HOST = "cwb-pub.cr.usgs.gov";
     
