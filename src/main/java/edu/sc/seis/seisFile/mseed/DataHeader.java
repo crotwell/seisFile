@@ -100,6 +100,8 @@ public class DataHeader extends ControlHeader {
         out.print(" io=" + getIOClockFlags());
         out.print(" qual=" + getDataQualityFlags());
         out.print(" numBlockettes=" + getNumBlockettes());
+        out.print(" blocketteOffset=" + getDataBlocketteOffset());
+        out.print(" dataOffset=" + getDataOffset());
         out.println(" tcor=" + getTimeCorrection());
     }
 
