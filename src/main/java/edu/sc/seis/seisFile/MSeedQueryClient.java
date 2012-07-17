@@ -38,69 +38,6 @@ public abstract class MSeedQueryClient {
         }
     }
 
-    public void readData(String[] args) throws SeisFileException, IOException {
-        String network = "IU";
-        String station = "ANMO";
-        String location = "00";
-        String channel = "BHZ";
-        String outFile = null;
-        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-        cal.add(Calendar.MINUTE, -10);
-        Date begin = cal.getTime();
-        Float duration = 600f;
-        int maxRecords = 10;
-        boolean verbose = false;
-        DataOutputStream dos = null;
-        PrintWriter out = new PrintWriter(System.out, true);
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-n")) {
-                network = args[i + 1];
-            } else if (args[i].equals("-s")) {
-                station = args[i + 1];
-            } else if (args[i].equals("-l")) {
-                location = args[i + 1];
-            } else if (args[i].equals("-c")) {
-                channel = args[i + 1];
-            } else if (args[i].equals("-b")) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-                String beginStr = args[i + 1].trim();
-                if (beginStr.matches(".+\\d")) {
-                    beginStr = beginStr + " GMT";
-                }
-                try {
-                    begin = dateFormat.parse(beginStr);
-                } catch(ParseException e) {
-                    dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
-                    try {
-                        begin = dateFormat.parse(beginStr);
-                    } catch(ParseException ee) {
-                        throw new SeisFileException("Illegal date format, should be:  yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS",
-                                                    ee);
-                    }
-                }
-            } else if (args[i].equals("-d")) {
-                duration = Float.parseFloat(args[i + 1]);
-            } else if (args[i].equals("-o")) {
-                outFile = args[i + 1];
-                dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
-            } else if (args[i].equals("-m")) {
-                maxRecords = Integer.parseInt(args[i + 1]);
-                if (maxRecords < -1) {
-                    maxRecords = -1;
-                }
-            } else if (args[i].equals("--verbose")) {
-                verbose = true;
-            } else if (args[i].equals("--version")) {
-                out.println(BuildVersion.getDetailedVersion());
-                System.exit(0);
-            } else if (args[i].equals("--help")) {
-                out.println(getHelp());
-                System.exit(0);
-            }
-        }
-    }
-
     public void readData() throws SeedFormatException, IOException, SeisFileException {
         if (params.isVerbose()) {
             reader.setVerbose(params.isVerbose());
