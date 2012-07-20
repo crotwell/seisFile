@@ -11,7 +11,6 @@ package edu.sc.seis.seisFile.mseed;
  * @version
  */
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Blockette1000 extends  DataBlockette implements RecordLengthBlockette {
