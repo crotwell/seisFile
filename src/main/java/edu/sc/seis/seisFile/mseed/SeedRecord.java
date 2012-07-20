@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public abstract class SeedRecord {
     public static SeedRecord read(DataInput inStream, int defaultRecordSize) throws IOException, SeedFormatException {
         boolean resetOnError = inStream instanceof DataInputStream && ((InputStream)inStream).markSupported();
         if(resetOnError) {
-            ((InputStream)inStream).mark(4096);
+            ((InputStream)inStream).mark((defaultRecordSize!=0?defaultRecordSize:4096)); // do twice in case of continuation record?
         }
         try {
             ControlHeader header = ControlHeader.read(inStream);
@@ -68,12 +69,11 @@ public abstract class SeedRecord {
             } else {
                 ControlRecord contRec =  ControlRecord.readControlRecord(inStream,
                                       header,
-                                      defaultRecordSize, priorRecord);
+                                      defaultRecordSize);
                 defaultRecordSize = contRec.getRecordSize(); // in case of b8 or b5 setting record size
                 newRecord = contRec;
             }
-            priorRecord = newRecord;
-            return priorRecord;
+            return newRecord;
         } catch(SeedFormatException e) {
             if(resetOnError) {
                 try {
@@ -103,8 +103,6 @@ public abstract class SeedRecord {
             throw e;
         }
     }
-    
-    protected static SeedRecord priorRecord = null;
 
     public SeedRecord(ControlHeader header) {
         this.header = header;
@@ -175,7 +173,7 @@ public abstract class SeedRecord {
      * existing.
      */
     public PartialBlockette getLastPartialBlockette() {
-        if (blockettes.get(blockettes.size()-1) instanceof PartialBlockette) {
+        if (blockettes.size() != 0 && blockettes.get(blockettes.size()-1) instanceof PartialBlockette) {
             return (PartialBlockette)blockettes.get(blockettes.size()-1);
         }
         return null;
@@ -186,12 +184,15 @@ public abstract class SeedRecord {
     }
 
     public String toString() {
-        String s = "Record for " + header + "\n";
-        s += "Blockettes:\n";
-        for(int i = 0; i < blockettes.size(); i++) {
-            s += blockettes.get(i) + "\n";
+        StringWriter sw = new StringWriter();
+        PrintWriter p = new PrintWriter(sw);
+        try {
+            writeASCII(p);
+        }catch(IOException e) {
+            // dont think this should happen
+            throw new RuntimeException(e);
         }
-        return s;
+        return sw.toString();
     }
 
     public void writeASCII(PrintWriter out) throws IOException {

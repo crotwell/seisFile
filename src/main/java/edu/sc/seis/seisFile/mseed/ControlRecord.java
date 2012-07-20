@@ -2,7 +2,6 @@ package edu.sc.seis.seisFile.mseed;
 
 import java.io.DataInput;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 
 public class ControlRecord extends SeedRecord {
@@ -11,10 +10,45 @@ public class ControlRecord extends SeedRecord {
         super(header);
     }
     
+    /** 
+     * Reads the next control record from the stream. If the record continues, ie a
+     * blockette is too big to fit in the record, then the following record will be read
+     * recursively and combined with the current.
+     * @param inStream
+     * @param header
+     * @param defaultRecordSize
+     * @return
+     * @throws IOException
+     * @throws SeedFormatException
+     */
     public static ControlRecord readControlRecord(DataInput inStream,
                                                ControlHeader header,
+                                               int defaultRecordSize)
+            throws IOException, SeedFormatException {
+        ControlRecord controlRec = readSingleControlRecord(inStream, header, defaultRecordSize, null);
+        
+        if (controlRec.getLastPartialBlockette() != null) {
+            ContinuedControlRecord continuationCR = new ContinuedControlRecord(controlRec);
+            ControlRecord nextPartialRecord = controlRec;
+            while(nextPartialRecord.getLastPartialBlockette() != null) {
+                ControlHeader nextHeader = ControlHeader.read(inStream);
+                if (nextHeader  instanceof DataHeader) {
+                    throw new SeedFormatException("Control record continues, but next record is a DataRecord. curr="+header.toString()
+                                              +"  next="+nextHeader.toString()); 
+                }
+                nextPartialRecord = readSingleControlRecord(inStream, nextHeader, nextPartialRecord.getRecordSize(), nextPartialRecord.getLastPartialBlockette());
+                continuationCR.addContinuation(nextPartialRecord);
+            }
+            controlRec = continuationCR;
+        }
+        return controlRec;
+    }
+    
+    
+    public static ControlRecord readSingleControlRecord(DataInput inStream,
+                                               ControlHeader header,
                                                int defaultRecordSize,
-                                               SeedRecord priorRecord)
+                                               PartialBlockette partialBlockette)
             throws IOException, SeedFormatException {
         
         /*
@@ -25,56 +59,43 @@ public class ControlRecord extends SeedRecord {
         ControlRecord controlRec = new ControlRecord(header);
         byte[] readBytes;
         int currOffset = header.getSize();
-        if (priorRecord != null && header.isContinuation()) {
+        if (partialBlockette != null && header.isContinuation()) {
             // need to pull remaining bytes of continued blockette
-            PartialBlockette pb = priorRecord.getLastPartialBlockette();
-            if (pb != null) {
-                Blockette b;
-                int length = pb.getTotalSize()-pb.getSoFarSize();
-                if (length+currOffset < recordSize) {
-                    readBytes = new byte[length];
-                } else {
-                    readBytes = new byte[recordSize - currOffset];
-                }
-                inStream.readFully(readBytes);
-                currOffset+= readBytes.length;
-                b = new PartialBlockette(pb.getType(), readBytes, pb.getSwapBytes(), pb.getSoFarSize(), pb.getTotalSize());
-
-                if (b instanceof ControlRecordLengthBlockette) {
-                    recordSize = ((ControlRecordLengthBlockette)b).getLogicalRecordLength();
-                }
-                controlRec.addBlockette(b);
-                if (defaultRecordSize != 0 && currOffset > recordSize-7) {
-                    // have used up rest of record
-                    controlRec.RECORD_SIZE = recordSize;
-                    // read garbage between blockettes and end
-                    byte[] garbage = new byte[recordSize - currOffset];
-                    if(garbage.length != 0) {
-                        inStream.readFully(garbage);
-                    }
-                    return controlRec;
-                }
+            Blockette b;
+            int length = partialBlockette.getTotalSize()-partialBlockette.getSoFarSize();
+            if (recordSize == 0 || length+currOffset < recordSize) {
+                readBytes = new byte[length];
+            } else {
+                // not enought bytes to fill blockette, continues in next record
+                readBytes = new byte[recordSize - currOffset];
             }
+            inStream.readFully(readBytes);
+            currOffset+= readBytes.length;
+            b = new PartialBlockette(partialBlockette.getType(), readBytes, partialBlockette.getSwapBytes(), partialBlockette.getSoFarSize(), partialBlockette.getTotalSize());
+            // assuming here that a record length blockette (5, 8, 10) will not be split across records
+            controlRec.addBlockette(b);
+            
         }
         String typeStr;
         byte[] typeBytes = new byte[3];
-        if (defaultRecordSize == 0 || currOffset < recordSize-3) {
+        if (recordSize == 0 || currOffset < recordSize-3) {
             inStream.readFully(typeBytes);
             typeStr = new String(typeBytes);
             currOffset+= typeBytes.length;
         } else {
             typeStr = THREESPACE;
         }
-        while ( ! typeStr.equals(THREESPACE) && (defaultRecordSize == 0 || currOffset <= recordSize-7)) {
+        while ( ! typeStr.equals(THREESPACE) && (recordSize == 0 || currOffset <= recordSize-7)) {
             int type = Integer.parseInt(typeStr.trim());
             byte[] lengthBytes = new byte[4];
             inStream.readFully(lengthBytes);
             String lengthStr = new String(lengthBytes);
             currOffset+= lengthBytes.length;
             int length = Integer.parseInt(lengthStr.trim());
-            if (length+currOffset-7 < recordSize) {
+            if (recordSize == 0 || length+currOffset-7 < recordSize) {
                 readBytes = new byte[length-7];
             } else {
+                // not enough bytes left in record to fill blockette
                 readBytes = new byte[recordSize - currOffset];
             }
             inStream.readFully(readBytes);
@@ -109,7 +130,7 @@ public class ControlRecord extends SeedRecord {
             }
 
             controlRec.addBlockette(b);
-            if (defaultRecordSize == 0 || currOffset < recordSize-3) {
+            if (recordSize == 0 || currOffset < recordSize-3) {
                 inStream.readFully(typeBytes);
                 typeStr = new String(typeBytes);
                 currOffset+= typeBytes.length;
@@ -117,12 +138,14 @@ public class ControlRecord extends SeedRecord {
                 typeStr = THREESPACE;
             }
         }
-        if(recordSize == 0 && defaultRecordSize == 0) {
-            // no default
-            throw new SeedFormatException("No blockettes 5, 8 or 10 to indicated record size and no default set");
-        } else {
-            // otherwise use default
-            recordSize = defaultRecordSize;
+        if(recordSize == 0 ) {
+            if (defaultRecordSize == 0) {
+                // no default
+                throw new SeedFormatException("No blockettes 5, 8 or 10 to indicated record size and no default set");
+            } else {
+                // otherwise use default
+                recordSize = defaultRecordSize;
+            }
         }
         controlRec.RECORD_SIZE = recordSize;
         // read garbage between blockettes and end
