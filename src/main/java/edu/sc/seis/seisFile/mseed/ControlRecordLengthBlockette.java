@@ -1,6 +1,5 @@
 package edu.sc.seis.seisFile.mseed;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
 
