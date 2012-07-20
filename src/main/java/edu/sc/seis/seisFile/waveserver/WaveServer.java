@@ -46,7 +46,6 @@ public class WaveServer implements MSeedQueryReader {
         socketOut.println("MENU: " + nextReqId + " SCNL");
         String all = getIn().readLine(); // newline ends reply
         String[] sections = all.split("  "); // double space separates entries
-        String returnReqId = sections[0];
         for (int i = 1; i < sections.length; i++) {
             String[] cols = sections[i].split(" +");
             String pin = cols[0];
@@ -109,7 +108,6 @@ public class WaveServer implements MSeedQueryReader {
         int byteLengthIndex = 10;
         if ("F".equals(splitLine[6])) {
             int numBytes = Integer.parseInt(splitLine[byteLengthIndex]);
-            int totSamples = 0;
             int totSize = 0;
             while (totSize < numBytes) {
                 if (verbose) {
@@ -120,7 +118,6 @@ public class WaveServer implements MSeedQueryReader {
                 String dataType = TraceBuf2.extractDataType(headerByte);
                 boolean swapBytes = TraceBuf2.isSwapBytes(dataType);
                 int numSamples = TraceBuf2.extractNumSamples(headerByte, swapBytes);
-                totSamples += numSamples;
                 int sampSize = TraceBuf2.getSampleSize(dataType);
                 byte[] dataBuf = new byte[numSamples * sampSize];
                 dataIn.readFully(dataBuf);
