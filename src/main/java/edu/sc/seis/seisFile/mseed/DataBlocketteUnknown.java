@@ -27,7 +27,7 @@ public class DataBlocketteUnknown extends DataBlockette {
         return info;
     }
 
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out) {
         out.println("Blockette: "+getType());
     }
     

@@ -28,12 +28,12 @@ public abstract class ControlRecordLengthBlockette extends ControlBlockette impl
     }
     
 
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out) {
         writeASCIINoNewline(out);
         out.println();
     }
     
-    public void writeASCIINoNewline(PrintWriter out) throws IOException {
+    public void writeASCIINoNewline(PrintWriter out)  {
         out.print("Blockette"+getType()+" record length="+getLogicalRecordLength()+" ("+getLogicalRecordLengthByte()+") "+new String(info));
     }
 }

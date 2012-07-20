@@ -89,7 +89,7 @@ public class Blockette200 extends DataBlockette {
         return new String(info, EVENT_DETECTOR, EVENT_DETECTOR_LENGTH);
     }
 
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out)  {
         out.println("Blockette200 sig="+getSignal()+" per="+getPeriod()+" bkgrd="+getBackground());
     }
 

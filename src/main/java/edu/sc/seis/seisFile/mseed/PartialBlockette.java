@@ -20,7 +20,7 @@ public class PartialBlockette extends BlocketteUnknown {
         return new PartialBlockette(first.getType(), tmp, first.swapBytes, first.getPriorSize(), first.getTotalSize());
     }
     
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out) {
         String infoStr = new String(info);
         out.println("Partial Blockette "+getType()+", "+bytesRead+" with "+priorBytes+" prior of "+totalBytes+" total bytes: "+infoStr);
     }

@@ -25,7 +25,7 @@ public class Blockette5 extends ControlRecordLengthBlockette {
         return Utility.extractVarString(info, 13, 22);
     }
     
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out)  {
         super.writeASCIINoNewline(out);
         out.println(" beg vol="+getBeginningOfVolume());
     }
