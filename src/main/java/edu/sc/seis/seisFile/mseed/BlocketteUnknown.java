@@ -42,7 +42,7 @@ public class BlocketteUnknown extends Blockette {
         return info;
     }
 
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out)  {
         String infoStr = new String(info);
         out.println("Blockette "+getType()+": "+infoStr);
     }

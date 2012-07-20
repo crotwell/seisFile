@@ -23,9 +23,9 @@ public abstract class Blockette {
      *            a Writer
      * 
      */
-    public abstract void writeASCII(PrintWriter out) throws IOException;
+    public abstract void writeASCII(PrintWriter out) ;
 
-    public void writeASCII(PrintWriter out, String indent) throws IOException {
+    public void writeASCII(PrintWriter out, String indent) {
         out.write(indent);
         writeASCII(out);
     }

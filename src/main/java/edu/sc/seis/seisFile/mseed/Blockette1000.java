@@ -127,7 +127,7 @@ public class Blockette1000 extends  DataBlockette implements RecordLengthBlocket
      */
     public void setReserved(byte  v) {info[7] = v;}
 
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out) {
         out.println("Blockette1000 encod="+getEncodingFormat()+" wOrder="+getWordOrder()+" recLen="+getDataRecordLengthByte());
     }
 

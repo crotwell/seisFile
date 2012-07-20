@@ -79,7 +79,7 @@ public class Blockette2000 extends DataBlockette {
         return opaque;
     }
 
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out) {
         out.print("Blockette2000 numHeaders="+getNumHeaders()+" ");
         for (int i = 0; i < getNumHeaders(); i++) {
             out.print(getHeaderField(i)+",");
