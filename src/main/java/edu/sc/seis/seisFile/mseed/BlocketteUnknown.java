@@ -9,7 +9,6 @@ package edu.sc.seis.seisFile.mseed;
  * @author Philip Crotwell
  * @version
  */
-import java.io.IOException;
 import java.io.PrintWriter;
 
 public class BlocketteUnknown extends Blockette {

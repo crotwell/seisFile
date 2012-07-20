@@ -5,7 +5,6 @@
  */
 package edu.sc.seis.seisFile.mseed;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Blockette100 extends DataBlockette {
