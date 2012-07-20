@@ -40,7 +40,7 @@ public class Blockette100 extends DataBlockette {
         return "Sample Rate Blockette";
     }
 
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out) {
         out.println("Blockette100 " + getActualSampleRate());
     }
 

@@ -53,7 +53,7 @@ public class Blockette1001 extends DataBlockette {
     public void setFrameCount(byte  v) {info[7] = v;}
     
     @Override
-    public void writeASCII(PrintWriter out) throws IOException {
+    public void writeASCII(PrintWriter out)  {
         out.println("Blockette1001 tQual="+getTimingQuality()+" microsec="+getMicrosecond()+" frameC="+getFrameCount());
     }
     
