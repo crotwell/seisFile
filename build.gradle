@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.5.2-SNAPSHOT'
+version = '1.5.2'
 
 apply plugin: 'maven'
 
