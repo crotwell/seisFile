@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import edu.sc.seis.seisFile.sac.SacHeader;
-import edu.sc.seis.seisFile.sac.SacTimeSeries;
 
 /**
  * PSNPolesAndZeros.java

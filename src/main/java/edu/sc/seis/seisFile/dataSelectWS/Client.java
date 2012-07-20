@@ -1,7 +1,6 @@
 package edu.sc.seis.seisFile.dataSelectWS;
 
 import edu.sc.seis.seisFile.MSeedQueryClient;
-import edu.sc.seis.seisFile.MSeedQueryReader;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
 

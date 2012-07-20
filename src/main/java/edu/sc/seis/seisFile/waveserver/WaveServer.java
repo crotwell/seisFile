@@ -1,18 +1,15 @@
 package edu.sc.seis.seisFile.waveserver;
 
 import java.io.BufferedInputStream;
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.sc.seis.seisFile.MSeedQueryClient;
 import edu.sc.seis.seisFile.MSeedQueryReader;
 import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
