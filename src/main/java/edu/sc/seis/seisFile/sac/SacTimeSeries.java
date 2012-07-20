@@ -18,12 +18,12 @@
 package edu.sc.seis.seisFile.sac;
 
 import static edu.sc.seis.seisFile.sac.SacConstants.FALSE;
-import static edu.sc.seis.seisFile.sac.SacConstants.ITIME;
-import static edu.sc.seis.seisFile.sac.SacConstants.TRUE;
 import static edu.sc.seis.seisFile.sac.SacConstants.IAMPH;
 import static edu.sc.seis.seisFile.sac.SacConstants.IRLIM;
+import static edu.sc.seis.seisFile.sac.SacConstants.ITIME;
 import static edu.sc.seis.seisFile.sac.SacConstants.IntelByteOrder;
 import static edu.sc.seis.seisFile.sac.SacConstants.LITTLE_ENDIAN;
+import static edu.sc.seis.seisFile.sac.SacConstants.TRUE;
 import static edu.sc.seis.seisFile.sac.SacConstants.data_offset;
 
 import java.io.BufferedInputStream;
