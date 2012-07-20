@@ -13,9 +13,16 @@ public class PartialBlockette extends BlocketteUnknown {
         this.totalBytes = totalBytes;
     }
 
+    public static PartialBlockette combine(PartialBlockette first, PartialBlockette second) {
+        byte[] tmp = new byte[first.getSize()+second.getSize()];
+        System.arraycopy(first.toBytes(), 0, tmp, 0, first.getSize());
+        System.arraycopy(second.toBytes(), 0, tmp, first.getSize(), second.getSize());
+        return new PartialBlockette(first.getType(), tmp, first.swapBytes, first.getPriorSize(), first.getTotalSize());
+    }
+    
     public void writeASCII(PrintWriter out) throws IOException {
         String infoStr = new String(info);
-        out.print("Partial Blockette "+getType()+", "+bytesRead+" of "+bytesRead+"+"+priorBytes+" of "+totalBytes+" bytes: "+infoStr);
+        out.println("Partial Blockette "+getType()+", "+bytesRead+" with "+priorBytes+" prior of "+totalBytes+" total bytes: "+infoStr);
     }
 
     public boolean isBegin() {
