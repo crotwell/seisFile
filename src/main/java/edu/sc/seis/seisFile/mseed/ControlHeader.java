@@ -67,7 +67,6 @@ public class ControlHeader {
 	byte[] sequenceNumByteArray = null;
 	try{
 	    sequenceNumByteArray = sequenceNumString.getBytes("ASCII");
-	    //System.out.println(sequenceNumByteArray.length);
 	}catch(java.io.UnsupportedEncodingException e)
 	    {
 		e.printStackTrace();
