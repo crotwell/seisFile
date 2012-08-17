@@ -117,7 +117,7 @@ public class WinstonClient {
             }
             syncOut.close();
         } else if (doExport) {
-            EarthwormExport exporter = new EarthwormExport("test", exportPort, 99, 99, "Heartbeat", 30);
+            EarthwormExport exporter = new EarthwormExport(exportPort, DEFAULT_MODULE, DEFAULT_INSTITUTION, "Heartbeat", DEFAULT_HEARTBEAT);
             int chunkSeconds = 120;
             Date startTime = params.getBegin();
             Date chunkBegin, chunkEnd;
@@ -223,6 +223,10 @@ public class WinstonClient {
     public String getHelp() {
         return "java "
                 + WinstonClient.class.getName()
-                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)]";
+                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][--export port]";
     }
+
+    public static final int DEFAULT_HEARTBEAT = 5;
+    public static final int DEFAULT_MODULE = 255;
+    public static final int DEFAULT_INSTITUTION = 255;
 }
