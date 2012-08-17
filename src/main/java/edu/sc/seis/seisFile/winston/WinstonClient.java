@@ -10,7 +10,9 @@ import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -26,10 +28,11 @@ import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 public class WinstonClient {
 
     protected WinstonClient(String[] args) throws SeisFileException, FileNotFoundException, IOException {
-        params = new QueryParams(args);
+        QueryParams defaults = new QueryParams(new String[] {"-n", "*", "-s", "*", "-l", "*", "-c", "*"});
+        params = new QueryParams(args, defaults);
         winstonConfig.put("winston.driver", WinstonUtil.MYSQL_DRIVER);
         winstonConfig.put("winston.prefix", "W");
-        winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser");
+        winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser&password=");
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("--sync")) {
                 doSync = true;
@@ -43,6 +46,9 @@ public class WinstonClient {
                     winstonConfig.put("winston.url", args[i + 1]);
                 } else if (args[i].equals("--recLen")) {
                     recordSize = Integer.parseInt(args[i + 1]);
+                } else if (args[i].equals("--export")) {
+                    doExport = true;
+                    exportPort = Integer.parseInt(args[i+1]);
                 }
             }
         }
@@ -52,10 +58,14 @@ public class WinstonClient {
     }
 
     QueryParams params;
-
+    
     Properties winstonConfig = new Properties();
 
     boolean doSync = false;
+    
+    boolean doExport = false;
+    
+    int exportPort = -1;
 
     int recordSize = 12;
 
@@ -106,16 +116,34 @@ public class WinstonClient {
                 }
             }
             syncOut.close();
-        } else {
+        } else if (doExport) {
+            EarthwormExport exporter = new EarthwormExport("test", exportPort, 99, 99, "Heartbeat", 30);
+            int chunkSeconds = 120;
+            Date startTime = params.getBegin();
+            Date chunkBegin, chunkEnd;
+            HashMap<WinstonSCNL, Date> lastSent = new HashMap<WinstonSCNL, Date>();
             for (WinstonSCNL scnl : allChannels) {
-                if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
-                        && netPattern.matcher(scnl.getNetwork()).matches()
-                        && locPattern.matcher(scnl.getLocId()).matches()) {
-                    processChannel(winston, scnl);
-                }
+                lastSent.put(scnl, startTime);
             }
-            params.getDataOutputStream().close();
-        }
+            while(startTime.before(params.getEnd())) {
+                chunkEnd = new Date(startTime.getTime()+chunkSeconds*1000);
+                for (WinstonSCNL scnl : lastSent.keySet()) {
+                    chunkBegin = lastSent.get(scnl);
+                    Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
+                    lastSent.put(scnl, new Date(sentEnd.getTime()+1)); // just past last packet
+                }
+                startTime = new Date(chunkEnd.getTime()+1);
+            }
+        } else {
+                for (WinstonSCNL scnl : allChannels) {
+                    if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
+                            && netPattern.matcher(scnl.getNetwork()).matches()
+                            && locPattern.matcher(scnl.getLocId()).matches()) {
+                        processChannel(winston, scnl);
+                    }
+                }
+                params.getDataOutputStream().close();
+            }
         winston.close();
     }
 
@@ -138,6 +166,19 @@ public class WinstonClient {
                                                     // based???
         int endDay = cal.get(Calendar.DAY_OF_MONTH);
         winston.writeSyncBetweenDates(channel, startYear, startMonth, startDay, endYear, endMonth, endDay, syncOut);
+    }
+
+    Date exportChannel(WinstonUtil winston, WinstonSCNL channel, Date begin, Date end, EarthwormExport exporter) throws SeisFileException, SQLException,
+            DataFormatException, FileNotFoundException, IOException, URISyntaxException {
+        List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
+        Date lastSentEnd = end;
+        for (TraceBuf2 traceBuf2 : tbList) {
+            exporter.export(traceBuf2);
+            if (lastSentEnd.before(traceBuf2.getEndDate())) {
+                lastSentEnd = traceBuf2.getEndDate();
+            }
+        }
+        return lastSentEnd;
     }
 
     void processChannel(WinstonUtil winston, WinstonSCNL channel) throws SeisFileException, SQLException,
