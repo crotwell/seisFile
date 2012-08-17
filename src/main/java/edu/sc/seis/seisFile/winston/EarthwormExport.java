@@ -4,12 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,8 +43,6 @@ public class EarthwormExport {
         System.out.println("Heartbeat: "+message);
         outStream.startTransmit();
         
-        writeSeqNum(outStream, getNextSeqNum());
-        
         writeThreeChars(outStream, installation);
         writeThreeChars(outStream, module);
         writeThreeChars(outStream, 3);
@@ -53,15 +51,26 @@ public class EarthwormExport {
         outStream.flush();
     }
 
-    public synchronized void export(TraceBuf2 traceBuf) throws UnknownHostException, IOException {
+    public synchronized void export(TraceBuf2 traceBuf) throws IOException {
         System.out.println("Tracebuf: "+traceBuf.getStation()+" "+traceBuf.getStartTime());
+        if (traceBuf.getNumSamples() > MAX_TB_POINTS) {
+            List<TraceBuf2> split = traceBuf.split(MAX_TB_POINTS);
+            for (TraceBuf2 splitTB : split) {
+                writeTraceBuf(splitTB);
+            }
+        } else {
+            writeTraceBuf(traceBuf);
+        }
+    }
+    
+    void writeTraceBuf(TraceBuf2 tb) throws IOException {
         outStream.startTransmit();
         writeSeqNum(outStream, getNextSeqNum());
         writeThreeChars(outStream, installation);
         writeThreeChars(outStream, module);
         writeThreeChars(outStream, MESSAGE_TYPE_TRACEBUF2);
         DataOutputStream dos = new DataOutputStream(outStream);
-        traceBuf.write(dos);
+        tb.write(dos);
         dos.flush();
         outStream.endTransmit();
         outStream.flush();
@@ -165,4 +174,6 @@ public class EarthwormExport {
     public static final byte MESSAGE_TYPE_TRACEBUF2 = 19;
 
     public static final String SEQ_CODE = "SQ:";
+    
+    public static int MAX_TB_POINTS = 4096;
 }
