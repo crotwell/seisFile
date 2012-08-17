@@ -81,7 +81,7 @@ public class TraceBuf2 {
         channel = Utility.extractNullTermString(data, 48, 4);
         locId = Utility.extractNullTermString(data, 52, 3);
         version = Utility.extractString(data, 55, 2);
-        dataType = Utility.extractNullTermString(data, 57, 3);
+        // dataType already extract above: Utility.extractNullTermString(data, 57, 3);
         quality = Utility.extractString(data, 60, 2);
         pad = Utility.extractString(data, 62, 2);
         int offset = 64;
@@ -92,6 +92,7 @@ public class TraceBuf2 {
                 shortData[i] = Utility.bytesToShort(data[offset], data[offset + 1], swapBytes);
                 offset += 2;
             }
+            dataType = SUN_IEEE_SHORT_INTEGER;
         } else if (isIntData()) {
             intData = new int[numSamples];
             for (int i = 0; i < intData.length; i++) {
@@ -102,6 +103,7 @@ public class TraceBuf2 {
                                                 swapBytes);
                 offset += 4;
             }
+            dataType = SUN_IEEE_INTEGER;
         } else if (isFloatData()) {
             floatData = new float[numSamples];
             for (int i = 0; i < floatData.length; i++) {
@@ -112,6 +114,7 @@ public class TraceBuf2 {
                                                     swapBytes);
                 offset += 4;
             }
+            dataType = SUN_IEEE_SINGLE_PRECISION_REAL;
         } else if (isDoubleData()) {
             doubleData = new double[numSamples];
             for (int i = 0; i < doubleData.length; i++) {
@@ -126,6 +129,7 @@ public class TraceBuf2 {
                                                       swapBytes);
                 offset += 8;
             }
+            dataType = SUN_IEEE_DOUBLE_PRECISION_REAL;
         } else if (dataType.equals(NORESS_GAIN_RANGED)) {
             throw new RuntimeException("NORESS gain-ranged data type not supported: " + dataType);
         } else {
