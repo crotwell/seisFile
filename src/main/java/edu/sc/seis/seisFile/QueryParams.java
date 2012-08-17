@@ -15,6 +15,11 @@ import java.util.TimeZone;
 public class QueryParams {
 
     public QueryParams(String[] args) throws SeisFileException {
+        this(args, null);
+    }
+    
+    public QueryParams(String[] args, QueryParams defaults) throws SeisFileException {
+        this.defaults = defaults;
         PrintWriter out = new PrintWriter(System.out, true);
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-n")) {
@@ -65,47 +70,61 @@ public class QueryParams {
         }
     }
 
-    String network;
+    protected String network;
 
-    String station;
+    protected String station;
 
-    String location;
+    protected String location;
 
-    String channel;
+    protected String channel;
 
-    Date begin;
+    protected Date begin;
 
-    Date end;
+    protected Date end;
 
-    Float duration = 600f;
+    protected Float duration = 600f;
 
-    int maxRecords = -1;
+    protected int maxRecords = -1;
 
-    String outFile = null;
+    protected String outFile = null;
 
-    boolean verbose = false;
+    protected boolean verbose = false;
 
-    boolean printVersion = false;
+    protected boolean printVersion = false;
 
-    boolean printHelp = false;
+    protected boolean printHelp = false;
 
-    DataOutputStream dos = null;
+    protected DataOutputStream dos = null;
     
-    boolean append = false;
+    protected boolean append = false;
+    
+    QueryParams defaults;
 
     public String getNetwork() {
+        if (network == null && defaults != null) {
+            return defaults.getNetwork();
+        }
         return network;
     }
 
     public String getStation() {
+        if (station == null && defaults != null) {
+            return defaults.getStation();
+        }
         return station;
     }
 
     public String getLocation() {
+        if (location == null && defaults != null) {
+            return defaults.getLocation();
+        }
         return location;
     }
 
     public String getChannel() {
+        if (channel == null && defaults != null) {
+            return defaults.getChannel();
+        }
         return channel;
     }
 
