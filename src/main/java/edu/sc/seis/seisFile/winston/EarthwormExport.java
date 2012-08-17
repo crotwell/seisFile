@@ -15,9 +15,8 @@ import java.util.TimerTask;
 
 public class EarthwormExport {
 
-    public EarthwormExport(String host, int port, int module, int installation, final String heartbeatMessage, int heartbeatSeconds) throws UnknownHostException,
+    public EarthwormExport(int port, int module, int installation, final String heartbeatMessage, int heartbeatSeconds) throws UnknownHostException,
             IOException {
-        this.host = host;
         this.port = port;
         this.module = module;
         this.installation = installation;
@@ -107,7 +106,7 @@ public class EarthwormExport {
 
     public static void main(String[] args) throws Exception {
         // testing
-        EarthwormExport exporter = new EarthwormExport("n", 9485, 9, 99, "heartbeat", 10);
+        EarthwormExport exporter = new EarthwormExport(9485, 9, 99, "heartbeat", 5);
         Thread.sleep(3);
         int[] data = new int[10];
         for (int i = 0; i < data.length; i++) {
@@ -156,8 +155,6 @@ public class EarthwormExport {
     ServerSocket serverSocket;
 
     Socket clientSocket = null;
-
-    String host;
 
     int port;
 
