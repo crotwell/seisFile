@@ -119,7 +119,7 @@ public class WinstonClient {
             for (WinstonSCNL scnl : allChannels) {
                 if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
                         && netPattern.matcher(scnl.getNetwork()).matches()
-                        && locPattern.matcher(scnl.getLocId()).matches()) {
+                        && locPattern.matcher(scnl.getLocId()==null?"":scnl.getLocId()).matches()) {
                     syncChannel(winston, scnl, syncOut);
                 }
             }
@@ -150,7 +150,7 @@ public class WinstonClient {
                 for (WinstonSCNL scnl : allChannels) {
                     if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
                             && netPattern.matcher(scnl.getNetwork()).matches()
-                            && locPattern.matcher(scnl.getLocId()).matches()) {
+                            && locPattern.matcher(scnl.getLocId()==null?"":scnl.getLocId()).matches()) {
                         processChannel(winston, scnl);
                     }
                 }
