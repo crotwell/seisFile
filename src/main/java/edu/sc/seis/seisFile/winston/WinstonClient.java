@@ -178,6 +178,9 @@ public class WinstonClient {
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Date lastSentEnd = end;
         for (TraceBuf2 traceBuf2 : tbList) {
+            if (params.isVerbose()) {
+                System.out.println("Tracebuf: "+traceBuf2.getStation()+" "+traceBuf2.getStartTime()+" "+traceBuf2.getNumSamples());
+            }
             exporter.export(traceBuf2);
             if (lastSentEnd.before(traceBuf2.getEndDate())) {
                 lastSentEnd = traceBuf2.getEndDate();
