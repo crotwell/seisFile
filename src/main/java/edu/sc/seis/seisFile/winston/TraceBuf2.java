@@ -3,7 +3,9 @@ package edu.sc.seis.seisFile.winston;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import edu.iris.dmc.seedcodec.B1000Types;
@@ -19,7 +21,7 @@ import edu.sc.seis.seisFile.mseed.Utility;
 
 public class TraceBuf2 {
 
-    public TraceBuf2(int pin,
+    TraceBuf2(int pin,
                      int numSamples,
                      double startTime,
                      double endTime,
@@ -31,8 +33,7 @@ public class TraceBuf2 {
                      String version,
                      String dataType,
                      String quality,
-                     String pad,
-                     int[] intData) {
+                     String pad) {
         super();
         this.pin = pin;
         this.numSamples = numSamples;
@@ -47,6 +48,23 @@ public class TraceBuf2 {
         this.dataType = dataType;
         this.quality = quality;
         this.pad = pad;
+    }
+
+    public TraceBuf2(int pin,
+                     int numSamples,
+                     double startTime,
+                     double endTime,
+                     double sampleRate,
+                     String station,
+                     String network,
+                     String channel,
+                     String locId,
+                     String version,
+                     String dataType,
+                     String quality,
+                     String pad,
+                     int[] intData) {
+        this(pin, numSamples, startTime, endTime, sampleRate, station, network, channel, locId, version, dataType, quality, pad);
         this.intData = intData;
     }
 
@@ -191,6 +209,50 @@ public class TraceBuf2 {
                 out.writeDouble(doubleData[i]);
         }
         out.write((byte)0);
+    }
+    
+    public List<TraceBuf2> split(int maxPoints) {
+        List<TraceBuf2> out = new ArrayList<TraceBuf2>();
+        if (numSamples <= maxPoints) {
+            out.add(this);
+        } else {
+            int curSample = 0;
+            while(curSample < numSamples) {
+                int splitPoints = Math.min(maxPoints, (numSamples+1)/2);
+                double splitEndTime = startTime+splitPoints*sampleRate;
+                TraceBuf2 first = new TraceBuf2( pin,
+                                                 splitPoints,
+                                                 startTime,
+                                                 splitEndTime,
+                                                 sampleRate,
+                                                 station,
+                                                 network,
+                                                 channel,
+                                                 locId,
+                                                 version,
+                                                 dataType,
+                                                 quality,
+                                                 pad);
+                out.add(first);
+                if (isShortData()) {
+                    first.shortData = new short[splitPoints];
+                    System.arraycopy(shortData, curSample, first.shortData, 0, splitPoints);
+                } else if (isIntData()) {
+                    first.intData = new int[splitPoints];
+                    System.arraycopy(intData, curSample, first.intData, 0, splitPoints);
+                } else if (isFloatData()) {
+                    first.floatData = new float[splitPoints];
+                    System.arraycopy(floatData, curSample, first.floatData, 0, splitPoints);
+                } else if (isDoubleData()) {
+                    first.doubleData = new double[splitPoints];
+                    System.arraycopy(doubleData, curSample, first.doubleData, 0, splitPoints);
+                } else {
+                    throw new RuntimeException("Unknown data type: "+getDataType());
+                }
+                curSample += splitPoints;
+            }
+        }
+        return out;
     }
     
     /** Pin number */
