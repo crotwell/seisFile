@@ -49,6 +49,14 @@ public class WinstonClient {
                 } else if (args[i].equals("--export")) {
                     doExport = true;
                     exportPort = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("--chunk")) {
+                    chunkSeconds = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("--module")) {
+                    module = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("--inst")) {
+                    institution = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("--heartbeat")) {
+                    heartbeat = Integer.parseInt(args[i+1]);
                 }
             }
         }
@@ -117,8 +125,7 @@ public class WinstonClient {
             }
             syncOut.close();
         } else if (doExport) {
-            EarthwormExport exporter = new EarthwormExport(exportPort, DEFAULT_MODULE, DEFAULT_INSTITUTION, "Heartbeat", DEFAULT_HEARTBEAT);
-            int chunkSeconds = 120;
+            EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
             Date startTime = params.getBegin();
             Date chunkBegin, chunkEnd;
             HashMap<WinstonSCNL, Date> lastSent = new HashMap<WinstonSCNL, Date>();
@@ -223,9 +230,15 @@ public class WinstonClient {
     public String getHelp() {
         return "java "
                 + WinstonClient.class.getName()
-                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][--export port]";
+                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][[--export port][--chunk sec][--module modNum][--inst institutionNum][--heartbeat sec]]";
     }
+    
+    int heartbeat = DEFAULT_HEARTBEAT;
+    int module = DEFAULT_MODULE;
+    int institution = DEFAULT_INSTITUTION;
+    int chunkSeconds = DEFAULT_CHUNK_SECONDS;
 
+    public static final int DEFAULT_CHUNK_SECONDS = 60;
     public static final int DEFAULT_HEARTBEAT = 5;
     public static final int DEFAULT_MODULE = 255;
     public static final int DEFAULT_INSTITUTION = 255;
