@@ -123,9 +123,10 @@ public class WinstonClient {
             Date chunkBegin, chunkEnd;
             HashMap<WinstonSCNL, Date> lastSent = new HashMap<WinstonSCNL, Date>();
             for (WinstonSCNL scnl : allChannels) {
+                
                 if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
                         && netPattern.matcher(scnl.getNetwork()).matches()
-                        && locPattern.matcher(scnl.getLocId()).matches()) {
+                        && locPattern.matcher(scnl.getLocId()==null?"":scnl.getLocId()).matches()) {
                     lastSent.put(scnl, startTime);
                 }
             }
