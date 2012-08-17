@@ -40,7 +40,6 @@ public class EarthwormExport {
     }
 
     public synchronized void heartbeat(String message) throws UnknownHostException, IOException {
-        System.out.println("Heartbeat: "+message);
         outStream.startTransmit();
         
         writeThreeChars(outStream, installation);
@@ -52,7 +51,6 @@ public class EarthwormExport {
     }
 
     public synchronized void export(TraceBuf2 traceBuf) throws IOException {
-        System.out.println("Tracebuf: "+traceBuf.getStation()+" "+traceBuf.getStartTime());
         if (traceBuf.getNumSamples() > MAX_TB_POINTS) {
             List<TraceBuf2> split = traceBuf.split(MAX_TB_POINTS);
             for (TraceBuf2 splitTB : split) {
@@ -64,7 +62,6 @@ public class EarthwormExport {
     }
     
     void writeTraceBuf(TraceBuf2 tb) throws IOException {
-        System.out.println("Tracebuf: "+tb.getStation()+" "+tb.getStartTime()+" "+tb.numSamples);
         outStream.startTransmit();
         writeSeqNum(outStream, getNextSeqNum());
         writeThreeChars(outStream, installation);
