@@ -218,7 +218,10 @@ public class TraceBuf2 {
         } else {
             int curSample = 0;
             while(curSample < numSamples) {
-                int splitPoints = Math.min(maxPoints, (numSamples+1)/2);
+                int splitPoints = Math.max(MAX_TRACEBUF_SIZE, numSamples-curSample);
+                if (splitPoints == MAX_TRACEBUF_SIZE) {
+                        splitPoints = Math.min(maxPoints, (numSamples-curSample+1)/2);
+                }
                 double splitEndTime = startTime+splitPoints*sampleRate;
                 TraceBuf2 first = new TraceBuf2( pin,
                                                  splitPoints,
