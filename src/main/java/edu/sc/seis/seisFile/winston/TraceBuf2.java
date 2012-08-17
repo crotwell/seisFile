@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.winston;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +18,37 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.Utility;
 
 public class TraceBuf2 {
+
+    public TraceBuf2(int pin,
+                     int numSamples,
+                     double startTime,
+                     double endTime,
+                     double sampleRate,
+                     String station,
+                     String network,
+                     String channel,
+                     String locId,
+                     String version,
+                     String dataType,
+                     String quality,
+                     String pad,
+                     int[] intData) {
+        super();
+        this.pin = pin;
+        this.numSamples = numSamples;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.sampleRate = sampleRate;
+        this.station = station;
+        this.network = network;
+        this.channel = channel;
+        this.locId = locId;
+        this.version = version;
+        this.dataType = dataType;
+        this.quality = quality;
+        this.pad = pad;
+        this.intData = intData;
+    }
 
     public TraceBuf2(byte[] data) {
         dataType = extractDataType(data);
@@ -105,6 +137,60 @@ public class TraceBuf2 {
             return 8;
         }
         throw new RuntimeException("Unknown dataType: '"+dataType+"'");
+    }
+    
+    public void write(DataOutputStream out) throws IOException {
+        out.writeInt(pin);
+        out.writeInt(numSamples);
+        out.writeDouble(startTime);
+        out.writeDouble(endTime);
+        out.writeDouble(sampleRate);
+
+        int p = 7 - station.length();
+        out.writeBytes(station);
+        for (int i = 0; i < p; i++)
+            out.write((byte)0);
+
+        p = 9 - network.length();
+        out.writeBytes(network);
+        for (int i = 0; i < p; i++)
+            out.write((byte)0);
+
+        p = 4 - channel.length();
+        out.writeBytes(channel);
+        for (int i = 0; i < p; i++)
+            out.write((byte)0);
+
+        p = 5 - locId.length();
+        out.writeBytes(locId);
+        for (int i = 0; i < p; i++)
+            out.write((byte)0);
+
+        out.writeBytes(dataType);
+        out.write((byte)0);
+        out.writeBytes(quality);
+        for (int i = quality.length(); i < 2; i++) {
+            out.write((byte)0);
+        }
+        out.writeBytes(pad);
+        for (int i = pad.length(); i < 2; i++) {
+            out.write((byte)0);
+        }
+
+        if (isShortData()) {
+            for (int i = 0; i < shortData.length; i++)
+                out.writeShort(shortData[i]);
+        } else if (isIntData()) {
+            for (int i = 0; i < intData.length; i++)
+                out.writeInt(intData[i]);
+        } else if (isFloatData()) {
+            for (int i = 0; i < floatData.length; i++)
+                out.writeFloat(floatData[i]);
+        } else if (isDoubleData()) {
+            for (int i = 0; i < doubleData.length; i++)
+                out.writeDouble(doubleData[i]);
+        }
+        out.write((byte)0);
     }
     
     /** Pin number */
