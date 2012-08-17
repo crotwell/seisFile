@@ -38,6 +38,9 @@ public class Utility {
         while (length<maxLength && start+length<info.length && info[start+length] != termChar) {
             length++;
         }
+        if (length == 0) {
+            return "";
+        }
         byte[] tmp = new byte[length];
         System.arraycopy(info, start, tmp, 0, length);
         return new String(tmp);
