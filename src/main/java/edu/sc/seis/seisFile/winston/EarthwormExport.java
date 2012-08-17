@@ -64,6 +64,7 @@ public class EarthwormExport {
     }
     
     void writeTraceBuf(TraceBuf2 tb) throws IOException {
+        System.out.println("Tracebuf: "+tb.getStation()+" "+tb.getStartTime()+" "+tb.numSamples);
         outStream.startTransmit();
         writeSeqNum(outStream, getNextSeqNum());
         writeThreeChars(outStream, installation);
