@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.winston;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -215,18 +216,20 @@ public class TraceBuf2 {
         out.write((byte)0);
     }
     
-    public List<TraceBuf2> split(int maxPoints) {
+    public List<TraceBuf2> split(int maxSize) {
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
-        if (numSamples <= maxPoints) {
+        if (getSize() <= maxSize) {
             out.add(this);
         } else {
+            int nonHeaderBytes = getSize()-HEADER_SIZE;
+            int maxSamplesPerTB = (maxSize-HEADER_SIZE)/getSampleSize(getDataType());
             int curSample = 0;
             while(curSample < numSamples) {
-                int splitPoints = Math.min(maxPoints, numSamples-curSample);
-                if (splitPoints == maxPoints) {
-                        splitPoints = Math.min(maxPoints, (numSamples-curSample+1)/2);
+                int splitPoints = Math.min(maxSamplesPerTB, numSamples-curSample);
+                if (splitPoints == maxSamplesPerTB) {
+                        splitPoints = Math.min(maxSamplesPerTB, (numSamples-curSample+1)/2);
                 }
-                double splitEndTime = startTime+splitPoints*sampleRate;
+                double splitEndTime = startTime+(curSample+splitPoints)*sampleRate;
                 TraceBuf2 first = new TraceBuf2( pin,
                                                  splitPoints,
                                                  startTime,
@@ -469,6 +472,14 @@ public class TraceBuf2 {
             throw new RuntimeException("Unknown dataType: "+dataType);
         }
     }
+    
+    public byte[] toByteArray() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(out);
+        write(dos);
+        dos.close();
+        return out.toByteArray();
+    }
 
     /** default miniseed of len 12 (=> 4096) and no compression.
      *  
@@ -535,7 +546,7 @@ public class TraceBuf2 {
     }
 
     public int getSize() {
-        return 64+ getNumSamples()*getSampleSize(getDataType());
+        return HEADER_SIZE+ getNumSamples()*getSampleSize(getDataType());
     }
     
     public String toString() {
@@ -598,6 +609,8 @@ public class TraceBuf2 {
 
     public static final int TIME_TAG_QUESTIONABLE = 0x80;
 
+    public static final int HEADER_SIZE = 64;
+    
     /* CSS datatype codes */
     public static final String SUN_IEEE_SINGLE_PRECISION_REAL = "t4";
 
