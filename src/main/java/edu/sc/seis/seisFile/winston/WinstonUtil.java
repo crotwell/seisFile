@@ -219,24 +219,41 @@ public class WinstonUtil {
         while (rs.next()) {
             Blob tbBlob = rs.getBlob("tracebuf");
             byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
-            Inflater decompresser = new Inflater();
-            decompresser.setInput(tbBytes, 0, tbBytes.length);
-            byte[] result = new byte[TraceBuf2.MAX_TRACEBUF_SIZE]; // should all
-                                                                  // fit in once
-                                                                  // decomp
-                                                                  // cycle
-            int resultLength = decompresser.inflate(result);
-            if (!decompresser.finished()) {
-                throw new RuntimeException("more bytes in Blob than can fit in a TraceBuf2: "
-                        + TraceBuf2.MAX_TRACEBUF_SIZE);
-            }
-            byte[] tbResult = new byte[resultLength];
-            System.arraycopy(result, 0, tbResult, 0, tbResult.length);
-            out.add(new TraceBuf2(tbResult));
+            out.add(extractFromBlob(tbBytes));
         }
         rs.close();
         stmt.close();
         return out;
+    }
+    
+    public TraceBuf2 extractFromBlob(byte[] tbBlob) throws DataFormatException {
+        Inflater decompresser = new Inflater();
+        decompresser.setInput(tbBlob, 0, tbBlob.length);
+        ArrayList<byte[]> partialDecomp = new ArrayList<byte[]>();
+        boolean decompFinished = false;
+        int totalBytes = 0;
+        while(!decompFinished) {
+            byte[] buffer = new byte[TraceBuf2.MAX_TRACEBUF_SIZE]; 
+            int resultLength = decompresser.inflate(buffer);
+            totalBytes += resultLength;
+            if (resultLength < buffer.length) {
+                // partial buffer
+                byte[] tmp = new byte[resultLength]; 
+                System.arraycopy(buffer, 0, tmp, 0, tmp.length);
+                buffer = tmp;
+            }
+            partialDecomp.add(buffer);
+            if (decompresser.finished()) {
+                decompFinished = true;
+            }
+        }
+        byte[] finalResult = new byte[totalBytes];
+        int position = 0;
+        for (byte[] bs : partialDecomp) {
+            System.arraycopy(bs, 0, finalResult, position, bs.length);
+            position += bs.length;
+        }
+        return new TraceBuf2(finalResult);
     }
 
     public static Date j2KSecondsToDate(double j2kSeconds) {

@@ -2,10 +2,13 @@ package edu.sc.seis.seisFile.winston;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
 
 import org.junit.Test;
 
@@ -32,5 +35,87 @@ public class WinstonUtilTest {
         for (long l : testVals) {
             assertEquals("test round trip: ", l, WinstonUtil.dateToJ2kSeconds(WinstonUtil.j2KSecondsToDate(l)), 0.001);
         }
+    }
+    
+    @Test
+    public void testTraceBuf2FromBytes() throws DataFormatException, IOException {
+        WinstonUtil winstonUtil = new WinstonUtil("","","","","");
+        int numSamples = 6343;
+        int[] data = new int[numSamples];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (i % 256) - 128;
+        }
+        TraceBuf2 tb = new TraceBuf2(1,
+                                     data.length,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + 100,
+                                     1,
+                                     "JSC",
+                                     "CO",
+                                     "HHZ",
+                                     "00",
+                                     "a",
+                                     TraceBuf2.SUN_IEEE_INTEGER,
+                                     "a",
+                                     "",
+                                     data);
+        TraceBuf2 out = new TraceBuf2(tb.toByteArray());
+        assertEquals("dataType", tb.getDataType(), out.getDataType());
+        assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
+        assertEquals("end", tb.getEndTime(), out.getEndTime(), 0.000001);
+        assertEquals("net", tb.getNetwork(), out.getNetwork());
+        assertEquals("sta", tb.getStation(), out.getStation());
+        assertEquals("loc", tb.getLocId(), out.getLocId());
+        assertEquals("chan", tb.getChannel(), out.getChannel());
+        assertArrayEquals("data", tb.getIntData(), out.getIntData());
+    }
+    
+    @Test
+    public void testTraceBuf2FromBlob() throws DataFormatException, IOException {
+        WinstonUtil winstonUtil = new WinstonUtil("","","","","");
+        int numSamples = 6343;
+        int[] data = new int[numSamples];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (i % 256) - 128;
+        }
+        TraceBuf2 tb = new TraceBuf2(1,
+                                     data.length,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + 100,
+                                     1,
+                                     "JSC",
+                                     "CO",
+                                     "HHZ",
+                                     "00",
+                                     "a",
+                                     TraceBuf2.SUN_IEEE_INTEGER,
+                                     "a",
+                                     "",
+                                     data);
+
+        assertArrayEquals(data, tb.getIntData());
+        
+        byte[] dataBytes = tb.toByteArray();
+        byte[] compressedBytes = new byte[dataBytes.length];
+        Deflater compresser = new Deflater();
+        compresser.setInput(dataBytes);
+        compresser.finish();
+        int compressedDataLength = compresser.deflate(compressedBytes);
+        assertTrue("oops, buffer is not big enough", compressedDataLength <= compressedBytes.length); 
+        byte[] tmp = new byte[compressedDataLength];
+        System.arraycopy(compressedBytes, 0, tmp, 0, tmp.length);
+        compressedBytes = tmp; tmp = null;
+        
+        TraceBuf2 out = winstonUtil.extractFromBlob(compressedBytes);
+
+        assertEquals("dataType", tb.getDataType(), out.getDataType());
+        assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
+        assertEquals("end", tb.getEndTime(), out.getEndTime(), 0.000001);
+        assertEquals("net", tb.getNetwork(), out.getNetwork());
+        assertEquals("sta", tb.getStation(), out.getStation());
+        assertEquals("loc", tb.getLocId(), out.getLocId());
+        assertEquals("chan", tb.getChannel(), out.getChannel());
+        assertArrayEquals(data, out.getIntData());
+        
     }
 }
