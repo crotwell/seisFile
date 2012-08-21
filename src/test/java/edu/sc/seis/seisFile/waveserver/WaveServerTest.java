@@ -13,7 +13,10 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
+import edu.sc.seis.seisFile.winston.TraceBuf2;
+import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 
 public class WaveServerTest extends TestCase {
@@ -37,6 +40,44 @@ public class WaveServerTest extends TestCase {
         assertEquals("items is 204", 204, items.size());
     }
     
+    @Test
+    public void testBigTraceBuf() throws Exception {
+
+        int numSamples = 6343;
+        int[] data = new int[numSamples];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (i % 256) - 128;
+        }
+        TraceBuf2 tb = new TraceBuf2(1,
+                                     data.length,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + 100,
+                                     1,
+                                     "JSC",
+                                     "CO",
+                                     "HHZ",
+                                     "00",
+                                     "a",
+                                     TraceBuf2.SUN_IEEE_INTEGER,
+                                     "a",
+                                     "",
+                                     data);
+        // without compression
+        List<DataRecord> mseedList = tb.toMiniSeedWithSplit(12, false);
+        int numPoints = 0;
+        for (DataRecord dr : mseedList) {
+            numPoints += dr.getHeader().getNumSamples();
+        }
+        assertEquals("num points without compression", tb.getNumSamples(), numPoints);
+        // with compression
+        mseedList = tb.toMiniSeedWithSplit(12, true);
+        numPoints = 0;
+        for (DataRecord dr : mseedList) {
+            numPoints += dr.getHeader().getNumSamples();
+        }
+        assertEquals("num points for compression", tb.getNumSamples(), numPoints);
+        
+    }
 
 
     static BufferedInputStream loadResource(String filename) throws IOException, SeisFileException {

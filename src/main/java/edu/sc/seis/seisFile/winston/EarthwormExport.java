@@ -50,8 +50,8 @@ public class EarthwormExport {
     }
 
     public synchronized void export(TraceBuf2 traceBuf) throws IOException {
-        if (traceBuf.getNumSamples() > MAX_TB_POINTS) {
-            List<TraceBuf2> split = traceBuf.split(MAX_TB_POINTS);
+        if (traceBuf.getSize() > TraceBuf2.MAX_TRACEBUF_SIZE) {
+            List<TraceBuf2> split = traceBuf.split(TraceBuf2.MAX_TRACEBUF_SIZE);
             for (TraceBuf2 splitTB : split) {
                 writeTraceBuf(splitTB);
             }
@@ -170,5 +170,4 @@ public class EarthwormExport {
 
     public static final String SEQ_CODE = "SQ:";
     
-    public static int MAX_TB_POINTS = 4096;
 }

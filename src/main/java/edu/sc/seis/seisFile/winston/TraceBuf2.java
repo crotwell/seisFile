@@ -17,6 +17,7 @@ import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.Btime;
 import edu.sc.seis.seisFile.mseed.DataHeader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.DataTooLargeException;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.Utility;
 
@@ -490,6 +491,42 @@ public class TraceBuf2 {
         return toMiniSeed(12, false);
     }
 
+    public List<DataRecord> toMiniSeedWithSplit(int recLenExp, boolean doSteim1) throws SeedFormatException {
+        List<DataRecord> out = new ArrayList<DataRecord>();
+        int recordSize = (1 << recLenExp);
+        
+        if (! doSteim1) {
+            // no compression so can calc max samples per record
+            List<TraceBuf2> subList = split(recordSize-64);
+            for (TraceBuf2 subTBuf : subList) {
+                DataRecord mseed = subTBuf.toMiniSeed(recLenExp, doSteim1);
+                out.add(mseed);
+            }
+        } else {
+            // have to do by try-catch as hard to know with compression
+            int splitNum = getNumSamples()*getSampleSize(getDataType()); // no split first time
+            if (splitNum > ((recordSize/64 -1)*15 -1)*4) {
+                splitNum = ((recordSize/64 -1)*15 -1)*4;  // max steim1 if all can be fit into 1 byte
+            }
+            boolean done = false;
+            while (!done) {
+
+                try {
+                    List<TraceBuf2> subList = split(splitNum);
+                    for (TraceBuf2 subTBuf : subList) {
+                        DataRecord mseed = subTBuf.toMiniSeed(recLenExp, doSteim1);
+                        out.add(mseed);
+                    }
+                    done = true;
+                } catch(DataTooLargeException e) {
+                    splitNum /= 2; // down by half seems reasonable
+                    out.clear(); // in case first was not the problem
+                }
+            }
+        }
+        return out;
+    }
+    
     public DataRecord toMiniSeed(int recLen, boolean steim1) throws SeedFormatException {
         DataHeader dh = new DataHeader(0, 'D', false);
         dh.setStationIdentifier(getStation());
@@ -539,7 +576,7 @@ public class TraceBuf2 {
         }
         // check we can fit it all in
         if (dh.getSize()+b1000.getSize()+dataBytes.length > Math.pow(2, recLen)) {
-            throw new SeedFormatException("Cannot fit data into record lenght of "+recLen+"("+Math.pow(2, recLen)+"). header="+(dh.getSize()+b1000.getSize())+" data="+dataBytes.length);
+            throw new DataTooLargeException("Cannot fit data into record lenght of "+recLen+"("+Math.pow(2, recLen)+"). header="+(dh.getSize()+b1000.getSize())+" data="+dataBytes.length);
         }
         dr.setData(dataBytes);
         return dr;
