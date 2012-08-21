@@ -48,16 +48,11 @@ public class WinstonUtilTest {
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
                                      WinstonUtil.Y1970_TO_Y2000_SECONDS,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + data.length -1,
                                      1,
                                      "JSC",
                                      "CO",
                                      "HHZ",
                                      "00",
-                                     "a",
-                                     TraceBuf2.SUN_IEEE_INTEGER,
-                                     "a",
-                                     "",
                                      data);
         TraceBuf2 out = new TraceBuf2(tb.toByteArray());
         assertEquals("dataType", tb.getDataType(), out.getDataType());
@@ -81,16 +76,11 @@ public class WinstonUtilTest {
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
                                      WinstonUtil.Y1970_TO_Y2000_SECONDS,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + data.length -1,
                                      1,
                                      "JSC",
                                      "CO",
                                      "HHZ",
                                      "00",
-                                     "a",
-                                     TraceBuf2.SUN_IEEE_INTEGER,
-                                     "a",
-                                     "",
                                      data);
 
         assertArrayEquals(data, tb.getIntData());
@@ -115,6 +105,9 @@ public class WinstonUtilTest {
         assertEquals("sta", tb.getStation(), out.getStation());
         assertEquals("loc", tb.getLocId(), out.getLocId());
         assertEquals("chan", tb.getChannel(), out.getChannel());
+        assertEquals("version", tb.getVersion(), out.getVersion());
+        assertEquals("quality", tb.getQuality(), out.getQuality());
+        assertEquals("pad", tb.getPad(), out.getPad());
         assertArrayEquals(data, out.getIntData());
         
     }

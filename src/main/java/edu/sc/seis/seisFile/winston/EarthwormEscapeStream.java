@@ -12,7 +12,7 @@ public class EarthwormEscapeStream extends FilterOutputStream {
 
     @Override
     public void write(int b) throws IOException {
-        if (b == EarthwormExport.ESC || b == EarthwormExport.ETX) {
+        if (b == EarthwormExport.STX || b == EarthwormExport.ESC || b == EarthwormExport.ETX) {
             super.write(EarthwormExport.ESC);
         }
         super.write(b);
@@ -21,9 +21,7 @@ public class EarthwormEscapeStream extends FilterOutputStream {
     /** not efficient, but...*/
     @Override
     public void write(byte[] b) throws IOException {
-        for (int i = 0; i < b.length; i++) {
-            write(b[i]);
-        }
+            write(b, 0, b.length);
     }
     
     /** not efficient, but...*/

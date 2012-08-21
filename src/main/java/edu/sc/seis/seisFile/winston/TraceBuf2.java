@@ -34,8 +34,8 @@ public class TraceBuf2 {
                      String locId,
                      String version,
                      String dataType,
-                     String quality,
-                     String pad) {
+                     short quality,
+                     short pad) {
         super();
         this.pin = pin;
         this.numSamples = numSamples;
@@ -50,24 +50,109 @@ public class TraceBuf2 {
         this.dataType = dataType;
         this.quality = quality;
         this.pad = pad;
+        if (network.length() > 8) {
+            throw new IllegalArgumentException("network cannot be longer than 8 chars: "+network.length()+" '"+network+"'");
+        }
+        if (station.length() > 6) {
+            throw new IllegalArgumentException("station cannot be longer than 6 chars: "+station.length()+" '"+station+"'");
+        }
+        if (locId.length() > 2) {
+            throw new IllegalArgumentException("locId cannot be longer than 2 chars: "+locId.length()+" '"+locId+"'");
+        }
+        if (channel.length() > 3) {
+            throw new IllegalArgumentException("channel cannot be longer than 3 chars: "+channel.length()+" '"+channel+"'");
+        }
     }
 
     public TraceBuf2(int pin,
                      int numSamples,
                      double startTime,
-                     double endTime,
                      double sampleRate,
                      String station,
                      String network,
                      String channel,
                      String locId,
-                     String version,
-                     String dataType,
-                     String quality,
-                     String pad,
+                     short[] data) {
+        this(pin, 
+             numSamples, 
+             startTime, 
+             startTime+(numSamples-1)/sampleRate, 
+             sampleRate, 
+             station, 
+             network,
+             channel, 
+             locId, 
+             TRACEBUF_VERSION, 
+             SUN_IEEE_SHORT_INTEGER, 
+             S_ZERO, S_ZERO);
+        this.shortData = data;
+    }
+
+    public TraceBuf2(int pin,
+                     int numSamples,
+                     double startTime,
+                     double sampleRate,
+                     String station,
+                     String network,
+                     String channel,
+                     String locId,
                      int[] intData) {
-        this(pin, numSamples, startTime, endTime, sampleRate, station, network, channel, locId, version, dataType, quality, pad);
+        this(pin, numSamples,
+             startTime,
+             startTime+(numSamples-1)/sampleRate,
+             sampleRate,
+             station,
+             network,
+             channel,
+             locId,
+             TRACEBUF_VERSION, SUN_IEEE_INTEGER,
+             S_ZERO, S_ZERO);
         this.intData = intData;
+    }
+
+    public TraceBuf2(int pin,
+                     int numSamples,
+                     double startTime,
+                     double sampleRate,
+                     String station,
+                     String network,
+                     String channel,
+                     String locId,
+                     float[] data) {
+        this(pin, numSamples,
+             startTime,
+             startTime+(numSamples-1)/sampleRate,
+             sampleRate,
+             station,
+             network,
+             channel,
+             locId,
+             TRACEBUF_VERSION,
+             SUN_IEEE_SINGLE_PRECISION_REAL,
+             S_ZERO, S_ZERO);
+        this.floatData = data;
+    }
+
+    public TraceBuf2(int pin,
+                     int numSamples,
+                     double startTime,
+                     double sampleRate,
+                     String station,
+                     String network,
+                     String channel,
+                     String locId,
+                     double[] data) {
+        this(pin, numSamples,
+             startTime,
+             startTime+(numSamples-1)/sampleRate,
+             sampleRate,
+             station,
+             network,
+             channel,
+             locId,
+             TRACEBUF_VERSION, SUN_IEEE_DOUBLE_PRECISION_REAL,
+             S_ZERO, S_ZERO);
+        this.doubleData = data;
     }
 
     public TraceBuf2(byte[] data) {
@@ -84,8 +169,8 @@ public class TraceBuf2 {
         locId = Utility.extractNullTermString(data, 52, 3);
         version = Utility.extractString(data, 55, 2);
         // dataType already extract above: Utility.extractNullTermString(data, 57, 3);
-        quality = Utility.extractString(data, 60, 2);
-        pad = Utility.extractString(data, 62, 2);
+        quality = Utility.bytesToShort(data[60], data[61], swapBytes);
+        pad = Utility.bytesToShort(data[62], data[63], swapBytes);
         int offset = 64;
         
         if (isShortData()) {
@@ -185,21 +270,20 @@ public class TraceBuf2 {
         for (int i = 0; i < p; i++)
             out.write((byte)0);
 
-        p = 5 - locId.length();
+        p = 3 - locId.length();
         out.writeBytes(locId);
         for (int i = 0; i < p; i++)
             out.write((byte)0);
-
+        p = 2 - version.length();
+        out.writeBytes(version);
+        for (int i = 0; i < p; i++)
+            out.write('0');
+        p = 3 - dataType.length();
         out.writeBytes(dataType);
-        out.write((byte)0);
-        out.writeBytes(quality);
-        for (int i = quality.length(); i < 2; i++) {
+        for (int i = 0; i < p; i++)
             out.write((byte)0);
-        }
-        out.writeBytes(pad);
-        for (int i = pad.length(); i < 2; i++) {
-            out.write((byte)0);
-        }
+        out.writeShort(quality);
+        out.writeShort(pad);
 
         if (isShortData()) {
             for (int i = 0; i < shortData.length; i++)
@@ -302,10 +386,10 @@ public class TraceBuf2 {
     String dataType;
 
     /** Data-quality field */
-    String quality;
+    short quality;
 
     /** padding */
-    String pad;
+    short pad;
 
     public boolean isShortData() {
         return isShortData(dataType);
@@ -391,11 +475,11 @@ public class TraceBuf2 {
         return dataType;
     }
 
-    public String getQuality() {
+    public short getQuality() {
         return quality;
     }
 
-    public String getPad() {
+    public short getPad() {
         return pad;
     }
 
@@ -529,13 +613,20 @@ public class TraceBuf2 {
     
     public DataRecord toMiniSeed(int recLen, boolean steim1) throws SeedFormatException {
         DataHeader dh = new DataHeader(0, 'D', false);
-        dh.setStationIdentifier(getStation());
-        dh.setChannelIdentifier(getChannel());
-        dh.setNetworkCode(getNetwork());
-        String l = getLocId();
-        if (l == null || l.equals("--")) { l = "  ";}
-        dh.setLocationIdentifier(l);
-        dh.setDataQualityFlags((byte)getQuality().charAt(0));
+        String s = getStation().trim();
+        if (s.length() > 5) { s = s.substring(0,5);}
+        dh.setStationIdentifier(s);
+        s = getChannel().trim();
+        if (s.length() > 3) { s = s.substring(0,3);}
+        dh.setChannelIdentifier(s);
+        s = getNetwork().trim().trim();
+        if (s.length() > 2) { s = s.substring(0,2);}
+        dh.setNetworkCode(s);
+        s = getLocId().trim();
+        if (s == null || s.equals("--")) { s = "  ";}
+        if (s.length() > 2) { s = s.substring(0,2);}
+        dh.setLocationIdentifier(s);
+        dh.setDataQualityFlags((byte)(getQuality() >> 8)); // only high byte
         dh.setNumSamples((short)getNumSamples());
         dh.setStartBtime(new Btime(getStartDate()));
         dh.setSampleRate(getSampleRate());
@@ -667,4 +758,7 @@ public class TraceBuf2 {
 
     public static final String NORESS_GAIN_RANGED = "g2";
 
+    public static final String TRACEBUF_VERSION = "20";
+    
+    public static final short S_ZERO = (short)0;
 }
