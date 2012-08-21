@@ -141,8 +141,10 @@ public class WinstonClient {
                 chunkEnd = new Date(startTime.getTime()+chunkSeconds*1000);
                 for (WinstonSCNL scnl : lastSent.keySet()) {
                     chunkBegin = lastSent.get(scnl);
-                    Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
-                    lastSent.put(scnl, new Date(sentEnd.getTime()+1)); // just past last packet
+                    if (chunkBegin.before(chunkEnd)) {
+                        Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
+                        lastSent.put(scnl, new Date(sentEnd.getTime()+1)); // just past last packet
+                    }
                 }
                 startTime = new Date(chunkEnd.getTime()+1);
             }
