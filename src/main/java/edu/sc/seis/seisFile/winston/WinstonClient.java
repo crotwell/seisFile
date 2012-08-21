@@ -200,8 +200,10 @@ public class WinstonClient {
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
         for (TraceBuf2 traceBuf2 : tbList) {
-            DataRecord mseed = traceBuf2.toMiniSeed(recordSize, doSteim1);
-            mseed.write(params.getDataOutputStream());
+            List<DataRecord> mseedList = traceBuf2.toMiniSeedWithSplit(recordSize, doSteim1);
+            for (DataRecord dr : mseedList) {
+                dr.write(params.getDataOutputStream());
+            }
         }
     }
 
