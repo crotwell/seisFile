@@ -20,16 +20,15 @@ public class EarthwormExport {
         this.port = port;
         this.module = module;
         this.institution = institution;
-        initStream();
+        initSocket();
         Timer heartbeater = new Timer(true);
         heartbeater.schedule(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    heartbeat(heartbeatMessage);
-                } catch(UnknownHostException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    if (outStream != null) {
+                        heartbeat(heartbeatMessage);
+                    }
                 } catch(IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -38,7 +37,7 @@ public class EarthwormExport {
             }, 100, heartbeatSeconds*1000);
     }
 
-    public synchronized void heartbeat(String message) throws UnknownHostException, IOException {
+    public synchronized void heartbeat(String message) throws IOException {
         outStream.startTransmit();
         
         writeThreeChars(outStream, institution);
@@ -85,18 +84,52 @@ public class EarthwormExport {
         writeThreeChars(out, seqNum);
     }
 
-    EarthwormEscapeStream initStream() throws UnknownHostException, IOException {
-        if (outStream == null) {
-            if (serverSocket == null) {
-                serverSocket = new ServerSocket(port);
-                clientSocket = serverSocket.accept(); // block until client connects
-            }
-            inStream = new BufferedInputStream(clientSocket.getInputStream());
-            outStream = new EarthwormEscapeStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+    void initSocket() throws UnknownHostException, IOException {
+        if (serverSocket != null) {
+            serverSocket.close();
         }
-        return outStream;
+        serverSocket = new ServerSocket(port);
+    }
+    
+    public void waitForClient() throws IOException {
+        clientSocket = serverSocket.accept(); // block until client connects
+        inStream = new BufferedInputStream(clientSocket.getInputStream());
+        outStream = new EarthwormEscapeStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+    }
+    
+    public void closeClient() {
+        if (inStream != null) {
+            try {
+                inStream.close();
+            } catch(IOException e) {
+            }
+        }
+        if (outStream != null) {
+            try {
+                outStream.close();
+            } catch(IOException e) {
+            }
+        }
+        if (clientSocket != null) {
+            try {
+                clientSocket.close();
+            } catch(IOException e) {
+            }
+        }
+        clientSocket = null;
+        inStream = null;
+        outStream = null;
     }
 
+    public void closeSocket() {
+        closeClient();
+        try {
+            serverSocket.close();
+        } catch(IOException e) {
+        }
+        serverSocket = null;
+    }
+    
     int getNextSeqNum() {
         if (seqNum == 999) {
             seqNum = 0;
