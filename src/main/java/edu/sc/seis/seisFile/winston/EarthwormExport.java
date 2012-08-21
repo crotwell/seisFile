@@ -141,7 +141,7 @@ public class EarthwormExport {
     public static void main(String[] args) throws Exception {
         // testing
         EarthwormExport exporter = new EarthwormExport(16005, 43, 255, "heartbeat", 5);
-        Thread.sleep(3);
+        exporter.waitForClient();
         int[] data = new int[10];
         for (int i = 0; i < data.length; i++) {
             data[i] = i%100;
@@ -162,7 +162,7 @@ public class EarthwormExport {
                 String s = new String(b);
                 System.out.println("In: "+s);
             }
-            Thread.sleep(1000);
+            Thread.sleep(10);
             exporter.export(tb);
             tb.startTime += data.length;
             tb.endTime += data.length;

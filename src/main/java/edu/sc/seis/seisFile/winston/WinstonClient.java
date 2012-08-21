@@ -126,6 +126,7 @@ public class WinstonClient {
             syncOut.close();
         } else if (doExport) {
             EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
+            exporter.waitForClient();
             Date startTime = params.getBegin();
             Date chunkBegin, chunkEnd;
             HashMap<WinstonSCNL, Date> lastSent = new HashMap<WinstonSCNL, Date>();
