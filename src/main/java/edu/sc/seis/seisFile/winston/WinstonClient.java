@@ -202,6 +202,9 @@ public class WinstonClient {
                     exporter.export(traceBuf2);
                     notSent = false;
                 } catch(IOException e) {
+                    if (params.isVerbose()) {
+                        System.out.println("Caught exception, waiting for reconnect, will resend tracebuf"+ e);
+                    }
                     logger.warn("Caught exception, waiting for reconnect, will resend tracebuf", e);
                     exporter.closeClient();
                     exporter.waitForClient();
