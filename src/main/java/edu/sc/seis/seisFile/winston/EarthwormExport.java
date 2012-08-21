@@ -162,12 +162,23 @@ public class EarthwormExport {
                 String s = new String(b);
                 System.out.println("In: "+s);
             }
-            Thread.sleep(10);
-            exporter.export(tb);
-            tb.startTime += data.length;
-            tb.endTime += data.length;
-            System.out.println("Set tb "+tb);
+            Thread.sleep(1000);
+
+            boolean notSent = true;
+            while(notSent) {
+                try {
+                    exporter.export(tb);
+                    notSent = false;
+                    tb.startTime += data.length;
+                    tb.endTime += data.length;
+                    System.out.println("Set tb "+tb);
+                } catch(IOException e) {
+                    exporter.closeClient();
+                    exporter.waitForClient();
+                }
+            }
         }
+        System.out.println("Done");
     }
     
     
