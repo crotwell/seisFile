@@ -20,7 +20,7 @@ public class TraceBuf2Test {
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
                                      WinstonUtil.Y1970_TO_Y2000_SECONDS,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + numSamples,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + numSamples -1,
                                      1,
                                      "JSC",
                                      "CO",
