@@ -126,6 +126,9 @@ public class WinstonClient {
             syncOut.close();
         } else if (doExport) {
             EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
+            if (params.isVerbose()) {
+                System.out.println("Waiting for client connect, port: "+exportPort);
+            }
             exporter.waitForClient();
             Date startTime = params.getBegin();
             Date chunkBegin, chunkEnd;
@@ -199,6 +202,7 @@ public class WinstonClient {
                     exporter.export(traceBuf2);
                     notSent = false;
                 } catch(IOException e) {
+                    logger.warn("Caught exception, waiting for reconnect, will resend tracebuf", e);
                     exporter.closeClient();
                     exporter.waitForClient();
                 }
@@ -261,4 +265,6 @@ public class WinstonClient {
     public static final int DEFAULT_HEARTBEAT = 5;
     public static final int DEFAULT_MODULE = 255;
     public static final int DEFAULT_INSTITUTION = 255;
+    
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(WinstonClient.class);
 }
