@@ -148,6 +148,7 @@ public class WinstonClient {
                 }
                 startTime = new Date(chunkEnd.getTime()+1);
             }
+            exporter.closeSocket();
         } else {
                 for (WinstonSCNL scnl : allChannels) {
                     if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
@@ -190,7 +191,16 @@ public class WinstonClient {
             if (params.isVerbose()) {
                 System.out.println("Tracebuf: "+traceBuf2.getStation()+" "+traceBuf2.getStartTime()+" "+traceBuf2.getNumSamples());
             }
-            exporter.export(traceBuf2);
+            boolean notSent = true;
+            while(notSent) {
+                try {
+                    exporter.export(traceBuf2);
+                    notSent = false;
+                } catch(IOException e) {
+                    exporter.closeClient();
+                    exporter.waitForClient();
+                }
+            }
             if (lastSentEnd.before(traceBuf2.getEndDate())) {
                 lastSentEnd = traceBuf2.getEndDate();
             }
