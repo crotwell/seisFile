@@ -13,6 +13,7 @@ import java.util.List;
 import edu.sc.seis.seisFile.MSeedQueryReader;
 import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.DataTooLargeException;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.winston.TraceBuf2;
 
@@ -152,11 +153,14 @@ public class WaveServer implements MSeedQueryReader {
     }
 
     public int getRecordSize() {
-        return recordSize;
+        return recordSizeExp;
     }
 
     public void setRecordSize(int recordSize) {
-        this.recordSize = recordSize;
+        if (recordSize > 255) {
+            throw new IllegalArgumentException("Record size exponent cannot be larger than 255. 12 is SEED standard 4096.");
+        }
+        this.recordSizeExp = recordSize;
     }
 
     public boolean isDoSteim1() {
@@ -196,8 +200,8 @@ public class WaveServer implements MSeedQueryReader {
                         + traceBuf2.getLocId() + "." + traceBuf2.getChannel() + " " + traceBuf2.getStartDate() + " "
                         + traceBuf2.getNumSamples());
             }
-            DataRecord mseed = traceBuf2.toMiniSeed(recordSize, doSteim1);
-            out.add(mseed);
+            List<DataRecord> mseed = traceBuf2.toMiniSeedWithSplit(recordSizeExp, doSteim1);
+            out.addAll(mseed);
         }
         return out;
     }
@@ -220,7 +224,7 @@ public class WaveServer implements MSeedQueryReader {
 
     int port;
 
-    int recordSize = 12;
+    int recordSizeExp = 12;
 
     boolean doSteim1 = false;
 
