@@ -51,7 +51,7 @@ public class WaveServerTest extends TestCase {
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
                                      WinstonUtil.Y1970_TO_Y2000_SECONDS,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + 100,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + 100 -1,
                                      1,
                                      "JSC",
                                      "CO",
