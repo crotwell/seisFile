@@ -144,7 +144,7 @@ public class WinstonClient {
                     chunkBegin = lastSent.get(scnl);
                     if (chunkBegin.before(chunkEnd)) {
                         Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
-                        lastSent.put(scnl, new Date(sentEnd.getTime()+1)); // just past last packet
+                        lastSent.put(scnl, new Date(sentEnd.getTime()+100)); // just past last packet
                     }
                 }
                 startTime = new Date(chunkEnd.getTime()+1);
@@ -188,9 +188,10 @@ public class WinstonClient {
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Date lastSentEnd = end;
+        double sampRate = 1;
         for (TraceBuf2 traceBuf2 : tbList) {
             if (params.isVerbose()) {
-                System.out.println("Tracebuf: "+traceBuf2.getStation()+" "+traceBuf2.getStartTime()+" "+traceBuf2.getNumSamples());
+                System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+traceBuf2.getStartTime()+" "+traceBuf2.getNumSamples()+" "+traceBuf2.getEndTime());
             }
             boolean notSent = true;
             while(notSent) {
@@ -204,8 +205,11 @@ public class WinstonClient {
             }
             if (lastSentEnd.before(traceBuf2.getEndDate())) {
                 lastSentEnd = traceBuf2.getEndDate();
+                sampRate = traceBuf2.getSampleRate();
             }
         }
+
+        lastSentEnd = new Date(lastSentEnd.getTime()+(long)(1000/sampRate)+1);
         return lastSentEnd;
     }
 
