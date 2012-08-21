@@ -89,6 +89,7 @@ public class EarthwormExport {
             serverSocket.close();
         }
         serverSocket = new ServerSocket(port);
+        serverSocket.setSoTimeout(10*1000);
     }
     
     public void waitForClient() throws IOException {
