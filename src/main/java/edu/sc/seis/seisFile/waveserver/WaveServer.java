@@ -111,7 +111,7 @@ public class WaveServer implements MSeedQueryReader {
             int totSize = 0;
             while (totSize < numBytes) {
                 if (verbose) {
-                    System.out.println("Read next traceBuf2: " + totSize + "<" + numBytes);
+                    System.out.println("Read next traceBuf2: read bytes" + totSize + " < " + numBytes+" total bytes");
                 }
                 byte[] headerByte = new byte[64];
                 in.readFully(headerByte);
