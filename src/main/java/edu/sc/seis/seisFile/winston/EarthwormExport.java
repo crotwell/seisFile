@@ -15,11 +15,11 @@ import java.util.TimerTask;
 
 public class EarthwormExport {
 
-    public EarthwormExport(int port, int module, int installation, final String heartbeatMessage, int heartbeatSeconds) throws UnknownHostException,
+    public EarthwormExport(int port, int module, int institution, final String heartbeatMessage, int heartbeatSeconds) throws UnknownHostException,
             IOException {
         this.port = port;
         this.module = module;
-        this.installation = installation;
+        this.institution = institution;
         initStream();
         Timer heartbeater = new Timer(true);
         heartbeater.schedule(new TimerTask() {
@@ -41,7 +41,7 @@ public class EarthwormExport {
     public synchronized void heartbeat(String message) throws UnknownHostException, IOException {
         outStream.startTransmit();
         
-        writeThreeChars(outStream, installation);
+        writeThreeChars(outStream, institution);
         writeThreeChars(outStream, module);
         writeThreeChars(outStream, 3);
         outStream.write(message.getBytes());
@@ -62,10 +62,10 @@ public class EarthwormExport {
     
     void writeTraceBuf(TraceBuf2 tb) throws IOException {
         outStream.startTransmit();
-        writeSeqNum(outStream, getNextSeqNum());
-        writeThreeChars(outStream, installation);
+        writeThreeChars(outStream, institution);
         writeThreeChars(outStream, module);
         writeThreeChars(outStream, MESSAGE_TYPE_TRACEBUF2);
+       // writeSeqNum(outStream, getNextSeqNum());
         DataOutputStream dos = new DataOutputStream(outStream);
         tb.write(dos);
         dos.flush();
@@ -106,25 +106,20 @@ public class EarthwormExport {
 
     public static void main(String[] args) throws Exception {
         // testing
-        EarthwormExport exporter = new EarthwormExport(9485, 9, 99, "heartbeat", 5);
+        EarthwormExport exporter = new EarthwormExport(16005, 43, 255, "heartbeat", 5);
         Thread.sleep(3);
         int[] data = new int[10];
         for (int i = 0; i < data.length; i++) {
-            data[i] = i%10;
+            data[i] = i%100;
         }
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
                                      WinstonUtil.Y1970_TO_Y2000_SECONDS,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + data.length -1,
                                      1,
                                      "JSC",
                                      "CO",
                                      "HHZ",
                                      "00",
-                                     "a",
-                                     TraceBuf2.SUN_IEEE_INTEGER,
-                                     "a",
-                                     "",
                                      data);
         for (int i = 0; i < 100; i++) {
             if (exporter.inStream.available() > 0) {
@@ -135,8 +130,9 @@ public class EarthwormExport {
             }
             Thread.sleep(1000);
             exporter.export(tb);
-            tb.startTime += 100;
-            
+            tb.startTime += data.length;
+            tb.endTime += data.length;
+            System.out.println("Set tb "+tb);
         }
     }
     
@@ -144,7 +140,7 @@ public class EarthwormExport {
 
     int module;
 
-    int installation;
+    int institution;
 
     EarthwormEscapeStream outStream;
     
