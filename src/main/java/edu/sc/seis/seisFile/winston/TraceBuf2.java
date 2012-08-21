@@ -230,7 +230,7 @@ public class TraceBuf2 {
                 if (splitPoints == maxSamplesPerTB) {
                         splitPoints = Math.min(maxSamplesPerTB, (numSamples-curSample+1)/2);
                 }
-                double splitEndTime = startTime+(curSample+splitPoints)*sampleRate;
+                double splitEndTime = startTime+(curSample+splitPoints -1)*sampleRate;
                 TraceBuf2 first = new TraceBuf2( pin,
                                                  splitPoints,
                                                  startTime,

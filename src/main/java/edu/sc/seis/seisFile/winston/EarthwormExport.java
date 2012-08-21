@@ -115,7 +115,7 @@ public class EarthwormExport {
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
                                      WinstonUtil.Y1970_TO_Y2000_SECONDS,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + 100,
+                                     WinstonUtil.Y1970_TO_Y2000_SECONDS + data.length -1,
                                      1,
                                      "JSC",
                                      "CO",
