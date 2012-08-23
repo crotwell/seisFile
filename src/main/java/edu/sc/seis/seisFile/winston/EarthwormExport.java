@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -93,9 +94,17 @@ public class EarthwormExport {
     }
     
     public void waitForClient() throws IOException {
-        clientSocket = serverSocket.accept(); // block until client connects
-        inStream = new BufferedInputStream(clientSocket.getInputStream());
-        outStream = new EarthwormEscapeStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+        while(true) {
+            try {
+                clientSocket = serverSocket.accept(); // block until client connects
+                inStream = new BufferedInputStream(clientSocket.getInputStream());
+                outStream = new EarthwormEscapeStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+                return;
+            } catch(SocketTimeoutException e) {
+                // try again...
+                closeClient();
+            }
+        }
     }
     
     public void closeClient() {
