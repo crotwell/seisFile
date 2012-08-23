@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -193,13 +194,17 @@ public class WinstonClient {
 
     Date exportChannel(WinstonUtil winston, WinstonSCNL channel, Date begin, Date end, EarthwormExport exporter) throws SeisFileException, SQLException,
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Date lastSentEnd = end;
         double sampRate = 1;
         TraceBuf2 prev = null;
         for (TraceBuf2 traceBuf2 : tbList) {
             if (params.isVerbose()) {
-                System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+traceBuf2.getStartDate()+" "+traceBuf2.getNumSamples()+" "+traceBuf2.getEndDate());
+                System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+sdf.format(traceBuf2.getStartDate())+" "+traceBuf2.getNumSamples()+" "+sdf.format(traceBuf2.getEndDate()));
             }
             if (prev != null && prev.getEndDate().after(traceBuf2.getStartDate())) {
                 System.out.println("WARNING: current tracebuf overlaps previous: ");
