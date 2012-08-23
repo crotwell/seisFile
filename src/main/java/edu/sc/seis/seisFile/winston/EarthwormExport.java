@@ -54,7 +54,7 @@ public class EarthwormExport {
         traceBufSent++;
         if (traceBuf.getSize() > TraceBuf2.MAX_TRACEBUF_SIZE) {
             List<TraceBuf2> split = traceBuf.split(TraceBuf2.MAX_TRACEBUF_SIZE);
-            splitTraceBufSent += split.size();
+            splitTraceBufSent++;
             for (TraceBuf2 splitTB : split) {
                 writeTraceBuf(splitTB);
             }
