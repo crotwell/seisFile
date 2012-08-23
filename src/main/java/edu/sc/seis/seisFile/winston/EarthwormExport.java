@@ -154,7 +154,7 @@ public class EarthwormExport {
 
     public static void main(String[] args) throws Exception {
         // testing
-        EarthwormExport exporter = new EarthwormExport(10005, 43, 255, "heartbeat", 5);
+        EarthwormExport exporter = new EarthwormExport(10002, 43, 255, "heartbeat", 5);
         exporter.waitForClient();
         int[] data = new int[10];
         for (int i = 0; i < data.length; i++) {
