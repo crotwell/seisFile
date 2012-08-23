@@ -51,8 +51,10 @@ public class EarthwormExport {
     }
 
     public synchronized void export(TraceBuf2 traceBuf) throws IOException {
+        traceBufSent++;
         if (traceBuf.getSize() > TraceBuf2.MAX_TRACEBUF_SIZE) {
             List<TraceBuf2> split = traceBuf.split(TraceBuf2.MAX_TRACEBUF_SIZE);
+            splitTraceBufSent += split.size();
             for (TraceBuf2 splitTB : split) {
                 writeTraceBuf(splitTB);
             }
@@ -145,6 +147,14 @@ public class EarthwormExport {
         serverSocket = null;
     }
     
+    public int getNumTraceBufSent() {
+        return traceBufSent;
+    }
+    
+    public int getNumSplitTraceBufSent() {
+        return splitTraceBufSent;
+    }
+    
     int getNextSeqNum() {
         if (seqNum == 999) {
             seqNum = 0;
@@ -195,6 +205,10 @@ public class EarthwormExport {
         System.out.println("Done");
     }
 
+    int traceBufSent = 0;
+    
+    int splitTraceBufSent = 0;
+    
     private String heartbeatMessage;
     
     int module;
@@ -226,5 +240,9 @@ public class EarthwormExport {
     public static final byte MESSAGE_TYPE_TRACEBUF2 = 19;
 
     public static final String SEQ_CODE = "SQ:";
+
+    public void setVerbose(boolean b) {
+        verbose = b;
+    }
     
 }
