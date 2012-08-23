@@ -203,9 +203,6 @@ public class WinstonClient {
         double sampRate = 1;
         TraceBuf2 prev = null;
         for (TraceBuf2 traceBuf2 : tbList) {
-            if (traceBuf2.getEndDate().before(begin)) {
-                System.out.println("Warning: tracebug is before request time: "+sdf.format(traceBuf2.getStartDate())+" "+sdf.format(begin));
-            }
             if (params.isVerbose()) {
                 System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+sdf.format(traceBuf2.getStartDate())+" "+traceBuf2.getNumSamples()+" "+sdf.format(traceBuf2.getEndDate()));
             }
