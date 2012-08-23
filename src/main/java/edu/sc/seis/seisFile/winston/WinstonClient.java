@@ -127,6 +127,7 @@ public class WinstonClient {
         } else if (doExport) {
             EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
             if (params.isVerbose()) {
+                exporter.setVerbose(true);
                 System.out.println("Waiting for client connect, port: "+exportPort);
             }
             exporter.waitForClient();
@@ -153,6 +154,9 @@ public class WinstonClient {
                 startTime = new Date(chunkEnd.getTime()+1);
             }
             exporter.closeSocket();
+            if (params.isVerbose()) {
+                System.out.println("Done sending, "+exporter.getNumTraceBufSent()+" ("+exporter.getNumSplitTraceBufSent()+" after splitting)");
+            }
         } else {
                 for (WinstonSCNL scnl : allChannels) {
                     if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
