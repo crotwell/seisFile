@@ -198,7 +198,7 @@ public class WinstonClient {
         double sampRate = 1;
         for (TraceBuf2 traceBuf2 : tbList) {
             if (params.isVerbose()) {
-                System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+traceBuf2.getStartTime()+" "+traceBuf2.getNumSamples()+" "+traceBuf2.getEndTime());
+                System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+traceBuf2.getStartDate()+" "+traceBuf2.getNumSamples()+" "+traceBuf2.getEndDate());
             }
             boolean notSent = true;
             while(notSent) {
