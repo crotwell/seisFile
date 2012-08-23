@@ -51,6 +51,10 @@ public class WinstonSCNL {
         return locId;
     }
     
+    public String toString() {
+        return getDatabaseName();
+    }
+    
     static final String SEP = "$";
 
     String station;
