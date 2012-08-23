@@ -196,9 +196,15 @@ public class WinstonClient {
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Date lastSentEnd = end;
         double sampRate = 1;
+        TraceBuf2 prev = null;
         for (TraceBuf2 traceBuf2 : tbList) {
             if (params.isVerbose()) {
                 System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+traceBuf2.getStartDate()+" "+traceBuf2.getNumSamples()+" "+traceBuf2.getEndDate());
+            }
+            if (prev != null && prev.getEndDate().after(traceBuf2.getStartDate()) {
+                System.out.println("WARNING: current tracebuf overlaps previous: ");
+                System.out.println("  prev: "+prev);
+                System.out.println("  curr: "+traceBuf2);
             }
             boolean notSent = true;
             while(notSent) {
