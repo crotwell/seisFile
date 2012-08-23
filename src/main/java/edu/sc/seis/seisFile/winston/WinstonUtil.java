@@ -261,7 +261,7 @@ public class WinstonUtil {
     }
 
     public static double dateToJ2kSeconds(Date date) {
-        return date.getTime() / 1000 - Y1970_TO_Y2000_SECONDS;
+        return date.getTime() / 1000.0 - Y1970_TO_Y2000_SECONDS;
     }
 
     public String getDatabaseURL() {
