@@ -21,6 +21,7 @@ public class EarthwormExport {
         this.port = port;
         this.module = module;
         this.institution = institution;
+        this.heartbeatMessage = heartbeatMessage;
         initSocket();
         Timer heartbeater = new Timer(true);
         heartbeater.schedule(new TimerTask() {
@@ -99,6 +100,10 @@ public class EarthwormExport {
                 clientSocket = serverSocket.accept(); // block until client connects
                 inStream = new BufferedInputStream(clientSocket.getInputStream());
                 outStream = new EarthwormEscapeStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+                heartbeat(heartbeatMessage);
+                if (verbose) {
+                    System.out.println("accept connection from "+clientSocket.getInetAddress()+":"+clientSocket.getPort());
+                }
                 return;
             } catch(SocketTimeoutException e) {
                 // try again...
@@ -149,7 +154,7 @@ public class EarthwormExport {
 
     public static void main(String[] args) throws Exception {
         // testing
-        EarthwormExport exporter = new EarthwormExport(16005, 43, 255, "heartbeat", 5);
+        EarthwormExport exporter = new EarthwormExport(10005, 43, 255, "heartbeat", 5);
         exporter.waitForClient();
         int[] data = new int[10];
         for (int i = 0; i < data.length; i++) {
@@ -189,9 +194,9 @@ public class EarthwormExport {
         }
         System.out.println("Done");
     }
-    
-    
 
+    private String heartbeatMessage;
+    
     int module;
 
     int institution;
@@ -210,6 +215,8 @@ public class EarthwormExport {
 
     DecimalFormat numberFormat = new DecimalFormat("000");
 
+    public boolean verbose = true;
+    
     public static final byte ESC = 27;
 
     public static final byte STX = 2;
