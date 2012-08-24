@@ -255,33 +255,13 @@ public class TraceBuf2 {
         out.writeDouble(endTime);
         out.writeDouble(sampleRate);
 
-        int p = 7 - station.length();
-        out.writeBytes(station);
-        for (int i = 0; i < p; i++)
-            out.write((byte)0);
+        Utility.writeNullTermString(station, MAX_STA_LEN, out);
+        Utility.writeNullTermString(network, MAX_NET_LEN, out);
+        Utility.writeNullTermString(locId, MAX_LOC_LEN, out);
+        Utility.writeNullTermString(channel, MAX_CHAN_LEN, out);
 
-        p = 9 - network.length();
-        out.writeBytes(network);
-        for (int i = 0; i < p; i++)
-            out.write((byte)0);
-
-        p = 4 - channel.length();
-        out.writeBytes(channel);
-        for (int i = 0; i < p; i++)
-            out.write((byte)0);
-
-        p = 3 - locId.length();
-        out.writeBytes(locId);
-        for (int i = 0; i < p; i++)
-            out.write((byte)0);
-        p = 2 - version.length();
-        out.writeBytes(version);
-        for (int i = 0; i < p; i++)
-            out.write('0');
-        p = 3 - dataType.length();
-        out.writeBytes(dataType);
-        for (int i = 0; i < p; i++)
-            out.write((byte)0);
+        Utility.writeNullTermString(version, 2, out);
+        Utility.writeNullTermString(dataType, 3, out);
         out.writeShort(quality);
         out.writeShort(pad);
 
@@ -305,7 +285,6 @@ public class TraceBuf2 {
         if (getSize() <= maxSize) {
             out.add(this);
         } else {
-            int nonHeaderBytes = getSize()-HEADER_SIZE;
             int maxSamplesPerTB = (maxSize-HEADER_SIZE)/getSampleSize(getDataType());
             int curSample = 0;
             while(curSample < numSamples) {
@@ -759,6 +738,12 @@ public class TraceBuf2 {
     public static final String NORESS_GAIN_RANGED = "g2";
 
     public static final String TRACEBUF_VERSION = "20";
+
+    public static final int MAX_NET_LEN = 9;
+    public static final int MAX_STA_LEN = 7;
+    public static final int MAX_LOC_LEN = 3;
+    public static final int MAX_CHAN_LEN = 4;
+    
     
     public static final short S_ZERO = (short)0;
 }
