@@ -68,12 +68,8 @@ public class EarthwormExport {
         writeThreeChars(outStream, institution);
         writeThreeChars(outStream, module);
         writeThreeChars(outStream, MESSAGE_TYPE_TRACEBUF2);
-       // writeSeqNum(outStream, getNextSeqNum());
         DataOutputStream dos = new DataOutputStream(outStream);
-        int before = outStream.num;
         tb.write(dos);
-        int after = outStream.num;
-        System.out.println("Write "+(after-before)+" bytes for tb: "+tb.getSize());
         dos.flush();
         outStream.endTransmit();
         outStream.flush();
