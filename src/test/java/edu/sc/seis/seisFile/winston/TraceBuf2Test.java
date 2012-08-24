@@ -36,7 +36,7 @@ public class TraceBuf2Test {
         byte[] dataBytes = tb.toByteArray();
         
         TraceBuf2 out = new TraceBuf2(dataBytes);
-
+        assertEquals("size", tb.getSize(), out.getSize());
         assertEquals("dataType", tb.getDataType(), out.getDataType());
         assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
         assertEquals("end", tb.getEndTime(), out.getEndTime(), 0.000001);
