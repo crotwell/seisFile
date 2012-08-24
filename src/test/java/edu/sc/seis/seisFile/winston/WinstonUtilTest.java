@@ -55,6 +55,7 @@ public class WinstonUtilTest {
                                      "00",
                                      data);
         TraceBuf2 out = new TraceBuf2(tb.toByteArray());
+        assertEquals("pin", tb.getPin(), out.getPin());
         assertEquals("dataType", tb.getDataType(), out.getDataType());
         assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
         assertEquals("end", tb.getEndTime(), out.getEndTime(), 0.000001);
@@ -62,6 +63,9 @@ public class WinstonUtilTest {
         assertEquals("sta", tb.getStation(), out.getStation());
         assertEquals("loc", tb.getLocId(), out.getLocId());
         assertEquals("chan", tb.getChannel(), out.getChannel());
+        assertEquals("version", tb.getVersion(), out.getVersion());
+        assertEquals("quality", tb.getQuality(), out.getQuality());
+        assertEquals("pad", tb.getPad(), out.getPad());
         assertArrayEquals("data", tb.getIntData(), out.getIntData());
     }
     
