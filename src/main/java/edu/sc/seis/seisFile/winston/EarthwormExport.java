@@ -70,7 +70,10 @@ public class EarthwormExport {
         writeThreeChars(outStream, MESSAGE_TYPE_TRACEBUF2);
        // writeSeqNum(outStream, getNextSeqNum());
         DataOutputStream dos = new DataOutputStream(outStream);
+        int before = outStream.num;
         tb.write(dos);
+        int after = outStream.num;
+        System.out.println("Write "+(after-before)+" bytes for tb: "+tb.getSize());
         dos.flush();
         outStream.endTransmit();
         outStream.flush();
@@ -166,7 +169,7 @@ public class EarthwormExport {
         // testing
         EarthwormExport exporter = new EarthwormExport(10002, 43, 255, "heartbeat", 5);
         exporter.waitForClient();
-        int[] data = new int[10];
+        int[] data = new int[14000];
         for (int i = 0; i < data.length; i++) {
             data[i] = i%100;
         }
@@ -174,12 +177,12 @@ public class EarthwormExport {
                                      data.length,
                                      WinstonUtil.Y1970_TO_Y2000_SECONDS,
                                      1,
-                                     "JSC",
-                                     "CO",
+                                     "XXX",
+                                     "SS",
                                      "HHZ",
                                      "00",
                                      data);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             if (exporter.inStream.available() > 0) {
                 byte[] b = new byte[1024];
                 exporter.inStream.read(b);
