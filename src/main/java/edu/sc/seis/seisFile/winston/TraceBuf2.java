@@ -298,7 +298,6 @@ public class TraceBuf2 {
             for (int i = 0; i < doubleData.length; i++)
                 out.writeDouble(doubleData[i]);
         }
-        out.write((byte)0);
     }
     
     public List<TraceBuf2> split(int maxSize) {
