@@ -55,6 +55,7 @@ public class WinstonUtilTest {
                                      "00",
                                      data);
         TraceBuf2 out = new TraceBuf2(tb.toByteArray());
+        assertEquals("size", tb.getSize(), out.getSize());
         assertEquals("pin", tb.getPin(), out.getPin());
         assertEquals("dataType", tb.getDataType(), out.getDataType());
         assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
@@ -102,6 +103,7 @@ public class WinstonUtilTest {
         
         TraceBuf2 out = winstonUtil.extractFromBlob(compressedBytes);
 
+        assertEquals("size", tb.getSize(), out.getSize());
         assertEquals("dataType", tb.getDataType(), out.getDataType());
         assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
         assertEquals("end", tb.getEndTime(), out.getEndTime(), 0.000001);
