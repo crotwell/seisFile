@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.mseed;
 
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,6 +34,15 @@ public class Utility {
 
     public static String extractNullTermString(byte[] info, int start, int maxLength) {
         return extractTermString(info, start, maxLength, (byte)0);
+    }
+    
+    public static void writeNullTermString(String value, int maxLength, DataOutput out) throws IOException {
+        String s = value;
+        if (s.length() > maxLength) { s = s.substring(0, maxLength); }
+        out.writeBytes(s);
+        for (int i = s.length(); i < maxLength; i++) {
+            out.write((byte)0);
+        }
     }
 
     static String extractTermString(byte[] info, int start, int maxLength, byte termChar) {
