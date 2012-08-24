@@ -257,8 +257,8 @@ public class TraceBuf2 {
 
         Utility.writeNullTermString(station, MAX_STA_LEN, out);
         Utility.writeNullTermString(network, MAX_NET_LEN, out);
-        Utility.writeNullTermString(locId, MAX_LOC_LEN, out);
         Utility.writeNullTermString(channel, MAX_CHAN_LEN, out);
+        Utility.writeNullTermString(locId, MAX_LOC_LEN, out);
 
         Utility.writeNullTermString(version, 2, out);
         Utility.writeNullTermString(dataType, 3, out);
