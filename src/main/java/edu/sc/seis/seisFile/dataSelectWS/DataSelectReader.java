@@ -60,6 +60,9 @@ public class DataSelectReader extends StringMSeedQueryReader {
      */
     public List<DataRecord> read(String query) throws IOException, DataSelectException, SeedFormatException {
         URL requestURL = new URL(urlBase + "?"+query);
+        if (isVerbose()) {
+            System.out.println("query: "+requestURL);
+        }
         HttpURLConnection conn = (HttpURLConnection)requestURL.openConnection();
         if(timeoutMillis != 0) {
             conn.setReadTimeout(timeoutMillis);
