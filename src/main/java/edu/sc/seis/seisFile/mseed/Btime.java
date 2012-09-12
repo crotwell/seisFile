@@ -7,6 +7,7 @@ package edu.sc.seis.seisFile.mseed;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 public class Btime {
@@ -89,6 +90,17 @@ public class Btime {
     
     public boolean afterOrEquals(Btime other) {
         return comparator.compare(this, other) >= 0;
+    }
+
+    public Calendar convertToCalendar() {
+        Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.set(Calendar.MILLISECOND, getTenthMilli()/10); // loose precision here
+        cal.set(Calendar.SECOND, getSec());
+        cal.set(Calendar.MINUTE, getMin());
+        cal.set(Calendar.HOUR, getHour());
+        cal.set(Calendar.DAY_OF_YEAR, getDayOfYear());
+        cal.set(Calendar.YEAR, getYear());
+        return cal;
     }
 
     public String toString() {
