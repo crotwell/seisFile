@@ -205,7 +205,7 @@ public class SeedlinkReader {
         send(cmd);
         String line = readLine();
         if (!line.equals("OK")) {
-            throw new SeedlinkException("Command " + cmd + " did not return OK");
+            throw new SeedlinkException("Command " + cmd + " did not return OK: "+line);
         }
     }
 
