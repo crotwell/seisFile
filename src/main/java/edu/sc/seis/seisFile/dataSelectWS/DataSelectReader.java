@@ -34,10 +34,10 @@ public class DataSelectReader extends StringMSeedQueryReader {
         this.timeoutMillis = timeoutMillis;
     }
     
-    protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException, SeedFormatException {
+    protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException {
         String query = "net="+ network;
         query += "&sta=" + station;
-        query += "&loc=" + location;
+        query += "&loc=" + location.replaceAll(" ", "%20");
         query += "&cha=" + channel;
         return query;
     }
@@ -46,7 +46,7 @@ public class DataSelectReader extends StringMSeedQueryReader {
      * @see edu.sc.seis.seisFile.dataSelectWS.MSeedQueryReader#createQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Date, float)
      */
     @Override
-    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) throws IOException, DataSelectException, SeedFormatException {
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) throws IOException, DataSelectException {
         String query = createQuery(network, station, location, channel);
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -73,8 +73,10 @@ public class DataSelectReader extends StringMSeedQueryReader {
             if (conn.getResponseCode() == 404) {
                 logger.debug("reponseCode 404, no data");
                 return new ArrayList<DataRecord>();
+            } else if (conn.getResponseCode() == 400) {
+                throw new DataSelectException("Did not get an OK repsonse code, code= :"+conn.getResponseCode()+" query was: "+query);
             } else {
-                throw new DataSelectException("Did not get an OK repsonse code, code= :"+conn.getResponseCode());
+                throw new DataSelectException("Did not get an OK repsonse code, code= :"+conn.getResponseCode()+" query was: "+query);
             }
         }
         BufferedInputStream bif = new BufferedInputStream(conn.getInputStream());
