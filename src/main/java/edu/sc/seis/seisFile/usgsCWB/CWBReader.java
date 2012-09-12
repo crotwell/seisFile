@@ -40,7 +40,7 @@ public class CWBReader extends StringMSeedQueryReader {
         this.timeoutMillis = timeoutMillis;
     }
     
-    protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException, SeedFormatException {
+    protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException {
         String query = leftPad(network.trim(), 2);
         query += leftPad(station.trim(), 5);
         query += leftPad(channel.trim(), 3);
@@ -49,7 +49,7 @@ public class CWBReader extends StringMSeedQueryReader {
     }
     
     @Override
-    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) throws IOException, DataSelectException, SeedFormatException {
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) throws IOException, DataSelectException {
         String query = "'-s' '"+createQuery(network, station, location, channel)+"' ";
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
