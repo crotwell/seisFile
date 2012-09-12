@@ -18,4 +18,6 @@ public interface MSeedQueryReader {
             SeedFormatException;
     
     public void setVerbose(boolean verbose);
+
+    public void setTimed(boolean timed);
 }
