@@ -47,6 +47,8 @@ public class QueryParams {
                 append = true;
             } else if (args[i].equals("--verbose")) {
                 verbose = true;
+            } else if (args[i].equals("--timed")) {
+                timed = true;
             } else if (args[i].equals("--version")) {
                 printVersion = true;
             } else if (args[i].equals("--help")) {
@@ -89,6 +91,8 @@ public class QueryParams {
     protected String outFile = null;
 
     protected boolean verbose = false;
+    
+    protected boolean timed = false;
 
     protected boolean printVersion = false;
 
@@ -115,8 +119,12 @@ public class QueryParams {
     }
 
     public String getLocation() {
-        if (location == null && defaults != null) {
-            return defaults.getLocation();
+        if (location == null) {
+            if (defaults != null) {
+                return defaults.getLocation();
+            } else {
+                return "  "; // set space space as default loc
+            }
         }
         return location;
     }
@@ -208,5 +216,15 @@ public class QueryParams {
             throw new SeisFileException("Illegal date format, should be: yyyy-MM-dd or yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS",
                                         e);
         }
+    }
+
+    
+    public boolean isTimed() {
+        return timed;
+    }
+
+    
+    public void setTimed(boolean timed) {
+        this.timed = timed;
     }
 }
