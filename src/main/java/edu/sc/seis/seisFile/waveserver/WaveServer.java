@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.sc.seis.seisFile.MSeedQueryReader;
-import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
+import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
-import edu.sc.seis.seisFile.mseed.DataTooLargeException;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.winston.TraceBuf2;
 
-public class WaveServer implements MSeedQueryReader {
+public class WaveServer extends StringMSeedQueryReader {
 
     /**
      * Mainly for testing
@@ -81,12 +80,12 @@ public class WaveServer implements MSeedQueryReader {
                                        String channel,
                                        Date start,
                                        Date end) throws IOException {
+        String cmd = createQuery(network, station, location, channel, start, end);
+        return getTraceBuf(cmd);
+    }
+    
+    public List<TraceBuf2> getTraceBuf(String cmd) throws IOException {
         List<TraceBuf2> ans = new ArrayList<TraceBuf2>();
-        String nextReqId = getNextRequestId();
-        DecimalFormat df = new DecimalFormat("0.0###");
-        String cmd = "GETSCNLRAW: " + nextReqId + " " + station + " " + channel + " " + network + " "
-                + (location == null ? "--" : location) + " " + df.format(start.getTime() / 1000.0) + " "
-                + df.format(end.getTime() / 1000.0);
         if (isVerbose()) {
             System.out.println("send cmd: " + cmd);
         }
@@ -190,10 +189,21 @@ public class WaveServer implements MSeedQueryReader {
     }
 
     @Override
-    public List<DataRecord> read(String network, String station, String location, String channel, Date begin, Date end)
-            throws IOException, DataSelectException, SeedFormatException {
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end)
+            throws IOException {
+
+        String nextReqId = getNextRequestId();
+        DecimalFormat df = new DecimalFormat("0.0###");
+        String cmd = "GETSCNLRAW: " + nextReqId + " " + station + " " + channel + " " + network + " "
+                + (location == null ? "--" : location) + " " + df.format(begin.getTime() / 1000.0) + " "
+                + df.format(end.getTime() / 1000.0);
+        return cmd;
+    }
+
+    @Override
+    public List<DataRecord> read(String query) throws IOException, SeisFileException, SeedFormatException {
         List<DataRecord> out = new ArrayList<DataRecord>();
-        List<TraceBuf2> tbList = getTraceBuf(network, station, location, channel, begin, end);
+        List<TraceBuf2> tbList = getTraceBuf(query);
         for (TraceBuf2 traceBuf2 : tbList) {
             if (verbose) {
                 System.out.println("tracebuf2 " + traceBuf2.getNetwork() + "." + traceBuf2.getStation() + "."
@@ -239,4 +249,5 @@ public class WaveServer implements MSeedQueryReader {
     public static final int DEFAULT_TIMEOUT_SECONDS = 60;
 
     boolean verbose = false;
+
 }
