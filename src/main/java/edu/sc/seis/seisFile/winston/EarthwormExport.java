@@ -32,14 +32,16 @@ public class EarthwormExport {
                         heartbeat(heartbeatMessage);
                     }
                 } catch(IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    //couldn't send heartbeat, close and reconnect
+                    closeClient();
                 }
             }
             }, 100, heartbeatSeconds*1000);
     }
 
     public synchronized void heartbeat(String message) throws IOException {
+        if (outStream == null) {return;}
+        
         outStream.startTransmit();
         
         writeThreeChars(outStream, institution);
@@ -51,6 +53,9 @@ public class EarthwormExport {
     }
 
     public synchronized void export(TraceBuf2 traceBuf) throws IOException {
+        if (outStream == null) {
+            waitForClient();
+        }
         traceBufSent++;
         if (traceBuf.getSize() > TraceBuf2.MAX_TRACEBUF_SIZE) {
             List<TraceBuf2> split = traceBuf.split(TraceBuf2.MAX_TRACEBUF_SIZE);
@@ -100,7 +105,7 @@ public class EarthwormExport {
             try {
                 clientSocket = serverSocket.accept(); // block until client connects
                 inStream = new BufferedInputStream(clientSocket.getInputStream());
-                outStream = new EarthwormEscapeStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+                outStream = new EarthwormEscapeOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
                 heartbeat(heartbeatMessage);
                 if (verbose) {
                     System.out.println("accept connection from "+clientSocket.getInetAddress()+":"+clientSocket.getPort());
@@ -214,7 +219,7 @@ public class EarthwormExport {
 
     int institution;
 
-    EarthwormEscapeStream outStream;
+    EarthwormEscapeOutputStream outStream;
     
     BufferedInputStream inStream;
 
