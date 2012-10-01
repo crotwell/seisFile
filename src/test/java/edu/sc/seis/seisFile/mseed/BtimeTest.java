@@ -2,6 +2,8 @@ package edu.sc.seis.seisFile.mseed;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+
 import org.junit.Test;
 
 
@@ -13,7 +15,7 @@ public class BtimeTest {
         assertEquals(new Btime(), new Btime());
         assertEquals(new Btime(), new Btime(new Btime().getAsBytes()));
     }
-    
+
     @Test
     public void testGreaterThan() {
         Btime s1 = new Btime(2011, 59, 17, 11, 3, 1751);
@@ -24,6 +26,14 @@ public class BtimeTest {
         assertTrue(s1.after(p2));
         assertTrue(s2.after(p1));
         assertTrue(s2.after(p2));
+    }
+
+    @Test
+    public void testCalendarInAfternoon() {
+        Btime s1 = new Btime(2011, 59, 17, 13, 3, 1750); // tenth milles are lost in calendar conversion
+        Calendar cal = s1.convertToCalendar();
+        Btime out = new Btime(cal.getTime());
+        assertEquals(s1, out);
     }
     
     @Test
