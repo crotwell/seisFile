@@ -11,10 +11,19 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 public class Btime {
+    
+    public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     public Btime(Date date) {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar cal = Calendar.getInstance(UTC);
         cal.setTime(date);
+        
+    }
+
+    private void setFieldsFromCalendar(Calendar cal) {
+        if (! cal.getTimeZone().equals(UTC)) {
+            throw new IllegalArgumentException("Calendar time zone is not UTC: "+cal.getTimeZone());
+        }
         tenthMilli = (int)(cal.get(Calendar.MILLISECOND) * 10);
         year = cal.get(Calendar.YEAR);
         jday = cal.get(Calendar.DAY_OF_YEAR);
@@ -53,6 +62,15 @@ public class Btime {
         tenthMilli = Utility.uBytesToInt(bytes[offset + 8],
                                          bytes[offset + 9],
                                          byteSwapFlag);
+    }
+
+    /** Create with seconds since epoch (1970) */
+    public Btime(double d) {
+        long millis = Math.round(Math.floor(d*1000)); // milliseconds
+        Calendar cal = Calendar.getInstance(UTC);
+        cal.setTimeInMillis(millis);
+        setFieldsFromCalendar(cal);
+        tenthMilli = (int)(Math.round(d * 10000) % 10000);
     }
 
     public int hashCode() {
@@ -97,7 +115,7 @@ public class Btime {
         cal.set(Calendar.MILLISECOND, getTenthMilli()/10); // loose precision here
         cal.set(Calendar.SECOND, getSec());
         cal.set(Calendar.MINUTE, getMin());
-        cal.set(Calendar.HOUR, getHour());
+        cal.set(Calendar.HOUR_OF_DAY, getHour());
         cal.set(Calendar.DAY_OF_YEAR, getDayOfYear());
         cal.set(Calendar.YEAR, getYear());
         return cal;
