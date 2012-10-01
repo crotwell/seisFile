@@ -210,7 +210,7 @@ public class WaveServer extends StringMSeedQueryReader {
                         + traceBuf2.getLocId() + "." + traceBuf2.getChannel() + " " + traceBuf2.getStartDate() + " "
                         + traceBuf2.getNumSamples());
             }
-            List<DataRecord> mseed = traceBuf2.toMiniSeedWithSplit(recordSizeExp, doSteim1);
+            List<DataRecord> mseed = traceBuf2.toMiniSeed(recordSizeExp, doSteim1);
             out.addAll(mseed);
         }
         return out;
