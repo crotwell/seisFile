@@ -6,9 +6,9 @@ public class EarthwormMessage {
         if (bytes.length < 9) {
             throw new IllegalArgumentException("Message must have at least 9 bytes");
         }
-        institution = Integer.parseInt(new String(bytes, 0, 3));
-        module = Integer.parseInt(new String(bytes, 3, 3));
-        messageType = Integer.parseInt(new String(bytes, 6, 3));
+        institution = Integer.parseInt(new String(bytes, 0, 3).trim());
+        module = Integer.parseInt(new String(bytes, 3, 3).trim());
+        messageType = Integer.parseInt(new String(bytes, 6, 3).trim());
         data = new byte[bytes.length - 9];
         System.arraycopy(bytes, 9, data, 0, data.length);
     }
@@ -36,4 +36,6 @@ public class EarthwormMessage {
     int messageType;
 
     byte[] data;
+
+    public static final byte MESSAGE_TYPE_TRACEBUF2 = 19;
 }
