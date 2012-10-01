@@ -58,14 +58,14 @@ public class WaveServerTest extends TestCase {
                                      "00",
                                      data);
         // without compression
-        List<DataRecord> mseedList = tb.toMiniSeedWithSplit(12, false);
+        List<DataRecord> mseedList = tb.toMiniSeed(12, false);
         int numPoints = 0;
         for (DataRecord dr : mseedList) {
             numPoints += dr.getHeader().getNumSamples();
         }
         assertEquals("num points without compression", tb.getNumSamples(), numPoints);
         // with compression
-        mseedList = tb.toMiniSeedWithSplit(12, true);
+        mseedList = tb.toMiniSeed(12, true);
         numPoints = 0;
         for (DataRecord dr : mseedList) {
             numPoints += dr.getHeader().getNumSamples();
