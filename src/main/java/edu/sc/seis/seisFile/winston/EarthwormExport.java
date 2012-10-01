@@ -38,6 +38,13 @@ public class EarthwormExport {
             }
             }, 100, heartbeatSeconds*1000);
     }
+    
+    /** mostly just for testing, no heartbeats */
+    EarthwormExport(EarthwormEscapeOutputStream outStream, int module, int institution) {
+        this.outStream = outStream;
+        this.module = module;
+        this.institution = institution;
+    }
 
     public synchronized void heartbeat(String message) throws IOException {
         if (outStream == null) {return;}
@@ -72,7 +79,7 @@ public class EarthwormExport {
         outStream.startTransmit();
         writeThreeChars(outStream, institution);
         writeThreeChars(outStream, module);
-        writeThreeChars(outStream, MESSAGE_TYPE_TRACEBUF2);
+        writeThreeChars(outStream, EarthwormMessage.MESSAGE_TYPE_TRACEBUF2);
         DataOutputStream dos = new DataOutputStream(outStream);
         tb.write(dos);
         dos.flush();
@@ -80,7 +87,7 @@ public class EarthwormExport {
         outStream.flush();
     }
 
-    void writeThreeChars(OutputStream out, int val) throws IOException {
+    static void writeThreeChars(OutputStream out, int val) throws IOException {
         String s = numberFormat.format(val);
         out.write(s.charAt(0));
         out.write(s.charAt(1));
@@ -231,7 +238,7 @@ public class EarthwormExport {
 
     int port;
 
-    DecimalFormat numberFormat = new DecimalFormat("000");
+    static DecimalFormat numberFormat = new DecimalFormat("000");
 
     public boolean verbose = true;
     
@@ -240,8 +247,6 @@ public class EarthwormExport {
     public static final byte STX = 2;
 
     public static final byte ETX = 3;
-
-    public static final byte MESSAGE_TYPE_TRACEBUF2 = 19;
 
     public static final String SEQ_CODE = "SQ:";
 
