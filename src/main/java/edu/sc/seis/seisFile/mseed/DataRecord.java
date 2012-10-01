@@ -89,8 +89,10 @@ public class DataRecord extends SeedRecord implements Serializable {
             size += data.length;
         }
         if(size > RECORD_SIZE) {
+            int headerSize = size;
+            if (data != null) { headerSize = size-data.length;}
             throw new SeedFormatException("Can't fit blockettes and data in record "
-                    + size);
+                    + headerSize+" + "+(data == null?0:data.length)+" > "+RECORD_SIZE);
         }
         if(data != null) {
             // shift the data to end of blockette so pad happens between
