@@ -17,7 +17,7 @@ public class Btime {
     public Btime(Date date) {
         Calendar cal = Calendar.getInstance(UTC);
         cal.setTime(date);
-        
+        setFieldsFromCalendar(cal);
     }
 
     private void setFieldsFromCalendar(Calendar cal) {
