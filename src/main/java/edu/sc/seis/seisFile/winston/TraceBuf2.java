@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -13,6 +14,7 @@ import edu.iris.dmc.seedcodec.B1000Types;
 import edu.iris.dmc.seedcodec.Codec;
 import edu.iris.dmc.seedcodec.Steim1;
 import edu.iris.dmc.seedcodec.SteimException;
+import edu.iris.dmc.seedcodec.SteimFrameBlock;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.Btime;
 import edu.sc.seis.seisFile.mseed.DataHeader;
@@ -281,6 +283,12 @@ public class TraceBuf2 {
     }
     
     public List<TraceBuf2> split(int maxSize) {
+        if (maxSize <= 0) {
+            return Arrays.asList(new TraceBuf2[] { this });
+        }
+        if (maxSize <= HEADER_SIZE) {
+            throw new IllegalArgumentException("maxSize cannot be smaller than header size ("+HEADER_SIZE+") but was "+maxSize);
+        }
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
         if (getSize() <= maxSize) {
             out.add(this);
@@ -545,86 +553,88 @@ public class TraceBuf2 {
         return out.toByteArray();
     }
 
-    /** default miniseed of len 12 (=> 4096) and no compression.
-     *  
-     * @return
-     * @throws SeedFormatException
+    /** encodes the data as Steim1. The encoding will stop when full, the caller must check
+     * the number of samples in the returned SteimFramBlock to ensure all samples were included.
+     * 
+     * @param recLenExp power of 2 for record size, generally 8-12
+     * @return Steim1 encoding of the data
+     * @throws SeedFormatException  if data is not integer or compression errors occur
      */
-    public DataRecord toMiniSeed() throws SeedFormatException {
-        return toMiniSeed(12, false);
+    public SteimFrameBlock encodeSteim1(int recLenExp) throws SeedFormatException {
+        return encodeSteim1(recLenExp, 0);
     }
 
-    public List<DataRecord> toMiniSeedWithSplit(int recLenExp, boolean doSteim1) throws SeedFormatException {
+    /**encodes the data starting at offset as Steim1. The encoding will stop when full, the caller must check
+     * the number of samples in the returned SteimFramBlock to ensure all samples were included.
+     * 
+     * @param recLenExp power of 2 for record size, generally 8-12
+     * @param offset starting point for encoding, first sample to use
+     * @return Steim1 encoding of the data
+     * @throws SeedFormatException if data is not integer or compression errors occur
+     */
+    public SteimFrameBlock encodeSteim1(int recLenExp, int offset) throws SeedFormatException {
+        try {
+            if (isShortData() || isIntData()) {
+                return Steim1.encode(getIntData(), (1<<recLenExp)/64 -1 , 0, offset);
+            } else {
+                throw new SeedFormatException("Steim1 only applicable to integer data, not float or double: "+getDataType());
+            }
+        } catch(SteimException e) {
+            throw new SeedFormatException(e);
+        }
+    }
+
+    /**
+     * Coverts the data to Miniseed, spliting into multiple data records if it will not fit into one.
+     * @param recLenExp power of 2 for record size, generally 8-12
+     * @param doSteim1 if Steim1 compression should be applied
+     * @return Miniseed records
+     * @throws SeedFormatException
+     */
+    public List<DataRecord> toMiniSeed(int recLenExp, boolean doSteim1) throws SeedFormatException {
+        if (recLenExp > 32) {
+            throw new IllegalArgumentException("recLenExp should be exponent of 2, not actual size, "+recLenExp+" is too large, should be <21 and usually 8-12.");
+        }
         List<DataRecord> out = new ArrayList<DataRecord>();
         int recordSize = (1 << recLenExp);
         
         if (! doSteim1) {
-            // no compression so can calc max samples per record
-            List<TraceBuf2> subList = split(recordSize-64);
+            // no compression so split tb to be small enough to fit in the mseed data record
+            List<TraceBuf2> subList = split(recordSize-64+HEADER_SIZE);
             for (TraceBuf2 subTBuf : subList) {
-                DataRecord mseed = subTBuf.toMiniSeed(recLenExp, doSteim1);
-                out.add(mseed);
+                // subTBuf should fit into one data record
+                out.add(subTBuf.toMiniSeedNoSplit(recLenExp, doSteim1));
             }
         } else {
-            // have to do by try-catch as hard to know with compression
-            int splitNum = getNumSamples()*getSampleSize(getDataType()); // no split first time
-            if (splitNum > ((recordSize/64 -1)*15 -1)*4) {
-                splitNum = ((recordSize/64 -1)*15 -1)*4;  // max steim1 if all can be fit into 1 byte
-            }
+            int offset = 0;
             boolean done = false;
             while (!done) {
-
+                SteimFrameBlock sfb = encodeSteim1(recLenExp, offset); 
+                sfb.trimEmptyFrames(); // remove all empties
                 try {
-                    List<TraceBuf2> subList = split(splitNum);
-                    for (TraceBuf2 subTBuf : subList) {
-                        DataRecord mseed = subTBuf.toMiniSeed(recLenExp, doSteim1);
-                        out.add(mseed);
-                    }
+                    out.add(toMiniSeedWithCompressedData(recLenExp, B1000Types.STEIM1, sfb.getEncodedData(), sfb.getNumSamples(), offset));
+                } catch(IOException e) {
+                    throw new SeedFormatException("unable to get encoded data from SteimFrameBlock", e);
+                }
+                offset += sfb.getNumSamples();
+                if (offset == getNumSamples()) {
+                    // all samples fit
                     done = true;
-                } catch(DataTooLargeException e) {
-                    splitNum /= 2; // down by half seems reasonable
-                    out.clear(); // in case first was not the problem
                 }
             }
         }
         return out;
     }
     
-    public DataRecord toMiniSeed(int recLen, boolean steim1) throws SeedFormatException {
-        DataHeader dh = new DataHeader(0, 'D', false);
-        String s = getStation().trim();
-        if (s.length() > 5) { s = s.substring(0,5);}
-        dh.setStationIdentifier(s);
-        s = getChannel().trim();
-        if (s.length() > 3) { s = s.substring(0,3);}
-        dh.setChannelIdentifier(s);
-        s = getNetwork().trim().trim();
-        if (s.length() > 2) { s = s.substring(0,2);}
-        dh.setNetworkCode(s);
-        s = getLocId().trim();
-        if (s == null || s.equals("--")) { s = "  ";}
-        if (s.length() > 2) { s = s.substring(0,2);}
-        dh.setLocationIdentifier(s);
-        dh.setDataQualityFlags((byte)(getQuality() >> 8)); // only high byte
-        dh.setNumSamples((short)getNumSamples());
-        dh.setStartBtime(new Btime(getStartDate()));
-        dh.setSampleRate(getSampleRate());
-        DataRecord dr = new DataRecord(dh);
-        Blockette1000 b1000 = new Blockette1000();
-        if (steim1) {
-            b1000.setEncodingFormat((byte)B1000Types.STEIM1);
-        } else {
-            b1000.setEncodingFormat(getSeedEncoding());
-        }
-        b1000.setDataRecordLength((byte)recLen);
-        b1000.setWordOrder((byte)1); // always do big endian
-        dr.addBlockette(b1000);
-        Codec codec = new Codec();
-        byte[] dataBytes = new byte[0];
+    
+    public DataRecord toMiniSeedNoSplit(int recLenExp, boolean steim1) throws SeedFormatException {
+        byte[] compressedData = new byte[0];
+        int compressionType = -1;
         if (steim1) {
             try {
                 if (isShortData() || isIntData()) {
-                    dataBytes = Steim1.encode(getIntData(), (1 << recLen)/64 - 1).getEncodedData();
+                    compressionType = B1000Types.STEIM1;
+                    compressedData = Steim1.encode(getIntData(), (1 << recLenExp)/64 - 1).getEncodedData();
                 } else {
                     throw new SeedFormatException("Steim1 only applicable to integer data, not float or double: "+getDataType());
                 }
@@ -634,21 +644,67 @@ public class TraceBuf2 {
                 throw new SeedFormatException(e);
             }
         } else {
+            Codec codec = new Codec();
+            compressionType = getSeedEncoding();
             if (isShortData()) {
-                dataBytes = codec.encodeAsBytes(getShortData());
+                compressedData = codec.encodeAsBytes(getShortData());
             } else if (isIntData()) {
-                dataBytes = codec.encodeAsBytes(getIntData());
+                compressedData = codec.encodeAsBytes(getIntData());
             } else if (isFloatData()) {
-                dataBytes = codec.encodeAsBytes(getFloatData());
+                compressedData = codec.encodeAsBytes(getFloatData());
             } else if (isDoubleData()) {
-                dataBytes = codec.encodeAsBytes(getDoubleData());
+                compressedData = codec.encodeAsBytes(getDoubleData());
+            } else {
+                throw new SeedFormatException("Unknown data type: "+getDataType());
             }
         }
+        return toMiniSeedWithCompressedData(recLenExp, compressionType, compressedData, getNumSamples(), 0);
+        
+    }
+    
+    /**
+     * Creates a data record, copying values from the tracebuf header. 
+     * @param recLenExp power of 2 for record size, generally 8-12
+     * @param compressionType SEED blockette1000 compression type
+     * @param compressedData compressed data
+     * @param numSamples number of samples in the compressed Data
+     * @param dataOffset offset into the tracebuf's data represented by the compressed data, to allow for
+     *          spliting big tracebufs into mulitple miniseed records
+     * @return
+     * @throws SeedFormatException
+     */
+    DataRecord toMiniSeedWithCompressedData(int recLenExp, int compressionType, byte[] compressedData, int numSamples, int dataOffset) throws SeedFormatException {
+        DataHeader dh = new DataHeader(0, 'D', false);
+        String s = getStation().trim();
+        if (s.length() > 5) { s = s.substring(0,5);}
+        dh.setStationIdentifier(s);
+        s = getChannel().trim();
+        if (s.length() > 3) { s = s.substring(0,3);}
+        dh.setChannelIdentifier(s);
+        s = getNetwork().trim();
+        if (s.length() > 2) { s = s.substring(0,2);}
+        dh.setNetworkCode(s);
+        s = getLocId().trim();
+        if (s == null || s.equals("") || s.equals("--")) { s = "  ";}
+        if (s.length() > 2) { s = s.substring(0,2);}
+        dh.setLocationIdentifier(s);
+        dh.setDataQualityFlags((byte)(getQuality() >> 8)); // only high byte
+        dh.setNumSamples((short)numSamples);
+        dh.setStartBtime(new Btime(getStartTime() + dataOffset / getSampleRate()));
+        dh.setSampleRate(getSampleRate());
+        DataRecord dr = new DataRecord(dh);
+
+        Blockette1000 b1000 = new Blockette1000();
+        b1000.setEncodingFormat((byte)compressionType);
+        b1000.setDataRecordLength((byte)recLenExp);
+        b1000.setWordOrder((byte)1); // always do big endian
+        dr.addBlockette(b1000);
+        
         // check we can fit it all in
-        if (dh.getSize()+b1000.getSize()+dataBytes.length > Math.pow(2, recLen)) {
-            throw new DataTooLargeException("Cannot fit data into record lenght of "+recLen+"("+Math.pow(2, recLen)+"). header="+(dh.getSize()+b1000.getSize())+" data="+dataBytes.length);
+        if (dh.getSize()+b1000.getSize()+compressedData.length > Math.pow(2, recLenExp)) {
+            throw new DataTooLargeException("Cannot fit data into record lenght of "+recLenExp+"("+Math.pow(2, recLenExp)+"). header="+(dh.getSize()+b1000.getSize())+" data="+compressedData.length);
         }
-        dr.setData(dataBytes);
+        dr.setData(compressedData);
         return dr;
     }
 
