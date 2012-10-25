@@ -123,7 +123,7 @@ public abstract class SeedRecord {
         } else if (b.length == 0) {
             if (type == 1000) {
                 // special case as b1000 is required in mseed
-                throw new MissingBlockette1000();
+                throw new MissingBlockette1000(getControlHeader());
             }
             throw new SeedFormatException("No blockettes of type "+type);
         } else {
