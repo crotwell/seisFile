@@ -33,38 +33,48 @@ public class ListHeader {
         int defaultRecordSize = 4096;
         boolean verbose = false;
         boolean dumpData = false;
+        boolean timed = false;
         DataOutputStream dos = null;
         PrintWriter out = new PrintWriter(System.out, true);
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-n")) {
                 network = args[i + 1];
+                i++;
             } else if (args[i].equals("-s")) {
                 station = args[i + 1];
+                i++;
             } else if (args[i].equals("-l")) {
                 location = args[i + 1];
+                i++;
             } else if (args[i].equals("-c")) {
                 channel = args[i + 1];
+                i++;
             } else if (args[i].equals("-d")) {
                 dumpData = true;
             } else if (args[i].equals("-o")) {
                 outFile = args[i + 1];
+                i++;
                 dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
             } else if (args[i].equals("-r")) {
                 defaultRecordSize = Integer.parseInt(args[i + 1]);
+                i++;
             } else if (args[i].equals("-m")) {
                 maxRecords = Integer.parseInt(args[i + 1]);
+                i++;
                 if (maxRecords < -1) {
                     maxRecords = -1;
                 }
             } else if (args[i].equals("--verbose")) {
                 verbose = true;
+            } else if (args[i].equals("--timed")) {
+                timed = true;
             } else if (args[i].equals("--version")) {
                 out.println(BuildVersion.getDetailedVersion());
                 System.exit(0);
             } else if (args[i].equals("--help")) {
                 out.println("java "
                         + ListHeader.class.getName()
-                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][--verbose][--version][--help] <filename> [<filename>...]");
+                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][--verbose][--version][--timed][--help] <filename> [<filename>...]");
                 System.exit(0);
             } else {
                 filenameList.add(args[i]);
@@ -75,7 +85,12 @@ public class ListHeader {
         }
         
         for (String filename : filenameList) {
+            long beforeNanos = System.nanoTime();
             processFile(filename, network, station, location, channel, maxRecords, defaultRecordSize, verbose, dumpData, dos, out);
+            long afterNanos = System.nanoTime();
+            if (timed) {
+               out.println("Time: "+(afterNanos-beforeNanos)/1000000000.0+" sec for "+filename);
+            }
         }
         if (dos != null) {
             dos.close();
