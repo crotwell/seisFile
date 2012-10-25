@@ -54,7 +54,7 @@ public class SeedFormatException extends SeisFileException {
 
     public String toString() {
         if (header != null) {
-            return super.toString()+header.toString();
+            return super.toString()+" "+header.toString();
         }
         return super.toString();
     }
