@@ -9,6 +9,11 @@ public class SeedFormatException extends SeisFileException {
     public SeedFormatException() {
         super();
     }
+
+    public SeedFormatException(ControlHeader header) {
+        super();
+        this.header = header;
+    }
     
     public SeedFormatException(String s) {
         super(s);
@@ -22,31 +27,38 @@ public class SeedFormatException extends SeisFileException {
         super(s, cause);
     }
     
-    public SeedFormatException(String s, DataHeader header) {
+    public SeedFormatException(String s, ControlHeader header) {
         super(s);
         this.header = header;
     }
 
-    public SeedFormatException(Throwable cause, DataHeader header) {
+    public SeedFormatException(Throwable cause, ControlHeader header) {
         super(cause);
         this.header = header;
     }
     
-    public SeedFormatException(String s, Throwable cause, DataHeader header) {
+    public SeedFormatException(String s, Throwable cause, ControlHeader header) {
         super(s, cause);
         this.header = header;
     }
     
     
-    public DataHeader getHeader() {
+    public ControlHeader getHeader() {
         return header;
     }
 
     
-    public void setHeader(DataHeader header) {
+    public void setHeader(ControlHeader header) {
         this.header = header;
     }
 
-    private DataHeader header;
+    public String toString() {
+        if (header != null) {
+            return super.toString()+header.toString();
+        }
+        return super.toString();
+    }
+    
+    private ControlHeader header;
 }
 
