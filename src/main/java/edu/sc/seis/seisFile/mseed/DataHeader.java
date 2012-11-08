@@ -105,8 +105,6 @@ public class DataHeader extends ControlHeader {
         out.println(" tcor=" + getTimeCorrection());
     }
 
-    void outwrite() {}
-
     /**
      * Instantiate an object of this class and read an FSDH byte stream into it,
      * parsing the contents into the instance variables of this object, which
