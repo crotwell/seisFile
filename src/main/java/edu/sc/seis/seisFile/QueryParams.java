@@ -197,19 +197,29 @@ public class QueryParams {
 
     Date extractDate(String dateString) throws SeisFileException {
         dateString = dateString.trim();
+        int zoneIndex = dateString.indexOf('Z');
+        if (zoneIndex == -1) {
+            if (dateString.length() > 10 && dateString.matches(".+\\d")) {
+                // assume GMT time???
+                dateString += "GMT";
+                // for local time...
+                //out += TimeZone.getDefault().getID();
+            }
+        } else if(dateString.charAt(zoneIndex) == 'Z') {
+            // assume GMT
+            dateString = dateString.substring(0, zoneIndex)+"GMT";
+        }
         SimpleDateFormat dateFormat;
-        if (dateString.length() == 23) {
+        if (dateString.length() > 22) {
             dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
-        } else if (dateString.length() == 19) {
+        } else if (dateString.length() > 18) {
             dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
         } else {
             // if (dateString.length() == 10)
             dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         }
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        if (dateString.length() > 10 && dateString.matches(".+\\d")) {
-            dateString = dateString + " GMT";
-        }
+        System.out.println("df="+dateFormat.toPattern()+"  "+dateString);
         try {
             return dateFormat.parse(dateString);
         } catch(ParseException e) {
