@@ -32,7 +32,7 @@ public abstract class StringMSeedQueryReader implements MSeedQueryReader {
                                        String location,
                                        String channel,
                                        Date begin,
-                                       Date end) throws IOException, SeisFileException;
+                                       Date end);
 
     public abstract List<DataRecord> read(String query) throws IOException, SeisFileException, SeedFormatException;
 
