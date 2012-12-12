@@ -39,8 +39,7 @@ public class BulkDataSelectReader  extends StringMSeedQueryReader {
     }
     
     @Override
-    public String createQuery(String network, String station, String location, String channel, Date begin, Date end)
-            throws IOException, SeisFileException {
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) {
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         return network+" "+station+" "+(location.length()==0 || location.equals("  ")?"--":location)+" "+channel

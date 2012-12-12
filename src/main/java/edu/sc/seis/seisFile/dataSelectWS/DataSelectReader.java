@@ -34,7 +34,7 @@ public class DataSelectReader extends StringMSeedQueryReader {
         this.timeoutMillis = timeoutMillis;
     }
     
-    protected String createQuery(String network, String station, String location, String channel) throws IOException, DataSelectException {
+    protected String createQuery(String network, String station, String location, String channel)  {
         String query = "net="+ network;
         query += "&sta=" + station;
         query += "&loc=" + location.replaceAll(" ", "%20");
@@ -46,7 +46,7 @@ public class DataSelectReader extends StringMSeedQueryReader {
      * @see edu.sc.seis.seisFile.dataSelectWS.MSeedQueryReader#createQuery(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.util.Date, float)
      */
     @Override
-    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) throws IOException, DataSelectException {
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) {
         String query = createQuery(network, station, location, channel);
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
