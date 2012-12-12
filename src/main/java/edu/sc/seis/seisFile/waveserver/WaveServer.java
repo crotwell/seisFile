@@ -189,9 +189,7 @@ public class WaveServer extends StringMSeedQueryReader {
     }
 
     @Override
-    public String createQuery(String network, String station, String location, String channel, Date begin, Date end)
-            throws IOException {
-
+    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) {
         String nextReqId = getNextRequestId();
         DecimalFormat df = new DecimalFormat("0.0###");
         String cmd = "GETSCNLRAW: " + nextReqId + " " + station + " " + channel + " " + network + " "
