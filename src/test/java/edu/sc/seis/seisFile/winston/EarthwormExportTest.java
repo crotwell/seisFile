@@ -15,7 +15,9 @@ public class EarthwormExportTest {
     public void testWriteThreeChars() throws IOException {
         int val = 2;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        EarthwormExport.writeThreeChars(bos, val);
+        EarthwormEscapeOutputStream outStream = new EarthwormEscapeOutputStream(bos);
+        outStream.writeThreeChars(val);
+        outStream.close();
         String s = new String(bos.toByteArray());
         assertEquals(val, Integer.parseInt(s));
     }
