@@ -48,7 +48,7 @@ public class TraceBuf2 {
         this.network = network;
         this.channel = channel;
         this.locId = locId;
-        if ("  ".equals(locId)) {this.locId = "--";}
+        if (locId == null || "".equals(locId.trim())) {this.locId = "--";}
         this.version = version;
         this.dataType = dataType;
         this.quality = quality;
@@ -170,7 +170,7 @@ public class TraceBuf2 {
         network = Utility.extractNullTermString(data, 39, 9);
         channel = Utility.extractNullTermString(data, 48, 4);
         locId = Utility.extractNullTermString(data, 52, 3);
-        if ("  ".equals(locId)) {locId = "--";}
+        if (locId == null || "".equals(locId.trim())) {locId = "--";}
         version = Utility.extractString(data, 55, 2);
         // dataType already extract above: Utility.extractNullTermString(data, 57, 3);
         quality = Utility.bytesToShort(data[60], data[61], swapBytes);
