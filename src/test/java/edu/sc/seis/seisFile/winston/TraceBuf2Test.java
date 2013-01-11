@@ -41,6 +41,16 @@ public class TraceBuf2Test {
     }
 
     @Test
+    public void testSpaceSpaceLocId() throws DataFormatException, IOException {
+        int numSamples = 6343;
+        TraceBuf2 tb = createTraceBuf(numSamples);
+        tb.locId = "  ";
+        byte[] dataBytes = tb.toByteArray();
+        TraceBuf2 out = new TraceBuf2(dataBytes);
+        assertEquals("loc", "--", out.getLocId());
+    }
+
+    @Test
     public void testSplit() {
         for (int numSamples = 1000; numSamples < 8200; numSamples += 100) {
             TraceBuf2 tb = createTraceBuf(numSamples);
