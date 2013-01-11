@@ -43,21 +43,32 @@ public class WinstonClient {
                 // arg with value
                 if (args[i].equals("-p")) {
                     winstonConfig.load(new BufferedReader(new FileReader(args[i + 1])));
+                    i++;
                 } else if (args[i].equals("-u")) {
                     winstonConfig.put("winston.url", args[i + 1]);
+                    i++;
                 } else if (args[i].equals("--recLen")) {
                     recordSize = Integer.parseInt(args[i + 1]);
+                    i++;
                 } else if (args[i].equals("--export")) {
                     doExport = true;
                     exportPort = Integer.parseInt(args[i+1]);
+                    i++;
                 } else if (args[i].equals("--chunk")) {
                     chunkSeconds = Integer.parseInt(args[i+1]);
+                    i++;
                 } else if (args[i].equals("--module")) {
                     module = Integer.parseInt(args[i+1]);
+                    i++;
                 } else if (args[i].equals("--inst")) {
                     institution = Integer.parseInt(args[i+1]);
+                    i++;
                 } else if (args[i].equals("--heartbeat")) {
                     heartbeat = Integer.parseInt(args[i+1]);
+                    i++;
+                } else if (args[i].equals("--sleepmillis")) {
+                    sleepMillis = Integer.parseInt(args[i+1]);
+                    i++;
                 }
             }
         }
@@ -229,6 +240,10 @@ public class WinstonClient {
                 lastSentEnd = traceBuf2.getEndDate();
                 sampRate = traceBuf2.getSampleRate();
             }
+            try {
+                Thread.sleep(sleepMillis);
+            } catch(InterruptedException e) {
+            }
         }
 
         lastSentEnd = new Date(lastSentEnd.getTime()+(long)(1000/sampRate)+1);
@@ -278,6 +293,7 @@ public class WinstonClient {
     int module = DEFAULT_MODULE;
     int institution = DEFAULT_INSTITUTION;
     int chunkSeconds = DEFAULT_CHUNK_SECONDS;
+    int sleepMillis = 0;
 
     public static final int DEFAULT_CHUNK_SECONDS = 60;
     public static final int DEFAULT_HEARTBEAT = 5;
