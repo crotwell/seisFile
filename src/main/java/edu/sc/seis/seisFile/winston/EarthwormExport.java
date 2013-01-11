@@ -16,7 +16,11 @@ import java.util.TimerTask;
 
 public class EarthwormExport {
 
-    public EarthwormExport(int port, int module, int institution, final String heartbeatMessage, int heartbeatSeconds) throws UnknownHostException,
+    public EarthwormExport(int port, 
+                           int module, 
+                           int institution, 
+                           final String heartbeatMessage, 
+                           final int heartbeatSeconds) throws UnknownHostException,
             IOException {
         this.port = port;
         this.module = module;
@@ -53,7 +57,7 @@ public class EarthwormExport {
         
         writeThreeChars(outStream, institution);
         writeThreeChars(outStream, module);
-        writeThreeChars(outStream, 3);
+        writeThreeChars(outStream, EarthwormMessage.MESSAGE_TYPE_HEARTBEAT);
         outStream.write(message.getBytes());
         outStream.endTransmit();
         outStream.flush();
