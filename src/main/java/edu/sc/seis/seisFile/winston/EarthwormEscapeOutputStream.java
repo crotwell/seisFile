@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.winston;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 
 public class EarthwormEscapeOutputStream extends FilterOutputStream {
 
@@ -39,5 +40,14 @@ public class EarthwormEscapeOutputStream extends FilterOutputStream {
     public void endTransmit() throws IOException {
         super.write(EarthwormExport.ETX);
     }
+
+    public void writeThreeChars(int val) throws IOException {
+        String s = numberFormat.format(val);
+        write(s.charAt(0));
+        write(s.charAt(1));
+        write(s.charAt(2));
+    }
+
+    DecimalFormat numberFormat = new DecimalFormat("000");
     
 }

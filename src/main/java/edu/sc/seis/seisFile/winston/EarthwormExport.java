@@ -4,15 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class EarthwormExport {
 
@@ -27,43 +23,18 @@ public class EarthwormExport {
         this.institution = institution;
         this.heartbeatMessage = heartbeatMessage;
         initSocket();
-        Timer heartbeater = new Timer(true);
-        heartbeater.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    if (outStream != null) {
-                        heartbeat(heartbeatMessage);
-                    }
-                } catch(IOException e) {
-                    //couldn't send heartbeat, close and reconnect
-                    closeClient();
-                }
-            }
-            }, 100, heartbeatSeconds*1000);
+        heartbeater = new EarthwormHeartbeater(null, heartbeatSeconds, heartbeatMessage, institution, module);
     }
     
-    /** mostly just for testing, no heartbeats */
+    /** mostly just for testing */
     EarthwormExport(EarthwormEscapeOutputStream outStream, int module, int institution) {
         this.outStream = outStream;
         this.module = module;
         this.institution = institution;
+        heartbeater = new EarthwormHeartbeater(outStream, 10, heartbeatMessage, institution, module);
     }
 
-    public synchronized void heartbeat(String message) throws IOException {
-        if (outStream == null) {return;}
-        
-        outStream.startTransmit();
-        
-        writeThreeChars(outStream, institution);
-        writeThreeChars(outStream, module);
-        writeThreeChars(outStream, EarthwormMessage.MESSAGE_TYPE_HEARTBEAT);
-        outStream.write(message.getBytes());
-        outStream.endTransmit();
-        outStream.flush();
-    }
-
-    public synchronized void export(TraceBuf2 traceBuf) throws IOException {
+    public void export(TraceBuf2 traceBuf) throws IOException {
         if (outStream == null) {
             waitForClient();
         }
@@ -80,27 +51,17 @@ public class EarthwormExport {
     }
     
     void writeTraceBuf(TraceBuf2 tb) throws IOException {
-        outStream.startTransmit();
-        writeThreeChars(outStream, institution);
-        writeThreeChars(outStream, module);
-        writeThreeChars(outStream, EarthwormMessage.MESSAGE_TYPE_TRACEBUF2);
-        DataOutputStream dos = new DataOutputStream(outStream);
-        tb.write(dos);
-        dos.flush();
-        outStream.endTransmit();
-        outStream.flush();
-    }
-
-    static void writeThreeChars(OutputStream out, int val) throws IOException {
-        String s = numberFormat.format(val);
-        out.write(s.charAt(0));
-        out.write(s.charAt(1));
-        out.write(s.charAt(2));
-    }
-
-    void writeSeqNum(OutputStream out, int seqNum) throws UnknownHostException, IOException {
-        out.write(SEQ_CODE.getBytes());
-        writeThreeChars(out, seqNum);
+        synchronized(outStream) {
+            outStream.startTransmit();
+            outStream.writeThreeChars(institution);
+            outStream.writeThreeChars(module);
+            outStream.writeThreeChars(EarthwormMessage.MESSAGE_TYPE_TRACEBUF2);
+            DataOutputStream dos = new DataOutputStream(outStream);
+            tb.write(dos);
+            dos.flush();
+            outStream.endTransmit();
+            outStream.flush();
+        }
     }
 
     void initSocket() throws UnknownHostException, IOException {
@@ -117,7 +78,8 @@ public class EarthwormExport {
                 clientSocket = serverSocket.accept(); // block until client connects
                 inStream = new BufferedInputStream(clientSocket.getInputStream());
                 outStream = new EarthwormEscapeOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
-                heartbeat(heartbeatMessage);
+                heartbeater.setOutStream(outStream);
+                heartbeater.heartbeat();
                 if (verbose) {
                     System.out.println("accept connection from "+clientSocket.getInetAddress()+":"+clientSocket.getPort());
                 }
@@ -160,6 +122,7 @@ public class EarthwormExport {
         } catch(IOException e) {
         }
         serverSocket = null;
+        heartbeater.setOutStream(null);
     }
     
     public int getNumTraceBufSent() {
@@ -224,7 +187,7 @@ public class EarthwormExport {
     
     int splitTraceBufSent = 0;
     
-    private String heartbeatMessage;
+    private String heartbeatMessage = "heartbeat";
     
     int module;
 
@@ -239,10 +202,10 @@ public class EarthwormExport {
     ServerSocket serverSocket;
 
     Socket clientSocket = null;
+    
+    EarthwormHeartbeater heartbeater = null;
 
     int port;
-
-    static DecimalFormat numberFormat = new DecimalFormat("000");
 
     public boolean verbose = true;
     
