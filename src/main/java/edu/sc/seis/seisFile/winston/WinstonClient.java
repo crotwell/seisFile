@@ -160,7 +160,7 @@ public class WinstonClient {
                     chunkBegin = lastSent.get(scnl);
                     if (chunkBegin.before(chunkEnd)) {
                         Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
-                        lastSent.put(scnl, new Date(sentEnd.getTime()+100)); // just past last packet
+                        lastSent.put(scnl, new Date(sentEnd.getTime()+1)); // just past last packet
                     }
                 }
                 startTime = new Date(chunkEnd.getTime()+1);
