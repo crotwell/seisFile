@@ -219,7 +219,6 @@ public class QueryParams {
             dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         }
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        System.out.println("df="+dateFormat.toPattern()+"  "+dateString);
         try {
             return dateFormat.parse(dateString);
         } catch(ParseException e) {
