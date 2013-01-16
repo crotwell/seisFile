@@ -242,11 +242,11 @@ public class WinstonClient {
             }
             try {
                 if (params.isVerbose()) {
-                    System.out.print("sleep: "+sleepMillis+" milliseconds "+new Date()+" ...");
+                    System.out.print("sleep: "+sleepMillis+" milliseconds "+sdf.format(new Date())+" ...");
                 }
                 Thread.sleep(sleepMillis);
                 if (params.isVerbose()) {
-                    System.out.println("...back to work at "+new Date()+".");
+                    System.out.println("...back to work at "+sdf.format(new Date())+".");
                 }
             } catch(InterruptedException e) {
             }
