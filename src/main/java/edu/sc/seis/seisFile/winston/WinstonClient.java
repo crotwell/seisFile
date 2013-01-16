@@ -241,7 +241,13 @@ public class WinstonClient {
                 sampRate = traceBuf2.getSampleRate();
             }
             try {
+                if (params.isVerbose()) {
+                    System.out.print("sleep: "+sleepMillis+" milliseconds "+new Date()+" ...");
+                }
                 Thread.sleep(sleepMillis);
+                if (params.isVerbose()) {
+                    System.out.println("...back to work at "+new Date()+".");
+                }
             } catch(InterruptedException e) {
             }
         }
