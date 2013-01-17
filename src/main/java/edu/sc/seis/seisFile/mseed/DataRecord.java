@@ -17,6 +17,11 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
+import edu.iris.dmc.seedcodec.Codec;
+import edu.iris.dmc.seedcodec.CodecException;
+import edu.iris.dmc.seedcodec.DecompressedData;
+import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
+
 public class DataRecord extends SeedRecord implements Serializable {
 
     public DataRecord(DataHeader header) {
@@ -102,12 +107,31 @@ public class DataRecord extends SeedRecord implements Serializable {
     }
 
     /**
-     * returns the data from this data header unparsed, is as a byte array in
+     * returns the data from this data header unparsed, as a byte array in
      * the format from blockette 1000. The return type is byte[], so the caller
      * must decode the data based on its format.
      */
     public byte[] getData() {
         return data;
+    }
+    
+    /** 
+     * Decompress the data in this record according to the compression type in the header.
+     * @return
+     * @throws SeedFormatException if no blockette 1000 present
+     * @throws UnsupportedCompressionType
+     * @throws CodecException
+     */
+    public DecompressedData decompress() throws SeedFormatException, UnsupportedCompressionType, CodecException {
+        Blockette1000 b1000 = (Blockette1000)getUniqueBlockette(1000);
+        if (b1000 == null) {
+            throw new MissingBlockette1000(getHeader());
+        }
+        Codec codec = new Codec();
+        return codec.decompress(b1000.getEncodingFormat(),
+                                getData(),
+                                getHeader().getNumSamples(),
+                                b1000.isLittleEndian());
     }
 
     public void setData(byte[] data) throws SeedFormatException {
