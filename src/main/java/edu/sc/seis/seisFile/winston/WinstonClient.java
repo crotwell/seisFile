@@ -240,15 +240,15 @@ public class WinstonClient {
                 lastSentEnd = traceBuf2.getEndDate();
                 sampRate = traceBuf2.getSampleRate();
             }
+            if (params.isVerbose()) {
+                System.out.print("sleep: "+sleepMillis+" milliseconds "+sdf.format(new Date())+" ...");
+            }
             try {
-                if (params.isVerbose()) {
-                    System.out.print("sleep: "+sleepMillis+" milliseconds "+sdf.format(new Date())+" ...");
-                }
                 Thread.sleep(sleepMillis);
-                if (params.isVerbose()) {
-                    System.out.println("...back to work at "+sdf.format(new Date())+".");
-                }
             } catch(InterruptedException e) {
+            }
+            if (params.isVerbose()) {
+                System.out.println("...back to work at "+sdf.format(new Date())+".");
             }
         }
 
