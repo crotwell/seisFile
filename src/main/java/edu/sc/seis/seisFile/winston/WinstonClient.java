@@ -266,7 +266,8 @@ public class WinstonClient {
             }
         }
 
-        lastSentEnd = new Date(lastSentEnd.getTime()+(long)(1000/sampRate)+1);
+        //lastSentEnd = new Date(lastSentEnd.getTime()+(long)(1000/sampRate)+1);
+        lastSentEnd = new Date(lastSentEnd.getTime()+1);
         return lastSentEnd;
     }
 
