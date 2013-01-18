@@ -20,6 +20,8 @@ import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
+import org.apache.log4j.BasicConfigurator;
+
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
@@ -39,6 +41,8 @@ public class WinstonClient {
                 doSync = true;
             } else if (args[i].equals("--steim1")) {
                 doSteim1 = true;
+            } else if (args[i].equals("--heartbeatverbose")) {
+                heartbeatverbose = true;
             } else if (i < args.length - 1) {
                 // arg with value
                 if (args[i].equals("-p")) {
@@ -85,6 +89,8 @@ public class WinstonClient {
     
     boolean doExport = false;
     
+    boolean heartbeatverbose = false;
+    
     int exportPort = -1;
 
     int recordSize = 12;
@@ -95,6 +101,7 @@ public class WinstonClient {
      * @param args
      */
     public static void main(String[] args) throws Exception {
+        BasicConfigurator.configure();
         WinstonClient client = new WinstonClient(args);
         client.readData();
     }
@@ -138,6 +145,9 @@ public class WinstonClient {
             syncOut.close();
         } else if (doExport) {
             EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
+            if (heartbeatverbose) {
+                exporter.heartbeater.setVerbose(heartbeatverbose);
+            }
             if (params.isVerbose()) {
                 exporter.setVerbose(true);
                 System.out.println("Waiting for client connect, port: "+exportPort);
@@ -228,12 +238,16 @@ public class WinstonClient {
                     exporter.export(traceBuf2);
                     notSent = false;
                 } catch(IOException e) {
+                    exporter.closeClient();
                     if (params.isVerbose()) {
                         System.out.println("Caught exception, waiting for reconnect, will resend tracebuf"+ e);
                     }
                     logger.warn("Caught exception, waiting for reconnect, will resend tracebuf", e);
-                    exporter.closeClient();
                     exporter.waitForClient();
+                    if (params.isVerbose()) {
+                        System.out.println("Resend Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+sdf.format(traceBuf2.getStartDate())+" "+traceBuf2.getNumSamples()+" "+sdf.format(traceBuf2.getEndDate()));
+                    }
+                    
                 }
             }
             if (lastSentEnd.before(traceBuf2.getEndDate())) {
@@ -292,7 +306,7 @@ public class WinstonClient {
     public String getHelp() {
         return "java "
                 + WinstonClient.class.getName()
-                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][[--export port][--chunk sec][--module modNum][--inst institutionNum][--heartbeat sec]]";
+                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][[--export port][--chunk sec][--module modNum][--inst institutionNum][--heartbeat sec][--heartbeatverbose]]";
     }
     
     int heartbeat = DEFAULT_HEARTBEAT;

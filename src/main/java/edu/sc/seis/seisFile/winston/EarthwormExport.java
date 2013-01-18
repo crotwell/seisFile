@@ -75,6 +75,7 @@ public class EarthwormExport {
     public void waitForClient() throws IOException {
         while(true) {
             try {
+                heartbeater.setOutStream(null);
                 clientSocket = serverSocket.accept(); // block until client connects
                 inStream = new BufferedInputStream(clientSocket.getInputStream());
                 outStream = new EarthwormEscapeOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
@@ -92,6 +93,7 @@ public class EarthwormExport {
     }
     
     public void closeClient() {
+        heartbeater.setOutStream(null);
         if (inStream != null) {
             try {
                 inStream.close();
@@ -122,7 +124,6 @@ public class EarthwormExport {
         } catch(IOException e) {
         }
         serverSocket = null;
-        heartbeater.setOutStream(null);
     }
     
     public int getNumTraceBufSent() {

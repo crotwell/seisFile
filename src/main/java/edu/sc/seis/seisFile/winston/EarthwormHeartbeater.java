@@ -72,17 +72,18 @@ public class EarthwormHeartbeater extends TimerTask {
     }
 
     public void heartbeat() throws IOException {
-        if (outStream == null) {
+        EarthwormEscapeOutputStream outStreamTmp = outStream;
+        if (outStreamTmp == null) {
             return;
         }
-        synchronized(outStream) {
-            outStream.startTransmit();
-            outStream.writeThreeChars(institution);
-            outStream.writeThreeChars(module);
-            outStream.writeThreeChars(EarthwormMessage.MESSAGE_TYPE_HEARTBEAT);
-            outStream.write(heartbeatMessage.getBytes());
-            outStream.endTransmit();
-            outStream.flush();
+        synchronized(outStreamTmp) {
+            outStreamTmp.startTransmit();
+            outStreamTmp.writeThreeChars(institution);
+            outStreamTmp.writeThreeChars(module);
+            outStreamTmp.writeThreeChars(EarthwormMessage.MESSAGE_TYPE_HEARTBEAT);
+            outStreamTmp.write(heartbeatMessage.getBytes());
+            outStreamTmp.endTransmit();
+            outStreamTmp.flush();
         }
         if (verbose) {
             System.out.println("Heartbeat sent: "+new Date()+" "+heartbeatMessage+"  "+heartbeatSeconds);
