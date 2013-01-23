@@ -49,9 +49,12 @@ public class EarthwormImport {
     
     /** just for testing, prints a message for each tracebuf received. */
     public static void main(String[] args) throws Exception {
-        
-        final String host = "eeyore.seis.sc.edu";
-        final int port = 16100;
+        if (args.length != 2) {
+            System.out.println("Usage: earthwormImpor host port");
+            return;
+        }
+        final String host = args[0];
+        final int port = Integer.parseInt(args[1]);
         final String heartbeatMessage = "heartbeat";
         final int heartbeatSeconds = 10;
         final int institution = 2;
@@ -76,9 +79,8 @@ public class EarthwormImport {
                     } else if (message.getMessageType() == EarthwormMessage.MESSAGE_TYPE_HEARTBEAT) {
                         System.out.println("Heartbeat received: "+new String(message.data));
                     }
-                    Thread.sleep(100);
+                    Thread.sleep(1);
                 } catch(IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     heartbeater.setOutStream(null);
                     outStream.close();
