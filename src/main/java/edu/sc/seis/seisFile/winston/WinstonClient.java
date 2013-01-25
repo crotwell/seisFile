@@ -1,8 +1,11 @@
 package edu.sc.seis.seisFile.winston;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -19,6 +22,9 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.BasicConfigurator;
 
@@ -43,6 +49,8 @@ public class WinstonClient {
                 doSteim1 = true;
             } else if (args[i].equals("--heartbeatverbose")) {
                 heartbeatverbose = true;
+            } else if (args[i].equals("--tbzip")) {
+                doTbZip = true;
             } else if (i < args.length - 1) {
                 // arg with value
                 if (args[i].equals("-p")) {
@@ -56,22 +64,22 @@ public class WinstonClient {
                     i++;
                 } else if (args[i].equals("--export")) {
                     doExport = true;
-                    exportPort = Integer.parseInt(args[i+1]);
+                    exportPort = Integer.parseInt(args[i + 1]);
                     i++;
                 } else if (args[i].equals("--chunk")) {
-                    chunkSeconds = Integer.parseInt(args[i+1]);
+                    chunkSeconds = Integer.parseInt(args[i + 1]);
                     i++;
                 } else if (args[i].equals("--module")) {
-                    module = Integer.parseInt(args[i+1]);
+                    module = Integer.parseInt(args[i + 1]);
                     i++;
                 } else if (args[i].equals("--inst")) {
-                    institution = Integer.parseInt(args[i+1]);
+                    institution = Integer.parseInt(args[i + 1]);
                     i++;
                 } else if (args[i].equals("--heartbeat")) {
-                    heartbeat = Integer.parseInt(args[i+1]);
+                    heartbeat = Integer.parseInt(args[i + 1]);
                     i++;
                 } else if (args[i].equals("--sleepmillis")) {
-                    sleepMillis = Integer.parseInt(args[i+1]);
+                    sleepMillis = Integer.parseInt(args[i + 1]);
                     i++;
                 }
             }
@@ -82,15 +90,17 @@ public class WinstonClient {
     }
 
     QueryParams params;
-    
+
     Properties winstonConfig = new Properties();
 
     boolean doSync = false;
-    
+
     boolean doExport = false;
-    
+
+    boolean doTbZip = false;
+
     boolean heartbeatverbose = false;
-    
+
     int exportPort = -1;
 
     int recordSize = 12;
@@ -128,9 +138,9 @@ public class WinstonClient {
                                               getPassword(),
                                               winstonConfig.getProperty("winston.prefix"));
         List<WinstonSCNL> allChannels = winston.listChannelDatabases();
-        Pattern staPattern = Pattern.compile("*".equals(params.getStation())  ? ".*" : params.getStation());
+        Pattern staPattern = Pattern.compile("*".equals(params.getStation()) ? ".*" : params.getStation());
         Pattern chanPattern = Pattern.compile("*".equals(params.getChannel()) ? ".*" : params.getChannel());
-        Pattern netPattern = Pattern.compile("*".equals(params.getNetwork())  ? ".*" : params.getNetwork());
+        Pattern netPattern = Pattern.compile("*".equals(params.getNetwork()) ? ".*" : params.getNetwork());
         Pattern locPattern = Pattern.compile("*".equals(params.getLocation()) ? ".*" : params.getLocation());
         if (doSync) {
             PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
@@ -138,11 +148,29 @@ public class WinstonClient {
             for (WinstonSCNL scnl : allChannels) {
                 if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
                         && netPattern.matcher(scnl.getNetwork()).matches()
-                        && locPattern.matcher(scnl.getLocId()==null?"":scnl.getLocId()).matches()) {
+                        && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
                     syncChannel(winston, scnl, syncOut);
                 }
             }
             syncOut.close();
+        } else if (doTbZip) {
+            File f = new File(params.getOutFile());
+            String dirName = f.getName();
+            if (dirName.endsWith(".zip")) {
+                dirName = dirName.substring(0, dirName.length()-4);
+            }
+            ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
+            ZipEntry tbzip = new ZipEntry(dirName+"/");
+            zip.putNextEntry(tbzip);
+            zip.closeEntry();
+            for (WinstonSCNL scnl : allChannels) {
+                if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
+                        && netPattern.matcher(scnl.getNetwork()).matches()
+                        && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
+                    outputRawTraceBuf2s(winston, scnl, zip, dirName);
+                }
+            }
+            zip.close();
         } else if (doExport) {
             EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
             if (heartbeatverbose) {
@@ -150,45 +178,48 @@ public class WinstonClient {
             }
             if (params.isVerbose()) {
                 exporter.setVerbose(true);
-                System.out.println("Waiting for client connect, port: "+exportPort);
+                System.out.println("Waiting for client connect, port: " + exportPort);
             }
             exporter.waitForClient();
             Date startTime = params.getBegin();
             Date chunkBegin, chunkEnd;
             HashMap<WinstonSCNL, Date> lastSent = new HashMap<WinstonSCNL, Date>();
             for (WinstonSCNL scnl : allChannels) {
-                
                 if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
                         && netPattern.matcher(scnl.getNetwork()).matches()
-                        && locPattern.matcher(scnl.getLocId()==null?"":scnl.getLocId()).matches()) {
+                        && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
                     lastSent.put(scnl, startTime);
                 }
             }
-            while(startTime.before(params.getEnd())) {
-                chunkEnd = new Date(startTime.getTime()+chunkSeconds*1000);
+            while (startTime.before(params.getEnd())) {
+                chunkEnd = new Date(startTime.getTime() + chunkSeconds * 1000);
                 for (WinstonSCNL scnl : lastSent.keySet()) {
                     chunkBegin = lastSent.get(scnl);
                     if (chunkBegin.before(chunkEnd)) {
                         Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
-                        lastSent.put(scnl, new Date(sentEnd.getTime()+1)); // just past last packet
+                        lastSent.put(scnl, new Date(sentEnd.getTime() + 1)); // just
+                                                                             // past
+                                                                             // last
+                                                                             // packet
                     }
                 }
-                startTime = new Date(chunkEnd.getTime()+1);
+                startTime = new Date(chunkEnd.getTime() + 1);
             }
             exporter.closeSocket();
             if (params.isVerbose()) {
-                System.out.println("Done sending, "+exporter.getNumTraceBufSent()+" ("+exporter.getNumSplitTraceBufSent()+" too big so split)");
+                System.out.println("Done sending, " + exporter.getNumTraceBufSent() + " ("
+                        + exporter.getNumSplitTraceBufSent() + " too big so split)");
             }
         } else {
-                for (WinstonSCNL scnl : allChannels) {
-                    if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
-                            && netPattern.matcher(scnl.getNetwork()).matches()
-                            && locPattern.matcher(scnl.getLocId()==null?"":scnl.getLocId()).matches()) {
-                        processChannel(winston, scnl);
-                    }
+            for (WinstonSCNL scnl : allChannels) {
+                if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
+                        && netPattern.matcher(scnl.getNetwork()).matches()
+                        && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
+                    processChannel(winston, scnl);
                 }
-                params.getDataOutputStream().close();
             }
+            params.getDataOutputStream().close();
+        }
         winston.close();
     }
 
@@ -213,41 +244,45 @@ public class WinstonClient {
         winston.writeSyncBetweenDates(channel, startYear, startMonth, startDay, endYear, endMonth, endDay, syncOut);
     }
 
-    Date exportChannel(WinstonUtil winston, WinstonSCNL channel, Date begin, Date end, EarthwormExport exporter) throws SeisFileException, SQLException,
-            DataFormatException, FileNotFoundException, IOException, URISyntaxException {
-
+    Date exportChannel(WinstonUtil winston, WinstonSCNL channel, Date begin, Date end, EarthwormExport exporter)
+            throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException,
+            URISyntaxException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Date lastSentEnd = end;
         double sampRate = 1;
         TraceBuf2 prev = null;
         for (TraceBuf2 traceBuf2 : tbList) {
             if (params.isVerbose()) {
-                System.out.println("Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+sdf.format(traceBuf2.getStartDate())+" "+traceBuf2.getNumSamples()+" "+sdf.format(traceBuf2.getEndDate()));
+                System.out.println("Tracebuf: " + traceBuf2.getNetwork() + "." + traceBuf2.getStation() + "."
+                        + traceBuf2.getLocId() + "." + traceBuf2.getChannel() + " "
+                        + sdf.format(traceBuf2.getStartDate()) + " " + traceBuf2.getNumSamples() + " "
+                        + sdf.format(traceBuf2.getEndDate()));
             }
             if (prev != null && prev.getEndDate().after(traceBuf2.getStartDate())) {
                 System.out.println("WARNING: current tracebuf overlaps previous: ");
-                System.out.println("  prev: "+prev);
-                System.out.println("  curr: "+traceBuf2);
+                System.out.println("  prev: " + prev);
+                System.out.println("  curr: " + traceBuf2);
             }
             boolean notSent = true;
-            while(notSent) {
+            while (notSent) {
                 try {
                     exporter.export(traceBuf2);
                     notSent = false;
                 } catch(IOException e) {
                     exporter.closeClient();
                     if (params.isVerbose()) {
-                        System.out.println("Caught exception, waiting for reconnect, will resend tracebuf"+ e);
+                        System.out.println("Caught exception, waiting for reconnect, will resend tracebuf" + e);
                     }
                     logger.warn("Caught exception, waiting for reconnect, will resend tracebuf", e);
                     exporter.waitForClient();
                     if (params.isVerbose()) {
-                        System.out.println("Resend Tracebuf: "+traceBuf2.getNetwork()+"."+traceBuf2.getStation()+"."+traceBuf2.getLocId()+"."+traceBuf2.getChannel()+" "+sdf.format(traceBuf2.getStartDate())+" "+traceBuf2.getNumSamples()+" "+sdf.format(traceBuf2.getEndDate()));
+                        System.out.println("Resend Tracebuf: " + traceBuf2.getNetwork() + "." + traceBuf2.getStation()
+                                + "." + traceBuf2.getLocId() + "." + traceBuf2.getChannel() + " "
+                                + sdf.format(traceBuf2.getStartDate()) + " " + traceBuf2.getNumSamples() + " "
+                                + sdf.format(traceBuf2.getEndDate()));
                     }
-                    
                 }
             }
             if (lastSentEnd.before(traceBuf2.getEndDate())) {
@@ -255,18 +290,16 @@ public class WinstonClient {
                 sampRate = traceBuf2.getSampleRate();
             }
             if (params.isVerbose()) {
-                System.out.print("sleep: "+sleepMillis+" milliseconds "+sdf.format(new Date())+" ...");
+                System.out.print("sleep: " + sleepMillis + " milliseconds " + sdf.format(new Date()) + " ...");
             }
             try {
                 Thread.sleep(sleepMillis);
-            } catch(InterruptedException e) {
-            }
+            } catch(InterruptedException e) {}
             if (params.isVerbose()) {
-                System.out.println("...back to work at "+sdf.format(new Date())+".");
+                System.out.println("...back to work at " + sdf.format(new Date()) + ".");
             }
         }
-
-        lastSentEnd = new Date(lastSentEnd.getTime()+(long)(1000/sampRate)+1);
+        lastSentEnd = new Date(lastSentEnd.getTime() + (long)(1000 / sampRate) + 1);
         return lastSentEnd;
     }
 
@@ -278,6 +311,24 @@ public class WinstonClient {
             for (DataRecord dr : mseedList) {
                 dr.write(params.getDataOutputStream());
             }
+        }
+    }
+
+    void outputRawTraceBuf2s(WinstonUtil winston, WinstonSCNL channel, ZipOutputStream zip, String dir) throws SeisFileException, SQLException,
+            DataFormatException, FileNotFoundException, IOException, URISyntaxException {
+        List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        for (TraceBuf2 tb : tbList) {
+            ZipEntry tbzip = new ZipEntry(dir+"/"+tb.getNetwork().trim()+"."
+                                          +tb.getStation().trim()+"."
+                                          +tb.getLocId().trim()+"."
+                                          +tb.getChannel().trim()+"."
+                                          +sdf.format(tb.getStartDate())+".tb");
+            zip.putNextEntry(tbzip);
+            byte[] outBytes = tb.toByteArray();
+            zip.write(outBytes, 0, outBytes.length);
+            zip.closeEntry();
         }
     }
 
@@ -306,19 +357,28 @@ public class WinstonClient {
     public String getHelp() {
         return "java "
                 + WinstonClient.class.getName()
-                + " "+QueryParams.getStandardHelpOptions()+"[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][[--export port][--chunk sec][--module modNum][--inst institutionNum][--heartbeat sec][--heartbeatverbose]]";
+                + " "
+                + QueryParams.getStandardHelpOptions()
+                + "[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][[--export port][--chunk sec][--module modNum][--inst institutionNum][--heartbeat sec][--heartbeatverbose]]";
     }
-    
+
     int heartbeat = DEFAULT_HEARTBEAT;
+
     int module = DEFAULT_MODULE;
+
     int institution = DEFAULT_INSTITUTION;
+
     int chunkSeconds = DEFAULT_CHUNK_SECONDS;
+
     int sleepMillis = 0;
 
     public static final int DEFAULT_CHUNK_SECONDS = 60;
+
     public static final int DEFAULT_HEARTBEAT = 5;
+
     public static final int DEFAULT_MODULE = 255;
+
     public static final int DEFAULT_INSTITUTION = 255;
-    
+
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(WinstonClient.class);
 }
