@@ -133,8 +133,8 @@ public class Client {
         reader.startData(start, end);
         int i = 0;
         try {
-            while ((maxRecords == -1 || i < maxRecords) && reader.isConnected()) {
-                SeedlinkPacket slp = reader.next();
+            while ((maxRecords == -1 || i < maxRecords) && reader.hasNext()) {
+                SeedlinkPacket slp = reader.readPacket();
                 DataRecord dr = slp.getMiniSeed();
                 if (dos != null) {
                     dr.write(dos);
