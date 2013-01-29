@@ -14,6 +14,11 @@ import java.util.List;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
+/**
+ * Broke up the 'next' method into 'hasNext' and 'readPacket'.
+ * Added 'getInfoString' methods to support getting the SeedLink information string. 
+ * Added 'select' and 'startData' methods to support start and end time.
+ */
 public class SeedlinkReader {
 
     /** default of IRIS DMC */
@@ -50,24 +55,39 @@ public class SeedlinkReader {
         inData = new DataInputStream(in);
     }
 
+    /**
+     * Determine if a packet may be available.
+     * This method blocks until input data is available, the end of the stream
+     * is detected, or an exception is thrown.
+     * @return true if a packet may be available, false if end was received.
+     * @throws IOException if an I/O Exception occurs.
+     * @see #readPacket()
+     */
     public boolean hasNext() throws IOException {
         // check for closed connection and server sending END
         if (!isConnected()) {
             return false;
         }
         byte[] startBits = new byte[3];
+        if (isVerbose()) {
+            verboseWriter.println("hasNext(): blocking read for " + startBits.length + " bytes, available="
+                    + in.available());
+        }
         startBits[0] = (byte)in.read();
         startBits[1] = (byte)in.read();
         startBits[2] = (byte)in.read();
         String start = new String(startBits);
         if (start.equals("END")) {
+            if (isVerbose()) {
+                verboseWriter.println("hasNext(): end received");
+            }
             return false;
         } else {
             in.unread(startBits);
             return true;
         }
     }
-    
+
     /** true if there is enough data in the instream to possibly read a data record. 
      * This should not block, unlike hasNext() and next().
      * 
@@ -80,20 +100,107 @@ public class SeedlinkReader {
         return in.available() > 256;
     }
 
+	/**
+	 * Get the SeedLink information string for streams.
+	 * @return the SeedLink information string.
+	 * 
+	 * @return the SeedLink information string or null if error.
+     * @throws IOException if an I/O Exception occurs.
+     * @throws SeedlinkException if no packets or there is an error creating the packet.
+     * @throws SeedFormatException if there is an error with the SEED format.
+	 */
+	public String getInfoString() throws IOException, SeedlinkException,
+			SeedFormatException {
+		return getInfoString(SeedlinkReader.INFO_STREAMS);
+	}
+
+	/**
+	 * Get the SeedLink information string.
+	 * @param infoType the information type.
+	 * @return the SeedLink information string.
+	 * 
+	 * @return the SeedLink information string or null if error.
+     * @throws IOException if an I/O Exception occurs.
+     * @throws SeedlinkException if no packets or there is an error creating the packet.
+     * @throws SeedFormatException if there is an error with the SEED format.
+	 */
+	public String getInfoString(String infoType) throws IOException, SeedlinkException,
+			SeedFormatException {
+		return getInfoString(infoType, true);
+	}
+
+	/**
+	 * Get the SeedLink information string.
+	 * @param infoType the information type.
+	 * @param addNewlines true to add newlines to support XML parsing, false otherwise.
+	 * @return the SeedLink information string.
+	 * 
+	 * @return the SeedLink information string or null if error.
+     * @throws IOException if an I/O Exception occurs.
+     * @throws SeedlinkException if no packets or there is an error creating the packet.
+     * @throws SeedFormatException if there is an error with the SEED format.
+	 */
+	public String getInfoString(String infoType, boolean addNewlines) throws IOException, SeedlinkException,
+			SeedFormatException {
+		SeedlinkPacket infoPacket;
+		String s;
+		info(infoType);
+
+		StringBuilder infoPacketContents = new StringBuilder();
+		// ID only returns 1 packet, others might return more,
+		// careful especially if data is flowing at the same time
+		do {
+			infoPacket = next();
+			s = new String(infoPacket.getMiniSeed().getData());
+			infoPacketContents.append(s);
+		} while (infoPacket.isInfoContinuesPacket());
+		String infoString = infoPacketContents.toString();
+		if (addNewlines) {
+			// add newlines to support XML parsing
+			infoString = infoString.replaceAll("><", ">\n<").trim();
+		}
+		return infoString;
+	}
+
+    /**
+     * Get the next packet.
+     * This method blocks until input data is available, the end of the stream
+     * is detected, or an exception is thrown.
+     * @return the packet or null if none.
+     * @throws IOException if an I/O Exception occurs.
+     * @throws SeedlinkException if no packets or there is an error creating the packet.
+     * @see #hasNext()
+     * @see #readPacket()
+     */
     public SeedlinkPacket next() throws IOException, SeedlinkException {
-        if (isVerbose()) {
-            verboseWriter.println("next(): blocking read for " + SeedlinkPacket.PACKET_SIZE + " bytes, available="
-                    + in.available());
-        }
         // check for END
         if (!hasNext()) {
             throw new SeedlinkException("no more seed link packets from last command");
+        }
+        return readPacket();
+    }
+
+    /**
+     * Read the next packet.
+     * This method should be called after calling the 'hasNext' method.
+     * This method blocks until input data is available, the end of the stream
+     * is detected, or an exception is thrown.
+     * @return the next packet.
+     * @throws IOException if an I/O Exception occurs.
+     * @throws SeedlinkException if there is an error creating the packet.
+     * @see #hasNext()
+     */
+    public SeedlinkPacket readPacket() throws IOException, SeedlinkException
+    {
+        if (isVerbose()) {
+            verboseWriter.println("readPacket(): blocking read for " + SeedlinkPacket.PACKET_SIZE + " bytes, available="
+                    + in.available());
         }
         byte[] bits = new byte[SeedlinkPacket.PACKET_SIZE];
         inData.readFully(bits);
         SeedlinkPacket slp = new SeedlinkPacket(bits);
         if (isVerbose()) {
-            String packetString = "";
+            String packetString = EMPTY;
             try {
                 DataRecord dr = slp.getMiniSeed();
                 packetString = " Got a packet: " + slp.getSeqNum() + "  " + dr.getHeader().getNetworkCode() + "  "
@@ -157,8 +264,8 @@ public class SeedlinkReader {
         }
         endHandshake();
     }
-    
-    String[] sendHello() throws IOException, SeedlinkException {
+
+    public String[] sendHello() throws IOException, SeedlinkException {
         send("HELLO");
         String[] lines = new String[2];
         lines[0] = readLine();
@@ -166,7 +273,7 @@ public class SeedlinkReader {
         return lines;
     }
 
-    String readLine() throws IOException, SeedlinkException {
+    protected String readLine() throws IOException, SeedlinkException {
         StringBuffer buf = new StringBuffer();
         int next = in.read();
         while (next != '\r') {
@@ -193,19 +300,79 @@ public class SeedlinkReader {
     }
 
     /**
-     * sends a seedlink modifier command, generally should be limited to
-     * STATION, SELECT FETCH and DATA. TIME may work but has not been tested.
+     * Sends a SeedLink modifier command, generally should be limited to
+     * @param cmd the command.
+     * STATION, SELECT FETCH, DATA and TIME.
+     * @throws SeedlinkException if a SeedLink error occurs.
+     * @throws IOException if an I/O Exception occurs.
      */
     public void sendCmd(String cmd) throws IOException, SeedlinkException {
         internalSendCmd(cmd);
         sentCommands.add(cmd);
     }
 
+    /**
+     * Select the stream.
+     * @param network the network.
+     * @param station the station.
+     * @param location the location or empty if none.
+     * @param channel the channel.
+     * @throws SeedlinkException if a SeedLink error occurs.
+     * @throws IOException if an I/O Exception occurs.
+     */
+    public void select(String network, String station, String location, String channel) throws SeedlinkException, IOException {
+    	select(network, station, location, channel, DATA_TYPE);
+    }
+
+    /**
+     * Select the stream.
+     * @param network the network.
+     * @param station the station.
+     * @param location the location or empty if none.
+     * @param channel the channel.
+     * @param type the data type.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void select(String network, String station, String location, String channel, String type) throws SeedlinkException, IOException {
+        sendCmd("STATION " + station + " " + network);
+        sendCmd("SELECT " + location + channel + "." + type);
+    }
+ 
+    /**
+     * Start the data transfer.
+     * @throws SeedlinkException if a SeedLink error occurs.
+     * @throws IOException if an I/O Exception occurs.
+     */
+    public void startData() throws SeedlinkException, IOException {
+		startData(EMPTY, EMPTY);
+    }
+
+    /**
+     * Start the data transfer. Note the DMC only goes back 48 hours.
+     * The start and end time format is year,month,day,hour,minute,second,
+     * e.g. Õ2002,08,05,14,00Õ.
+     * @param start the start time or empty string if none.
+     * @param end the end time or empty string if none (ignored if no start time.)
+     * @throws SeedlinkException if a SeedLink error occurs.
+     * @throws IOException if an I/O Exception occurs.
+     */
+    public void startData(String start, String end) throws SeedlinkException, IOException {
+    	if (start.length() == 0) {
+    		sendCmd(DATA_COMMAND);
+    	} else if (end.length() == 0) {
+    		sendCmd(TIME_COMMAND + " " + start);
+    	} else {
+    		sendCmd(TIME_COMMAND + " " + start + " " + end);
+    	}
+        endHandshake(); // let 'er rip
+    }
+
     protected void internalSendCmd(String cmd) throws IOException, SeedlinkException {
         send(cmd);
         String line = readLine();
         if (!line.equals("OK")) {
-            throw new SeedlinkException("Command " + cmd + " did not return OK: "+line);
+            throw new SeedlinkException("Command " + cmd + " did not return OK");
         }
     }
 
@@ -263,6 +430,14 @@ public class SeedlinkReader {
     public int getPort() {
         return port;
     }
+
+	public static final String EMPTY = "";
+
+    public static final String DATA_TYPE = "D";
+
+    public static final String DATA_COMMAND = "DATA";
+
+    public static final String TIME_COMMAND = "TIME";
 
     public static final String DEFAULT_HOST = "rtserve.iris.washington.edu";
 

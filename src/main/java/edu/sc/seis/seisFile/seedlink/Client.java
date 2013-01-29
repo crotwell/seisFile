@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.seedlink;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,55 +14,63 @@ import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
+/**
+ * Added support for an info output file and specifying a start and end time.
+ */
 public class Client {
 
     public static void printHelp(PrintWriter out) {
         out.println("java "
                     + Client.class.getName()
-                    + " [-n net][-s sta][-l loc][-c chan][-h host][-p port][-o outfile][-m maxpackets][--timeout seconds][--verbose][--version][--help]");
+                    + " [-n net][-s sta][-l loc][-c chan][-h host][-p port][-o outfile][-m maxpackets][--timeout seconds][--verbose][--version][--help]"
+                    + " [-iout info outfile][-start start time [-end end time]]");
     }
     
     public static void main(String[] args) throws UnknownHostException, IOException, SeedlinkException,
             SeedFormatException {
+    	final String EMPTY = SeedlinkReader.EMPTY;
         String network = "TA";
         String station = "*";
-        String location = "";
+        String location = EMPTY;
         String channel = "BHZ";
         String outFile = null;
         String host = SeedlinkReader.DEFAULT_HOST;
+        String start = EMPTY;
+        String end = EMPTY;
         int port = SeedlinkReader.DEFAULT_PORT;
         int maxRecords = 10;
         int timeoutSeconds = SeedlinkReader.DEFAULT_TIMEOUT_SECOND;
-        String infoType = "";
+        String infoType = EMPTY;
+        String ioutFile = EMPTY;
         boolean verbose = false;
         DataOutputStream dos = null;
         PrintWriter out = new PrintWriter(System.out, true);
         for (int i = 0; i < args.length; i++) {
             try {
             if (args[i].equals("-n")) {
-                network = args[i + 1];
+                network = args[i + 1]; i++;
             } else if (args[i].equals("-s")) {
-                station = args[i + 1];
+                station = args[i + 1]; i++;
             } else if (args[i].equals("-l")) {
-                location = args[i + 1];
+                location = args[i + 1]; i++;
             } else if (args[i].equals("-c")) {
-                channel = args[i + 1];
+                channel = args[i + 1]; i++;
             } else if (args[i].equals("-i")) {
-                infoType = args[i + 1];
+                infoType = args[i + 1]; i++;
             } else if (args[i].equals("-h")) {
-                host = args[i + 1];
+                host = args[i + 1]; i++;
             } else if (args[i].equals("-p")) {
-                port = Integer.parseInt(args[i + 1]);
+                port = Integer.parseInt(args[i + 1]); i++;
             } else if (args[i].equals("-o")) {
-                outFile = args[i + 1];
+                outFile = args[i + 1]; i++;
                 dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
             } else if (args[i].equals("-m")) {
-                maxRecords = Integer.parseInt(args[i + 1]);
+                maxRecords = Integer.parseInt(args[i + 1]); i++;
                 if (maxRecords < -1) {
                     maxRecords = -1;
                 }
             } else if (args[i].equals("--timeout")) {
-                timeoutSeconds = Integer.parseInt(args[i + 1]);
+                timeoutSeconds = Integer.parseInt(args[i + 1]); i++;
             } else if (args[i].equals("--verbose")) {
                 verbose = true;
             } else if (args[i].equals("--version")) {
@@ -70,7 +79,19 @@ public class Client {
             } else if (args[i].equals("--help")) {
                 printHelp(out);
                 System.exit(0);
+            } else if (args[i].equals("-start")) {
+                start = args[i + 1]; i++;
+            } else if (args[i].equals("-end")) {
+                end = args[i + 1]; i++;
+            } else if (args[i].equals("-iout")) {
+            	ioutFile = args[i + 1]; i++;
+            } else {
+            	System.out.println("Unknown argument " + args[i]);
             }
+            } catch(ArrayIndexOutOfBoundsException ex) {
+                out.println("Argument requires parameter "+args[i]);
+                printHelp(out);
+                System.exit(1);
             } catch(Throwable ex) {
                 // bad arg, so print help
                 out.println("Bad argument "+args[i]);
@@ -86,26 +107,30 @@ public class Client {
             out.println("line 2 :" + lines[1]);
             out.flush();
         }
-        if (infoType != null && infoType.length() != 0) {
-            reader.info(infoType);
-            SeedlinkPacket infoPacket;
-            // ID only returns 1 packet, others might return more, careful
-            // especially if data is flowing at the same time
-            do {
-                infoPacket = reader.next();
-                infoPacket.getMiniSeed().writeASCII(out, "    ");
-                out.println("    " + new String(infoPacket.getMiniSeed().getData()));
-            } while (infoPacket.isInfoContinuesPacket());
+		if (infoType.length() != 0 || ioutFile.length() != 0)
+		{
+        	if (infoType.length() == 0) {
+        		infoType = SeedlinkReader.INFO_STREAMS;
+        	}
+        	String infoString = reader.getInfoString(infoType);
+        	if (ioutFile == null) {
+        		out.print(infoString);
+        	} else {
+        		PrintWriter pw = null;
+        		try {
+        			pw = new PrintWriter(ioutFile);
+        			pw.print(infoString);
+        		}
+        		finally {
+        			if (pw != null) {
+        				pw.close();
+        			}
+        		}
+        	}
         }
-        reader.sendCmd("STATION " + station + " " + network);
-        reader.sendCmd("SELECT " + location + channel + ".D");
-        // use one of DATA and FETCH
-        // DATA for realtime
-        // FETCH to start flow at a specific time
-        // DMC only goes back 48 hours so update date to something more recent
-        // reader.sendCmd("FETCH 0 2010,09,30,12,00,00");
-        reader.sendCmd("DATA");
-        reader.endHandshake(); // let 'er rip
+        if (maxRecords != 0) {
+        reader.select(network, station, location, channel);
+        reader.startData(start, end);
         int i = 0;
         try {
             while ((maxRecords == -1 || i < maxRecords) && reader.isConnected()) {
@@ -124,6 +149,7 @@ public class Client {
             }
         } catch(EOFException e) {
             // done I guess
+        }
         }
         if (dos != null) {
             dos.close();
