@@ -62,7 +62,7 @@ public class TraceBuf2Test {
         }
     }
 
-    void checkSplit(int numSamples, TraceBuf2 tb, List<TraceBuf2> splitList) {
+    public static void checkSplit(int numSamples, TraceBuf2 tb, List<TraceBuf2> splitList) {
         assertEquals("start for " + numSamples, tb.getStartTime(), splitList.get(0).getStartTime(), 0.000001);
         int totSamps = 0;
         int splitNum = 0;
