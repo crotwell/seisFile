@@ -12,9 +12,9 @@ import java.util.List;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
+import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.winston.TraceBuf2;
 
 public class WaveServer extends StringMSeedQueryReader {
 
