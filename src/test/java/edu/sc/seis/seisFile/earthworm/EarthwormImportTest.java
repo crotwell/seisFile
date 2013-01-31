@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.winston;
+package edu.sc.seis.seisFile.earthworm;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import org.junit.Test;
+
+import edu.sc.seis.seisFile.earthworm.EarthwormEscapeOutputStream;
+import edu.sc.seis.seisFile.earthworm.EarthwormExport;
+import edu.sc.seis.seisFile.earthworm.EarthwormImport;
+import edu.sc.seis.seisFile.earthworm.EarthwormMessage;
+import edu.sc.seis.seisFile.earthworm.TraceBuf2;
+import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 
 public class EarthwormImportTest {

@@ -12,6 +12,8 @@ import java.util.zip.Deflater;
 
 import org.junit.Test;
 
+import edu.sc.seis.seisFile.earthworm.TraceBuf2;
+
 
 public class WinstonUtilTest {
 
