@@ -25,7 +25,7 @@ public class EarthwormExport {
         this.institution = institution;
         this.heartbeatMessage = heartbeatMessage;
         initSocket();
-        heartbeater = new EarthwormHeartbeater(null, heartbeatSeconds, heartbeatMessage, institution, module);
+        setHeartbeater(new EarthwormHeartbeater(null, heartbeatSeconds, heartbeatMessage, institution, module));
     }
     
     /** mostly just for testing */
@@ -33,7 +33,7 @@ public class EarthwormExport {
         this.outStream = outStream;
         this.module = module;
         this.institution = institution;
-        heartbeater = new EarthwormHeartbeater(outStream, 10, heartbeatMessage, institution, module);
+        setHeartbeater(new EarthwormHeartbeater(outStream, 10, heartbeatMessage, institution, module));
     }
 
     public void export(TraceBuf2 traceBuf) throws IOException {
@@ -80,12 +80,12 @@ public class EarthwormExport {
     public void waitForClient() throws IOException {
         while(true) {
             try {
-                heartbeater.setOutStream(null);
+                getHeartbeater().setOutStream(null);
                 clientSocket = serverSocket.accept(); // block until client connects
                 inStream = new BufferedInputStream(clientSocket.getInputStream());
                 outStream = new EarthwormEscapeOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
-                heartbeater.setOutStream(outStream);
-                heartbeater.heartbeat();
+                getHeartbeater().setOutStream(outStream);
+                getHeartbeater().heartbeat();
                 if (verbose) {
                     System.out.println("accept connection from "+clientSocket.getInetAddress()+":"+clientSocket.getPort());
                 }
@@ -98,7 +98,7 @@ public class EarthwormExport {
     }
     
     public void closeClient() {
-        heartbeater.setOutStream(null);
+        getHeartbeater().setOutStream(null);
         if (inStream != null) {
             try {
                 inStream.close();
@@ -209,7 +209,7 @@ public class EarthwormExport {
 
     Socket clientSocket = null;
     
-    EarthwormHeartbeater heartbeater = null;
+    private EarthwormHeartbeater heartbeater = null;
 
     int port;
 
@@ -225,6 +225,17 @@ public class EarthwormExport {
 
     public void setVerbose(boolean b) {
         verbose = b;
+    }
+
+    public EarthwormHeartbeater getHeartbeater() {
+        return heartbeater;
+    }
+
+    public void setHeartbeater(EarthwormHeartbeater heartbeater) {
+        if (this.heartbeater != null) {
+            this.heartbeater.cancel();
+        }
+        this.heartbeater = heartbeater;
     }
     
 }

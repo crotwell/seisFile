@@ -178,7 +178,7 @@ public class WinstonClient {
         } else if (doExport) {
             EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
             if (heartbeatverbose) {
-                exporter.heartbeater.setVerbose(heartbeatverbose);
+                exporter.getHeartbeater().setVerbose(heartbeatverbose);
             }
             if (params.isVerbose()) {
                 exporter.setVerbose(true);
