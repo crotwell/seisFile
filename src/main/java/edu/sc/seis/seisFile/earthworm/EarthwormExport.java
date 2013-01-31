@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.winston;
+package edu.sc.seis.seisFile.earthworm;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.List;
+
+import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 public class EarthwormExport {
 

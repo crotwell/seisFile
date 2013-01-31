@@ -17,6 +17,7 @@ import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
+import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.syncFile.SyncFile;
 import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 import edu.sc.seis.seisFile.syncFile.SyncLine;
@@ -214,8 +215,12 @@ public class WinstonUtil {
         stmt.setFetchSize(Integer.MIN_VALUE);
         double y2kStart = dateToJ2kSeconds(startTime);
         double y2kEnd = dateToJ2kSeconds(endTime);
-        ResultSet rs = stmt.executeQuery("select tracebuf from " + table.getTableName() + " where (" + y2kStart
-                + " <= st AND st <= " + y2kEnd + ") OR (" + y2kStart + " <=et AND et <= " + y2kEnd + ") order by st");
+        String query = "select tracebuf from " + table.getTableName() + " where (" + y2kStart
+                + " <= st AND st <= " + y2kEnd + ") OR (" + y2kStart + " <=et AND et <= " + y2kEnd + ") order by st";
+        if (verbose) {
+            System.out.println("query: "+query);
+        }
+        ResultSet rs = stmt.executeQuery(query);
         while (rs.next()) {
             Blob tbBlob = rs.getBlob("tracebuf");
             byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());

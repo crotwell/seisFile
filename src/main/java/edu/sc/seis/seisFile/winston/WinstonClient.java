@@ -31,6 +31,8 @@ import org.apache.log4j.BasicConfigurator;
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.earthworm.EarthwormExport;
+import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 
@@ -158,6 +160,8 @@ public class WinstonClient {
             String dirName = f.getName();
             if (dirName.endsWith(".zip")) {
                 dirName = dirName.substring(0, dirName.length()-4);
+            } else {
+                dirName = dirName+"_TraceBufs";
             }
             ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
             ZipEntry tbzip = new ZipEntry(dirName+"/");
@@ -197,10 +201,8 @@ public class WinstonClient {
                     chunkBegin = lastSent.get(scnl);
                     if (chunkBegin.before(chunkEnd)) {
                         Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
-                        lastSent.put(scnl, new Date(sentEnd.getTime() + 1)); // just
-                                                                             // past
-                                                                             // last
-                                                                             // packet
+                        // sendEnd is expected time of next sample, ie 1 samp period after end time of last tb
+                        lastSent.put(scnl, new Date(sentEnd.getTime()));
                     }
                 }
                 startTime = new Date(chunkEnd.getTime() + 1);
@@ -299,7 +301,7 @@ public class WinstonClient {
                 System.out.println("...back to work at " + sdf.format(new Date()) + ".");
             }
         }
-        lastSentEnd = new Date(lastSentEnd.getTime() + (long)(1000 / sampRate) + 1);
+        lastSentEnd = new Date(lastSentEnd.getTime() + (long)(1000 / sampRate) );
         return lastSentEnd;
     }
 

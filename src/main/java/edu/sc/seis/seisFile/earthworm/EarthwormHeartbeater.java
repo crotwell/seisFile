@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.winston;
+package edu.sc.seis.seisFile.earthworm;
 
 import java.io.IOException;
 import java.util.Date;
