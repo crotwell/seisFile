@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.winston;
+package edu.sc.seis.seisFile.earthworm;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -16,6 +16,7 @@ import java.util.zip.Deflater;
 import org.junit.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
+import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;

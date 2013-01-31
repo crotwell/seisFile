@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.winston;
+package edu.sc.seis.seisFile.earthworm;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.junit.Test;
+
+import edu.sc.seis.seisFile.earthworm.EarthwormEscapeOutputStream;
 
 
 public class EarthwormExportTest {
