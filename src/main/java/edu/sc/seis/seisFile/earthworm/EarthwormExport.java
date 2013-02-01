@@ -18,8 +18,7 @@ public class EarthwormExport {
                            int module, 
                            int institution, 
                            final String heartbeatMessage, 
-                           final int heartbeatSeconds) throws UnknownHostException,
-            IOException {
+                           final int heartbeatSeconds) throws IOException {
         this.port = port;
         this.module = module;
         this.institution = institution;
@@ -55,7 +54,7 @@ public class EarthwormExport {
         }
     }
     
-    void writeTraceBuf(TraceBuf2 tb) throws IOException {
+    protected void writeTraceBuf(TraceBuf2 tb) throws IOException {
         synchronized(outStream) {
             outStream.startTransmit();
             outStream.writeThreeChars(institution);
@@ -69,7 +68,7 @@ public class EarthwormExport {
         }
     }
 
-    void initSocket() throws UnknownHostException, IOException {
+    void initSocket() throws IOException {
         if (serverSocket != null) {
             serverSocket.close();
         }
