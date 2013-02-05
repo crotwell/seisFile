@@ -19,6 +19,12 @@ public class GCFHeader {
                      int compression,
                      int num32Records) {
         super();
+        if ( ! (compression == 1 || compression == 2 || compression == 4)) {
+            throw new IllegalArgumentException("Compression of "+compression+" not allowed, must be 1,2,4");
+        }
+        if (num32Records > 1000) {
+            throw new IllegalArgumentException("max num 32 bit record is 1000, but was "+num32Records);
+        }
         this.systemId = systemId.toUpperCase();
         this.streamId = streamId.toUpperCase();
         this.dayNumber = dayNumber;
