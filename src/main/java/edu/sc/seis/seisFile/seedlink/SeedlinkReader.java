@@ -351,7 +351,7 @@ public class SeedlinkReader {
     /**
      * Start the data transfer. Note the DMC only goes back 48 hours.
      * The start and end time format is year,month,day,hour,minute,second,
-     * e.g. Õ2002,08,05,14,00Õ.
+     * e.g. '2002,08,05,14,00'.
      * @param start the start time or empty string if none.
      * @param end the end time or empty string if none (ignored if no start time.)
      * @throws SeedlinkException if a SeedLink error occurs.
