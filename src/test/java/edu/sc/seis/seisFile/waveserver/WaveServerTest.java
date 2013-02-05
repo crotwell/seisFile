@@ -13,9 +13,9 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
-import edu.sc.seis.seisFile.winston.TraceBuf2;
 import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 
