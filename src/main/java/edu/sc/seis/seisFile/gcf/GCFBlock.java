@@ -83,12 +83,8 @@ public class GCFBlock extends AbstractGCFBlock {
     }
 
     public static GCFBlock mockGCF(Date startTime, int[] data, boolean isSerial) {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.setTime(startTime);
-        int dayNum = 365 * (cal.get(Calendar.YEAR) - 1989) + 13 + 31 + 6 + cal.get(Calendar.DAY_OF_YEAR);
-        int secOfDay = cal.get(Calendar.HOUR_OF_DAY) * 3600 + cal.get(Calendar.MINUTE) * 60 + cal.get(Calendar.SECOND)
-                + 1;
-        GCFHeader h = new GCFHeader(MOCK_SYSID, MOCK_STREAMID, dayNum, secOfDay, 100, 1, data.length);
+        int[] daySec = Convert.convertTime(startTime);
+        GCFHeader h = new GCFHeader(MOCK_SYSID, MOCK_STREAMID, daySec[0], daySec[1], 100, 1, data.length);
         GCFBlock block = new GCFBlock(h, data, data[0], data[data.length - 1], isSerial);
         return block;
     }

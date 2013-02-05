@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.gcf;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import edu.iris.dmc.seedcodec.Utility;
 
@@ -77,7 +78,30 @@ public class GCFHeader {
     public int getSecondsInDay() {
         return secondsInDay;
     }
+    
+    public Date getStartAsDate() {
+        return Convert.convertTime(getDayNumber(), getSecondsInDay()).getTime();
+    }
+    
+    public Date getLastSampleTime() {
+        return new Date(getStartAsDate().getTime()+Math.round((getNumPoints()-1.0)/getSps()*1000));
+    }
 
+
+    public Date getPredictedNextStartTime() {
+        return new Date(getStartAsDate().getTime()+Math.round(((double)getNumPoints())/getSps()*1000));
+    }
+    
+    public int[] getPredictedNextStartDaySec() {
+        int day = getDayNumber();
+        int sec = getSecondsInDay()+(int)Math.round(((double)getNumPoints())/getSps());
+        if (sec >= 86400) {
+            // what about leap seconds???
+            sec -= 86400;
+            day++;
+        }
+        return new int[] { day, sec};
+    }
     
     public int getSps() {
         return sps;
