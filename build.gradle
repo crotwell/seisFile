@@ -10,6 +10,7 @@ dependencies {
     compile "org.slf4j:slf4j-api:1.6.6"
     runtime group: "org.slf4j", name: "slf4j-log4j12", version: "1.6.6", transitive: false
     compile "javax.xml.stream:stax-api:1.0-2"
+    compile 'org.rxtx:rxtx:2.1.7'
     runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.1.0"
     runtime "mysql:mysql-connector-java:5.1.21"
 }
@@ -88,10 +89,13 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('winstonclient', 'edu.sc.seis.seisFile.winston.WinstonClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('winstonexport', 'edu.sc.seis.seisFile.winston.EarthwormExport', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('earthwormImportTest', 'edu.sc.seis.seisFile.winston.EarthwormImport', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('stationxmlclient', 'edu.sc.seis.seisFile.stationxml.StationXMLClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('waveserverclient', 'edu.sc.seis.seisFile.waveserver.WaveServerClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('syncfilecompare', 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('syncfile2gmt', 'edu.sc.seis.seisFile.syncFile.GMTSyncFile', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
