@@ -67,7 +67,7 @@ public class GCFSerialOutput {
      */
     public static void main(String[] args) throws Exception {
         GCFSerialOutput fake = new GCFSerialOutput();
-        int[] fakeData = new int[800];
+        int[] fakeData = new int[200];
         Date roundNow = new Date((new Date().getTime() / 1000) * 1000);
         for (int i = 0; i < fakeData.length; i++) {
             fakeData[i] = 10 * i;
