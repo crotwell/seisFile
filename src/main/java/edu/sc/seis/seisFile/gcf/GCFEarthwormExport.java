@@ -105,7 +105,7 @@ public class GCFEarthwormExport implements Runnable {
 
     public static void main(String[] args) throws IOException {
         BasicConfigurator.configure();
-        int port = 3001;
+        int port = 3000;
         int module = 999;
         int institution = 999;
         int heartbeat = 30;
@@ -126,6 +126,9 @@ public class GCFEarthwormExport implements Runnable {
                     i++;
                 } else if (args[i].equals("--serial")) {
                     serial = args[i + 1];
+                    i++;
+                } else if (args[i].equals("--port")) {
+                    port = Integer.parseInt(args[i + 1]);
                     i++;
                 } else if (args[i].equals("--buffer")) {
                     buffer = Integer.parseInt(args[i + 1]);
