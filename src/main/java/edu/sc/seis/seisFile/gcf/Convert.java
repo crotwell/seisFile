@@ -19,6 +19,7 @@ public class Convert {
         GCFHeader h = block.getHeader();
         String[] scnl = sysId_streamIdToSCNL.get(h.getSystemId()+"_"+h.getStreamId());
         if (scnl == null) {
+            scnl = new String[4];
             scnl[0] = h.getStreamId().substring(0, 4);
             scnl[1] = "EN"+h.getStreamId().charAt(4);
             scnl[2] = "XX";
