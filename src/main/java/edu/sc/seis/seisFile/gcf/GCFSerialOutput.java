@@ -29,7 +29,7 @@ public class GCFSerialOutput {
         for (String orient : orientations) {
             
         GCFBlock block = GCFBlock.mockGCF(startTime, data, isSerial);
-        block.header.streamId = block.header.streamId.substring(0, 3)+orient+block.header.streamId.charAt(4);
+        block.header.streamId = block.header.streamId.substring(0, 4)+orient+block.header.streamId.charAt(5);
         SerialTransportLayer serialLayer;
         try {
             serialLayer = new SerialTransportLayer(seqNum, block, isSerial);
