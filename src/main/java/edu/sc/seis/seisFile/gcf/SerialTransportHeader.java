@@ -13,7 +13,6 @@ public class SerialTransportHeader {
     }
     
     public void write(DataOutputStream out) throws IOException {
-        System.out.println("STHeader "+getBlockSeqNum()+" "+getBlockSize());
         out.write(ASCII_G);
         out.write(getBlockSeqNum());
         out.writeShort(getBlockSize());
