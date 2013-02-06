@@ -55,7 +55,7 @@ public class BufferingEarthwormExport {
                 pop();
             }
             buffer.add(tb);
-            System.out.println("Offered, "+buffer.size()+" left");
+            logger.info("Offered, "+buffer.size()+" left");
             buffer.notifyAll();
         }
     }
@@ -68,7 +68,6 @@ public class BufferingEarthwormExport {
                 } catch(InterruptedException e) {}
             }
             TraceBuf2 out = buffer.remove(0);
-            System.out.println("Poped, "+buffer.size()+" left");
             return out;
         }
     }
