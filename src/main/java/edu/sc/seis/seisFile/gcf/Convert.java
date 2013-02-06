@@ -18,6 +18,12 @@ public class Convert {
     public TraceBuf2 toTraceBuf(GCFBlock block) {
         GCFHeader h = block.getHeader();
         String[] scnl = sysId_streamIdToSCNL.get(h.getSystemId()+"_"+h.getStreamId());
+        if (scnl == null) {
+            scnl[0] = h.getStreamId().substring(0, 4);
+            scnl[1] = "EN"+h.getStreamId().charAt(4);
+            scnl[2] = "XX";
+            scnl[3] = "0"+h.getStreamId().charAt(5);
+        }
         Calendar startTime = convertTime(h.getDayNumber(), h.getSecondsInDay());
         TraceBuf2 out = new TraceBuf2(0,
                                       h.getNumPoints(),
