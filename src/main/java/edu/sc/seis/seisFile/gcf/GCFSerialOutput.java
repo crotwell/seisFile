@@ -10,7 +10,9 @@ import gnu.io.UnsupportedCommOperationException;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class GCFSerialOutput {
 
@@ -20,7 +22,14 @@ public class GCFSerialOutput {
 
     public void writeGCF(Date startTime, int[] data) throws IOException {
         boolean isSerial = true;
+        List<String> orientations = new ArrayList<String>();
+        orientations.add("Z");
+        orientations.add("N");
+        orientations.add("E");
+        for (String orient : orientations) {
+            
         GCFBlock block = GCFBlock.mockGCF(startTime, data, isSerial);
+        block.header.streamId = block.header.streamId.substring(0, 3)+orient+block.header.streamId.charAt(4);
         SerialTransportLayer serialLayer;
         try {
             serialLayer = new SerialTransportLayer(seqNum, block, isSerial);
@@ -30,6 +39,7 @@ public class GCFSerialOutput {
         }
         serialLayer.write(out);
         seqNum = (seqNum + 1) % 256;
+        }
     }
     
     void connect(String portName) throws NoSuchPortException, PortInUseException, UnsupportedCommOperationException,
