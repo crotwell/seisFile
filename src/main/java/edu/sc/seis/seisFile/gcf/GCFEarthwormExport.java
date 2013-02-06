@@ -35,12 +35,13 @@ public class GCFEarthwormExport implements Runnable {
     public void run() {
         while (true) {
             try {
-                if (in == null) {
+                while (in == null) {
                     connect(serial);
                     // clean the buffer so hopefully we start at the beginning of a packet
                     while(in.available()>0) {
                         in.read();
                     }
+                    
                 }
                 SerialTransportLayer stl = SerialTransportLayer.read(in);
                 System.out.println("Serial "+stl.getHeader().getBlockSeqNum());
@@ -68,6 +69,9 @@ public class GCFEarthwormExport implements Runnable {
 
     void connect(String portName) throws NoSuchPortException, PortInUseException, UnsupportedCommOperationException,
             IOException {
+        if (serialPort != null) {
+            serialPort.close();
+        }
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
         if (portIdentifier.isCurrentlyOwned()) {
             System.out.println("Error: Port is currently in use");
