@@ -10,17 +10,23 @@ import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.log4j.BasicConfigurator;
 
 public class GCFEarthwormExport implements Runnable {
 
-    public GCFEarthwormExport(String serial, Map<String, String[]> sysId_StreamIdToSCNL, BufferingEarthwormExport export) {
+    public GCFEarthwormExport(String serial,
+                              Map<String,
+                              String[]> sysId_StreamIdToSCNL,
+                              BufferingEarthwormExport export) {
         this.serial = serial;
         this.convert = new Convert(sysId_StreamIdToSCNL);
         this.export = export;
@@ -96,11 +102,57 @@ public class GCFEarthwormExport implements Runnable {
 
     public static void main(String[] args) throws IOException {
         BasicConfigurator.configure();
-        BufferingEarthwormExport export = new BufferingEarthwormExport(3001, 999, 999, "heartbeat", 30, 100, 50);
+        int port = 3001;
+        int module = 999;
+        int institution = 999;
+        int heartbeat = 30;
+        int buffer = 1000;
+        String serial = "/dev/ttyS0";
+        String propsFilename = null;
+        Properties props = new Properties();
+        for (int i = 0; i < args.length; i++) {
+            if (i < args.length-1) {
+                if (args[i].equals("--module")) {
+                    module = Integer.parseInt(args[i + 1]);
+                    i++;
+                } else if (args[i].equals("--inst")) {
+                    institution = Integer.parseInt(args[i + 1]);
+                    i++;
+                } else if (args[i].equals("--heartbeat")) {
+                    heartbeat = Integer.parseInt(args[i + 1]);
+                    i++;
+                } else if (args[i].equals("--serial")) {
+                    serial = args[i + 1];
+                    i++;
+                } else if (args[i].equals("--buffer")) {
+                    buffer = Integer.parseInt(args[i + 1]);
+                    i++;
+                } else if (args[i].equals("-p")) {
+                    propsFilename = args[i + 1];
+                    i++;
+                }
+            }
+        }
+        BufferingEarthwormExport export = new BufferingEarthwormExport(port,
+                                                                       module,
+                                                                       institution,
+                                                                       "heartbeat",
+                                                                       heartbeat,
+                                                                       buffer,
+                                                                       50);
+        if (propsFilename != null) {
+            props.load(new BufferedReader(new FileReader(propsFilename)));
+        }
         Map<String, String[]> sysId_StreamIdToSCNL = new HashMap<String, String[]>();
-        sysId_StreamIdToSCNL.put(GCFBlock.MOCK_SYSID+"_"+GCFBlock.MOCK_STREAMID, new String[] {"TEST", "ENZ", "XX", "00"});  
+        for (String key : props.stringPropertyNames()) {
+            String[] scnl = props.getProperty(key).split("\\.");
+            if (scnl.length != 4) {
+                System.err.println("error with property "+key+"="+props.getProperty(key));
+            }
+            sysId_StreamIdToSCNL.put(key, scnl);
+        }
           
-        GCFEarthwormExport gcfExport = new GCFEarthwormExport("/dev/ttyUSB0", sysId_StreamIdToSCNL, export);
+        GCFEarthwormExport gcfExport = new GCFEarthwormExport(serial, sysId_StreamIdToSCNL, export);
         gcfExport.run();
     }
 
