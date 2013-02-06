@@ -97,7 +97,7 @@ public class GCFBlock extends AbstractGCFBlock {
 
     boolean isSerial;
 
-    public static final String MOCK_SYSID = "W1234";
+    public static final String MOCK_SYSID = "WO1234";
 
     public static final String MOCK_STREAMID = "4321Z0";
 
