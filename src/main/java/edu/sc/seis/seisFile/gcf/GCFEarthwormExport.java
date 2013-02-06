@@ -73,9 +73,9 @@ public class GCFEarthwormExport implements Runnable {
         }
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
         if (portIdentifier.isCurrentlyOwned()) {
-            System.err.println("Error: Port is currently in use");
+            logger.error("Error: Port is currently in use");
         } else {
-            System.out.println("Connecting");
+            logger.info("Connecting");
             CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
             if (commPort instanceof SerialPort) {
                 serialPort = (SerialPort)commPort;
@@ -86,7 +86,7 @@ public class GCFEarthwormExport implements Runnable {
                 in = new BufferedInputStream(serialPort.getInputStream());
                 out = new DataOutputStream(serialPort.getOutputStream());
             } else {
-                System.err.println("Error: Only serial ports are handled by this example.");
+                logger.error("Error: Only serial ports are handled by this example.");
             }
         }
     }
