@@ -38,7 +38,6 @@ public class GCFHeader {
         out.writeInt(Integer.parseInt(getSystemId(), 36));
         out.writeInt(Integer.parseInt(getStreamId(), 36));
         int dayPlusBit = (getDayNumber() << 1) + ((getSecondsInDay() >> 16) & 0x1);
-        System.out.println("day/sec bytes "+getDayNumber()+" "+dayPlusBit+" "+getSecondsInDay());
         out.writeShort(dayPlusBit);
         out.writeShort(getSecondsInDay() & 0xffff);
         out.write(0); // unused byte

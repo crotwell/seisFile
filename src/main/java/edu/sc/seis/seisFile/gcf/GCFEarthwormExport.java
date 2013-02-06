@@ -44,7 +44,6 @@ public class GCFEarthwormExport implements Runnable {
                     
                 }
                 SerialTransportLayer stl = SerialTransportLayer.read(in);
-                System.out.println("Serial "+stl.getHeader().getBlockSeqNum());
                 if (stl.getPayload() instanceof GCFBlock) {
                     TraceBuf2 tb = convert.toTraceBuf((GCFBlock)stl.getPayload());
                     export.offer(tb);
@@ -74,7 +73,7 @@ public class GCFEarthwormExport implements Runnable {
         }
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
         if (portIdentifier.isCurrentlyOwned()) {
-            System.out.println("Error: Port is currently in use");
+            System.err.println("Error: Port is currently in use");
         } else {
             System.out.println("Connecting");
             CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
@@ -87,7 +86,7 @@ public class GCFEarthwormExport implements Runnable {
                 in = new BufferedInputStream(serialPort.getInputStream());
                 out = new DataOutputStream(serialPort.getOutputStream());
             } else {
-                System.out.println("Error: Only serial ports are handled by this example.");
+                System.err.println("Error: Only serial ports are handled by this example.");
             }
         }
     }
