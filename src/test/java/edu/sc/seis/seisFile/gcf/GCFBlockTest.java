@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Date;
 
@@ -43,7 +44,7 @@ public class GCFBlockTest {
         assertEquals("GCFBlock size", GCFHeader.SIZE+(isSerial?3:4)*data.length+2*4, block.getSize());
         int expectedSize = GCFHeader.SIZE+(isSerial?3:4)*data.length+2*4;
         assertEquals("saved bytes "+GCFHeader.SIZE+" "+(isSerial?3:4)*data.length+" "+2*4+" ", expectedSize, stlBytes.length);
-        GCFBlock outBlock = (GCFBlock)AbstractGCFBlock.read(new BufferedInputStream(new ByteArrayInputStream(stlBytes)), isSerial);
+        GCFBlock outBlock = (GCFBlock)AbstractGCFBlock.read(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(stlBytes))), isSerial);
         assertEquals(block, outBlock);
     }
 }
