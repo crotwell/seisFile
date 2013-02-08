@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Date;
 
@@ -33,7 +34,7 @@ public class SerialTransportLayerTest {
         assertEquals("GCFBlock size", GCFHeader.SIZE+(isSerial?3:4)*data.length+2*4, stl.getPayload().getSize());
         int expectedSize = SerialTransportHeader.SIZE+stl.getPayload().getSize()+2;
         assertEquals("saved bytes "+SerialTransportHeader.SIZE+" "+GCFHeader.SIZE+" "+(isSerial?3:4)*data.length+" "+2*4+" "+2, expectedSize, stlBytes.length);
-        SerialTransportLayer outStl = SerialTransportLayer.read(new BufferedInputStream(new ByteArrayInputStream(stlBytes)));
+        SerialTransportLayer outStl = SerialTransportLayer.read(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(stlBytes))));
         assertEquals(stl, outStl);
     }
 
