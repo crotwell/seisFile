@@ -26,15 +26,18 @@ public class BufferingEarthwormExport {
             public void run() {
                 while (true) {
                     TraceBuf2 tb = pop();
-                    System.out.println("Try to send "+tb);
+                    logger.info("Try to send "+tb);
                     boolean notSent = true;
                     while(notSent) {
                         try {
                             export.export(tb);
                             notSent = false;
-                            while (export.inStream.available() > 0) {
+                            sentCount++;
+                            if (export.inStream.available() > 0) {
                                 // should really look for heartbeats
-                                export.inStream.read();
+                                byte[] availableInBytes = new byte[export.inStream.available()];
+                                export.inStream.read(availableInBytes);
+                                logger.info("possible heartbeat: "+availableInBytes[0]+" "+availableInBytes[1]+" "+availableInBytes[2]);
                             }
                             Thread.sleep(getSleepMillis());
                         } catch(Exception e) {
@@ -50,12 +53,14 @@ public class BufferingEarthwormExport {
     }
 
     public void offer(TraceBuf2 tb) {
+        total++;
         synchronized(buffer) {
             if (buffer.size() == maxSize) {
                 pop();
+                tossCount++;
             }
             buffer.add(tb);
-            logger.info("Offered, "+buffer.size()+" left");
+            logger.info("Offered, "+buffer.size()+" left: "+sentCount+"+"+tossCount+" = "+total);
             buffer.notifyAll();
         }
     }
@@ -78,6 +83,12 @@ public class BufferingEarthwormExport {
 
     List<TraceBuf2> buffer;
 
+    int total = 0;
+    
+    int sentCount = 0;
+    
+    int tossCount = 0;
+    
     int maxSize;
 
     long sleepMillis = 50;
