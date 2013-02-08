@@ -1,8 +1,8 @@
 package edu.sc.seis.seisFile.gcf;
 
-import java.io.DataOutputStream;
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 
 import edu.iris.dmc.seedcodec.Utility;
@@ -33,13 +33,13 @@ public class GCFHeader {
         this.num32Records = num32Records;
     }
     
-    public void write(DataOutputStream out) throws NumberFormatException, IOException {
+    public void write(DataOutput out) throws NumberFormatException, IOException {
         out.writeInt(Integer.parseInt(getSystemId(), 36));
         out.writeInt(Integer.parseInt(getStreamId(), 36));
         int dayPlusBit = (getDayNumber() << 1) + ((getSecondsInDay() >> 16) & 0x1);
         out.writeShort(dayPlusBit);
         out.writeShort(getSecondsInDay() & 0xffff);
-        out.write(0); // unused byte
+        out.writeByte(0); // unused byte
         out.write(getSps());
         out.write(getCompression());
         out.write(getNum32Records());
@@ -54,12 +54,9 @@ public class GCFHeader {
         
     }
     
-    public static GCFHeader read(InputStream in) throws IOException {
+    public static GCFHeader read(DataInput in) throws IOException {
         byte[] data = new byte[SIZE];
-        int offset = 0;
-        while (offset < SIZE) {
-            offset += in.read(data, offset, SIZE-offset);
-        }
+        in.readFully(data);
         return fromBytes(data);
     }
     

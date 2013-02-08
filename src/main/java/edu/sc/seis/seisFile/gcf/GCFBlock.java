@@ -1,6 +1,6 @@
 package edu.sc.seis.seisFile.gcf;
 
-import java.io.DataOutputStream;
+import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -54,7 +54,7 @@ public class GCFBlock extends AbstractGCFBlock {
         return out;
     }
 
-    public void write(DataOutputStream out) throws NumberFormatException, IOException {
+    public void write(DataOutput out) throws NumberFormatException, IOException {
         header.write(out);
         int diff = 0;
         out.writeInt(firstSample);
