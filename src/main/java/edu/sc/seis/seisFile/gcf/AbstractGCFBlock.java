@@ -24,8 +24,9 @@ public abstract class AbstractGCFBlock {
 
     public abstract void write(DataOutput out) throws NumberFormatException, IOException;
 
-    public static AbstractGCFBlock read(DataInput in, boolean isSerial) throws IOException {
+    public static AbstractGCFBlock read(DataInput in, boolean isSerial) throws IOException, GCFFormatException {
         GCFHeader h = GCFHeader.read(in);
+        try {
         if (h.getSps() != 0) {
             int fs = Utility.bytesToInt(in.readByte(), in.readByte(), in.readByte(), in.readByte(), false);
             int samp = fs;
@@ -56,6 +57,9 @@ public abstract class AbstractGCFBlock {
             byte[] statusBits = new byte[h.getNum32Records()*4];
             in.readFully(statusBits);
             return new GCFStatusBlock(h, new String(statusBits));
+        }
+        } catch(IOException e) {
+            throw new GCFFormatException("Problem reading GCF block body. header:"+h,  e);
         }
     }
 
