@@ -69,6 +69,14 @@ task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionCla
     into file("$buildDir/explode")
 }
 
+task tarBin(type: Tar, dependsOn: ['explodeBin' ]) {
+    def dirName = project.name+'-'+version+'-bin'
+    compression = Compression.GZIP
+    into(dirName) {
+        with binDistFiles
+    }
+}
+
 task tarDist(type: Tar, dependsOn: ['explodeDist' ]) {
     def dirName = project.name+'-'+version
     compression = Compression.GZIP
