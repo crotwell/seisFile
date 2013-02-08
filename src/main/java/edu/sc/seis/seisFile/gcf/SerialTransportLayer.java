@@ -68,7 +68,7 @@ public class SerialTransportLayer {
             byte streamIdLSB = transportData[11];
             return new SerialTransportLayer(header, gcf, checkSum, streamIdLSB);
         } catch(GCFFormatException e) {
-            throw new GCFFormatException("byte array size: "+transportData.length, e);
+            throw new GCFFormatException("byte array size: "+transportData.length+"  serialHeader:"+header, e);
         }
     }
 
