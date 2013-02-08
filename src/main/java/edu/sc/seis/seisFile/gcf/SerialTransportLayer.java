@@ -62,10 +62,14 @@ public class SerialTransportLayer {
         byte[] transportData = new byte[header.getBlockSize()];
         in.readFully(transportData);
         int checkSum = (in.readByte() << 8) + in.readByte();
-        DataInputStream gcfIn = new DataInputStream(new ByteArrayInputStream(transportData));
-        AbstractGCFBlock gcf = AbstractGCFBlock.read(gcfIn, true);
-        byte streamIdLSB = transportData[11];
-        return new SerialTransportLayer(header, gcf, checkSum, streamIdLSB);
+        try {
+            DataInputStream gcfIn = new DataInputStream(new ByteArrayInputStream(transportData));
+            AbstractGCFBlock gcf = AbstractGCFBlock.read(gcfIn, true);
+            byte streamIdLSB = transportData[11];
+            return new SerialTransportLayer(header, gcf, checkSum, streamIdLSB);
+        } catch(GCFFormatException e) {
+            throw new GCFFormatException("byte array size: "+transportData.length, e);
+        }
     }
 
     SerialTransportHeader header;
