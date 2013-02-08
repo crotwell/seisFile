@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.PropertyConfigurator;
 
 public class GCFEarthwormExport implements Runnable {
 
@@ -37,14 +38,22 @@ public class GCFEarthwormExport implements Runnable {
             try {
                 while (in == null) {
                     connect(serial);
+                    logger.info("connect, clean buffer");
                     // clean the buffer so hopefully we start at the beginning of a packet
                     while(in.available()>0) {
                         in.read();
                     }
+                    logger.info("serial buffer cleaned");
                     
                 }
                 SerialTransportLayer stl = SerialTransportLayer.read(in);
+                out.write(0x01); // ack
+                out.write(stl.getStreamIdLSB());
+                out.flush();
+                
                 if (stl.getPayload() instanceof GCFBlock) {
+                    GCFBlock block = (GCFBlock)stl.getPayload();
+                    logger.debug("GCF "+block.getHeader().getSystemId()+" "+block.getHeader().getStreamId());
                     TraceBuf2 tb = convert.toTraceBuf((GCFBlock)stl.getPayload());
                     export.offer(tb);
                 }
@@ -83,7 +92,7 @@ public class GCFEarthwormExport implements Runnable {
                                                SerialPort.DATABITS_8,
                                                SerialPort.STOPBITS_1,
                                                SerialPort.PARITY_NONE);
-                in = new BufferedInputStream(serialPort.getInputStream());
+                in = new BufferedInputStream(serialPort.getInputStream(), 4096);
                 out = new DataOutputStream(serialPort.getOutputStream());
             } else {
                 logger.error("Error: Only serial ports are handled by this example.");
@@ -102,6 +111,8 @@ public class GCFEarthwormExport implements Runnable {
     Convert convert;
 
     BufferingEarthwormExport export;
+    
+    public static final String GCF_CHAN_PROP = "gcf2ew.channel.";
 
     public static void main(String[] args) throws IOException {
         BasicConfigurator.configure();
@@ -139,6 +150,12 @@ public class GCFEarthwormExport implements Runnable {
                 }
             }
         }
+        if (propsFilename != null) {
+            props.load(new BufferedReader(new FileReader(propsFilename)));
+            PropertyConfigurator.configure(props);
+        }
+        logger.info("Start: port="+port+" mod="+module+" inst="+institution
+                    +" heartbeat="+heartbeat+" serial="+serial+" buffer="+buffer);
         BufferingEarthwormExport export = new BufferingEarthwormExport(port,
                                                                        module,
                                                                        institution,
@@ -146,16 +163,16 @@ public class GCFEarthwormExport implements Runnable {
                                                                        heartbeat,
                                                                        buffer,
                                                                        50);
-        if (propsFilename != null) {
-            props.load(new BufferedReader(new FileReader(propsFilename)));
-        }
         Map<String, String[]> sysId_StreamIdToSCNL = new HashMap<String, String[]>();
         for (String key : props.stringPropertyNames()) {
-            String[] scnl = props.getProperty(key).split("\\.");
-            if (scnl.length != 4) {
-                System.err.println("error with property "+key+"="+props.getProperty(key));
+            if (key.startsWith(GCF_CHAN_PROP)) {
+                String sys_streamid = key.substring(GCF_CHAN_PROP.length());
+                String[] scnl = props.getProperty(key).split("\\.");
+                if (scnl.length != 4) {
+                    System.err.println("error with property "+key+"="+props.getProperty(key));
+                }
+                sysId_StreamIdToSCNL.put(sys_streamid, scnl);
             }
-            sysId_StreamIdToSCNL.put(key, scnl);
         }
           
         GCFEarthwormExport gcfExport = new GCFEarthwormExport(serial, sysId_StreamIdToSCNL, export);
