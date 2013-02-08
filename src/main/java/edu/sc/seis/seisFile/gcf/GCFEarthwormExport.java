@@ -7,22 +7,27 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.TooManyListenersException;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
 
-public class GCFEarthwormExport implements Runnable {
+public class GCFEarthwormExport implements SerialPortEventListener {
 
     public GCFEarthwormExport(String serial,
                               Map<String,
@@ -33,54 +38,55 @@ public class GCFEarthwormExport implements Runnable {
         this.export = export;
     }
 
-    public void run() {
-        while (true) {
-            try {
-                while (in == null) {
-                    connect(serial);
-                    logger.info("connect, clean buffer");
-                    // clean the buffer so hopefully we start at the beginning of a packet
-                    while(in.available()>0) {
-                        in.read();
-                    }
-                    logger.info("serial buffer cleaned");
-                    
-                }
-                SerialTransportLayer stl = SerialTransportLayer.read(in);
-                out.write(0x01); // ack
-                out.write(stl.getStreamIdLSB());
-                out.flush();
-                
-                if (stl.getPayload() instanceof GCFBlock) {
-                    GCFBlock block = (GCFBlock)stl.getPayload();
-                    logger.debug("GCF "+block.getHeader().getSystemId()+" "+block.getHeader().getStreamId());
-                    TraceBuf2 tb = convert.toTraceBuf((GCFBlock)stl.getPayload());
-                    export.offer(tb);
-                }
-            } catch(Exception e) {
-                logger.error("Unable to connect to " + serial, e);
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch(IOException e1) {
-                        // oh well
-                    }
-                }
-                in = null;
-                serialPort.close();
-                try {
-                    Thread.sleep(2000);
-                } catch(InterruptedException e1) {}
-            }
+    @Override
+    public void serialEvent(SerialPortEvent arg0) {
+        SerialTransportLayer stl;
+        try {
+            stl = SerialTransportLayer.read(in);
+        out.write(0x01); // ack
+        out.write(stl.getStreamIdLSB());
+        out.flush();
+        
+        if (stl.getPayload() instanceof GCFBlock) {
+            GCFBlock block = (GCFBlock)stl.getPayload();
+            logger.debug("GCF "+block.getHeader().getSystemId()+" "+block.getHeader().getStreamId());
+            TraceBuf2 tb = convert.toTraceBuf((GCFBlock)stl.getPayload());
+            export.offer(tb);
+        }
+        } catch(GCFFormatException e) {
+            handleError(e);
+        } catch(IOException e) {
+            handleError(e);
         }
     }
+    
+    public void handleError(Throwable t) {
+        logger.error("error, reconnecting serial port", t);
+        try {
+            in.close();
+        } catch(IOException e1) {}
+        in = null;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                connect();
+                }catch (Throwable tt) {
+                    try {Thread.sleep(2000);}catch(Exception e) {}
+                    handleError(tt);
+                }
+            }
+        }, 100);
+    }
 
-    void connect(String portName) throws NoSuchPortException, PortInUseException, UnsupportedCommOperationException,
-            IOException {
+    void connect() throws NoSuchPortException, PortInUseException, UnsupportedCommOperationException,
+            IOException, TooManyListenersException {
         if (serialPort != null) {
             serialPort.close();
+            try {Thread.sleep(500);}catch(Exception e) {}
         }
-        CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+        CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(serial);
         if (portIdentifier.isCurrentlyOwned()) {
             logger.error("Error: Port is currently in use");
         } else {
@@ -92,8 +98,17 @@ public class GCFEarthwormExport implements Runnable {
                                                SerialPort.DATABITS_8,
                                                SerialPort.STOPBITS_1,
                                                SerialPort.PARITY_NONE);
-                in = new BufferedInputStream(serialPort.getInputStream(), 4096);
+                logger.info("serial in buffer"+serialPort.getInputBufferSize());
+                in = new DataInputStream(new BufferedInputStream(serialPort.getInputStream(), 4096));
                 out = new DataOutputStream(serialPort.getOutputStream());
+                logger.info("connect, clean buffer");
+                // clean the buffer so hopefully we start at the beginning of a packet
+                while(in.available()>0) {
+                    in.read();
+                }
+                logger.info("serial buffer cleaned");
+                serialPort.addEventListener(this);
+                serialPort.notifyOnDataAvailable(true);
             } else {
                 logger.error("Error: Only serial ports are handled by this example.");
             }
@@ -102,7 +117,7 @@ public class GCFEarthwormExport implements Runnable {
     SerialPort serialPort;
     int seqNum = 0;
 
-    BufferedInputStream in;
+    DataInputStream in;
 
     DataOutputStream out;
 
@@ -114,7 +129,7 @@ public class GCFEarthwormExport implements Runnable {
     
     public static final String GCF_CHAN_PROP = "gcf2ew.channel.";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, TooManyListenersException {
         BasicConfigurator.configure();
         int port = 3000;
         int module = 999;
@@ -176,7 +191,12 @@ public class GCFEarthwormExport implements Runnable {
         }
           
         GCFEarthwormExport gcfExport = new GCFEarthwormExport(serial, sysId_StreamIdToSCNL, export);
-        gcfExport.run();
+        gcfExport.connect();
+        while(true) {
+            try {
+                Thread.sleep(10000);
+            } catch(InterruptedException e) {}
+        }
     }
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(GCFEarthwormExport.class);
