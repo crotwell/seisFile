@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import edu.iris.dmc.seedcodec.Utility;
+
 public class SerialTransportHeader {
 
     public SerialTransportHeader(int blockSeqNum, int blockSize) {
@@ -21,8 +23,9 @@ public class SerialTransportHeader {
 
     public static SerialTransportHeader fromBytes(byte[] data, int offset) throws GCFFormatException {
         if (data[offset] == 'G') {
-            SerialTransportHeader header = new SerialTransportHeader(data[offset + 1], (data[offset + 2] << 8)
-                    + data[offset + 3]);
+            SerialTransportHeader header = new SerialTransportHeader(data[offset + 1], Utility.bytesToInt(data[offset + 2],
+                                                                                                          data[offset + 3],
+                                                                                                          false));
             return header;
         } else {
             throw new GCFFormatException("serial transport header must start with 'G'");
@@ -44,6 +47,10 @@ public class SerialTransportHeader {
 
     public int getBlockSize() {
         return blockSize;
+    }
+    
+    public String toString() {
+        return ASCII_G+" "+ getBlockSeqNum()+" "+getBlockSize();
     }
 
     int blockSeqNum;
