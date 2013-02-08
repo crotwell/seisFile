@@ -121,6 +121,10 @@ public class GCFHeader {
     public int getNumPoints() {
         return getNum32Records()*getCompression();
     }
+    
+    public String toString() {
+        return "GCFHeader: "+systemId+" "+streamId+" "+dayNumber+" "+secondsInDay+" "+sps+" "+compression+" "+num32Records;
+    }
 
     String systemId;
     String streamId;
