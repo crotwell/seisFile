@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.gcf;
 
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +13,9 @@ public class SerialTransportHeader {
         this.blockSize = blockSize;
     }
     
-    public void write(DataOutputStream out) throws IOException {
-        out.write(ASCII_G);
-        out.write(getBlockSeqNum());
+    public void write(DataOutput out) throws IOException {
+        out.writeByte(ASCII_G);
+        out.writeByte(getBlockSeqNum());
         out.writeShort(getBlockSize());
     }
 
@@ -26,13 +27,6 @@ public class SerialTransportHeader {
         } else {
             throw new GCFFormatException("serial transport header must start with 'G'");
         }
-    }
-    
-
-    public static SerialTransportHeader read(InputStream in) throws GCFFormatException, IOException {
-        int gByte = in.read();
-        if (gByte != 'G') { throw new GCFFormatException("First byte must be 'G' but was "+gByte);}
-        return new SerialTransportHeader(in.read(), (in.read() << 8) + in.read());
     }
 
     public byte[] toBytes() {
