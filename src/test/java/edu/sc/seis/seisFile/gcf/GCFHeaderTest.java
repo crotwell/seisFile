@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -51,7 +52,7 @@ public class GCFHeaderTest {
         System.out.println();
         */
         assertEquals("saved bytes ", GCFHeader.SIZE, stlBytes.length);
-        GCFHeader outHeader = GCFHeader.read(new BufferedInputStream(new ByteArrayInputStream(stlBytes)));
+        GCFHeader outHeader = GCFHeader.read(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(stlBytes))));
         assertEquals("systemid equals", block.getHeader().getSystemId(), outHeader.getSystemId());
         assertEquals("streamid equals", block.getHeader().getStreamId(), outHeader.getStreamId());
         assertEquals("day number equals", block.getHeader().getDayNumber(), outHeader.getDayNumber());
