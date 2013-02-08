@@ -18,14 +18,15 @@ public class SerialTransportLayer {
     }
 
     public SerialTransportLayer(SerialTransportHeader header, AbstractGCFBlock payload) {
-        this(header, payload, 0);
+        this(header, payload, 0, 0);
     }
 
-    public SerialTransportLayer(SerialTransportHeader header, AbstractGCFBlock payload, int checksum) {
+    public SerialTransportLayer(SerialTransportHeader header, AbstractGCFBlock payload, int checksum, int streamIdLSB) {
         super();
         this.header = header;
         this.payload = payload;
         this.checksum = checksum;
+        this.streamIdLSB = streamIdLSB;
     }
 
     public void write(DataOutputStream out) throws IOException {
@@ -47,6 +48,11 @@ public class SerialTransportLayer {
         return payload;
     }
 
+    
+    public int getStreamIdLSB() {
+        return streamIdLSB;
+    }
+
     public static SerialTransportLayer read(BufferedInputStream in) throws GCFFormatException, IOException {
         SerialTransportHeader header = SerialTransportHeader.read(in);
         byte[] transportData = new byte[header.getBlockSize()];
@@ -57,7 +63,8 @@ public class SerialTransportLayer {
         int checkSum = (in.read() << 8) + in.read();
         ByteArrayInputStream gcfIn = new ByteArrayInputStream(transportData);
         AbstractGCFBlock gcf = AbstractGCFBlock.read(gcfIn, true);
-        return new SerialTransportLayer(header, gcf, checkSum);
+        byte streamIdLSB = transportData[11];
+        return new SerialTransportLayer(header, gcf, checkSum, streamIdLSB);
     }
 
     SerialTransportHeader header;
@@ -65,6 +72,8 @@ public class SerialTransportLayer {
     int checksum;
 
     AbstractGCFBlock payload;
+    
+    int streamIdLSB;
 
     @Override
     public int hashCode() {
