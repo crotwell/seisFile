@@ -10,7 +10,6 @@ import edu.iris.dmc.seedcodec.Utility;
 
 public class GCFHeader {
 
-
     public GCFHeader(String systemId,
                      String streamId,
                      int dayNumber,

@@ -3,9 +3,7 @@ package edu.sc.seis.seisFile.gcf;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class GCFBlock extends AbstractGCFBlock {
 
@@ -44,6 +42,14 @@ public class GCFBlock extends AbstractGCFBlock {
         out[0] = getFirstSample();
         for (int i = 1; i < out.length; i++) {
             out[i] = out[i - 1] + diffData[i];
+        }
+        if (out[out.length-1] != getLastSample()) {
+            logger.error("bad last data point match: expected "+getLastSample()+" but was "+out[out.length-1]);
+            logger.error("first: "+getFirstSample());
+            for (int i = 0; i < diffData.length; i++) {
+                logger.error(i+" "+diffData[i]+" "+out[i]);
+            }
+            
         }
         return out;
     }
@@ -131,4 +137,7 @@ public class GCFBlock extends AbstractGCFBlock {
             return false;
         return true;
     }
+
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(GCFBlock.class);
+
 }

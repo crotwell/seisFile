@@ -29,32 +29,23 @@ public abstract class AbstractGCFBlock {
             int samp = fs;
             int[] d = new int[h.getNumPoints()];
             d[0] = samp;
-            int diff;
             if (h.getCompression() == 1 && isSerial) {
                 // three bytes per 32 bit record over serial line
                 // msb dropped as it is always zero for 24 bit digitizer
                 for (int i = 0; i < d.length; i++) {
-                    diff = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), false);
-                    samp += diff;
-                    d[i] = samp;
+                    d[i] = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), false);
                 }
             } else if (h.getCompression() == 1 && !isSerial) {
                 for (int i = 0; i < d.length; i++) {
-                    diff = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), (byte)in.read(), false);
-                    samp += diff;
-                    d[i] = samp;
+                    d[i] = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), (byte)in.read(), false);
                 }
             } else if (h.getCompression() == 2) {
                 for (int i = 0; i < d.length; i++) {
-                    diff = Utility.bytesToInt((byte)in.read(), (byte)in.read(), false);
-                    samp += diff;
-                    d[i] = samp;
+                    d[i] = Utility.bytesToInt((byte)in.read(), (byte)in.read(), false);
                 }
             } else if (h.getCompression() == 4) {
                 for (int i = 0; i < d.length; i++) {
-                    diff = in.read();
-                    samp += diff;
-                    d[i] = samp;
+                    d[i] = in.read();
                 }
             }
             int ls = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), (byte)in.read(), false);
