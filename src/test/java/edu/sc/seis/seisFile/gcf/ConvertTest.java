@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.gcf;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,8 +29,15 @@ public class ConvertTest {
         int[] data = new int[200];
         for (int i = 0; i < data.length; i++) {
             data[i] = i;
+            if (i % 10 > 4) {
+                data[i] *= -1;
+            }
         }
-        GCFBlock mock = GCFBlock.mockGCF(Convert.convertTime(0,  0).getTime(), data, isSerial);
+        int[] diffData = new int[data.length];
+        for (int i = 1; i < data.length; i++) {
+            diffData[i] = data[i]-data[i-1];
+        }
+        GCFBlock mock = GCFBlock.mockGCF(Convert.convertTime(0,  0).getTime(), diffData, isSerial);
         Map<String, String[]> sysId_StreamIdToSCNL = new HashMap<String, String[]>();
         sysId_StreamIdToSCNL.put(GCFBlock.MOCK_SYSID+"_"+GCFBlock.MOCK_STREAMID, new String[] {"TEST", "ENZ", "XX", "00"});  
         
@@ -40,7 +48,7 @@ public class ConvertTest {
         assertEquals("end", mock.getHeader().getLastSampleTime(), tb.getEndDate());
         assertEquals("npts", mock.getHeader().getNumPoints(), tb.getNumSamples());
         assertEquals("sps", mock.getHeader().getSps(), tb.getSampleRate(), 0.0001);
-        
+        assertArrayEquals(data, tb.getIntData());
     }
     
     @Test
