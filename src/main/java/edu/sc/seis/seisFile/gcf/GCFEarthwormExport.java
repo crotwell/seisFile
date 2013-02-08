@@ -77,7 +77,7 @@ public class GCFEarthwormExport implements SerialPortEventListener {
                     handleError(tt);
                 }
             }
-        }, 100);
+        }, 10);
     }
 
     void connect() throws NoSuchPortException, PortInUseException, UnsupportedCommOperationException,
