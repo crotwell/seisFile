@@ -1,5 +1,7 @@
 package edu.sc.seis.seisFile.gcf;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,12 +22,12 @@ public abstract class AbstractGCFBlock {
 
     public abstract int getSize();
 
-    public abstract void write(DataOutputStream out) throws NumberFormatException, IOException;
+    public abstract void write(DataOutput out) throws NumberFormatException, IOException;
 
-    public static AbstractGCFBlock read(InputStream in, boolean isSerial) throws IOException {
+    public static AbstractGCFBlock read(DataInput in, boolean isSerial) throws IOException {
         GCFHeader h = GCFHeader.read(in);
         if (h.getSps() != 0) {
-            int fs = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), (byte)in.read(), false);
+            int fs = Utility.bytesToInt(in.readByte(), in.readByte(), in.readByte(), in.readByte(), false);
             int samp = fs;
             int[] d = new int[h.getNumPoints()];
             d[0] = samp;
@@ -33,29 +35,26 @@ public abstract class AbstractGCFBlock {
                 // three bytes per 32 bit record over serial line
                 // msb dropped as it is always zero for 24 bit digitizer
                 for (int i = 0; i < d.length; i++) {
-                    d[i] = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), false);
+                    d[i] = Utility.bytesToInt(in.readByte(), in.readByte(), in.readByte(), false);
                 }
             } else if (h.getCompression() == 1 && !isSerial) {
                 for (int i = 0; i < d.length; i++) {
-                    d[i] = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), (byte)in.read(), false);
+                    d[i] = Utility.bytesToInt(in.readByte(), in.readByte(), in.readByte(), in.readByte(), false);
                 }
             } else if (h.getCompression() == 2) {
                 for (int i = 0; i < d.length; i++) {
-                    d[i] = Utility.bytesToInt((byte)in.read(), (byte)in.read(), false);
+                    d[i] = Utility.bytesToInt(in.readByte(), in.readByte(), false);
                 }
             } else if (h.getCompression() == 4) {
                 for (int i = 0; i < d.length; i++) {
-                    d[i] = in.read();
+                    d[i] = Utility.bytesToInt(in.readByte()); 
                 }
             }
-            int ls = Utility.bytesToInt((byte)in.read(), (byte)in.read(), (byte)in.read(), (byte)in.read(), false);
+            int ls = Utility.bytesToInt(in.readByte(), in.readByte(), in.readByte(), in.readByte(), false);
             return new GCFBlock(h, d, fs, ls, isSerial);
         } else {
             byte[] statusBits = new byte[h.getNum32Records()*4];
-            int offset = 0;
-            while (offset < statusBits.length) {
-                in.read(statusBits, offset, statusBits.length-offset);
-            }
+            in.readFully(statusBits);
             return new GCFStatusBlock(h, new String(statusBits));
         }
     }

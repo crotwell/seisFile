@@ -2,6 +2,8 @@ package edu.sc.seis.seisFile.gcf;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -53,15 +55,14 @@ public class SerialTransportLayer {
         return streamIdLSB;
     }
 
-    public static SerialTransportLayer read(BufferedInputStream in) throws GCFFormatException, IOException {
-        SerialTransportHeader header = SerialTransportHeader.read(in);
+    public static SerialTransportLayer read(DataInput in) throws GCFFormatException, IOException {
+        byte[] headerBytes = new byte[4];
+        in.readFully(headerBytes);
+        SerialTransportHeader header = SerialTransportHeader.fromBytes(headerBytes, 0);
         byte[] transportData = new byte[header.getBlockSize()];
-        int offset = 0;
-        while (offset < transportData.length) {
-            offset += in.read(transportData, offset, transportData.length - offset);
-        }
-        int checkSum = (in.read() << 8) + in.read();
-        ByteArrayInputStream gcfIn = new ByteArrayInputStream(transportData);
+        in.readFully(transportData);
+        int checkSum = (in.readByte() << 8) + in.readByte();
+        DataInputStream gcfIn = new DataInputStream(new ByteArrayInputStream(transportData));
         AbstractGCFBlock gcf = AbstractGCFBlock.read(gcfIn, true);
         byte streamIdLSB = transportData[11];
         return new SerialTransportLayer(header, gcf, checkSum, streamIdLSB);

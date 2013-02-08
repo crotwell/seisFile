@@ -1,8 +1,7 @@
 package edu.sc.seis.seisFile.gcf;
 
-import java.io.DataOutputStream;
+import java.io.DataOutput;
 import java.io.IOException;
-import java.io.InputStream;
 
 
 public class GCFStatusBlock extends AbstractGCFBlock {
@@ -19,7 +18,7 @@ public class GCFStatusBlock extends AbstractGCFBlock {
         return  size;
     }
     
-    public void write(DataOutputStream out) throws NumberFormatException, IOException {
+    public void write(DataOutput out) throws NumberFormatException, IOException {
         header.write(out);
         out.writeChars(status);
         for (int i = 0; i < 4 - status.length() % 4; i++) {
