@@ -49,7 +49,6 @@ public class GCFEarthwormExport implements SerialPortEventListener {
         
         if (stl.getPayload() instanceof GCFBlock) {
             GCFBlock block = (GCFBlock)stl.getPayload();
-            logger.debug("GCF "+block.getHeader().getSystemId()+" "+block.getHeader().getStreamId());
             TraceBuf2 tb = convert.toTraceBuf((GCFBlock)stl.getPayload());
             export.offer(tb);
         }
