@@ -23,7 +23,7 @@ public class ConvertTest {
 
     
     @Test
-    public void testToTraceBuf() {
+    public void testToTraceBuf() throws GCFFormatException {
 
         boolean isSerial = true;
         int[] data = new int[200];
