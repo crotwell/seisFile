@@ -1,6 +1,5 @@
 package edu.sc.seis.seisFile.gcf;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -15,7 +14,7 @@ public class Convert {
         this.sysId_streamIdToSCNL = sysId_streamIdToSCNL;
     }
     
-    public TraceBuf2 toTraceBuf(GCFBlock block) {
+    public TraceBuf2 toTraceBuf(GCFBlock block) throws GCFFormatException {
         GCFHeader h = block.getHeader();
         String[] scnl = sysId_streamIdToSCNL.get(h.getSystemId()+"_"+h.getStreamId());
         if (scnl == null) {
