@@ -37,19 +37,14 @@ public class GCFBlock extends AbstractGCFBlock {
         return lastSample;
     }
 
-    public int[] getUndiffData() {
+    public int[] getUndiffData() throws GCFFormatException {
         int[] out = new int[getHeader().getNumPoints()];
         out[0] = getFirstSample();
         for (int i = 1; i < out.length; i++) {
             out[i] = out[i - 1] + diffData[i];
         }
         if (out[out.length-1] != getLastSample()) {
-            logger.error("bad last data point match: expected "+getLastSample()+" but was "+out[out.length-1]);
-            logger.error("first: "+getFirstSample());
-            for (int i = 0; i < diffData.length; i++) {
-                logger.error(i+" "+diffData[i]+" "+out[i]);
-            }
-            
+            throw new GCFFormatException("bad last data point match: expected "+getLastSample()+" but was "+out[out.length-1]);
         }
         return out;
     }
