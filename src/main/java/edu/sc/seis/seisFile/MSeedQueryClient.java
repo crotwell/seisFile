@@ -17,6 +17,9 @@ public abstract class MSeedQueryClient {
     public MSeedQueryClient(String[] args) throws SeisFileException {
         BasicConfigurator.configure();
         params = new QueryParams(args);
+        if (params.getUnknownArgs().size() != 0) {
+            throw new SeisFileException("Unknown arg: "+params.getUnknownArgs().get(0));
+        }
         Logger.getRootLogger().setLevel(Level.WARN);
         if (params.isVerbose()) {
             Logger.getLogger("root").setLevel(Level.DEBUG);

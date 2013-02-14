@@ -7,9 +7,11 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class QueryParams {
@@ -56,6 +58,8 @@ public class QueryParams {
                 printVersion = true;
             } else if (args[i].equals("--help")) {
                 printHelp = true;
+            } else {
+                unknownArgs.add(args[i]);
             }
         }
         if (args.length == 0) {
@@ -107,6 +111,8 @@ public class QueryParams {
     
     QueryParams defaults;
 
+    List<String> unknownArgs = new ArrayList<String>();
+    
     public String getNetwork() {
         if (network == null && defaults != null) {
             return defaults.getNetwork();
@@ -239,4 +245,11 @@ public class QueryParams {
     public void setTimed(boolean timed) {
         this.timed = timed;
     }
+
+    
+    public List<String> getUnknownArgs() {
+        return unknownArgs;
+    }
+    
+    
 }

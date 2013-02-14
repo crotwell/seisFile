@@ -17,13 +17,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.BasicConfigurator;
@@ -41,49 +41,47 @@ public class WinstonClient {
     protected WinstonClient(String[] args) throws SeisFileException, FileNotFoundException, IOException {
         QueryParams defaults = new QueryParams(new String[] {"-n", "*", "-s", "*", "-l", "*", "-c", "*"});
         params = new QueryParams(args, defaults);
+        List<String> leftOverArgs = params.getUnknownArgs();
         winstonConfig.put("winston.driver", WinstonUtil.MYSQL_DRIVER);
         winstonConfig.put("winston.prefix", "W");
         winstonConfig.put("winston.url", "jdbc:mysql://localhost/?user=wwsuser&password=");
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("--sync")) {
+        Iterator<String> it = leftOverArgs.iterator();
+        while (it.hasNext()) {
+            String nextArg = it.next();
+            if (nextArg.equals("--sync")) {
                 doSync = true;
-            } else if (args[i].equals("--steim1")) {
+            } else if (nextArg.equals("--steim1")) {
                 doSteim1 = true;
-            } else if (args[i].equals("--heartbeatverbose")) {
+            } else if (nextArg.equals("--heartbeatverbose")) {
                 heartbeatverbose = true;
-            } else if (args[i].equals("--tbzip")) {
+            } else if (nextArg.equals("--tbzip")) {
                 doTbZip = true;
-            } else if (i < args.length - 1) {
+            } else if (it.hasNext()) {
                 // arg with value
-                if (args[i].equals("-p")) {
-                    winstonConfig.load(new BufferedReader(new FileReader(args[i + 1])));
-                    i++;
-                } else if (args[i].equals("-u")) {
-                    winstonConfig.put("winston.url", args[i + 1]);
-                    i++;
-                } else if (args[i].equals("--recLen")) {
-                    recordSize = Integer.parseInt(args[i + 1]);
-                    i++;
-                } else if (args[i].equals("--export")) {
+                if (nextArg.equals("-p")) {
+                    winstonConfig.load(new BufferedReader(new FileReader(it.next())));
+                } else if (nextArg.equals("-u")) {
+                    winstonConfig.put("winston.url", it.next());
+                } else if (nextArg.equals("--recLen")) {
+                    recordSize = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--export")) {
                     doExport = true;
-                    exportPort = Integer.parseInt(args[i + 1]);
-                    i++;
-                } else if (args[i].equals("--chunk")) {
-                    chunkSeconds = Integer.parseInt(args[i + 1]);
-                    i++;
-                } else if (args[i].equals("--module")) {
-                    module = Integer.parseInt(args[i + 1]);
-                    i++;
-                } else if (args[i].equals("--inst")) {
-                    institution = Integer.parseInt(args[i + 1]);
-                    i++;
-                } else if (args[i].equals("--heartbeat")) {
-                    heartbeat = Integer.parseInt(args[i + 1]);
-                    i++;
-                } else if (args[i].equals("--sleepmillis")) {
-                    sleepMillis = Integer.parseInt(args[i + 1]);
-                    i++;
+                    exportPort = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--chunk")) {
+                    chunkSeconds = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--module")) {
+                    module = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--inst")) {
+                    institution = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--heartbeat")) {
+                    heartbeat = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--sleepmillis")) {
+                    sleepMillis = Integer.parseInt(it.next());
+                } else {
+                    throw new IllegalArgumentException("Unknown argument: "+nextArg);
                 }
+            } else {
+                throw new IllegalArgumentException("Unknown argument: "+nextArg);
             }
         }
         if (!doSync && params.getOutFile() == null) {
