@@ -80,7 +80,12 @@ public class EarthwormExport {
         while(true) {
             try {
                 getHeartbeater().setOutStream(null);
+                if (serverSocket == null) {
+                    initSocket();
+                }
+                logger.info("Wait for client: "+serverSocket.getLocalSocketAddress()+" "+serverSocket.getLocalPort());
                 clientSocket = serverSocket.accept(); // block until client connects
+                logger.info("Connections from: "+clientSocket.getRemoteSocketAddress()+" "+clientSocket.getPort());
                 inStream = new BufferedInputStream(clientSocket.getInputStream());
                 outStream = new EarthwormEscapeOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
                 getHeartbeater().setOutStream(outStream);
@@ -237,4 +242,6 @@ public class EarthwormExport {
         this.heartbeater = heartbeater;
     }
     
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EarthwormExport.class);
+
 }
