@@ -40,7 +40,7 @@ public class BufferingEarthwormExport {
                                 logger.info("possible heartbeat: "+availableInBytes[0]+" "+availableInBytes[1]+" "+availableInBytes[2]);
                             }
                             Thread.sleep(getSleepMillis());
-                        } catch(Exception e) {
+                        } catch(Throwable e) {
                             export.closeClient();
                             logger.error("problem sending " + tb, e);
                         }
