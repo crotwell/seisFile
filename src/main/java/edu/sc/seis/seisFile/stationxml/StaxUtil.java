@@ -25,7 +25,7 @@ public class StaxUtil {
     public static String pullText(XMLEventReader reader, String elementName) throws XMLStreamException,
             StationXMLException {
         String outText = "";
-        XMLEvent startElement = reader.nextEvent();
+        XMLEvent startElement = StaxUtil.expectStartElement(elementName, reader);
         if (startElement.isStartElement() && startElement.asStartElement().getName().getLocalPart().equals(elementName)) {
             while (reader.hasNext()) {
                 XMLEvent e = reader.nextEvent();
