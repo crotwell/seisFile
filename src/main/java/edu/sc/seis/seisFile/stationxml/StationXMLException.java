@@ -1,7 +1,9 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import edu.sc.seis.seisFile.SeisFileException;
 
-public class StationXMLException extends Exception {
+
+public class StationXMLException extends SeisFileException {
 
     public StationXMLException() {
     }
