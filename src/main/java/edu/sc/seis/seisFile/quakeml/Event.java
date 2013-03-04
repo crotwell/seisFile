@@ -18,6 +18,12 @@ public class Event {
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.event, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
+        int feRegion = 0;
+        try {
+            feRegion = Integer.parseInt(StaxUtil.pullAttribute(startE, "FEcode"));
+        } catch (SeisFileException e) {
+            // use default
+        }
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -102,6 +108,11 @@ public class Event {
         return magnitudeList;
     }
 
+    
+    public int getIrisFECode() {
+        return irisFECode;
+    }
+
     String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
 
     String publicId;
@@ -115,6 +126,8 @@ public class Event {
     List<FocalMechanism> focalMechanismList = new ArrayList<FocalMechanism>();
 
     List<Amplitude> amplitudeList = new ArrayList<Amplitude>();
+    
+    int irisFECode = -1;
 
     /*
      * List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
