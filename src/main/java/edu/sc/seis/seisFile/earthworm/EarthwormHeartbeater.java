@@ -74,6 +74,7 @@ public class EarthwormHeartbeater extends TimerTask {
     public void heartbeat() throws IOException {
         EarthwormEscapeOutputStream outStreamTmp = outStream;
         if (outStreamTmp == null) {
+            logger.info("outStream is null, skipping heartbeat");
             return;
         }
         synchronized(outStreamTmp) {
@@ -101,4 +102,6 @@ public class EarthwormHeartbeater extends TimerTask {
     int module;
     
     boolean verbose = false;
+    
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EarthwormHeartbeater.class);
 }
