@@ -62,13 +62,13 @@ public class EarthwormExport {
             outStream.writeThreeChars(EarthwormMessage.MESSAGE_TYPE_TRACEBUF2);
             DataOutputStream dos = new DataOutputStream(outStream);
             tb.write(dos);
-            dos.flush();
             outStream.endTransmit();
             outStream.flush();
         }
     }
 
     void initSocket() throws IOException {
+        logger.info("init socket on port: "+port);
         if (serverSocket != null) {
             serverSocket.close();
         }
@@ -90,19 +90,24 @@ public class EarthwormExport {
                 outStream = new EarthwormEscapeOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
                 getHeartbeater().setOutStream(outStream);
                 getHeartbeater().heartbeat();
+                logger.info("initial heartbeat successful");
                 if (verbose) {
                     System.out.println("accept connection from "+clientSocket.getInetAddress()+":"+clientSocket.getPort());
                 }
                 return;
             } catch(SocketTimeoutException e) {
                 // try again...
+                logger.info("Socket timeout, close and try again");
                 closeClient();
             }
         }
     }
     
     public void closeClient() {
-        getHeartbeater().setOutStream(null);
+        logger.info("close client connection");
+        synchronized(outStream) {
+            getHeartbeater().setOutStream(null);
+        }
         if (inStream != null) {
             try {
                 inStream.close();
@@ -127,6 +132,7 @@ public class EarthwormExport {
     }
 
     public void closeSocket() {
+        logger.info("close socket");
         closeClient();
         try {
             serverSocket.close();
