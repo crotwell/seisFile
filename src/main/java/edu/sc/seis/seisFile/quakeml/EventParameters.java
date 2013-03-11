@@ -23,7 +23,6 @@ public class EventParameters {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                System.out.println("EventParameters peek: "+elName);
                 if (elName.equals(QuakeMLTagNames.description)) {
                     description = StaxUtil.pullText(reader, QuakeMLTagNames.description);
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
