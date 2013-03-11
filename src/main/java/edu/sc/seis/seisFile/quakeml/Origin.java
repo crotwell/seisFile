@@ -17,6 +17,9 @@ public class Origin {
     public Origin(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.origin, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
+        irisCatalog = StaxUtil.pullAttribute(startE, QuakeMLTagNames.irisCatalog);
+        irisContributor = StaxUtil.pullAttribute(startE, QuakeMLTagNames.irisContributor);
+        depth = new RealQuantity(0.0f); // add default for origins without depth
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
