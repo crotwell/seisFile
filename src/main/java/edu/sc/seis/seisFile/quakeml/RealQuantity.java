@@ -10,6 +10,10 @@ import edu.sc.seis.seisFile.stationxml.StaxUtil;
 
 public class RealQuantity {
 
+    public RealQuantity(float value) {
+        this.value = value;
+    }
+    
     public RealQuantity(final XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         while (reader.hasNext()) {
