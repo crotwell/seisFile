@@ -55,6 +55,8 @@ public final class QuakeMLTagNames {
     public static final String hour = "hour";
     public static final String inversionType = "inversionType";
     public static final String iso = "iso";
+    public static final String irisCatalog = "catalog";
+    public static final String irisContributor = "contributor";
     public static final String longestPeriod = "longestPeriod";
     public static final String lowerUncertainty = "lowerUncertainty";
     public static final String magnitude = "magnitude";
