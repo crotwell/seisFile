@@ -1,0 +1,218 @@
+<q:quakeml xmlns:q="http://quakeml.org/xmlns/quakeml/1.2" xmlns="http://quakeml.org/xmlns/bed/1.2">
+    <eventParameters publicID="smi:www.iris.edu/ws/event/query">
+        <event publicID="smi:www.iris.edu/ws/event/query?eventId=3337497">
+            <type>earthquake</type>
+            <description xmlns:iris="http://www.iris.edu/ws/event" iris:FEcode="705">
+                <type>Flinn-Engdahl region</type>
+                <text>OFF W COAST OF NORTHERN SUMATERA</text>
+            </description>
+            <preferredMagnitudeID>smi:www.iris.edu/ws/event/query?magnitudeId=14183475</preferredMagnitudeID>
+            <preferredOriginID>smi:www.iris.edu/ws/event/query?originId=7789685</preferredOriginID>
+            <origin xmlns:iris="http://www.iris.edu/ws/event" publicID="smi:www.iris.edu/ws/event/query?originId=7789685" iris:contributor="NEIC PDE-W" iris:catalog="NEIC PDE">
+                <time>
+                    <value>2012-04-11T08:38:36.7200</value>
+                </time>
+                <creationInfo>
+                    <author>NEIC</author>
+                </creationInfo>
+                <latitude>
+                    <value>2.327</value>
+                </latitude>
+                <longitude>
+                    <value>93.063</value>
+                </longitude>
+                <depth>
+                    <value>20.0</value>
+                </depth>
+            </origin>
+            <magnitude publicID="smi:www.iris.edu/ws/event/query?magnitudeId=14183475">
+                <originID>smi:www.iris.edu/ws/event/query?originId=7916767</originID>
+                <type>MW</type>
+                <mag>
+                    <value>8.6</value>
+                </mag>
+                <creationInfo>
+                    <author>GCMT</author>
+                </creationInfo>
+            </magnitude>
+        </event>
+        <event publicID="smi:www.iris.edu/ws/event/query?eventId=3279407">
+            <type>earthquake</type>
+            <description xmlns:iris="http://www.iris.edu/ws/event" iris:FEcode="228">
+                <type>Flinn-Engdahl region</type>
+                <text>NEAR EAST COAST OF HONSHU, JAPAN</text>
+            </description>
+            <preferredMagnitudeID>smi:www.iris.edu/ws/event/query?magnitudeId=14253553</preferredMagnitudeID>
+            <preferredOriginID>smi:www.iris.edu/ws/event/query?originId=9016956</preferredOriginID>
+            <origin xmlns:iris="http://www.iris.edu/ws/event" publicID="smi:www.iris.edu/ws/event/query?originId=9016956" iris:contributor="NEIC PDE-M" iris:catalog="NEIC PDE">
+                <time>
+                    <value>2011-03-11T05:46:24.1200</value>
+                </time>
+                <creationInfo>
+                    <author>NEIC</author>
+                </creationInfo>
+                <latitude>
+                    <value>38.297</value>
+                </latitude>
+                <longitude>
+                    <value>142.373</value>
+                </longitude>
+                <depth>
+                    <value>29.0</value>
+                </depth>
+            </origin>
+            <magnitude publicID="smi:www.iris.edu/ws/event/query?magnitudeId=14253553">
+                <originID>smi:www.iris.edu/ws/event/query?originId=7990001</originID>
+                <type>MW</type>
+                <mag>
+                    <value>9.1</value>
+                </mag>
+                <creationInfo>
+                    <author>GCMT</author>
+                </creationInfo>
+            </magnitude>
+        </event>
+        <event publicID="smi:www.iris.edu/ws/event/query?eventId=2844986">
+            <type>earthquake</type>
+            <description xmlns:iris="http://www.iris.edu/ws/event" iris:FEcode="135">
+                <type>Flinn-Engdahl region</type>
+                <text>NEAR COAST OF CENTRAL CHILE</text>
+            </description>
+            <preferredMagnitudeID>smi:www.iris.edu/ws/event/query?magnitudeId=15394775</preferredMagnitudeID>
+            <preferredOriginID>smi:www.iris.edu/ws/event/query?originId=8957708</preferredOriginID>
+            <origin xmlns:iris="http://www.iris.edu/ws/event" publicID="smi:www.iris.edu/ws/event/query?originId=8957708" iris:contributorOriginId="00198269" iris:contributorEventId="14340585" iris:contributor="ISC" iris:catalog="ISC">
+                <time>
+                    <value>2010-02-27T06:34:13.3300</value>
+                </time>
+                <creationInfo>
+                    <author>ISC</author>
+                </creationInfo>
+                <latitude>
+                    <value>-36.1485</value>
+                </latitude>
+                <longitude>
+                    <value>-72.9327</value>
+                </longitude>
+                <depth>
+                    <value>28.1</value>
+                </depth>
+            </origin>
+            <magnitude publicID="smi:www.iris.edu/ws/event/query?magnitudeId=15394775">
+                <originID>smi:www.iris.edu/ws/event/query?originId=8957714</originID>
+                <type>MW</type>
+                <mag>
+                    <value>8.8</value>
+                </mag>
+                <creationInfo>
+                    <author>GCMT</author>
+                </creationInfo>
+            </magnitude>
+        </event>
+        <event publicID="smi:www.iris.edu/ws/event/query?eventId=2559759">
+            <type>earthquake</type>
+            <description xmlns:iris="http://www.iris.edu/ws/event" iris:FEcode="274">
+                <type>Flinn-Engdahl region</type>
+                <text>SOUTHERN SUMATERA, INDONESIA</text>
+            </description>
+            <preferredMagnitudeID>smi:www.iris.edu/ws/event/query?magnitudeId=14245652</preferredMagnitudeID>
+            <preferredOriginID>smi:www.iris.edu/ws/event/query?originId=4285055</preferredOriginID>
+            <origin xmlns:iris="http://www.iris.edu/ws/event" publicID="smi:www.iris.edu/ws/event/query?originId=4285055" iris:contributorOriginId="12368621" iris:contributorEventId="13203322" iris:contributor="ISC" iris:catalog="ISC">
+                <time>
+                    <value>2007-09-12T11:10:26.8700</value>
+                </time>
+                <creationInfo>
+                    <author>ISC</author>
+                </creationInfo>
+                <latitude>
+                    <value>-4.4637</value>
+                </latitude>
+                <longitude>
+                    <value>101.3959</value>
+                </longitude>
+                <depth>
+                    <value>35.5</value>
+                </depth>
+            </origin>
+            <magnitude publicID="smi:www.iris.edu/ws/event/query?magnitudeId=14245652">
+                <originID>smi:www.iris.edu/ws/event/query?originId=7982100</originID>
+                <type>MW</type>
+                <mag>
+                    <value>8.5</value>
+                </mag>
+                <creationInfo>
+                    <author>GCMT</author>
+                </creationInfo>
+            </magnitude>
+        </event>
+        <event publicID="smi:www.iris.edu/ws/event/query?eventId=2092067">
+            <type>earthquake</type>
+            <description xmlns:iris="http://www.iris.edu/ws/event" iris:FEcode="706">
+                <type>Flinn-Engdahl region</type>
+                <text>NORTHERN SUMATERA, INDONESIA</text>
+            </description>
+            <preferredMagnitudeID>smi:www.iris.edu/ws/event/query?magnitudeId=14240972</preferredMagnitudeID>
+            <preferredOriginID>smi:www.iris.edu/ws/event/query?originId=3523786</preferredOriginID>
+            <origin xmlns:iris="http://www.iris.edu/ws/event" publicID="smi:www.iris.edu/ws/event/query?originId=3523786" iris:contributorOriginId="8287868" iris:contributorEventId="7486110" iris:contributor="ISC" iris:catalog="ISC">
+                <time>
+                    <value>2005-03-28T16:09:35.2900</value>
+                </time>
+                <creationInfo>
+                    <author>ISC</author>
+                </creationInfo>
+                <latitude>
+                    <value>2.0964</value>
+                </latitude>
+                <longitude>
+                    <value>97.1131</value>
+                </longitude>
+                <depth>
+                    <value>30.0</value>
+                </depth>
+            </origin>
+            <magnitude publicID="smi:www.iris.edu/ws/event/query?magnitudeId=14240972">
+                <originID>smi:www.iris.edu/ws/event/query?originId=7977420</originID>
+                <type>MW</type>
+                <mag>
+                    <value>8.6</value>
+                </mag>
+                <creationInfo>
+                    <author>GCMT</author>
+                </creationInfo>
+            </magnitude>
+        </event>
+        <event publicID="smi:www.iris.edu/ws/event/query?eventId=1916079">
+            <type>earthquake</type>
+            <description xmlns:iris="http://www.iris.edu/ws/event" iris:FEcode="705">
+                <type>Flinn-Engdahl region</type>
+                <text>OFF W COAST OF NORTHERN SUMATERA</text>
+            </description>
+            <preferredMagnitudeID>smi:www.iris.edu/ws/event/query?magnitudeId=14240178</preferredMagnitudeID>
+            <preferredOriginID>smi:www.iris.edu/ws/event/query?originId=3267369</preferredOriginID>
+            <origin xmlns:iris="http://www.iris.edu/ws/event" publicID="smi:www.iris.edu/ws/event/query?originId=3267369" iris:contributorOriginId="7900012" iris:contributorEventId="7453151" iris:contributor="ISC" iris:catalog="ISC">
+                <time>
+                    <value>2004-12-26T00:58:52.0500</value>
+                </time>
+                <creationInfo>
+                    <author>ISC</author>
+                </creationInfo>
+                <latitude>
+                    <value>3.4125</value>
+                </latitude>
+                <longitude>
+                    <value>95.9012</value>
+                </longitude>
+                <depth>
+                    <value>26.1</value>
+                </depth>
+            </origin>
+            <magnitude publicID="smi:www.iris.edu/ws/event/query?magnitudeId=14240178">
+                <originID>smi:www.iris.edu/ws/event/query?originId=7976626</originID>
+                <type>MW</type>
+                <mag>
+                    <value>9.0</value>
+                </mag>
+                <creationInfo>
+                    <author>GCMT</author>
+                </creationInfo>
+            </magnitude>
+        </event></eventParameters></q:quakeml>
