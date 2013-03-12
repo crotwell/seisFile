@@ -3,8 +3,10 @@ package edu.sc.seis.seisFile.quakeml;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -17,9 +19,14 @@ public class Origin {
     public Origin(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.origin, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
-        irisCatalog = StaxUtil.pullAttribute(startE, QuakeMLTagNames.irisCatalog);
-        irisContributor = StaxUtil.pullAttribute(startE, QuakeMLTagNames.irisContributor);
-        depth = new RealQuantity(0.0f); // add default for origins without depth
+        Attribute catalogAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace, QuakeMLTagNames.irisCatalog));
+        if (catalogAttr != null) {
+            irisCatalog = catalogAttr.getValue();
+        }
+        Attribute contributorAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace, QuakeMLTagNames.irisContributor));
+        if (contributorAttr != null) {
+            irisContributor = catalogAttr.getValue();
+        }
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -106,7 +113,7 @@ public class Origin {
 
     RealQuantity longitude;
 
-    RealQuantity depth;
+    RealQuantity depth = new RealQuantity(0.0f); // add default for origins without depth
 
     List<Comment> commentList = new ArrayList<Comment>();
 
@@ -116,7 +123,7 @@ public class Origin {
 
     String publicId;
 
-    String irisContributor;
+    String irisContributor = "";
 
-    String irisCatalog;
+    String irisCatalog = "";
 }
