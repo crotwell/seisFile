@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.syncFile.SyncFile;
 import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
 
 
