@@ -105,8 +105,10 @@ public class EarthwormExport {
     
     public void closeClient() {
         logger.info("close client connection");
-        synchronized(outStream) {
-            getHeartbeater().setOutStream(null);
+        if (outStream != null) {
+            synchronized(outStream) {
+                getHeartbeater().setOutStream(null);
+            }
         }
         if (inStream != null) {
             try {
