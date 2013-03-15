@@ -45,7 +45,8 @@ public final class QuakeMLTagNames {
     public static final String evaluationMode = "evaluationMode";
     public static final String evaluationStatus = "evaluationStatus";
     public static final String event = "event";
-    public static final String fecode = "FECode";
+    public static final String eventParameter = "eventParameters";
+    public static final String fecode = "FEcode";
     public static final String filterID = "filterID";
     public static final String focalMechanism = "focalMechanism";
     public static final String greensFunctionID = "greensFunctionID";
@@ -166,7 +167,6 @@ public final class QuakeMLTagNames {
     public static final String time = "time";
     public static final String value = "value";
     public static final String waveType = "waveType";
-    public static final String eventParameter = "eventParameters";
     public static final String publicId = "publicID";
 
 }
