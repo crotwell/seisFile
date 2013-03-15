@@ -5,13 +5,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import edu.sc.seis.seisFile.stationxml.StationXMLException;
+import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.stationxml.StaxUtil;
 
 
 public class Comment {
     
-    public Comment(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
+    public Comment(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.eventParameter, reader);
         while (reader.hasNext()) {

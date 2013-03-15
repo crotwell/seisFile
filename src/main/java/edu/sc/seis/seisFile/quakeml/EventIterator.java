@@ -4,7 +4,6 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.stationxml.StationXMLException;
 import edu.sc.seis.seisFile.stationxml.StaxUtil;
 
 
