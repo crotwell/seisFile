@@ -40,7 +40,7 @@ public class BulkDataSelectReader  extends StringMSeedQueryReader {
     
     @Override
     public String createQuery(String network, String station, String location, String channel, Date begin, Date end) {
-        SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         return network+" "+station+" "+(location.length()==0 || location.equals("  ")?"--":location)+" "+channel
                 +" "+longFormat.format(begin)+" "+longFormat.format(end)+"\n";

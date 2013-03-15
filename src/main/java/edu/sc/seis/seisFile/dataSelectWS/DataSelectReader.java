@@ -48,7 +48,7 @@ public class DataSelectReader extends StringMSeedQueryReader {
     @Override
     public String createQuery(String network, String station, String location, String channel, Date begin, Date end) {
         String query = createQuery(network, station, location, channel);
-        SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat longFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         query += "&start=" + longFormat.format(begin);
         query += "&end=" + longFormat.format(end);
