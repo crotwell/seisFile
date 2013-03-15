@@ -11,7 +11,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.stationxml.StationXMLException;
 import edu.sc.seis.seisFile.stationxml.StaxUtil;
 
 public class Origin {
@@ -25,7 +24,7 @@ public class Origin {
         }
         Attribute contributorAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace, QuakeMLTagNames.irisContributor));
         if (contributorAttr != null) {
-            irisContributor = catalogAttr.getValue();
+            irisContributor = contributorAttr.getValue();
         }
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
