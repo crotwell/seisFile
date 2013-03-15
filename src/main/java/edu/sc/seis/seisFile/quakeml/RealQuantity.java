@@ -5,7 +5,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import edu.sc.seis.seisFile.stationxml.StationXMLException;
+import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.stationxml.StaxUtil;
 
 public class RealQuantity {
@@ -14,7 +14,7 @@ public class RealQuantity {
         this.value = value;
     }
     
-    public RealQuantity(final XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
+    public RealQuantity(final XMLEventReader reader, String tagName) throws XMLStreamException, SeisFileException {
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
