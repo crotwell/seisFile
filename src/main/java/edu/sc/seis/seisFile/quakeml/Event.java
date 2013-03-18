@@ -39,10 +39,8 @@ public class Event {
                     originList.add(new Origin(reader));
                 } else if (elName.equals(QuakeMLTagNames.magnitude)) {
                     magnitudeList.add(new Magnitude(reader));
-                    /*
-                     * } else if (elName.equals(QuakeMLTagNames.pick)) {
-                     * pickList.add(new Pick(reader));
-                     */
+                } else if (elName.equals(QuakeMLTagNames.pick)) {
+                    pickList.add(new Pick(reader));
                 } else if (elName.equals(QuakeMLTagNames.preferredOriginID)) {
                     preferredOriginID = StaxUtil.pullText(reader, QuakeMLTagNames.preferredOriginID);
                 } else if (elName.equals(QuakeMLTagNames.preferredMagnitudeID)) {
@@ -81,14 +79,6 @@ public class Event {
         return commentList;
     }
 
-    public List<FocalMechanism> getFocalMechanismList() {
-        return focalMechanismList;
-    }
-
-    public List<Amplitude> getAmplitudeList() {
-        return amplitudeList;
-    }
-
     public List<Origin> getOriginList() {
         return originList;
     }
@@ -106,21 +96,24 @@ public class Event {
         return irisFECode;
     }
 
-    String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
-
-    String publicId;
-
-    List<EventDescription> descriptionList = new ArrayList<EventDescription>();
-
-    List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
-
-    List<Comment> commentList = new ArrayList<Comment>();
-
-    List<FocalMechanism> focalMechanismList = new ArrayList<FocalMechanism>();
-
-    List<Amplitude> amplitudeList = new ArrayList<Amplitude>();
     
-    int irisFECode = -1;
+    public List<Pick> getPickList() {
+        return pickList;
+    }
+
+    private String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
+
+    private String publicId;
+
+    private List<EventDescription> descriptionList = new ArrayList<EventDescription>();
+
+    private List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
+
+    private List<Comment> commentList = new ArrayList<Comment>();
+
+    private List<Pick> pickList = new ArrayList<Pick>();
+    
+    private int irisFECode = -1;
 
     /*
      * List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
@@ -128,6 +121,6 @@ public class Event {
      * ArrayList<StationMagnitude>(); List<Pick> pickList = new
      * ArrayList<Pick>();
      */
-    List<Origin> originList = new ArrayList<Origin>();
+    private List<Origin> originList = new ArrayList<Origin>();
     
 }
