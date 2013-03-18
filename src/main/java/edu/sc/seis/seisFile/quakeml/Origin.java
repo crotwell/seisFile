@@ -44,6 +44,8 @@ public class Origin {
                     longitude = new RealQuantity(reader, QuakeMLTagNames.longitude);
                 } else if (elName.equals(QuakeMLTagNames.depth)) {
                     depth = new RealQuantity(reader, QuakeMLTagNames.depth);
+                } else if (elName.equals(QuakeMLTagNames.arrival)) {
+                    arrivalList.add(new Arrival(reader));
                 } else {
                     System.out.println("Origin skip: "+elName);
                     StaxUtil.skipToMatchingEnd(reader);
@@ -55,11 +57,6 @@ public class Origin {
                 e = reader.nextEvent();
             }
         }
-    }
-
-    private void skipToValue(XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        reader.nextEvent();
-        StaxUtil.skipToStartElement(reader);
     }
 
     public String toString() {
@@ -105,6 +102,10 @@ public class Origin {
     public String getIrisCatalog() {
         return irisCatalog;
     }
+    
+    public List<Arrival> getArrivalList() {
+        return arrivalList;
+    }
 
     Time time;
 
@@ -115,6 +116,8 @@ public class Origin {
     RealQuantity depth = new RealQuantity(0.0f); // add default for origins without depth
 
     List<Comment> commentList = new ArrayList<Comment>();
+
+    List<Arrival> arrivalList = new ArrayList<Arrival>();
 
     String waveformID;
 
