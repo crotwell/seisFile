@@ -30,8 +30,8 @@ public class QuakeMLClient {
      */
     public static void main(String[] args) throws IOException, XMLStreamException, SeisFileException {
         if (args.length != 2 || ! args[0].equals("-u")) {
-            System.out.println("Usage: stationxmlclient -u url");
-            System.out.println("       stationxmlclient -u http://www.iris.edu/ws/station/query?net=IU&sta=SNZO&chan=BHZ&level=chan");
+            System.out.println("Usage: quakemlclient -u url");
+            System.out.println("       quakemlclient -u http://www.iris.edu/ws/station/query?net=IU&sta=SNZO&chan=BHZ&level=chan");
             return;
         }
         URL url = new URL(args[1]);
