@@ -200,7 +200,7 @@ public class WinstonClient {
                     if (chunkBegin.before(chunkEnd)) {
                         Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
                         // sendEnd is expected time of next sample, ie 1 samp period after end time of last tb
-                        lastSent.put(scnl, new Date(sentEnd.getTime()));
+                        lastSent.put(scnl, new Date(sentEnd.getTime()+1));
                     }
                 }
                 startTime = new Date(chunkEnd.getTime() + 1);
