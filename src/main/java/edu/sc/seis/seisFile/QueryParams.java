@@ -27,25 +27,34 @@ public class QueryParams {
             if (i < args.length-1) {
                 if (args[i].equals("-n")) {
                     network = args[i + 1];
+                    continue;
                 } else if (args[i].equals("-s")) {
                     station = args[i + 1]; i++;
+                    continue;
                 } else if (args[i].equals("-l")) {
                     location = args[i + 1]; i++;
+                    continue;
                 } else if (args[i].equals("-c")) {
                     channel = args[i + 1]; i++;
+                    continue;
                 } else if (args[i].equals("-b")) {
                     begin = extractDate(args[i + 1]); i++;
+                    continue;
                 } else if (args[i].equals("-e")) {
                     end = extractDate(args[i + 1]); i++;
+                    continue;
                 } else if (args[i].equals("-d")) {
                     duration = Float.parseFloat(args[i + 1]); i++;
+                    continue;
                 } else if (args[i].equals("-o")) {
                     outFile = args[i + 1]; i++;
+                    continue;
                 } else if (args[i].equals("-m")) {
                     maxRecords = Integer.parseInt(args[i + 1]); i++;
                     if (maxRecords < -1) {
                         maxRecords = -1;
                     }
+                    continue;
                 }
             }
             if (args[i].equals("--append")) {
