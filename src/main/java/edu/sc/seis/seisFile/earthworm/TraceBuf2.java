@@ -455,8 +455,14 @@ public class TraceBuf2 {
         return endTime;
     }
     
+    /** Predicted start of the next tracebuf in seconds. */
     public double getPredictedNextStartTime() {
         return getStartTime()+getNumSamples()/getSampleRate();
+    }
+    
+    /** Predicted start of the next tracebuf. */
+    public Date getPredictedNextStartDate() {
+        return new Date(Math.round(1000*getPredictedNextStartTime()));
     }
 
     public Date getStartDate() {
