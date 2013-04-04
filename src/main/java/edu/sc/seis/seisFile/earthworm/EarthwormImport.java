@@ -56,10 +56,6 @@ public class EarthwormImport {
     
     /** just for testing, prints a message for each tracebuf received. */
     public static void main(String[] args) throws Exception {
-        if (args.length != 2 || args.length != 4) {
-            System.out.println("Usage: earthwormImpor [--sync syncfile][-h host][-p port]");
-            return;
-        }
         List<String> unknownArgs = new ArrayList<String>();
         String argHost = "localhost";
         int argPort = 19000;
@@ -81,6 +77,15 @@ public class EarthwormImport {
                 }
             }
             unknownArgs.add(args[i]);
+        }
+        if (unknownArgs.size() != 0) {
+            System.out.print("I don't understand: ");
+            for (String s : unknownArgs) {
+                System.out.println(s+" ");
+            }
+            System.out.println();
+            System.out.println("Usage: earthwormImpor [--sync syncfile][-h host][-p port]");
+            return;
         }
         final String host = argHost;
         final int port = argPort;
