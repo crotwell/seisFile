@@ -142,7 +142,8 @@ public class EarthwormImport {
                     }
                     Thread.sleep(1);
                 } catch(IOException e) {
-                    e.printStackTrace();
+                    // remote closed connection?
+                    System.out.println("Remote connection closed.");
                     heartbeater.setOutStream(null);
                     outStream.close();
                     break;
