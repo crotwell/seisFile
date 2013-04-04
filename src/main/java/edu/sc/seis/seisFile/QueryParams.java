@@ -22,35 +22,43 @@ public class QueryParams {
     
     public QueryParams(String[] args, QueryParams defaults) throws SeisFileException {
         this.defaults = defaults;
-        PrintWriter out = new PrintWriter(System.out, true);
         for (int i = 0; i < args.length; i++) {
-            if (i < args.length-1) {
+            if (i < args.length - 1) {
                 if (args[i].equals("-n")) {
                     network = args[i + 1];
+                    i++;
                     continue;
                 } else if (args[i].equals("-s")) {
-                    station = args[i + 1]; i++;
+                    station = args[i + 1];
+                    i++;
                     continue;
                 } else if (args[i].equals("-l")) {
-                    location = args[i + 1]; i++;
+                    location = args[i + 1];
+                    i++;
                     continue;
                 } else if (args[i].equals("-c")) {
-                    channel = args[i + 1]; i++;
+                    channel = args[i + 1];
+                    i++;
                     continue;
                 } else if (args[i].equals("-b")) {
-                    begin = extractDate(args[i + 1]); i++;
+                    begin = extractDate(args[i + 1]);
+                    i++;
                     continue;
                 } else if (args[i].equals("-e")) {
-                    end = extractDate(args[i + 1]); i++;
+                    end = extractDate(args[i + 1]);
+                    i++;
                     continue;
                 } else if (args[i].equals("-d")) {
-                    duration = Float.parseFloat(args[i + 1]); i++;
+                    duration = Float.parseFloat(args[i + 1]);
+                    i++;
                     continue;
                 } else if (args[i].equals("-o")) {
-                    outFile = args[i + 1]; i++;
+                    outFile = args[i + 1];
+                    i++;
                     continue;
                 } else if (args[i].equals("-m")) {
-                    maxRecords = Integer.parseInt(args[i + 1]); i++;
+                    maxRecords = Integer.parseInt(args[i + 1]);
+                    i++;
                     if (maxRecords < -1) {
                         maxRecords = -1;
                     }
