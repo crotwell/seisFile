@@ -5,7 +5,13 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+
+import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
+import edu.sc.seis.seisFile.syncFile.SyncLine;
 
 
 public class EarthwormImport {
@@ -50,17 +56,41 @@ public class EarthwormImport {
     
     /** just for testing, prints a message for each tracebuf received. */
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
-            System.out.println("Usage: earthwormImpor host port");
+        if (args.length != 2 || args.length != 4) {
+            System.out.println("Usage: earthwormImpor [--sync syncfile][-h host][-p port]");
             return;
         }
-        final String host = args[0];
-        final int port = Integer.parseInt(args[1]);
+        List<String> unknownArgs = new ArrayList<String>();
+        String argHost = "localhost";
+        int argPort = 19000;
+        String argSyncfile = null;
+        for (int i = 0; i < args.length; i++) {
+            if (i < args.length-1) {
+                if (args[i].equals("-h")) {
+                    argHost = args[i+1];
+                    i++;
+                    continue;
+                } else if (args[i].equals("-p")) {
+                    argPort = Integer.parseInt(args[i+1]);
+                    i++;
+                    continue;
+                } else if (args[i].equals("--sync")) {
+                    argSyncfile = args[i+1];
+                    i++;
+                    continue;
+                }
+            }
+            unknownArgs.add(args[i]);
+        }
+        final String host = argHost;
+        final int port = argPort;
+        final String syncfile = argSyncfile;
         final String heartbeatMessage = "heartbeat";
         final int heartbeatSeconds = 10;
         final int institution = 2;
         final int module = 99;
-        HashMap<String, Double> lastTimeMap = new HashMap<String, Double>();
+        HashMap<String, Double> lastStartTimeMap = new HashMap<String, Double>();
+        HashMap<String, Double> lastEndTimeMap = new HashMap<String, Double>();
         try {
             Socket s = new Socket(host, port);
             final BufferedInputStream in = new BufferedInputStream(s.getInputStream());
@@ -70,6 +100,11 @@ public class EarthwormImport {
             heartbeater.setOutStream(outStream);
             heartbeater.heartbeat();
             
+            SyncFileWriter syncWriter = null;
+            if (syncfile != null) {
+                syncWriter = new SyncFileWriter("ewimport", syncfile);
+            }
+            
             EarthwormImport ewImport = new EarthwormImport(in);
             while(true) {
                 EarthwormMessage message;
@@ -78,12 +113,24 @@ public class EarthwormImport {
                     if (message.getMessageType() == EarthwormMessage.MESSAGE_TYPE_TRACEBUF2) {
                         TraceBuf2 traceBuf2 = new TraceBuf2(message.getData());
                         String key = traceBuf2.formatNSLCCodes();
-                        if (lastTimeMap.containsKey(key)) {
-                            if (Math.abs(traceBuf2.getStartTime() - lastTimeMap.get(key)) > 1/traceBuf2.getSampleRate()) {
-                                System.out.println("GAP: "+(traceBuf2.getStartTime() - lastTimeMap.get(key)));
+                        if (lastEndTimeMap.containsKey(key)) {
+                            if (Math.abs(traceBuf2.getStartTime() - lastEndTimeMap.get(key)) > 1/traceBuf2.getSampleRate()) {
+                                System.out.println("GAP: "+(traceBuf2.getStartTime() - lastEndTimeMap.get(key)));
+                                if (syncWriter != null) {
+                                    syncWriter.appendLine(new SyncLine(traceBuf2.getNetwork(), 
+                                                                       traceBuf2.getStation(),
+                                                                       traceBuf2.getLocId(),
+                                                                       traceBuf2.getChannel(),
+                                                                       new Date(Math.round(1000*lastStartTimeMap.get(key))),
+                                                                       new Date(Math.round(1000*lastEndTimeMap.get(key))),
+                                                                       0f, 0f));
+                                    lastStartTimeMap.put(key, traceBuf2.getStartTime());
+                                }
                             }
+                        } else {
+                            lastStartTimeMap.put(key, traceBuf2.getStartTime());
                         }
-                        lastTimeMap.put(key, traceBuf2.getPredictedNextStartTime());
+                        lastEndTimeMap.put(key, traceBuf2.getPredictedNextStartTime());
                         System.out.println("TraceBuf: "+traceBuf2);
                     } else if (message.getMessageType() == EarthwormMessage.MESSAGE_TYPE_HEARTBEAT) {
                         System.out.println("Heartbeat received: "+new String(message.data));
