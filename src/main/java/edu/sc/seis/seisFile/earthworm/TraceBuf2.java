@@ -489,6 +489,10 @@ public class TraceBuf2 {
         return channel;
     }
 
+    public String formatNSLCCodes() {
+        return network+"."+station+"."+locId+"."+channel;
+    }
+
     public String getLocId() {
         return locId;
     }
@@ -754,7 +758,7 @@ public class TraceBuf2 {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return getPin()+" "+network+"."+station+"."+locId+"."+channel+" "+
+        return getPin()+" "+formatNSLCCodes()+" "+
                 sdf.format(getStartDate())+"("+getStartTime()+") to "+
                 sdf.format(getEndDate())+"("+getEndTime()+") sr="+getSampleRate()+"  npts="+numSamples+" datetype="+getDataType()+" ver="+getVersion();
     }
@@ -839,6 +843,6 @@ public class TraceBuf2 {
     public static final int MAX_LOC_LEN = 3;
     public static final int MAX_CHAN_LEN = 4;
     
-    
     public static final short S_ZERO = (short)0;
+    
 }
