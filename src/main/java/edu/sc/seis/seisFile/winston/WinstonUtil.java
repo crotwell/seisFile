@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -215,7 +216,7 @@ public class WinstonUtil {
         stmt.setFetchSize(Integer.MIN_VALUE);
         double y2kStart = dateToJ2kSeconds(startTime);
         double y2kEnd = dateToJ2kSeconds(endTime);
-        String query = "select tracebuf from " + table.getTableName() + " where (" + y2kStart
+        String query = "select st, et, tracebuf from " + table.getTableName() + " where (" + y2kStart
                 + " <= st AND st <= " + y2kEnd + ") OR (" + y2kStart + " <=et AND et <= " + y2kEnd + ") order by st";
         if (verbose) {
             System.out.println("query: "+query);
@@ -224,7 +225,21 @@ public class WinstonUtil {
         while (rs.next()) {
             Blob tbBlob = rs.getBlob("tracebuf");
             byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
-            out.add(extractFromBlob(tbBytes));
+            TraceBuf2 tb = extractFromBlob(tbBytes);
+            out.add(tb);
+            if (verbose) {
+                Date stDate = j2KSecondsToDate(rs.getDouble("st"));
+                Date etDate = j2KSecondsToDate(rs.getDouble("et"));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                System.out.println("db row: "+sdf.format(stDate)+"  ("+dateToJ2kSeconds(stDate)+")  "+sdf.format(etDate)+"  ("+dateToJ2kSeconds(etDate)+")");
+                if (Math.abs(stDate.getTime()-tb.getStartDate().getTime()) > 2) {
+                    System.out.println("WARNING, st differs from traceBuf start by more than 2 milliseconds: "+sdf.format(stDate)+"  "+sdf.format(tb.getStartDate()));
+                }
+                if (Math.abs(etDate.getTime()-tb.getPredictedNextStartDate().getTime()) > 2) {
+                    System.out.println("WARNING, et differs from traceBuf end by more than 2 milliseconds: "+sdf.format(etDate)+"  "+sdf.format(tb.getPredictedNextStartDate())); ;
+                }
+            }
         }
         rs.close();
         stmt.close();
@@ -299,7 +314,8 @@ public class WinstonUtil {
     public void createConnection() throws SQLException {
         if (driverClass == null) {
             try {
-                Class.forName(driver).newInstance();
+                driverClass = Class.forName(driver);
+                driverClass.newInstance();
             } catch(Exception e) {
                 SQLException sql = new SQLException("Cannot create driver: " + driver);
                 sql.initCause(e);
@@ -307,6 +323,7 @@ public class WinstonUtil {
             }
         }
         conn = DriverManager.getConnection(getDatabaseURL(), getUsername(), getPassword());
+        conn.setAutoCommit(false);
     }
 
     public void close() throws SQLException {
