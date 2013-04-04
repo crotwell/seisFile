@@ -148,6 +148,20 @@ public class EarthwormImport {
                     break;
                 }
             }
+            if (syncWriter != null) {
+                for (String key : lastStartTimeMap.keySet()) {
+                    String[] chanCodes = key.split("\\.");
+                    syncWriter.appendLine(new SyncLine(chanCodes[0], 
+                                                       chanCodes[1],
+                                                       chanCodes[2],
+                                                       chanCodes[3],
+                                                       new Date(Math.round(1000*lastStartTimeMap.get(key))),
+                                                       new Date(Math.round(1000*lastEndTimeMap.get(key))),
+                                                       0f, 0f));
+                }
+                syncWriter.close();
+            }
+            
         } catch (IOException e) {
             throw new IOException("Unable to bind to '"+host+"' at port "+port, e);
         }
