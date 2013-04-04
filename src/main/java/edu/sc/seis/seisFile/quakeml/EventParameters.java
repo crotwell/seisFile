@@ -56,6 +56,21 @@ public class EventParameters {
 
     
     public EventIterator getEvents() {
+        if (events == null) {
+            events = new EventIterator(null) {
+
+                @Override
+                public boolean hasNext() throws XMLStreamException {
+                    return false;
+                }
+
+                @Override
+                public Event next() throws XMLStreamException, SeisFileException {
+                    throw new SeisFileException("No mo events");
+                }
+                
+            };
+        }
         return events;
     }
 
