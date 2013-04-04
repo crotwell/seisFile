@@ -285,8 +285,8 @@ public class WinstonClient {
                     }
                 }
             }
-            if (lastSentEnd.before(traceBuf2.getEndDate())) {
-                lastSentEnd = traceBuf2.getEndDate();
+            if (lastSentEnd.before(traceBuf2.getPredictedNextStartDate())) {
+                lastSentEnd = traceBuf2.getPredictedNextStartDate();
                 sampRate = traceBuf2.getSampleRate();
             }
             if (params.isVerbose()) {
@@ -299,7 +299,6 @@ public class WinstonClient {
                 System.out.println("...back to work at " + sdf.format(new Date()) + ".");
             }
         }
-        lastSentEnd = new Date(lastSentEnd.getTime() + (long)(1000 / sampRate) );
         return lastSentEnd;
     }
 
