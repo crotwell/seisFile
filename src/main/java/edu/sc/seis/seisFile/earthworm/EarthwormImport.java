@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.HashMap;
 
 
 public class EarthwormImport {
@@ -59,6 +60,7 @@ public class EarthwormImport {
         final int heartbeatSeconds = 10;
         final int institution = 2;
         final int module = 99;
+        HashMap<String, Double> lastTimeMap = new HashMap<String, Double>();
         try {
             Socket s = new Socket(host, port);
             final BufferedInputStream in = new BufferedInputStream(s.getInputStream());
@@ -75,6 +77,13 @@ public class EarthwormImport {
                     message = ewImport.nextMessage();
                     if (message.getMessageType() == EarthwormMessage.MESSAGE_TYPE_TRACEBUF2) {
                         TraceBuf2 traceBuf2 = new TraceBuf2(message.getData());
+                        String key = traceBuf2.formatNSLCCodes();
+                        if (lastTimeMap.containsKey(key)) {
+                            if (Math.abs(traceBuf2.getStartTime() - lastTimeMap.get(key)) > 1/traceBuf2.getSampleRate()) {
+                                System.out.println("GAP: "+(traceBuf2.getStartTime() - lastTimeMap.get(key)));
+                            }
+                        }
+                        lastTimeMap.put(key, traceBuf2.getPredictedNextStartTime());
                         System.out.println("TraceBuf: "+traceBuf2);
                     } else if (message.getMessageType() == EarthwormMessage.MESSAGE_TYPE_HEARTBEAT) {
                         System.out.println("Heartbeat received: "+new String(message.data));
