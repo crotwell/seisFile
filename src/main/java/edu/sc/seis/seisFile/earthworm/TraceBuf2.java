@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.earthworm;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,11 @@ import edu.sc.seis.seisFile.mseed.Utility;
 
 public class TraceBuf2 {
 
+    /** for use by static read method. */
+    protected TraceBuf2() {
+        
+    }
+    
     TraceBuf2(int pin,
                      int numSamples,
                      double startTime,
@@ -159,22 +165,8 @@ public class TraceBuf2 {
     }
 
     public TraceBuf2(byte[] data) {
-        dataType = extractDataType(data);
+        parseHeaders(data);
         boolean swapBytes =  isSwapBytes(dataType);
-        pin = Utility.bytesToInt(data, 0, swapBytes);
-        numSamples = extractNumSamples(data, swapBytes);
-        startTime = Utility.bytesToDouble(data, 8, swapBytes);
-        endTime = Utility.bytesToDouble(data, 16, swapBytes);
-        sampleRate = Utility.bytesToDouble(data, 24, swapBytes);
-        station = Utility.extractNullTermString(data, 32, 7);
-        network = Utility.extractNullTermString(data, 39, 9);
-        channel = Utility.extractNullTermString(data, 48, 4);
-        locId = Utility.extractNullTermString(data, 52, 3);
-        if (locId == null || "".equals(locId.trim())) {locId = "--";}
-        version = Utility.extractString(data, 55, 2);
-        // dataType already extract above: Utility.extractNullTermString(data, 57, 3);
-        quality = Utility.bytesToShort(data[60], data[61], swapBytes);
-        pad = Utility.bytesToShort(data[62], data[63], swapBytes);
         int offset = 64;
         
         if (isShortData()) {
@@ -226,6 +218,40 @@ public class TraceBuf2 {
         } else {
             throw new RuntimeException("Unknown data type: " + dataType);
         }
+    }
+
+    public static TraceBuf2 read(DataInput in) throws IOException {
+        byte[] headBytes = new byte[64];
+        in.readFully(headBytes);
+        String dataType = extractDataType(headBytes);
+        int tbDataSize = extractNumSamples(headBytes, isSwapBytes(dataType))*getSampleSize(dataType);
+        byte[] allBytes = new byte[64+tbDataSize];
+        System.arraycopy(headBytes, 0, allBytes, 0, headBytes.length);
+        in.readFully(allBytes, headBytes.length, tbDataSize);
+        TraceBuf2 tb = new TraceBuf2(allBytes);
+        return tb;
+    }
+
+    void parseHeaders(byte[] data) {
+        if (data.length < 64) {
+            throw new IllegalArgumentException("header of TraceBuf is 64 bytes, but only given "+data.length);
+        }
+        dataType = extractDataType(data);
+        boolean swapBytes =  isSwapBytes(dataType);
+        pin = Utility.bytesToInt(data, 0, swapBytes);
+        numSamples = extractNumSamples(data, swapBytes);
+        startTime = Utility.bytesToDouble(data, 8, swapBytes);
+        endTime = Utility.bytesToDouble(data, 16, swapBytes);
+        sampleRate = Utility.bytesToDouble(data, 24, swapBytes);
+        station = Utility.extractNullTermString(data, 32, 7);
+        network = Utility.extractNullTermString(data, 39, 9);
+        channel = Utility.extractNullTermString(data, 48, 4);
+        locId = Utility.extractNullTermString(data, 52, 3);
+        if (locId == null || "".equals(locId.trim())) {locId = "--";}
+        version = Utility.extractString(data, 55, 2);
+        // dataType already extract above: Utility.extractNullTermString(data, 57, 3);
+        quality = Utility.bytesToShort(data[60], data[61], swapBytes);
+        pad = Utility.bytesToShort(data[62], data[63], swapBytes);
     }
 
     public static int extractNumSamples(byte[] data, boolean swapBytes) {
@@ -427,6 +453,10 @@ public class TraceBuf2 {
 
     public double getEndTime() {
         return endTime;
+    }
+    
+    public double getPredictedNextStartTime() {
+        return getStartTime()+getNumSamples()/getSampleRate();
     }
 
     public Date getStartDate() {
