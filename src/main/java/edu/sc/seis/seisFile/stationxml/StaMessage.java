@@ -74,6 +74,21 @@ public class StaMessage {
     }
 
     public NetworkIterator getNetworks() {
+        if (networks == null) {
+            networks = new NetworkIterator(null) {
+
+                @Override
+                public boolean hasNext() throws XMLStreamException {
+                    return false;
+                }
+
+                @Override
+                public Network next() throws XMLStreamException, StationXMLException {
+                    throw new StationXMLException("No mo networks");
+                }
+                
+            };
+        }
         return networks;
     }
     
