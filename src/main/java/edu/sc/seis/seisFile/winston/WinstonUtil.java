@@ -48,13 +48,15 @@ public class WinstonUtil {
 
     public List<WinstonSCNL> listChannelDatabases() throws SQLException {
         List<WinstonSCNL> out = new ArrayList<WinstonSCNL>();
-        ResultSet rs = getConnection().createStatement().executeQuery("SHOW DATABASES");
+        Connection conn = getConnection();
+        ResultSet rs = conn.createStatement().executeQuery("SHOW DATABASES");
         while (rs.next()) {
             String s = rs.getString(1);
             if (s.startsWith(prefixTableName(getPrefix(), "")) && !s.equals(prefixTableName(getPrefix(), "ROOT"))) {
                 out.add(new WinstonSCNL(s, getPrefix()));
             }
         }
+        conn.commit();
         return out;
     }
 
@@ -65,7 +67,8 @@ public class WinstonUtil {
     public List<WinstonTable> listDayTables(WinstonSCNL channel) throws SQLException {
         List<WinstonTable> out = new ArrayList<WinstonTable>();
         useDatabase(channel);
-        ResultSet rs = getConnection().createStatement().executeQuery("SHOW TABLES");
+        Connection conn = getConnection();
+        ResultSet rs = conn.createStatement().executeQuery("SHOW TABLES");
         while (rs.next()) {
             String s = rs.getString(1);
             if (!s.contains("$$H")) { // skip heli channels as we know how to
@@ -78,6 +81,7 @@ public class WinstonUtil {
                 }
             }
         }
+        conn.commit();
         return out;
     }
 
@@ -165,7 +169,8 @@ public class WinstonUtil {
                                                 table.getDatabase().getStation(),
                                                 table.getDatabase().getLocId(),
                                                 table.getDatabase().getChannel());
-        Statement stmt = getConnection().createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
                                                          java.sql.ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(Integer.MIN_VALUE);
         ResultSet rs = stmt.executeQuery("select st, et, sr from " + table.getTableName() + " order by st");
@@ -178,6 +183,7 @@ public class WinstonUtil {
         }
         rs.close();
         stmt.close();
+        conn.commit();
         return out;
     }
 
@@ -211,7 +217,8 @@ public class WinstonUtil {
             DataFormatException {
         useDatabase(table.getDatabase());
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
-        Statement stmt = getConnection().createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
                                                          java.sql.ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(Integer.MIN_VALUE);
         double y2kStart = dateToJ2kSeconds(startTime);
@@ -261,8 +268,9 @@ public class WinstonUtil {
         boolean decompFinished = false;
         int totalBytes = 0;
         while(!decompFinished) {
-            if (totalBytes > 1000000) {
-                throw new DataFormatException("WARNING, tracebuf decompress size has exceeded 1 Mb, aborting...");
+            if (totalBytes > 100000) {
+                decompresser.end();
+                throw new DataFormatException("WARNING, tracebuf decompress size has exceeded 100Kb, aborting...");
             }
             byte[] buffer = new byte[TraceBuf2.MAX_TRACEBUF_SIZE]; 
             int resultLength = decompresser.inflate(buffer);
@@ -278,6 +286,7 @@ public class WinstonUtil {
                 decompFinished = true;
             }
         }
+        decompresser.end();
         byte[] finalResult = new byte[totalBytes];
         int position = 0;
         for (byte[] bs : partialDecomp) {
@@ -322,7 +331,7 @@ public class WinstonUtil {
         return conn;
     }
 
-    public void createConnection() throws SQLException {
+    void createConnection() throws SQLException {
         if (driverClass == null) {
             try {
                 driverClass = Class.forName(driver);
