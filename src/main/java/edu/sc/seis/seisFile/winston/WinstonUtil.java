@@ -49,39 +49,57 @@ public class WinstonUtil {
     public List<WinstonSCNL> listChannelDatabases() throws SQLException {
         List<WinstonSCNL> out = new ArrayList<WinstonSCNL>();
         Connection conn = getConnection();
-        ResultSet rs = conn.createStatement().executeQuery("SHOW DATABASES");
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SHOW DATABASES");
         while (rs.next()) {
             String s = rs.getString(1);
             if (s.startsWith(prefixTableName(getPrefix(), "")) && !s.equals(prefixTableName(getPrefix(), "ROOT"))) {
                 out.add(new WinstonSCNL(s, getPrefix()));
             }
         }
+        rs.close();
+        stmt.close();
         conn.commit();
         return out;
     }
 
     public void useDatabase(WinstonSCNL channel) throws SQLException {
-        getConnection().createStatement().execute("use " + channel.getDatabaseName());
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.execute("use " + channel.getDatabaseName());
+        stmt.close();
+        conn.commit();
     }
 
     public List<WinstonTable> listDayTables(WinstonSCNL channel) throws SQLException {
         List<WinstonTable> out = new ArrayList<WinstonTable>();
         useDatabase(channel);
         Connection conn = getConnection();
-        ResultSet rs = conn.createStatement().executeQuery("SHOW TABLES");
-        while (rs.next()) {
-            String s = rs.getString(1);
-            if (!s.contains("$$H")) { // skip heli channels as we know how to
-                                      // construct their names
-                try {
-                    out.add(new WinstonTable(channel, s));
-                } catch(ParseException e) {
-                    // came out of database, so shouldn't happen in a standard
-                    // winston database, so ignore
+        Statement stmt = conn.createStatement();
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery("SHOW TABLES");
+            while (rs.next()) {
+                String s = rs.getString(1);
+                if (!s.contains("$$H")) { // skip heli channels as we know how
+                                          // to
+                                          // construct their names
+                    try {
+                        out.add(new WinstonTable(channel, s));
+                    } catch(ParseException e) {
+                        // came out of database, so shouldn't happen in a
+                        // standard
+                        // winston database, so ignore
+                    }
                 }
             }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            stmt.close();
+            conn.commit();
         }
-        conn.commit();
         return out;
     }
 
@@ -220,7 +238,7 @@ public class WinstonUtil {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
                                                          java.sql.ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(Integer.MIN_VALUE);
+        stmt.setFetchSize(10);
         double y2kStart = dateToJ2kSeconds(startTime);
         double y2kEnd = dateToJ2kSeconds(endTime);
         String query = "select st, et, tracebuf from " + table.getTableName() + " where (" + y2kStart
