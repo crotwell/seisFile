@@ -222,6 +222,7 @@ public class WinstonUtil {
             System.out.println("query: "+query);
         }
         ResultSet rs = stmt.executeQuery(query);
+        try {
         while (rs.next()) {
             Blob tbBlob = rs.getBlob("tracebuf");
             byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
@@ -242,9 +243,14 @@ public class WinstonUtil {
                 }
             }
         }
-        rs.close();
-        stmt.close();
-        conn.commit(); // not writting, but commit helps free memory
+        } catch(DataFormatException e) {
+            System.err.println("WARNING: unable to unzip tracebuf, query was: "+query);
+            throw e;
+        } finally {
+            rs.close();
+            stmt.close();
+            conn.commit(); // not writting, but commit helps free memory
+        }
         return out;
     }
     
@@ -255,6 +261,9 @@ public class WinstonUtil {
         boolean decompFinished = false;
         int totalBytes = 0;
         while(!decompFinished) {
+            if (totalBytes > 1000000) {
+                throw new DataFormatException("WARNING, tracebuf decompress size has exceeded 1 Mb, aborting...");
+            }
             byte[] buffer = new byte[TraceBuf2.MAX_TRACEBUF_SIZE]; 
             int resultLength = decompresser.inflate(buffer);
             totalBytes += resultLength;
