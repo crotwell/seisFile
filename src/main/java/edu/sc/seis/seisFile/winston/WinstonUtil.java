@@ -225,6 +225,7 @@ public class WinstonUtil {
         while (rs.next()) {
             Blob tbBlob = rs.getBlob("tracebuf");
             byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
+            tbBlob.free();
             TraceBuf2 tb = extractFromBlob(tbBytes);
             out.add(tb);
             if (verbose) {
@@ -243,6 +244,7 @@ public class WinstonUtil {
         }
         rs.close();
         stmt.close();
+        conn.commit(); // not writting, but commit helps free memory
         return out;
     }
     
