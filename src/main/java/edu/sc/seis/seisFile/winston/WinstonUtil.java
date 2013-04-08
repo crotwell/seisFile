@@ -250,7 +250,7 @@ public class WinstonUtil {
         try {
         while (rs.next()) {
             Blob tbBlob = rs.getBlob("tracebuf");
-            byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length());
+            byte[] tbBytes = tbBlob.getBytes(1, (int)tbBlob.length()); // blob index starts at 1
             tbBlob.free();
             TraceBuf2 tb = extractFromBlob(tbBytes);
             out.add(tb);
