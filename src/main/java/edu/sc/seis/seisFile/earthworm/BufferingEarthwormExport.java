@@ -77,6 +77,26 @@ public class BufferingEarthwormExport {
         }
     }
 
+    
+    public int getTotal() {
+        return total;
+    }
+
+    
+    public int getSentCount() {
+        return sentCount;
+    }
+
+    
+    public int getTossCount() {
+        return tossCount;
+    }
+
+    
+    public int getMaxSize() {
+        return maxSize;
+    }
+
     Thread exportThread;
 
     EarthwormExport export;
