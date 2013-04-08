@@ -30,8 +30,7 @@ import org.apache.log4j.PropertyConfigurator;
 public class GCFEarthwormExport implements SerialPortEventListener {
 
     public GCFEarthwormExport(String serial,
-                              Map<String,
-                              String[]> sysId_StreamIdToSCNL,
+                              Map<String, String[]> sysId_StreamIdToSCNL,
                               BufferingEarthwormExport export) {
         this.serial = serial;
         this.convert = new Convert(sysId_StreamIdToSCNL);
