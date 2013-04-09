@@ -9,9 +9,13 @@ import javax.xml.stream.events.XMLEvent;
 
 
 public class Equipment {
-    
+
     public Equipment(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.EQUIPMENT, reader);
+        this(reader, StationXMLTagNames.EQUIPMENT);
+    }
+    
+    public Equipment(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
+        StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         parseAttributes(startE);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();

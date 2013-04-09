@@ -26,7 +26,7 @@ public final class StationXMLTagNames {
     public static final String NET_CODE = "net_code";
     public static final String STA_CODE = "sta_code";
     public static final String SITE = "Site";
-    public static final String LOC_CODE = "loc_code";
+    public static final String LOC_CODE = "locationCode";
     public static final String CHAN_CODE = "chan_code";
     public static final String DESCRIPTION = "Description";
     public static final String EPOCH = "Epoch";
@@ -153,5 +153,9 @@ public final class StationXMLTagNames {
     public static final String MINUSERROR = "minusError";
     public static final String UNIT = "unit";
     public static final String SCHEMAVERSION = "schemaVersion";
+    public static final String PREAMPLIFIER = "preAmplifier";
+    public static final String HISTORICALCODE = "historicalCode";
+    public static final String ALTERNATECODE = "alternateCode";
+    public static final String RESTRICTEDSTATUS = "restrictedStatus";
     
     }
