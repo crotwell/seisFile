@@ -25,7 +25,11 @@ public class StationXMLClient {
         URLConnection urlConn = url.openConnection();
         if (urlConn instanceof HttpURLConnection) {
             HttpURLConnection conn = (HttpURLConnection)urlConn;
-            if (conn.getResponseCode() != 200) {
+            if (conn.getResponseCode() == 204) {
+                // 204 means query was ok, but nothing found
+                System.out.println("No Data!");
+                return;
+            } else if (conn.getResponseCode() != 200) {
                 String out = "";
                 BufferedReader errReader = null;
                 try {
@@ -55,12 +59,12 @@ public class StationXMLClient {
             e = r.nextEvent(); // eat this one
             e = r.peek(); // peek at the next
         }
-        System.out.println("StaMessage");
+        System.out.println("FDSNStationXML");
         FDSNStationXML fdsnStationXML = new FDSNStationXML(r);
         if (!fdsnStationXML.checkSchemaVersion()) {
             System.out.println("");
             System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-            System.out.println("XmlSchema (code): " + StationXMLTagNames.SCHEMA_VERSION);
+            System.out.println("XmlSchema (code): " + StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION);
             System.out.println("");
         }
         System.out.println("XmlSchema: " + fdsnStationXML.getXmlSchemaLocation());
