@@ -9,18 +9,17 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
-public class ResponseList extends AbstractResponseType {
+public class ResponseList extends BaseFilterType {
     
     public ResponseList(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.INPUTUNITS)) {
-                    inputUnits = StaxUtil.pullText(reader, StationXMLTagNames.INPUTUNITS);
-                } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
-                    outputUnits = StaxUtil.pullText(reader, StationXMLTagNames.OUTPUTUNITS);
+                if (super.parseSubElement(elName, reader)) {
+                    // handle buy super
                 } else if (elName.equals(StationXMLTagNames.RESPONSELISTELEMENT)) {
                     responseElements.add( new ResponseListElement(reader));
                 } else {

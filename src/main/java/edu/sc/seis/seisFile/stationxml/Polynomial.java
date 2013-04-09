@@ -9,20 +9,19 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
-public class Polynomial extends AbstractResponseType {
+public class Polynomial extends BaseFilterType {
 
     public Polynomial(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.APPROXIMATIONTYPE)) {
+                if (super.parseSubElement(elName, reader)) {
+                    // handle buy super
+                } else if (elName.equals(StationXMLTagNames.APPROXIMATIONTYPE)) {
                     approximationType = StaxUtil.pullText(reader, StationXMLTagNames.APPROXIMATIONTYPE);
-                } else if (elName.equals(StationXMLTagNames.INPUTUNITS)) {
-                    inputUnits = StaxUtil.pullText(reader, StationXMLTagNames.INPUTUNITS);
-                } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
-                    outputUnits = StaxUtil.pullText(reader, StationXMLTagNames.OUTPUTUNITS);
                 } else if (elName.equals(StationXMLTagNames.FREQLOWERBOUND)) {
                     freqLowerBound = StaxUtil.pullFloat(reader, StationXMLTagNames.FREQLOWERBOUND);
                 } else if (elName.equals(StationXMLTagNames.FREQUPPERBOUND)) {
@@ -34,7 +33,7 @@ public class Polynomial extends AbstractResponseType {
                 } else if (elName.equals(StationXMLTagNames.MAXERROR)) {
                     maxError = StaxUtil.pullFloat(reader, StationXMLTagNames.MAXERROR);
                 } else if (elName.equals(StationXMLTagNames.COEFFICIENT)) {
-                    coefficientList.add( StaxUtil.pullFloat(reader, StationXMLTagNames.COEFFICIENT));
+                    coefficientList.add( new CoefficientWithError(reader, StationXMLTagNames.COEFFICIENT));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -72,7 +71,7 @@ public class Polynomial extends AbstractResponseType {
         return maxError;
     }
     
-    public List<Float> getCoefficientList() {
+    public List<CoefficientWithError> getCoefficientList() {
         return coefficientList;
     }
 
@@ -82,5 +81,5 @@ public class Polynomial extends AbstractResponseType {
     private float approxLowerBound;
     private float approxUpperBound;
     private float maxError;
-    private List<Float> coefficientList = new ArrayList<Float>();
+    private List<CoefficientWithError> coefficientList = new ArrayList<CoefficientWithError>();
 }
