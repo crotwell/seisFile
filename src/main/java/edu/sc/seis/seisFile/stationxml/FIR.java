@@ -9,21 +9,18 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
-public class FIR extends AbstractResponseType {
+public class FIR extends BaseFilterType {
 
     
     public FIR(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.RESPONSENAME)) {
-                    responseName = StaxUtil.pullText(reader, StationXMLTagNames.RESPONSENAME);
-                } else if (elName.equals(StationXMLTagNames.INPUTUNITS)) {
-                    inputUnits = StaxUtil.pullText(reader, StationXMLTagNames.INPUTUNITS);
-                } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
-                    outputUnits = StaxUtil.pullText(reader, StationXMLTagNames.OUTPUTUNITS);
+                if (super.parseSubElement(elName, reader)) {
+                    // handle buy super
                 } else if (elName.equals(StationXMLTagNames.SYMMETRY)) {
                     symmetry = StaxUtil.pullText(reader, StationXMLTagNames.SYMMETRY);
                 } else if (elName.equals(StationXMLTagNames.NUMERATORCOEFFICIENT)) {

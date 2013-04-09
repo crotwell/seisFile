@@ -10,7 +10,7 @@ public class ResponseListElement {
 
     
     public ResponseListElement(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.RESPONSELISTELEMENT, reader);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {

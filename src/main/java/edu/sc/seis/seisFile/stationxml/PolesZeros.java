@@ -9,7 +9,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
-public class PolesZeros extends AbstractResponseType {
+public class PolesZeros extends BaseFilterType {
 
     private String comment;
     private String pzTransferType;
@@ -20,16 +20,13 @@ public class PolesZeros extends AbstractResponseType {
 
     public PolesZeros(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.COMMENT)) {
-                    comment = StaxUtil.pullText(reader, StationXMLTagNames.COMMENT);
-                } else if (elName.equals(StationXMLTagNames.INPUTUNITS)) {
-                    inputUnits = StaxUtil.pullText(reader, StationXMLTagNames.INPUTUNITS);
-                } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
-                    outputUnits = StaxUtil.pullText(reader, StationXMLTagNames.OUTPUTUNITS);
+                if (super.parseSubElement(elName, reader)) {
+                    // handle buy super
                 } else if (elName.equals(StationXMLTagNames.PZTRANSFERTYPE)) {
                     pzTransferType = StaxUtil.pullText(reader, StationXMLTagNames.PZTRANSFERTYPE);
                 } else if (elName.equals(StationXMLTagNames.NORMALIZATIONFACTOR)) {
