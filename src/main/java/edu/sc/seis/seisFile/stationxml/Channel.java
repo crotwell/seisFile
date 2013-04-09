@@ -68,7 +68,7 @@ public class Channel extends BaseNodeType {
                     calibrationUnits = new Unit(reader);
                 } else if (elName.equals(StationXMLTagNames.SENSOR)) {
                     sensor = new Sensor(reader);
-                } else if (elName.equals(StationXMLTagNames.SENSOR)) {
+                } else if (elName.equals(StationXMLTagNames.PREAMPLIFIER)) {
                     preAmplifier = new PreAmplifier(reader);
                 } else if (elName.equals(StationXMLTagNames.DATALOGGER)) {
                     dataLogger = new DataLogger(reader);

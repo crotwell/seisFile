@@ -8,7 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 public class Sensor extends Equipment {
 
     public Sensor(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        super(reader);
+        super(reader, StationXMLTagNames.SENSOR);
     }
 
 }

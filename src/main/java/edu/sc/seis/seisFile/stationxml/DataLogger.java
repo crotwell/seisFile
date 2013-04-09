@@ -9,6 +9,6 @@ import javax.xml.stream.events.XMLEvent;
 public class DataLogger extends Equipment {
 
     public DataLogger(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        super(reader);
+        super(reader, StationXMLTagNames.DATALOGGER);
     }
 }
