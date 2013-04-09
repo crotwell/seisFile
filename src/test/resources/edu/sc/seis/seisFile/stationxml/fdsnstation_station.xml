@@ -1,0 +1,1745 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<FDSNStationXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.0" xsi:schemaLocation="http://www.fdsn.org/xml/station/1 http://www.fdsn.org/xml/station/fdsn-station-1.0.xsd">
+ <Source>IRIS-DMC</Source>
+ <Sender>IRIS-DMC</Sender>
+ <Module>IRIS WEB SERVICE: fdsnws-station | version: 1.0.2</Module>
+ <ModuleURI>http://service.iris.edu/fdsnws/station/1/query?network=II&amp;station=AAK&amp;level=station&amp;nodata=404</ModuleURI>
+ <Created>2013-04-09T13:25:59</Created>
+ <Network code="II" startDate="1986-01-01T00:00:00" endDate="2500-12-12T23:59:59" restrictedStatus="open">
+  <Description>Global Seismograph Network (GSN - IRIS/IDA)</Description>
+  <TotalNumberStations>52</TotalNumberStations>
+  <SelectedNumberStations>1</SelectedNumberStations>
+  <Station code="AAK" startDate="1990-10-12T00:00:00" endDate="2599-12-31T23:59:59" restrictedStatus="open">
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-21T03:02:56</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-21T03:03:20</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-21T04:52:53</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-21T04:53:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-21T06:39:27</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-21T06:39:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-21T09:01:22</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-21T09:03:21</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-21T10:01:58</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-21T10:02:22</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-21T10:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-21T10:34:06</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-21T12:18:34</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-21T12:35:43</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-22T05:07:46</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-22T05:08:10</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-22T06:51:03</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-22T06:51:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-22T07:54:54</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-22T08:06:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-22T08:46:22</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-22T09:02:46</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-22T15:34:49</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-22T15:35:13</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-23T07:09:20</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-23T07:09:44</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-23T07:38:06</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-23T07:49:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-23T08:21:42</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-23T08:22:06</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-23T09:04:39</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-23T09:05:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-23T10:05:47</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-23T10:06:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-23T11:58:47</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-23T11:59:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-23T14:28:08</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-23T14:28:32</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-24T07:56:35</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-24T07:58:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-26T09:23:02</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-26T09:25:01</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-26T11:39:52</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-26T11:40:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-27T06:55:00</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-27T06:55:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-27T07:37:43</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-27T07:38:07</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-27T08:27:00</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-27T08:27:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1991-08-28T03:54:19</BeginEffectiveTime>
+    <EndEffectiveTime>1991-08-28T03:54:43</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-01T23:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-02T06:37:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-03T14:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T02:09:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-04T04:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T14:01:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-04T14:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T18:33:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-04T19:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T23:28:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-05T05:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-06T13:16:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-06T13:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-07T12:04:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-07T12:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-07T14:42:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-07T15:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-07T19:22:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-07T21:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-08T11:33:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-08T12:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-09T08:10:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-09T08:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-10T11:56:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-10T15:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-12T16:31:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-12T17:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-13T15:01:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-13T15:52:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-15T04:48:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-15T05:52:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-15T21:27:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-15T22:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-16T19:18:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-16T19:52:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-17T12:09:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-17T13:35:27</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-17T17:11:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-17T17:38:39</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-18T07:49:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-18T08:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-19T04:06:26</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-19T07:12:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-20T12:40:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-20T13:12:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-21T08:04:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-21T08:57:14</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-21T09:50:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-21T10:34:06</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-22T07:27:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-22T09:14:06</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-22T20:40:50</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-22T21:17:38</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-22T21:29:38</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-23T00:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-23T23:17:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-24T00:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-25T14:25:38</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-25T15:12:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-26T14:47:50</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-27T14:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-28T05:01:38</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-28T11:52:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-29T16:17:26</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-30T00:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-30T22:39:50</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-30T23:54:05</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-31T13:53:14</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-31T14:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-31T18:52:26</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-31T19:16:50</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-31T19:45:14</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-10-31T20:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-01T11:37:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-01T12:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-02T21:43:01</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-02T23:12:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-04T05:08:13</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-04T07:52:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-05T05:21:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-05T07:12:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-06T02:14:49</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-06T03:14:05</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-07T07:55:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-07T13:12:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-07T22:14:49</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-08T00:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-08T03:52:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-08T04:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-10T00:00:25</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-10T00:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-10T13:14:01</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-10T15:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-11T05:15:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-11T07:01:37</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-11T07:46:13</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-11T09:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-13T10:49:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-13T11:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-13T15:09:13</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-13T15:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-14T04:36:25</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-14T05:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-14T11:38:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-14T13:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-14T17:04:49</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-16T17:14:04</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-16T19:06:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-16T23:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-18T10:04:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-18T10:43:36</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-18T10:51:48</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-18T11:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-19T14:32:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-19T15:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-19T18:08:00</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-19T18:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-20T07:17:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-20T08:34:04</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-20T10:47:48</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-20T11:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-21T02:37:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-22T16:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-22T21:59:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-22T22:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-23T01:23:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-23T02:48:36</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-23T12:51:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-23T13:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-23T23:00:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-24T02:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-25T02:11:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-25T02:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-25T08:31:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-25T09:54:03</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-25T18:55:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-25T19:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-26T00:50:48</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-26T02:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-27T10:17:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-27T19:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-28T06:43:00</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-28T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-28T17:26:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-28T18:34:03</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-30T06:49:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-30T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-30T20:00:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-11-30T21:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-01T00:24:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-01T06:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-02T04:02:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-02T09:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-03T09:00:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-03T11:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-03T13:39:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-03T14:44:47</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-03T15:29:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-03T18:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-04T05:24:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-04T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-04T11:09:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-04T11:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-05T08:22:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-05T09:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-05T22:52:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-06T02:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-06T06:53:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-06T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-06T14:51:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-07T05:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-07T19:32:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-07T21:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-08T03:11:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-08T03:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-09T08:06:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-11T03:12:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-12T17:35:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-12T22:20:59</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-13T03:05:47</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-13T04:32:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-13T11:14:47</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-13T13:12:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-14T03:55:22</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-14T05:52:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-14T09:26:22</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-14T09:52:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-15T16:17:22</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-15T18:32:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-16T13:05:55</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-16T15:12:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-20T07:42:10</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-20T08:32:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-25T02:20:10</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-30T08:32:14</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-31T15:40:33</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-31T16:18:45</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-31T16:55:21</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1997-12-31T17:12:14</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-04T01:58:21</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1998-01-07T04:32:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-08T10:48:21</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1998-01-08T18:32:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-09T07:25:09</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1998-01-12T08:25:33</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-12T15:17:32</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1998-01-13T03:52:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-13T12:11:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Clock unlocked.</Value>
+    <BeginEffectiveTime>1998-01-13T13:52:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-14T18:36:32</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station Maintenance.  Tests may be in progress.</Value>
+    <BeginEffectiveTime>1999-03-13T04:16:04</BeginEffectiveTime>
+    <EndEffectiveTime>1999-03-13T07:11:25</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station Maintenance.  Tests may be in progress.</Value>
+    <BeginEffectiveTime>1999-03-13T07:58:41</BeginEffectiveTime>
+    <EndEffectiveTime>1999-03-16T08:49:06</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-01T23:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-02T06:37:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-03T14:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T02:09:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-04T04:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T14:01:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-04T14:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T18:33:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-04T19:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-04T23:28:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-05T05:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-06T13:16:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-06T13:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-07T12:04:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-07T12:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-07T14:42:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-07T15:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-07T19:22:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-07T21:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-08T11:33:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-08T12:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-09T08:10:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-09T08:32:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-10T11:56:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-10T15:12:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-12T16:31:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-12T17:52:20</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-13T15:01:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-13T15:52:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-15T04:48:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-15T05:52:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-15T21:27:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-15T22:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-16T19:18:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-16T19:52:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-17T12:09:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-17T13:35:27</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-17T17:11:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-17T17:38:39</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-18T07:49:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-18T08:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-19T04:06:26</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-19T07:12:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-20T12:40:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-20T13:12:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-21T08:04:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-21T08:57:14</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-21T09:50:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-21T10:34:06</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-22T07:27:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-22T09:14:06</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-22T20:40:50</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-22T21:17:38</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-22T21:29:38</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-23T00:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-23T23:17:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-24T00:32:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-25T14:25:38</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-25T15:12:19</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-26T14:47:50</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-27T14:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-28T05:01:38</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-28T11:52:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-29T16:17:26</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-30T00:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-30T22:39:50</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-30T23:54:05</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-31T13:53:14</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-31T14:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-31T18:52:26</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-31T19:16:50</BeginEffectiveTime>
+    <EndEffectiveTime>1997-10-31T19:45:14</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-10-31T20:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-01T11:37:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-01T12:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-02T21:43:01</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-02T23:12:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-04T05:08:13</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-04T07:52:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-05T05:21:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-05T07:12:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-06T02:14:49</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-06T03:14:05</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-07T07:55:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-07T13:12:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-07T22:14:49</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-08T00:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-08T03:52:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-08T04:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-10T00:00:25</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-10T00:32:18</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-10T13:14:01</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-10T15:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-11T05:15:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-11T07:01:37</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-11T07:46:13</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-11T09:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-13T10:49:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-13T11:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-13T15:09:13</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-13T15:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-14T04:36:25</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-14T05:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-14T11:38:37</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-14T13:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-14T17:04:49</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-16T17:14:04</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-16T19:06:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-16T23:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-18T10:04:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-18T10:43:36</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-18T10:51:48</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-18T11:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-19T14:32:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-19T15:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-19T18:08:00</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-19T18:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-20T07:17:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-20T08:34:04</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-20T10:47:48</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-20T11:52:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-21T02:37:24</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-22T16:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-22T21:59:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-22T22:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-23T01:23:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-23T02:48:36</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-23T12:51:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-23T13:12:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-23T23:00:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-24T02:32:17</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-25T02:11:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-25T02:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-25T08:31:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-25T09:54:03</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-25T18:55:12</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-25T19:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-26T00:50:48</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-26T02:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-27T10:17:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-27T19:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-28T06:43:00</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-28T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-28T17:26:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-28T18:34:03</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-30T06:49:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-30T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-11-30T20:00:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-11-30T21:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-01T00:24:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-01T06:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-02T04:02:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-02T09:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-03T09:00:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-03T11:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-03T13:39:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-03T14:44:47</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-03T15:29:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-03T18:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-04T05:24:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-04T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-04T11:09:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-04T11:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-05T08:22:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-05T09:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-05T22:52:59</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-06T02:32:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-06T06:53:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-06T07:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-06T14:51:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-07T05:12:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-07T19:32:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-07T21:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-08T03:11:35</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-08T03:52:16</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-09T08:06:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-11T03:12:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-12T17:35:23</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-12T22:20:59</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-13T03:05:47</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-13T04:32:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-13T11:14:47</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-13T13:12:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-14T03:55:22</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-14T05:52:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-14T09:26:22</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-14T09:52:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-15T16:17:22</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-15T18:32:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-16T13:05:55</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-16T15:12:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-20T07:42:10</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-20T08:32:15</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-25T02:20:10</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-30T08:32:14</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-31T15:40:33</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-31T16:18:45</BeginEffectiveTime>
+    <EndEffectiveTime>1997-12-31T16:55:21</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1997-12-31T17:12:14</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-04T01:58:21</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1998-01-07T04:32:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-08T10:48:21</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1998-01-08T18:32:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-09T07:25:09</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1998-01-12T08:25:33</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-12T15:17:32</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1998-01-13T03:52:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-13T12:11:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1998-01-13T13:52:13</BeginEffectiveTime>
+    <EndEffectiveTime>1998-01-14T18:36:32</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station has clock problems.</Value>
+    <BeginEffectiveTime>1999-01-23T11:25:40</BeginEffectiveTime>
+    <EndEffectiveTime>1999-01-25T09:28:40</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>time uncertain.</Value>
+    <BeginEffectiveTime>1999-01-23T11:25:40</BeginEffectiveTime>
+    <EndEffectiveTime>1999-01-25T09:28:40</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Day contains positive leap second (86401 s/day).</Value>
+    <BeginEffectiveTime>1993-06-30T00:00:00</BeginEffectiveTime>
+    <EndEffectiveTime>1993-07-01T00:00:00</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Day contains positive leap second (86401 s/day).</Value>
+    <BeginEffectiveTime>1997-06-30T11:12:28</BeginEffectiveTime>
+    <EndEffectiveTime>1997-06-30T16:13:11</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Day contains positive leap second (86401 s/day).</Value>
+    <BeginEffectiveTime>1998-12-31T00:00:00</BeginEffectiveTime>
+    <EndEffectiveTime>1998-12-31T11:07:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-10T06:26:54</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-10T08:27:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-10T23:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T00:05:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-11T02:06:53</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T02:14:29</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-11T21:48:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T22:31:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-13T08:44:17</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T08:46:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-13T12:28:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T13:28:41</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-16T01:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-16T02:22:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-21T19:41:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-21T20:35:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-22T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T15:31:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-23T19:01:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T20:38:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-24T04:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T07:13:40</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-24T17:46:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T17:50:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-24T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T19:40:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-25T22:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-25T23:25:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-06-26T02:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-26T03:06:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-01T04:46:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T04:58:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-01T15:45:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T15:53:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-02T00:51:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T00:57:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-02T01:45:04</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T02:05:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-02T13:58:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T14:11:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-03T15:19:52</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T15:23:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-03T16:05:15</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T16:08:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-05T15:49:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-05T16:09:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-08T21:58:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-08T22:17:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Time may be in error by several hours.</Value>
+    <BeginEffectiveTime>1994-07-10T20:34:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-10T20:55:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-10T06:26:54</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-10T08:27:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-10T23:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T00:05:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-11T02:06:53</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T02:14:29</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-11T21:48:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T22:31:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-13T08:44:17</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T08:46:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-13T12:28:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T13:28:41</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-16T01:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-16T02:22:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-21T19:41:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-21T20:35:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-22T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T15:31:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-23T19:01:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T20:38:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-24T04:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T07:13:40</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-24T17:46:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T17:50:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-24T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T19:40:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-25T22:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-25T23:25:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-06-26T02:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-26T03:06:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-01T04:46:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T04:58:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-01T15:45:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T15:53:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-02T00:51:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T00:57:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-02T01:45:04</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T02:05:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-02T13:58:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T14:11:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-03T15:19:52</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T15:23:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-03T16:05:15</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T16:08:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-05T15:49:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-05T16:09:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-08T21:58:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-08T22:17:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time error information is available.</Value>
+    <BeginEffectiveTime>1994-07-10T20:34:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-10T20:55:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-10T06:26:54</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-10T08:27:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-10T23:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T00:05:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-11T02:06:53</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T02:14:29</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-11T21:48:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T22:31:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-13T08:44:17</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T08:46:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-13T12:28:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T13:28:41</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-16T01:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-16T02:22:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-21T19:41:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-21T20:35:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-22T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T15:31:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-23T19:01:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T20:38:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-24T04:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T07:13:40</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-24T17:46:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T17:50:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-24T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T19:40:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-25T22:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-25T23:25:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-06-26T02:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-26T03:06:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-01T04:46:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T04:58:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-01T15:45:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T15:53:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-02T00:51:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T00:57:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-02T01:45:04</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T02:05:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-02T13:58:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T14:11:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-03T15:19:52</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T15:23:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-03T16:05:15</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T16:08:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-05T15:49:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-05T16:09:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-08T21:58:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-08T22:17:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>No time correction information is available.</Value>
+    <BeginEffectiveTime>1994-07-10T20:34:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-10T20:55:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-10T06:26:54</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-10T08:27:02</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-10T23:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T00:05:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-11T02:06:53</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T02:14:29</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-11T21:48:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-11T22:31:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-13T08:44:17</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T08:46:17</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-13T12:28:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-13T13:28:41</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-16T01:08:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-16T02:22:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-21T19:41:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-21T20:35:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-22T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T15:31:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-23T19:01:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-23T20:38:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-24T04:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T07:13:40</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-24T17:46:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T17:50:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-24T18:21:56</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-24T19:40:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-25T22:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-25T23:25:16</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-06-26T02:21:55</BeginEffectiveTime>
+    <EndEffectiveTime>1994-06-26T03:06:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-01T04:46:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T04:58:28</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-01T15:45:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-01T15:53:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-02T00:51:28</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T00:57:52</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-02T01:45:04</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T02:05:36</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-02T13:58:16</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-02T14:11:04</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-03T15:19:52</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T15:23:27</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-03T16:05:15</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-03T16:08:39</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-05T15:49:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-05T16:09:51</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-08T21:58:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-08T22:17:15</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Problems with station recorder.</Value>
+    <BeginEffectiveTime>1994-07-10T20:34:27</BeginEffectiveTime>
+    <EndEffectiveTime>1994-07-10T20:55:03</EndEffectiveTime>
+   </Comment>
+   <Comment>
+    <Value>Station Maintenance.  Tests may be in progress.</Value>
+    <BeginEffectiveTime>1999-03-13T07:58:41</BeginEffectiveTime>
+    <EndEffectiveTime>1999-03-16T23:59:59</EndEffectiveTime>
+   </Comment>
+   <Latitude>42.639</Latitude>
+   <Longitude>74.494</Longitude>
+   <Elevation>1645.0</Elevation>
+   <Site>
+    <Name>Ala Archa, Kyrgyzstan</Name>
+   </Site>
+   <CreationDate>1990-10-12T00:00:00</CreationDate>
+   <TotalNumberChannels>228</TotalNumberChannels>
+   <SelectedNumberChannels>0</SelectedNumberChannels>
+  </Station>
+ </Network>
+</FDSNStationXML>
