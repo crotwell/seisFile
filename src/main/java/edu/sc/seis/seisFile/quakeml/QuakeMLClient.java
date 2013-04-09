@@ -73,7 +73,7 @@ public class QuakeMLClient {
         if ( ! quakeml.checkSchemaVersion()) {
             System.out.println("");
             System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-            System.out.println("XmlSchema (code): "+StationXMLTagNames.SCHEMA_VERSION);
+            System.out.println("XmlSchema (code): "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION);
             System.out.println("");
         }
     }
