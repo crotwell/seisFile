@@ -93,10 +93,6 @@ public class Station extends BaseNodeType {
         return channelList;
     }
 
-    public IrisCommentList getIrisStationComments() {
-        return irisStationComments;
-    }
-
     String startDate, endDate, creationDate, terminationDate;
 
     float lat, lon, elevation;
@@ -119,5 +115,4 @@ public class Station extends BaseNodeType {
     
     List<String> externalReferenceList = new ArrayList<String>();
 
-    IrisCommentList irisStationComments = new IrisCommentList(StationXMLTagNames.IRISSTATIONCOMMENTS);
 }

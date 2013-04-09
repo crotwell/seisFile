@@ -12,7 +12,7 @@ public class Response {
 
     public Response(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.RESPONSE, reader);
-        resourceId = StaxUtil.pullAttribute(startE, StationXMLTagNames.RESOURCEID);
+        resourceId = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.RESOURCEID);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {

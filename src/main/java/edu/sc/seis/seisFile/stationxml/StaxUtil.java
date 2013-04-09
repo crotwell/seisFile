@@ -111,6 +111,17 @@ public class StaxUtil {
         return false;
     }
 
+    public static boolean hasAttribute(StartElement start, String name) {
+        Iterator<Attribute> it = start.getAttributes();
+        while(it.hasNext()) {
+            Attribute a = it.next();
+            if (a.getName().getLocalPart().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static String pullAttributeIfExists(StartElement start, String name) throws StationXMLException {
         Iterator<Attribute> it = start.getAttributes();
         while(it.hasNext()) {

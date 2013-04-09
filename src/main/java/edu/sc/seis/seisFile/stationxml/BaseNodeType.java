@@ -11,11 +11,11 @@ public class BaseNodeType {
 
     void parseAttributes(StartElement startE) throws StationXMLException {
         code = StaxUtil.pullAttribute(startE, StationXMLTagNames.CODE);
-        startDate = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.CODE);
-        endDate = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.CODE);
-        historicalCode = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.CODE);
-        alternateCode = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.CODE);
-        restrictedStatus = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.CODE);
+        startDate = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.STARTDATE);
+        endDate = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.ENDDATE);
+        historicalCode = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.HISTORICALCODE);
+        alternateCode = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.ALTERNATECODE);
+        restrictedStatus = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.RESTRICTEDSTATUS);
     }
 
     boolean parseSubElement(String elName, final XMLEventReader reader) throws StationXMLException, XMLStreamException {
