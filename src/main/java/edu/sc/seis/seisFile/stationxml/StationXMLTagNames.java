@@ -3,10 +3,9 @@ package edu.sc.seis.seisFile.stationxml;
 
 public final class StationXMLTagNames {
     
-    public static final String[] OLD_SCHEMA_VERSIONS = {"http://www.data.scec.org/xml/station/20111019/"};
-    public static final String[] OLD_SCHEMA_SEISFILE_VERSIONS = {"1.3.1"};
     
-    public static final String SCHEMA_VERSION = "http://www.data.scec.org/xml/station/20120307/";
+    public static final String CURRENT_SCHEMALOCATION_VERSION = "http://www.fdsn.org/xml/station/1";
+    public static final String CURRENT_SCHEMA_VERSION = "1.0";
     
     private StationXMLTagNames() {}
     
@@ -153,5 +152,6 @@ public final class StationXMLTagNames {
     public static final String PLUSERROR = "plusError";
     public static final String MINUSERROR = "minusError";
     public static final String UNIT = "unit";
+    public static final String SCHEMAVERSION = "schemaVersion";
     
     }

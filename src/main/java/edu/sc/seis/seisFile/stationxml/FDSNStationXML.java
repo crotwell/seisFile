@@ -15,8 +15,7 @@ public class FDSNStationXML {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.FDSNSTATIONXML, reader);
         Attribute schemaLocAttr = startE.getAttributeByName(new QName("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation"));
         xmlSchemaLocation = schemaLocAttr.getValue();
-        Attribute schemaVersionAttr = startE.getAttributeByName(new QName("http://www.fdsn.org/xml/station/1", "version"));
-        schemaVersion = schemaVersionAttr.getValue();
+        schemaVersion = StaxUtil.pullAttribute(startE, StationXMLTagNames.SCHEMAVERSION);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -135,10 +134,10 @@ public class FDSNStationXML {
     }
 
     public boolean checkSchemaVersion() {
-        if ( ! xmlSchemaLocation.split(" ")[0].equals(StationXMLTagNames.SCHEMA_VERSION)) {
+        if ( ! xmlSchemaLocation.split(" ")[0].equals(StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION)) {
             return false;
         }
-        if ( ! StationXMLTagNames.SCHEMA_VERSION.equals(getSchemaVersion())) {
+        if ( ! StationXMLTagNames.CURRENT_SCHEMA_VERSION.equals(getSchemaVersion())) {
             return false;
         }
         return true;
