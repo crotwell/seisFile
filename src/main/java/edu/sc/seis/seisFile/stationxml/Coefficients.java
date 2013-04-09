@@ -9,18 +9,17 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
-public class Coefficients extends AbstractResponseType {
+public class Coefficients extends BaseFilterType {
 
     public Coefficients(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.COEFFICIENTS, reader);
+        super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.INPUTUNITS)) {
-                    inputUnits = StaxUtil.pullText(reader, StationXMLTagNames.INPUTUNITS);
-                } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
-                    outputUnits = StaxUtil.pullText(reader, StationXMLTagNames.OUTPUTUNITS);
+                if (super.parseSubElement(elName, reader)) {
+                    // handle buy super
                 } else if (elName.equals(StationXMLTagNames.CFTRANSFERTYPE)) {
                     cfTransferType = StaxUtil.pullText(reader, StationXMLTagNames.CFTRANSFERTYPE);
                 } else if (elName.equals(StationXMLTagNames.NUMERATOR)) {

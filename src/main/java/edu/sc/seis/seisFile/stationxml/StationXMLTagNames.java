@@ -12,11 +12,12 @@ public final class StationXMLTagNames {
     
 
     public static final String NAMESPACE = "http://www.data.scec.org/xml/station/";
-    public static final String STAMESSAGE = "StaMessage";
+    public static final String FDSNSTATIONXML = "FDSNStationXML";
     public static final String SOURCE = "Source";
     public static final String SENDER = "Sender";
     public static final String MODULE = "Module";
-    public static final String SENTDATE = "SentDate";
+    public static final String MODULEURI = "ModuleURI";
+    public static final String CREATED = "Created";
     public static final String NETWORK = "Network";
     public static final String TOTALNUMSTATIONS = "TotalNumberStations";
     public static final String SELECTEDNUMSTATIONS = "SelectedNumberStations";
@@ -38,8 +39,8 @@ public final class StationXMLTagNames {
     public static final String COUNTRY = "Country";
     public static final String STARTDATE = "StartDate";
     public static final String ENDDATE = "EndDate";
-    public static final String LAT = "Lat";
-    public static final String LON = "Lon";
+    public static final String LAT = "Latitude";
+    public static final String LON = "Longitude";
     public static final String ELEVATION = "Elevation";
     public static final String NAME = "Name";
     public static final String CREATIONDATE = "CreationDate";
@@ -102,8 +103,8 @@ public final class StationXMLTagNames {
     public static final String APPROXIMATIONTYPE = "ApproximationType";
     public static final String FREQLOWERBOUND = "FreqLowerBound";
     public static final String FREQUPPERBOUND = "FreqUpperBound";
-    public static final String APPROXLOWERBOUND = "ApproxLowerBound";
-    public static final String APPROXUPPERBOUND = "ApproxUpperBound";
+    public static final String APPROXLOWERBOUND = "ApproximationLowerBound";
+    public static final String APPROXUPPERBOUND = "ApproximationUpperBound";
     public static final String MAXERROR = "MaxError";
     public static final String GENCOMMENT = "GenComment";
     public static final String SENSITIVITY = "Sensitivity";
@@ -127,4 +128,30 @@ public final class StationXMLTagNames {
     public static final String IRISCOMMENT = "Comment";
     public static final String IRISTEXT = "Text";
     public static final String IRISCLASS = "Class";
+    public static final String CODE = "code";
+    public static final String VAULT = "Vault";
+    public static final String GEOLOGY = "Geology";
+    public static final String REGION = "Region";
+    public static final String RESOURCEID = "resourceId";
+    public static final String TYPE = "Type";
+    public static final String EQUIPMENT = "Equipment";
+    public static final String TERMINATIONDATE = "TerminationDate";
+    public static final String AGENCY = "Agency";
+    public static final String WEBSITE = "WebSite";
+    public static final String EMAIL = "Email";
+    public static final String PHONE = "Phone";
+    public static final String CONTACT = "Contact";
+    public static final String EXTERNALREFERENCE = "ExternalReference";
+    public static final String NUMBERSAMPLES = "NumberSamples";
+    public static final String NUMBERSECONDS = "NumberSeconds";
+    public static final String SAMPLE_RATE_RATIO = "SampleRateRatio";
+    public static final String CALIBRATIONUNITS = "CalibrationUnits";
+    public static final String NUMBER = "number";
+    public static final String STAGEGAIN = "StageGain";
+    public static final String RESPONSESTAGE = "ResponseStage";
+    public static final String INSTRUMENT_POLYNOMIAL = "InstrumentPolynomial";
+    public static final String PLUSERROR = "plusError";
+    public static final String MINUSERROR = "minusError";
+    public static final String UNIT = "unit";
+    
     }

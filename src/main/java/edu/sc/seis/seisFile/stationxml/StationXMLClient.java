@@ -16,7 +16,7 @@ import javax.xml.stream.events.XMLEvent;
 public class StationXMLClient {
 
     public static void main(String[] args) throws XMLStreamException, StationXMLException, IOException {
-        if (args.length != 2 || ! args[0].equals("-u")) {
+        if (args.length != 2 || !args[0].equals("-u")) {
             System.out.println("Usage: stationxmlclient -u url");
             System.out.println("       stationxmlclient -u http://www.iris.edu/ws/station/query?net=IU&sta=SNZO&chan=BHZ&level=chan");
             return;
@@ -34,19 +34,19 @@ public class StationXMLClient {
                         out += line + "\n";
                     }
                 } finally {
-                    if (errReader != null) try { 
-                        errReader.close(); 
-                        conn.disconnect();
-                    } catch (IOException e) {
-                        throw e;
-                    }
+                    if (errReader != null)
+                        try {
+                            errReader.close();
+                            conn.disconnect();
+                        } catch(IOException e) {
+                            throw e;
+                        }
                 }
-                System.err.println("Error in connection with url: "+url);
+                System.err.println("Error in connection with url: " + url);
                 System.err.println(out);
                 return;
             }
         }
-        
         // likely not an error in the http layer, so assume XML is returned
         XMLInputFactory factory = XMLInputFactory.newInstance();
         XMLEventReader r = factory.createXMLEventReader(url.toString(), urlConn.getInputStream());
@@ -56,70 +56,62 @@ public class StationXMLClient {
             e = r.peek(); // peek at the next
         }
         System.out.println("StaMessage");
-        StaMessage staMessage = new StaMessage(r);
-        if ( ! staMessage.checkSchemaVersion()) {
+        FDSNStationXML fdsnStationXML = new FDSNStationXML(r);
+        if (!fdsnStationXML.checkSchemaVersion()) {
             System.out.println("");
             System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-            System.out.println("XmlSchema (code): "+StationXMLTagNames.SCHEMA_VERSION);
+            System.out.println("XmlSchema (code): " + StationXMLTagNames.SCHEMA_VERSION);
             System.out.println("");
         }
-        System.out.println("XmlSchema: " + staMessage.getXmlSchemaLocation());
-        System.out.println("Source: " + staMessage.getSource());
-        System.out.println("Sender: " + staMessage.getSender());
-        System.out.println("Module: " + staMessage.getModule());
-        System.out.println("SentDate: " + staMessage.getSentDate());
-        NetworkIterator it = staMessage.getNetworks();
+        System.out.println("XmlSchema: " + fdsnStationXML.getXmlSchemaLocation());
+        System.out.println("Source: " + fdsnStationXML.getSource());
+        System.out.println("Sender: " + fdsnStationXML.getSender());
+        System.out.println("Module: " + fdsnStationXML.getModule());
+        System.out.println("SentDate: " + fdsnStationXML.getCreated());
+        NetworkIterator it = fdsnStationXML.getNetworks();
         while (it.hasNext()) {
             Network n = it.next();
-            System.out.println("Network: " +n.getNetCode()+" "+n.getDescription()+" "+n.getStartDate()+" "+n.getEndDate()); 
+            System.out.println("Network: " + n.getCode() + " " + n.getDescription() + " " + n.getStartDate() + " "
+                    + n.getEndDate());
             StationIterator sit = n.getStations();
             while (sit.hasNext()) {
                 Station s = sit.next();
-                if ( ! n.getNetCode().equals(s.getNetCode())) {
-                    throw new StationXMLException("Station in wrong network: "+n.getNetCode()+" != "+s.getNetCode()+"  "+r.peek().getLocation());
-                    
+                System.out.println("  Station: " + n.getCode() + "." + s.getCode() + " " + "  " + s.getStartDate()
+                        + " to " + s.getEndDate());
+                for (String comment : s.getCommentList()) {
+                    System.out.println("          " + comment);
                 }
-                System.out.println("  Station: " + s.getNetCode() + "." + s.getStaCode() + " "
-                        + s.getStationEpochs().size());
-                List<StationEpoch> staEpochs = s.getStationEpochs();
-                for (StationEpoch stationEpoch : staEpochs) {
-                    System.out.println("    Station Epoch: " + s.getNetCode() + "." + s.getStaCode()
-                                       + "  " + stationEpoch.getStartDate() + " to " + stationEpoch.getEndDate());
-                    for (IrisComment comment : stationEpoch.getIrisStationComments().getList()) {
-                        System.out.println("          "+comment.getStartDate()+" "+comment.getEndDate()+" "+comment.getCommentClass()+" "+comment.getText());
+                List<Channel> chanList = s.getChannelList();
+                for (Channel channel : chanList) {
+                    System.out.println("      Channel: " + channel.getLocCode() + "." + channel.getCode() + "  "
+                            + channel.getStartDate() + " to " + channel.getEndDate());
+                    for (String comment : channel.getCommentList()) {
+                        System.out.println("          " + comment);
                     }
-                    List<Channel> chanList = stationEpoch.getChannelList();
-                    for (Channel channel : chanList) {
-                        List<Epoch> chanEpochList = channel.getChanEpochList();
-                        for (Epoch epoch : chanEpochList) {
-                            System.out.println("      Channel Epoch: " + channel.getLocCode() + "." + channel.getChanCode()
-                                    + "  " + epoch.getStartDate() + " to " + epoch.getEndDate());
-                            for (IrisComment comment : epoch.getIrisChannelComments().getList()) {
-                                System.out.println("          "+comment.getStartDate()+" "+comment.getEndDate()+" "+comment.getCommentClass()+" "+comment.getText());
+                    Response resp = channel.getResponse();
+                    if (resp != null) {
+                        float overallGain = 1;
+                        for (ResponseStage stage : resp.getResponseStageList()) {
+                            System.out.print("          Resp " + stage.getNumber() + " " + stage.getResourceId());
+                            if (stage.getResponseItem() != null) {
+                                System.out.print(" " + stage.getResponseItem().getInputUnits() + " "
+                                        + stage.getResponseItem().getOutputUnits());
                             }
-                            if (epoch.getResponseList().size() != 0) {
-                                float overallGain = 1;
-                                for (Response resp : epoch.getResponseList()) {
-                                    System.out.print("          Resp "+resp.getStage());
-                                    if (resp.getResponseItem() != null) {
-                                        System.out.print(" "+resp.getResponseItem().getInputUnits()+" "+resp.getResponseItem().getOutputUnits());
-                                    }
-                                    if (resp.getStageSensitivity() != null) {
-                                        System.out.print(" "+resp.getStageSensitivity().getSensitivityValue());
-                                        if (resp.getStage() != 0) {
-                                            overallGain *= resp.getStageSensitivity().getSensitivityValue();
-                                        }
-                                    }
-                                    System.out.println();
-                                }    
-                                InstrumentSensitivity instSens = epoch.getInstrumentSensitivity();
-                                System.out.println("          Overall Gain: "+overallGain+"  Inst Sense: "+instSens.getSensitivityValue()+" "+instSens.getSensitivityUnits());
+                            if (stage.getStageSensitivity() != null) {
+                                System.out.print(" " + stage.getStageSensitivity().getSensitivityValue());
+                                if (stage.getNumber() != 0) {
+                                    overallGain *= stage.getStageSensitivity().getSensitivityValue();
+                                }
                             }
+                            System.out.println();
                         }
+                        InstrumentSensitivity instSens = resp.getInstrumentSensitivity();
+                        System.out.println("          Overall Gain: " + overallGain + "  Inst Sense: "
+                                + instSens.getSensitivityValue() + " " + instSens.getSensitivityUnits());
                     }
                 }
             }
         }
-        staMessage.closeReader();
+        fdsnStationXML.closeReader();
     }
 }

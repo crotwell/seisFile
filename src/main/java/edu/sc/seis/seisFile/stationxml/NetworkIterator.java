@@ -10,7 +10,7 @@ public class NetworkIterator {
     }
 
     public boolean hasNext() throws XMLStreamException {
-        return StaxUtil.hasNext(reader, StationXMLTagNames.NETWORK, StationXMLTagNames.STAMESSAGE);
+        return StaxUtil.hasNext(reader, StationXMLTagNames.NETWORK, StationXMLTagNames.FDSNSTATIONXML);
     }
 
     public Network next() throws XMLStreamException, StationXMLException {

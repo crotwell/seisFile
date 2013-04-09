@@ -7,13 +7,13 @@ import javax.xml.stream.events.XMLEvent;
 
 public class Site {
 
-    public Site(String name, String description, String town, String county, String state, String country) {
+    public Site(String name, String description, String town, String county, String region, String country) {
         super();
         this.name = name;
         this.description = description;
         this.town = town;
         this.county = county;
-        this.state = state;
+        this.region = region;
         this.country = country;
     }
 
@@ -23,16 +23,16 @@ public class Site {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.TOWN)) {
-                    town = StaxUtil.pullText(reader, StationXMLTagNames.TOWN);
-                } else if (elName.equals(StationXMLTagNames.NAME)) {
+                if (elName.equals(StationXMLTagNames.NAME)) {
                     name = StaxUtil.pullText(reader, StationXMLTagNames.NAME);
                 } else if (elName.equals(StationXMLTagNames.DESCRIPTION)) {
                     description = StaxUtil.pullText(reader, StationXMLTagNames.DESCRIPTION);
+                } else if (elName.equals(StationXMLTagNames.TOWN)) {
+                    town = StaxUtil.pullText(reader, StationXMLTagNames.TOWN);
                 } else if (elName.equals(StationXMLTagNames.COUNTY)) {
                     county = StaxUtil.pullText(reader, StationXMLTagNames.COUNTY);
-                } else if (elName.equals(StationXMLTagNames.STATE)) {
-                    state = StaxUtil.pullText(reader, StationXMLTagNames.STATE);
+                } else if (elName.equals(StationXMLTagNames.REGION)) {
+                    region = StaxUtil.pullText(reader, StationXMLTagNames.REGION);
                 } else if (elName.equals(StationXMLTagNames.COUNTRY)) {
                     country = StaxUtil.pullText(reader, StationXMLTagNames.COUNTRY);
                 } else {
@@ -79,12 +79,8 @@ public class Site {
         this.county = county;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
+    public String getRegion() {
+        return region;
     }
 
     public String getCountry() {
@@ -95,5 +91,5 @@ public class Site {
         this.country = country;
     }
 
-    String name, description, town, county, state, country;
+    String name, description, town, county, region, country;
 }

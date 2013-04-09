@@ -7,14 +7,16 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-public class StaMessage {
+public class FDSNStationXML {
 
-    public StaMessage(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
+    public FDSNStationXML(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
         this.reader = reader;
         StaxUtil.skipToStartElement(reader);
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STAMESSAGE, reader);
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.FDSNSTATIONXML, reader);
         Attribute schemaLocAttr = startE.getAttributeByName(new QName("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation"));
         xmlSchemaLocation = schemaLocAttr.getValue();
+        Attribute schemaVersionAttr = startE.getAttributeByName(new QName("http://www.fdsn.org/xml/station/1", "version"));
+        schemaVersion = schemaVersionAttr.getValue();
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -25,8 +27,10 @@ public class StaMessage {
                     sender = StaxUtil.pullText(reader, StationXMLTagNames.SENDER);
                 } else if (elName.equals(StationXMLTagNames.MODULE)) {
                     module = StaxUtil.pullText(reader, StationXMLTagNames.MODULE);
-                } else if (elName.equals(StationXMLTagNames.SENTDATE)) {
-                    sentDate = StaxUtil.pullText(reader, StationXMLTagNames.SENTDATE);
+                } else if (elName.equals(StationXMLTagNames.MODULEURI)) {
+                    moduleUri = StaxUtil.pullText(reader, StationXMLTagNames.MODULEURI);
+                } else if (elName.equals(StationXMLTagNames.CREATED)) {
+                    created = StaxUtil.pullText(reader, StationXMLTagNames.CREATED);
                 } else if (elName.equals(StationXMLTagNames.NETWORK)) {
                     networks = new NetworkIterator(reader);
                     break;
@@ -65,12 +69,12 @@ public class StaMessage {
         this.module = module;
     }
 
-    public String getSentDate() {
-        return sentDate;
+    public String getCreated() {
+        return created;
     }
 
-    public void setSentDate(String sentDate) {
-        this.sentDate = sentDate;
+    public void setCreated(String created) {
+        this.created = created;
     }
 
     public NetworkIterator getNetworks() {
@@ -110,8 +114,31 @@ public class StaMessage {
         this.xmlSchemaLocation = xmlns;
     }
     
+    
+    public XMLEventReader getReader() {
+        return reader;
+    }
+
+    
+    public String getModuleUri() {
+        return moduleUri;
+    }
+
+    
+    public String getSchemaVersion() {
+        return schemaVersion;
+    }
+
+    
+    public static org.slf4j.Logger getLogger() {
+        return logger;
+    }
+
     public boolean checkSchemaVersion() {
         if ( ! xmlSchemaLocation.split(" ")[0].equals(StationXMLTagNames.SCHEMA_VERSION)) {
+            return false;
+        }
+        if ( ! StationXMLTagNames.SCHEMA_VERSION.equals(getSchemaVersion())) {
             return false;
         }
         return true;
@@ -125,11 +152,15 @@ public class StaMessage {
 
     String module;
 
-    String sentDate;
+    String moduleUri;
+
+    String created;
 
     String xmlSchemaLocation;
     
+    String schemaVersion;
+    
     NetworkIterator networks;
 
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(StaMessage.class);
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FDSNStationXML.class);
 }

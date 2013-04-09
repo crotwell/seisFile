@@ -110,8 +110,8 @@ public class StaxUtil {
         }
         return false;
     }
-    
-    public static String pullAttribute(StartElement start, String name) throws StationXMLException {
+
+    public static String pullAttributeIfExists(StartElement start, String name) throws StationXMLException {
         Iterator<Attribute> it = start.getAttributes();
         while(it.hasNext()) {
             Attribute a = it.next();
@@ -119,11 +119,23 @@ public class StaxUtil {
                 return a.getValue();
             }
         }
-        throw new StationXMLException(name+" not found as an attribute");
+        return null;
     }
     
+    public static String pullAttribute(StartElement start, String name) throws StationXMLException {
+        String val = pullAttributeIfExists(start, name);
+        if (val != null) {
+            return val;
+        }
+        throw new StationXMLException(name+" not found as an attribute");
+    }
+
 
     public static Integer pullIntAttribute(StartElement start, String name) throws StationXMLException {
         return Integer.parseInt(pullAttribute(start, name));
+    }
+
+    public static Float pullFloatAttribute(StartElement start, String name) throws StationXMLException {
+        return Float.parseFloat(pullAttribute(start, name));
     }
 }
