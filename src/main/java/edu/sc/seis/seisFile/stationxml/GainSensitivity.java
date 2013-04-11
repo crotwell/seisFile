@@ -8,24 +8,21 @@ import javax.xml.stream.events.XMLEvent;
 
 public class GainSensitivity {
 
-    public GainSensitivity(float value, String unit, float frequency) {
+    GainSensitivity() {}
+    
+    public GainSensitivity(float value, float frequency) {
         this.sensitivityValue = value;
-        this.sensitivityUnits = unit;
         this.frequency = frequency;
     }
 
-    public GainSensitivity(XMLEventReader reader, String elementName) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(elementName, reader);
+    public GainSensitivity(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
+        StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.SENSITIVITY_VALUE)) {
-                    sensitivityValue = StaxUtil.pullFloat(reader, StationXMLTagNames.SENSITIVITY_VALUE);
-                } else if (elName.equals(StationXMLTagNames.FREQUENCY)) {
-                    frequency = StaxUtil.pullFloat(reader, StationXMLTagNames.FREQUENCY);
-                } else if (elName.equals(StationXMLTagNames.SENSITIVITYUNITS)) {
-                    sensitivityUnits = StaxUtil.pullText(reader, StationXMLTagNames.SENSITIVITYUNITS);
+                if (parseSubElement(elName, reader)) {
+                    // super handled it
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -37,6 +34,18 @@ public class GainSensitivity {
             }
         }
     }
+    
+    boolean parseSubElement(String elName, final XMLEventReader reader) throws StationXMLException, XMLStreamException {
+        if (elName.equals(StationXMLTagNames.VALUE)) {
+            sensitivityValue = StaxUtil.pullFloat(reader, StationXMLTagNames.VALUE);
+            return true;
+        } else if (elName.equals(StationXMLTagNames.FREQUENCY)) {
+            frequency = StaxUtil.pullFloat(reader, StationXMLTagNames.FREQUENCY);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public float getSensitivityValue() {
         return sensitivityValue;
@@ -46,19 +55,5 @@ public class GainSensitivity {
         return frequency;
     }
 
-    public String getSensitivityUnits() {
-        return sensitivityUnits;
-    }
-
-    @Deprecated
-    /** 
-     * renamed getSensitivityUnits
-     * @return
-     */
-    public String getGainUnits() {
-        return getSensitivityUnits();
-    }
-
     float sensitivityValue, frequency;
-
-    String sensitivityUnits;}
+}

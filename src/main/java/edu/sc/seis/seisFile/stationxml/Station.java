@@ -10,7 +10,8 @@ import javax.xml.stream.events.XMLEvent;
 
 public class Station extends BaseNodeType {
 
-    public Station(XMLEventReader reader) throws XMLStreamException, StationXMLException {
+    public Station(XMLEventReader reader, String networkCode) throws XMLStreamException, StationXMLException {
+        this.networkCode = networkCode;
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STATION, reader);
         super.parseAttributes(startE);
         while (reader.hasNext()) {
@@ -44,7 +45,7 @@ public class Station extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.EXTERNALREFERENCE)) {
                     externalReferenceList.add(StaxUtil.pullText(reader, StationXMLTagNames.EXTERNALREFERENCE));
                 } else if (elName.equals(StationXMLTagNames.CHANNEL)) {
-                    channelList.add(new Channel(reader));
+                    channelList.add(new Channel(reader, networkCode, getCode()));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -93,6 +94,38 @@ public class Station extends BaseNodeType {
         return channelList;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public String getTerminationDate() {
+        return terminationDate;
+    }
+
+    public String getVault() {
+        return vault;
+    }
+
+    public String getGeology() {
+        return geology;
+    }
+
+    public String getNetworkCode() {
+        return networkCode;
+    }
+
+    public List<Equipment> getEquipmentList() {
+        return equipmentList;
+    }
+
+    public List<String> getExternalReferenceList() {
+        return externalReferenceList;
+    }
+
     String startDate, endDate, creationDate, terminationDate;
 
     float lat, lon, elevation;
@@ -100,19 +133,20 @@ public class Station extends BaseNodeType {
     String name;
 
     String vault;
-    
+
     String geology;
-    
+
     Site site;
 
     int totalNumChannels;
 
     int selectedNumChannels;
 
+    String networkCode;
+
     List<Channel> channelList = new ArrayList<Channel>();
 
     List<Equipment> equipmentList = new ArrayList<Equipment>();
-    
-    List<String> externalReferenceList = new ArrayList<String>();
 
+    List<String> externalReferenceList = new ArrayList<String>();
 }

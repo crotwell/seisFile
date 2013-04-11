@@ -29,8 +29,14 @@ public class Channel extends BaseNodeType {
     private Equipment equipment;
 
     private Response response;
+    
+    private String networkCode;
+    
+    private String stationCode;
 
-    public Channel(XMLEventReader reader) throws XMLStreamException, StationXMLException {
+    public Channel(XMLEventReader reader, String networkCode, String stationCode) throws XMLStreamException, StationXMLException {
+        this.networkCode = networkCode;
+        this.stationCode = stationCode;
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.CHANNEL, reader);
         super.parseAttributes(startE);
         locCode = StaxUtil.pullAttribute(startE, StationXMLTagNames.LOC_CODE);

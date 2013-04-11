@@ -7,8 +7,9 @@ public class StationIterator {
 
     protected StationIterator() {}
     
-    public StationIterator(XMLEventReader reader) {
+    public StationIterator(XMLEventReader reader, String networkCode) {
         this.reader = reader;
+        this.networkCode = networkCode;
     }
 
     public boolean hasNext() throws XMLStreamException {
@@ -16,8 +17,10 @@ public class StationIterator {
     }
 
     public Station next() throws XMLStreamException, StationXMLException {
-        return new Station(reader);
+        return new Station(reader, networkCode);
     }
 
     XMLEventReader reader;
+    
+    String networkCode;
 }
