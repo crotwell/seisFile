@@ -98,11 +98,16 @@ public class StationXMLClient {
                     for (Comment comment : channel.getCommentList()) {
                         System.out.println("          " + comment);
                     }
+                    if (channel.getEquipment() != null) {
+                        System.out.println("Equipment: "+channel.getEquipment().getType());
+                    }
                     Response resp = channel.getResponse();
                     if (resp != null) {
                         float overallGain = 1;
                         for (ResponseStage stage : resp.getResponseStageList()) {
-                            System.out.print("          Resp " + stage.getNumber() + " " + stage.getResourceId()==null?"":stage.getResourceId());
+                            System.out.print("          Resp " +stage.getNumber() 
+                                             + " " +  stage.getResponseItem().getClass().getSimpleName()
+                                             +" " + (stage.getResourceId()==null?"":stage.getResourceId()));
                             if (stage.getResponseItem() != null) {
                                 System.out.print(" " + stage.getResponseItem().getInputUnits() + " "
                                         + stage.getResponseItem().getOutputUnits());
