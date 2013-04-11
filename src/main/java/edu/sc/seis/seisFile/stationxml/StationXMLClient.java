@@ -111,7 +111,7 @@ public class StationXMLClient {
                         }
                         InstrumentSensitivity instSens = resp.getInstrumentSensitivity();
                         System.out.println("          Overall Gain: " + overallGain + "  Inst Sense: "
-                                + instSens.getSensitivityValue() + " " + instSens.getSensitivityUnits());
+                                + instSens.getSensitivityValue() + " " + instSens.getInputUnits()+" to "+instSens.getOutputUnits());
                     }
                 }
             }

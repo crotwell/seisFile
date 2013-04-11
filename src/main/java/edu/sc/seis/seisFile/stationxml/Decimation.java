@@ -11,8 +11,8 @@ public class Decimation {
     private float inputSampleRate;
     private int factor;
     private int offset;
-    private float delay;
-    private float correction;
+    private FloatType delay;
+    private FloatType correction;
 
     public Decimation(XMLEventReader reader) throws XMLStreamException, StationXMLException {
             StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.DECIMATION, reader);
@@ -27,9 +27,9 @@ public class Decimation {
                     } else if (elName.equals(StationXMLTagNames.OFFSET)) {
                         offset = StaxUtil.pullInt(reader, StationXMLTagNames.OFFSET);
                     } else if (elName.equals(StationXMLTagNames.DELAY)) {
-                        delay = StaxUtil.pullFloat(reader, StationXMLTagNames.DELAY);
+                        delay = new FloatType(reader, StationXMLTagNames.DELAY);
                     } else if (elName.equals(StationXMLTagNames.CORRECTION)) {
-                        correction = StaxUtil.pullFloat(reader, StationXMLTagNames.CORRECTION);
+                        correction = new FloatType(reader, StationXMLTagNames.CORRECTION);
                     } else {
                         StaxUtil.skipToMatchingEnd(reader);
                     }
@@ -58,12 +58,12 @@ public class Decimation {
     }
 
     
-    public float getDelay() {
+    public FloatType getDelay() {
         return delay;
     }
 
     
-    public float getCorrection() {
+    public FloatType getCorrection() {
         return correction;
     }
 }

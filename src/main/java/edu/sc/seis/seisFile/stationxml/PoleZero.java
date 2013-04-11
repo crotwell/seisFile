@@ -20,10 +20,10 @@ public abstract class PoleZero extends Complex {
                 String elName = e.asStartElement().getName().getLocalPart();
                 if (elName.equals(StationXMLTagNames.REAL)) {
                     realWithError = new FloatNoUnitType(reader, StationXMLTagNames.REAL);
-                    real = realWithError.coefficient;
+                    real = realWithError.value;
                 } else if (elName.equals(StationXMLTagNames.IMAGINARY)) {
                     imaginaryWithError = new FloatNoUnitType(reader, StationXMLTagNames.IMAGINARY);
-                    imaginary = imaginaryWithError.coefficient;
+                    imaginary = imaginaryWithError.value;
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
