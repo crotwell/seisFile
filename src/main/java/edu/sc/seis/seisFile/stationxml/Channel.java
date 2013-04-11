@@ -44,7 +44,7 @@ public class Channel extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.CLOCK_DRIFT)) {
                     clockDrift = new FloatType(reader, StationXMLTagNames.CLOCK_DRIFT, clockDriftUnit);
                 } else if (elName.equals(StationXMLTagNames.CALIBRATIONUNITS)) {
-                    calibrationUnits = new Unit(reader);
+                    calibrationUnits = new Unit(reader, StationXMLTagNames.CALIBRATIONUNITS);
                 } else if (elName.equals(StationXMLTagNames.SENSOR)) {
                     sensor = new Sensor(reader);
                 } else if (elName.equals(StationXMLTagNames.PREAMPLIFIER)) {

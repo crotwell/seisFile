@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.stationxml;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
 public class FloatNoUnitType {
 
@@ -15,7 +16,7 @@ public class FloatNoUnitType {
         this(tagName);
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         parseAttributes(startE);
-        parseValue(getTagName(), reader);
+        parseValue(reader);
     }
 
     void parseAttributes(StartElement startE) throws StationXMLException {
@@ -29,13 +30,8 @@ public class FloatNoUnitType {
         }
     }
 
-    boolean parseValue(String elName, final XMLEventReader reader) throws StationXMLException, XMLStreamException {
-        if (elName.equals(StationXMLTagNames.VALUE)) {
-            value = StaxUtil.pullFloat(reader, tagName);
-            return true;
-        } else {
-            return false;
-        }
+    void parseValue(final XMLEventReader reader) throws StationXMLException, XMLStreamException {
+        value = Float.parseFloat(StaxUtil.pullContiguousText(reader));
     }
 
     public FloatNoUnitType(float coefficient, Float plusError, Float minusError, String tagName) throws StationXMLException, XMLStreamException {

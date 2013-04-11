@@ -16,7 +16,7 @@ public class FloatType extends FloatNoUnitType {
         super(tagName);
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         super.parseAttributes(startE);
-        super.parseValue(getTagName(), reader);
+        super.parseValue(reader);
         parseUnitAttr(startE, fixedUnit);
     }
     

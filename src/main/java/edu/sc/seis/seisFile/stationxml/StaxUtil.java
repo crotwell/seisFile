@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.stationxml;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.xml.stream.Location;
@@ -14,6 +17,7 @@ public class StaxUtil {
     public static StartElement expectStartElement(String expected, XMLEventReader reader) throws XMLStreamException, StationXMLException {
         XMLEvent cur = reader.peek();
         if (cur.isStartElement() && cur.asStartElement().getName().getLocalPart().equals(expected)) {
+            parent = expected;
             return reader.nextEvent().asStartElement();
         } else {
             Location loc = cur.getLocation();
@@ -22,20 +26,25 @@ public class StaxUtil {
         }
     }
     
+    public static String pullContiguousText(XMLEventReader reader) throws XMLStreamException, StationXMLException {
+        String outText = "";
+        while (reader.hasNext()) {
+            XMLEvent e = reader.nextEvent();
+            if (e.isCharacters()) {
+                outText += e.asCharacters().getData();
+            } else if (e.isEndElement()) {
+                return outText;
+            }
+        }
+        throw new StationXMLException("Ran out of XMLEvents before end of text element");
+    }
+    
     public static String pullText(XMLEventReader reader, String elementName) throws XMLStreamException,
             StationXMLException {
         String outText = "";
         XMLEvent startElement = StaxUtil.expectStartElement(elementName, reader);
         if (startElement.isStartElement() && startElement.asStartElement().getName().getLocalPart().equals(elementName)) {
-            while (reader.hasNext()) {
-                XMLEvent e = reader.nextEvent();
-                if (e.isCharacters()) {
-                    outText += e.asCharacters().getData();
-                } else if (e.isEndElement()) {
-                    return outText;
-                }
-            }
-            throw new StationXMLException("Ran out of XMLEvents before end of text element");
+            return pullContiguousText(reader);
         } else {
             throw new StationXMLException("Expected START_ELEMENT of type " + elementName);
         }
@@ -64,6 +73,9 @@ public class StaxUtil {
         if (cur.isStartElement() && reader.hasNext()) {
             count++;
             reader.nextEvent(); // pop this one
+            System.out.println("Warning: Skipping: "+cur.asStartElement().getName().getLocalPart()
+                               +" "+cur.getLocation().getLineNumber()+", "+cur.getLocation().getColumnNumber()
+                               +" in "+parent);
         }
         while (count > 0 && reader.hasNext()) {
             cur = reader.peek();
@@ -138,7 +150,8 @@ public class StaxUtil {
         if (val != null) {
             return val;
         }
-        throw new StationXMLException(name+" not found as an attribute");
+        throw new StationXMLException(name+" not found as an attribute in "+start.getName().getLocalPart()
+                                      +" at "+start.getLocation().getLineNumber()+", "+start.getLocation().getColumnNumber());
     }
 
 
@@ -149,4 +162,32 @@ public class StaxUtil {
     public static Float pullFloatAttribute(StartElement start, String name) throws StationXMLException {
         return Float.parseFloat(pullAttribute(start, name));
     }
+
+    public static Date pullDate(XMLEventReader reader, String name) throws StationXMLException, XMLStreamException {
+        return parseDate(pullText(reader, name));
+    }
+    
+    /** extracts a Date from the named attribute. Null if the attribute is not found. */
+    public static Date pullDateAttributeIfExists(StartElement start, String name) throws StationXMLException {
+        return parseDate(pullAttributeIfExists(start, name));
+    }
+    
+    public static Date parseDate(String text) throws StationXMLException {
+        SimpleDateFormat sdf = new SimpleDateFormat(SHORT_DATE_FORMAT);
+        try {
+            return sdf.parse(text);
+        } catch(ParseException e) {
+            sdf = new SimpleDateFormat(DATE_FORMAT);
+            try {
+                return sdf.parse(text);
+            } catch(ParseException e1) {
+                throw new StationXMLException(e);
+            }
+        }
+    }
+    
+    static String parent = "";
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    public static final String SHORT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 }

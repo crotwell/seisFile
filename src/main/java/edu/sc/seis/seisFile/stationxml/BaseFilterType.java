@@ -7,8 +7,8 @@ import javax.xml.stream.events.StartElement;
 public abstract class BaseFilterType {
 
     void parseAttributes(StartElement startE) throws StationXMLException {
-        resourceId = StaxUtil.pullAttribute(startE, StationXMLTagNames.RESOURCEID);
-        name = StaxUtil.pullAttribute(startE, StationXMLTagNames.NAME);
+        resourceId = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.RESOURCEID);
+        name = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.NAME);
     }
 
     boolean parseSubElement(String elName, final XMLEventReader reader) throws StationXMLException, XMLStreamException {
@@ -16,10 +16,10 @@ public abstract class BaseFilterType {
             description = StaxUtil.pullText(reader, StationXMLTagNames.DESCRIPTION);
             return true;
         } else if (elName.equals(StationXMLTagNames.INPUTUNITS)) {
-            inputUnits = new Unit(reader);
+            inputUnits = new Unit(reader, StationXMLTagNames.INPUTUNITS);
             return true;
         } else if (elName.equals(StationXMLTagNames.OUTPUTUNITS)) {
-            outputUnits = new Unit(reader);
+            outputUnits = new Unit(reader, StationXMLTagNames.OUTPUTUNITS);
             return true;
         } else {
             return false;

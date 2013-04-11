@@ -46,6 +46,10 @@ public class Unit {
     public String getDescription() {
         return description;
     }
+    
+    public String toString() {
+        return name;
+    }
 
     String name;
     String description;
