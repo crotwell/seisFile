@@ -18,7 +18,7 @@ public class StationXMLClient {
     public static void main(String[] args) throws XMLStreamException, StationXMLException, IOException {
         if (args.length != 2 || !args[0].equals("-u")) {
             System.out.println("Usage: stationxmlclient -u url");
-            System.out.println("       stationxmlclient -u http://www.iris.edu/ws/station/query?net=IU&sta=SNZO&chan=BHZ&level=chan");
+            System.out.println("       stationxmlclient -u http://service.iris.edu/fdsnws/station/1/query?net=IU&sta=SNZO&chan=BHZ&level=chan");
             return;
         }
         URL url = new URL(args[1]);
