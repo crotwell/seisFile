@@ -7,9 +7,13 @@ import javax.xml.stream.events.XMLEvent;
 
 
 public class Unit {
-    
+
     public Unit(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.NETWORK, reader);
+        this(reader, StationXMLTagNames.UNIT);
+    }
+
+    public Unit(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
+        StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {

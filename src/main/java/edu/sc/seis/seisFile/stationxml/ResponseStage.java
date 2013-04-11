@@ -13,7 +13,7 @@ public class ResponseStage {
     private String resourceId;
     private BaseFilterType responseItem;
     private Decimation decimation;
-    private GainSensitivity stageSensitivity;
+    private GainSensitivity stageGain;
 
     public ResponseStage(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.RESPONSESTAGE, reader);
@@ -38,7 +38,7 @@ public class ResponseStage {
                 } else if (elName.equals(StationXMLTagNames.DECIMATION)) {
                     decimation = new Decimation(reader);
                 } else if (elName.equals(StationXMLTagNames.STAGEGAIN)) {
-                    stageSensitivity = new GainSensitivity(reader, StationXMLTagNames.STAGEGAIN);
+                    stageGain = new GainSensitivity(reader, StationXMLTagNames.STAGEGAIN);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -73,7 +73,7 @@ public class ResponseStage {
 
     
     public GainSensitivity getStageSensitivity() {
-        return stageSensitivity;
+        return stageGain;
     }
 
 }

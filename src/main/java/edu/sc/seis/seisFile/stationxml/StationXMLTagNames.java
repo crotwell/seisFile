@@ -157,5 +157,9 @@ public final class StationXMLTagNames {
     public static final String HISTORICALCODE = "historicalCode";
     public static final String ALTERNATECODE = "alternateCode";
     public static final String RESTRICTEDSTATUS = "restrictedStatus";
+    public static final String VALUE = "Value";
+    public static final String FREQUENCYSTART = "FrequencyStart";
+    public static final String FREQUENCYEND = "FrequencyEnd";
+    public static final String FREQUENCYDBVARIATION = "FrequencyDBVariation";
     
     }
