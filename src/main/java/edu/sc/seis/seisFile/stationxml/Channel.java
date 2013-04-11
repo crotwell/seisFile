@@ -10,31 +10,8 @@ import javax.xml.stream.events.XMLEvent;
 
 public class Channel extends BaseNodeType {
 
-    private SampleRateRatio sampleRateRatio;
-
-    private float sampleRate;
-
-    private float clockDrift;
-
-    private String clockDriftUnit = "SECONDS/SAMPLE";
-
-    private Unit calibrationUnits;
-
-    private Sensor sensor;
-
-    private PreAmplifier preAmplifier;
-
-    private DataLogger dataLogger;
-
-    private Equipment equipment;
-
-    private Response response;
-    
-    private String networkCode;
-    
-    private String stationCode;
-
-    public Channel(XMLEventReader reader, String networkCode, String stationCode) throws XMLStreamException, StationXMLException {
+    public Channel(XMLEventReader reader, String networkCode, String stationCode) throws XMLStreamException,
+            StationXMLException {
         this.networkCode = networkCode;
         this.stationCode = stationCode;
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.CHANNEL, reader);
@@ -47,29 +24,25 @@ public class Channel extends BaseNodeType {
                 if (super.parseSubElement(elName, reader)) {
                     // super handled it
                 } else if (elName.equals(StationXMLTagNames.LAT)) {
-                    lat = StaxUtil.pullFloat(reader, StationXMLTagNames.LAT);
+                    latitude = new FloatType(reader, StationXMLTagNames.LAT, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.LON)) {
-                    lon = StaxUtil.pullFloat(reader, StationXMLTagNames.LON);
+                    longitude = new FloatType(reader, StationXMLTagNames.LON, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.ELEVATION)) {
-                    elevation = StaxUtil.pullFloat(reader, StationXMLTagNames.ELEVATION);
+                    elevation = new FloatType(reader, StationXMLTagNames.ELEVATION, Unit.METER);
                 } else if (elName.equals(StationXMLTagNames.DEPTH)) {
-                    depth = StaxUtil.pullFloat(reader, StationXMLTagNames.DEPTH);
+                    depth = new FloatType(reader, StationXMLTagNames.DEPTH, Unit.METER);
                 } else if (elName.equals(StationXMLTagNames.AZIMUTH)) {
-                    azimuth = StaxUtil.pullFloat(reader, StationXMLTagNames.AZIMUTH);
+                    azimuth = new FloatType(reader, StationXMLTagNames.AZIMUTH, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.DIP)) {
-                    dip = StaxUtil.pullFloat(reader, StationXMLTagNames.DIP);
+                    dip = new FloatType(reader, StationXMLTagNames.DIP, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.TYPE)) {
                     typeList.add(StaxUtil.pullText(reader, StationXMLTagNames.TYPE));
                 } else if (elName.equals(StationXMLTagNames.SAMPLE_RATE)) {
-                    sampleRate = StaxUtil.pullFloat(reader, StationXMLTagNames.SAMPLE_RATE);
+                    sampleRate = new FloatType(reader, StationXMLTagNames.SAMPLE_RATE, Unit.HERTZ);
                 } else if (elName.equals(StationXMLTagNames.SAMPLE_RATE_RATIO)) {
                     sampleRateRatio = new SampleRateRatio(reader);
                 } else if (elName.equals(StationXMLTagNames.CLOCK_DRIFT)) {
-                    clockDrift = StaxUtil.pullFloat(reader, StationXMLTagNames.CLOCK_DRIFT);
-                    String tmpUnit = StaxUtil.pullAttributeIfExists(e.asStartElement(), StationXMLTagNames.UNIT);
-                    if (tmpUnit != null) {
-                        clockDriftUnit = tmpUnit;
-                    }
+                    clockDrift = new FloatType(reader, StationXMLTagNames.CLOCK_DRIFT, clockDriftUnit);
                 } else if (elName.equals(StationXMLTagNames.CALIBRATIONUNITS)) {
                     calibrationUnits = new Unit(reader);
                 } else if (elName.equals(StationXMLTagNames.SENSOR)) {
@@ -98,12 +71,16 @@ public class Channel extends BaseNodeType {
         return sampleRateRatio;
     }
 
-    public float getSampleRate() {
+    public FloatType getSampleRate() {
         return sampleRate;
     }
 
-    public float getClockDrift() {
+    public FloatType getClockDrift() {
         return clockDrift;
+    }
+
+    public String getClockDriftUnit() {
+        return clockDriftUnit;
     }
 
     public Unit getCalibrationUnits() {
@@ -130,27 +107,39 @@ public class Channel extends BaseNodeType {
         return response;
     }
 
-    public float getLat() {
-        return lat;
+    public String getLocCode() {
+        return locCode;
     }
 
-    public float getLon() {
-        return lon;
+    public String getStationCode() {
+        return stationCode;
     }
 
-    public float getElevation() {
+    public String getNetworkCode() {
+        return networkCode;
+    }
+
+    public FloatType getLatitude() {
+        return latitude;
+    }
+
+    public FloatType getLon() {
+        return longitude;
+    }
+
+    public FloatType getElevation() {
         return elevation;
     }
 
-    public float getDepth() {
+    public FloatType getDepth() {
         return depth;
     }
 
-    public float getAzimuth() {
+    public FloatType getAzimuth() {
         return azimuth;
     }
 
-    public float getDip() {
+    public FloatType getDip() {
         return dip;
     }
 
@@ -162,13 +151,29 @@ public class Channel extends BaseNodeType {
         return storageFormat;
     }
 
-    public String getLocCode() {
-        return locCode;
-    }
+    private SampleRateRatio sampleRateRatio;
 
-    String locCode;
+    private FloatType sampleRate;
 
-    float lat, lon, elevation, depth, azimuth, dip;
+    private FloatType clockDrift;
+
+    private String clockDriftUnit = "SECONDS/SAMPLE";
+
+    private Unit calibrationUnits;
+
+    private Sensor sensor;
+
+    private PreAmplifier preAmplifier;
+
+    private DataLogger dataLogger;
+
+    private Equipment equipment;
+
+    private Response response;
+
+    private String locCode, stationCode, networkCode;
+
+    private FloatType latitude, longitude, elevation, depth, azimuth, dip;
 
     List<String> typeList = new ArrayList<String>();
 

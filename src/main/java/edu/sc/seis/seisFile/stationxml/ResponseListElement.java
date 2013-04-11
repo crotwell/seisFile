@@ -16,11 +16,11 @@ public class ResponseListElement {
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
                 if (elName.equals(StationXMLTagNames.FREQUENCY)) {
-                    frequency = StaxUtil.pullFloat(reader, StationXMLTagNames.FREQUENCY);
+                    frequency = new FloatType(reader, StationXMLTagNames.FREQUENCY, "HERTZ");
                 } else if (elName.equals(StationXMLTagNames.AMPLITUDE)) {
-                    amplitude = StaxUtil.pullFloat(reader, StationXMLTagNames.AMPLITUDE);
+                    amplitude = new FloatType(reader, StationXMLTagNames.AMPLITUDE);
                 } else if (elName.equals(StationXMLTagNames.PHASE)) {
-                    phase = StaxUtil.pullFloat(reader, StationXMLTagNames.PHASE);
+                    phase = new FloatType(reader, StationXMLTagNames.PHASE, "DEGREE");
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -34,19 +34,21 @@ public class ResponseListElement {
     }
     
     
-    public float getFrequency() {
+    public FloatType getFrequency() {
         return frequency;
     }
 
     
-    public float getAmplitude() {
+    public FloatType getAmplitude() {
         return amplitude;
     }
 
     
-    public float getPhase() {
+    public FloatType getPhase() {
         return phase;
     }
 
-    private float frequency, amplitude, phase;
+    FloatType frequency;
+    private FloatType phase;
+    FloatType amplitude;
 }

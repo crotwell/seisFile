@@ -23,9 +23,9 @@ public class Coefficients extends BaseFilterType {
                 } else if (elName.equals(StationXMLTagNames.CFTRANSFERTYPE)) {
                     cfTransferType = StaxUtil.pullText(reader, StationXMLTagNames.CFTRANSFERTYPE);
                 } else if (elName.equals(StationXMLTagNames.NUMERATOR)) {
-                    numeratorList.add( StaxUtil.pullFloat(reader, StationXMLTagNames.NUMERATOR));
+                    numeratorList.add( new FloatType(reader, StationXMLTagNames.NUMERATOR));
                 } else if (elName.equals(StationXMLTagNames.DENOMINATOR)) {
-                    denominatorList.add( StaxUtil.pullFloat(reader, StationXMLTagNames.DENOMINATOR));
+                    denominatorList.add( new FloatType(reader, StationXMLTagNames.DENOMINATOR));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -43,15 +43,15 @@ public class Coefficients extends BaseFilterType {
     }
 
 
-    public List<Float> getNumeratorList() {
+    public List<FloatType> getNumeratorList() {
         return numeratorList;
     }
     
-    public List<Float> getDenominatorList() {
+    public List<FloatType> getDenominatorList() {
         return denominatorList;
     }
 
     private static String cfTransferType;
-    List<Float> numeratorList = new ArrayList<Float>();
-    List<Float> denominatorList = new ArrayList<Float>();
+    List<FloatType> numeratorList = new ArrayList<FloatType>();
+    List<FloatType> denominatorList = new ArrayList<FloatType>();
 }

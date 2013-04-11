@@ -21,11 +21,11 @@ public class Station extends BaseNodeType {
                 if (super.parseSubElement(elName, reader)) {
                     // super handled it
                 } else if (elName.equals(StationXMLTagNames.LAT)) {
-                    lat = StaxUtil.pullFloat(reader, StationXMLTagNames.LAT);
+                    lat = new FloatType(reader, StationXMLTagNames.LAT, "DEGREES");
                 } else if (elName.equals(StationXMLTagNames.LON)) {
-                    lon = StaxUtil.pullFloat(reader, StationXMLTagNames.LON);
+                    lon = new FloatType(reader, StationXMLTagNames.LON, "DEGREES");
                 } else if (elName.equals(StationXMLTagNames.ELEVATION)) {
-                    elevation = StaxUtil.pullFloat(reader, StationXMLTagNames.ELEVATION);
+                    elevation = new FloatType(reader, StationXMLTagNames.ELEVATION, "METERS");
                 } else if (elName.equals(StationXMLTagNames.SITE)) {
                     site = new Site(reader);
                 } else if (elName.equals(StationXMLTagNames.VAULT)) {
@@ -62,15 +62,15 @@ public class Station extends BaseNodeType {
         return creationDate;
     }
 
-    public float getLat() {
+    public FloatType getLat() {
         return lat;
     }
 
-    public float getLon() {
+    public FloatType getLon() {
         return lon;
     }
 
-    public float getElevation() {
+    public FloatType getElevation() {
         return elevation;
     }
 
@@ -128,7 +128,7 @@ public class Station extends BaseNodeType {
 
     String startDate, endDate, creationDate, terminationDate;
 
-    float lat, lon, elevation;
+    FloatType lat, lon, elevation;
 
     String name;
 
