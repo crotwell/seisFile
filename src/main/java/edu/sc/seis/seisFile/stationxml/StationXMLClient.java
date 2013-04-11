@@ -16,12 +16,17 @@ import javax.xml.stream.events.XMLEvent;
 public class StationXMLClient {
 
     public static void main(String[] args) throws XMLStreamException, StationXMLException, IOException {
-        if (args.length != 2 || !args[0].equals("-u")) {
+        String urlString = "http://service.iris.edu/fdsnws/station/1/query?network=IU&station=SNZO&channel=BHZ&level=channel";
+        if (! (args.length == 0 || (args.length == 2 && args[0].equals("-u")))) {
             System.out.println("Usage: stationxmlclient -u url");
-            System.out.println("       stationxmlclient -u http://service.iris.edu/fdsnws/station/1/query?net=IU&sta=SNZO&chan=BHZ&level=chan");
+            System.out.println("       stationxmlclient -u "+urlString);
             return;
         }
-        URL url = new URL(args[1]);
+        if (args.length > 1) {
+            urlString = args[1];
+        }
+        URL url = new URL(urlString);
+        System.out.println("URL: "+urlString);
         URLConnection urlConn = url.openConnection();
         if (urlConn instanceof HttpURLConnection) {
             HttpURLConnection conn = (HttpURLConnection)urlConn;
@@ -71,6 +76,7 @@ public class StationXMLClient {
         System.out.println("Source: " + fdsnStationXML.getSource());
         System.out.println("Sender: " + fdsnStationXML.getSender());
         System.out.println("Module: " + fdsnStationXML.getModule());
+        System.out.println("ModuleUri: " + fdsnStationXML.getModuleUri());
         System.out.println("SentDate: " + fdsnStationXML.getCreated());
         NetworkIterator it = fdsnStationXML.getNetworks();
         while (it.hasNext()) {
@@ -81,22 +87,22 @@ public class StationXMLClient {
             while (sit.hasNext()) {
                 Station s = sit.next();
                 System.out.println("  Station: " + n.getCode() + "." + s.getCode() + " " + "  " + s.getStartDate()
-                        + " to " + s.getEndDate());
-                for (String comment : s.getCommentList()) {
-                    System.out.println("          " + comment);
+                        + " to " + s.getEndDate()+" "+s.getSelectedNumChannels()+" of "+s.getTotalNumChannels());
+                for (Comment comment : s.getCommentList()) {
+                //    System.out.println("          " + comment);
                 }
                 List<Channel> chanList = s.getChannelList();
                 for (Channel channel : chanList) {
                     System.out.println("      Channel: " + channel.getLocCode() + "." + channel.getCode() + "  "
                             + channel.getStartDate() + " to " + channel.getEndDate());
-                    for (String comment : channel.getCommentList()) {
+                    for (Comment comment : channel.getCommentList()) {
                         System.out.println("          " + comment);
                     }
                     Response resp = channel.getResponse();
                     if (resp != null) {
                         float overallGain = 1;
                         for (ResponseStage stage : resp.getResponseStageList()) {
-                            System.out.print("          Resp " + stage.getNumber() + " " + stage.getResourceId());
+                            System.out.print("          Resp " + stage.getNumber() + " " + stage.getResourceId()==null?"":stage.getResourceId());
                             if (stage.getResponseItem() != null) {
                                 System.out.print(" " + stage.getResponseItem().getInputUnits() + " "
                                         + stage.getResponseItem().getOutputUnits());

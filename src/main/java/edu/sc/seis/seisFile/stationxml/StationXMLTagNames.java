@@ -36,8 +36,8 @@ public final class StationXMLTagNames {
     public static final String COUNTY = "County";
     public static final String STATE = "State";
     public static final String COUNTRY = "Country";
-    public static final String STARTDATE = "StartDate";
-    public static final String ENDDATE = "EndDate";
+    public static final String STARTDATE = "startDate";
+    public static final String ENDDATE = "endDate";
     public static final String LAT = "Latitude";
     public static final String LON = "Longitude";
     public static final String ELEVATION = "Elevation";
@@ -65,7 +65,7 @@ public final class StationXMLTagNames {
     public static final String PZTRANSFERTYPE = "PzTransferFunctionType";
     public static final String CFTRANSFERTYPE = "CfTransferFunctionType";
     public static final String NORMALIZATIONFACTOR = "NormalizationFactor";
-    public static final String NORMALIZATIONFREQ = "NormalizationFreq";
+    public static final String NORMALIZATIONFREQ = "NormalizationFrequency";
     public static final String POLE = "Pole";
     public static final String ZERO = "Zero";
     public static final String REAL = "Real";
@@ -73,8 +73,6 @@ public final class StationXMLTagNames {
     public static final String STAGESENSITIVITY = "StageSensitivity";
     public static final String SENSITIVITYVALUE = "SensitivityValue";
     public static final String SENSITIVITYUNITS = "SensitivityUnits";
-    @Deprecated
-    public static final String GAINUNITS = "GainUnits"; // no longer used
     public static final String DECIMATION = "Decimation";
     public static final String INPUTSAMPLERATE = "InputSampleRate";
     public static final String FACTOR = "Factor";
@@ -147,7 +145,7 @@ public final class StationXMLTagNames {
     public static final String CALIBRATIONUNITS = "CalibrationUnits";
     public static final String NUMBER = "number";
     public static final String STAGEGAIN = "StageGain";
-    public static final String RESPONSESTAGE = "ResponseStage";
+    public static final String RESPONSESTAGE = "Stage";
     public static final String INSTRUMENT_POLYNOMIAL = "InstrumentPolynomial";
     public static final String PLUSERROR = "plusError";
     public static final String MINUSERROR = "minusError";
@@ -161,5 +159,9 @@ public final class StationXMLTagNames {
     public static final String FREQUENCYSTART = "FrequencyStart";
     public static final String FREQUENCYEND = "FrequencyEnd";
     public static final String FREQUENCYDBVARIATION = "FrequencyDBVariation";
+    public static final String BEGINEFFECTIVETIME = "BeginEffectiveTime";
+    public static final String ENDEFFECTIVETIME = "EndEffectiveTime";
+    public static final String AUTHOR = "Author";
+    public static final String ID = "id";
     
     }
