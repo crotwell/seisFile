@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.stationxml;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
@@ -23,7 +24,7 @@ public class BaseNodeType {
             description = StaxUtil.pullText(reader, StationXMLTagNames.DESCRIPTION);
             return true;
         } else if (elName.equals(StationXMLTagNames.COMMENT)) {
-            commentList.add(StaxUtil.pullText(reader, StationXMLTagNames.COMMENT));
+            commentList.add(new Comment(reader, StationXMLTagNames.COMMENT));
             return true;
         } else {
             return false;
@@ -58,7 +59,7 @@ public class BaseNodeType {
         return description;
     }
 
-    public List<String> getCommentList() {
+    public List<Comment> getCommentList() {
         return commentList;
     }
 
@@ -76,5 +77,5 @@ public class BaseNodeType {
 
     String description;
 
-    List<String> commentList = new ArrayList<String>();
+    List<Comment> commentList = new ArrayList<Comment>();
 }

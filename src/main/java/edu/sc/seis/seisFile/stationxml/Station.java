@@ -21,11 +21,11 @@ public class Station extends BaseNodeType {
                 if (super.parseSubElement(elName, reader)) {
                     // super handled it
                 } else if (elName.equals(StationXMLTagNames.LAT)) {
-                    lat = new FloatType(reader, StationXMLTagNames.LAT, "DEGREES");
+                    lat = new FloatType(reader, StationXMLTagNames.LAT, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.LON)) {
-                    lon = new FloatType(reader, StationXMLTagNames.LON, "DEGREES");
+                    lon = new FloatType(reader, StationXMLTagNames.LON, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.ELEVATION)) {
-                    elevation = new FloatType(reader, StationXMLTagNames.ELEVATION, "METERS");
+                    elevation = new FloatType(reader, StationXMLTagNames.ELEVATION, Unit.METER);
                 } else if (elName.equals(StationXMLTagNames.SITE)) {
                     site = new Site(reader);
                 } else if (elName.equals(StationXMLTagNames.VAULT)) {
@@ -94,14 +94,6 @@ public class Station extends BaseNodeType {
         return channelList;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
     public String getTerminationDate() {
         return terminationDate;
     }
@@ -126,7 +118,7 @@ public class Station extends BaseNodeType {
         return externalReferenceList;
     }
 
-    String startDate, endDate, creationDate, terminationDate;
+    String creationDate, terminationDate;
 
     FloatType lat, lon, elevation;
 
