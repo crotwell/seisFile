@@ -33,7 +33,7 @@ public class Polynomial extends BaseFilterType {
                 } else if (elName.equals(StationXMLTagNames.MAXERROR)) {
                     maxError = StaxUtil.pullFloat(reader, StationXMLTagNames.MAXERROR);
                 } else if (elName.equals(StationXMLTagNames.COEFFICIENT)) {
-                    coefficientList.add( new CoefficientWithError(reader, StationXMLTagNames.COEFFICIENT));
+                    coefficientList.add( new FloatNoUnitType(reader, StationXMLTagNames.COEFFICIENT));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -71,7 +71,7 @@ public class Polynomial extends BaseFilterType {
         return maxError;
     }
     
-    public List<CoefficientWithError> getCoefficientList() {
+    public List<FloatNoUnitType> getCoefficientList() {
         return coefficientList;
     }
 
@@ -81,5 +81,5 @@ public class Polynomial extends BaseFilterType {
     private float approxLowerBound;
     private float approxUpperBound;
     private float maxError;
-    private List<CoefficientWithError> coefficientList = new ArrayList<CoefficientWithError>();
+    private List<FloatNoUnitType> coefficientList = new ArrayList<FloatNoUnitType>();
 }
