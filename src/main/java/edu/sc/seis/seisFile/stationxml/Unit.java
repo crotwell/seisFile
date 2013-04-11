@@ -8,6 +8,10 @@ import javax.xml.stream.events.XMLEvent;
 
 public class Unit {
 
+    public static final String DEGREE = "DEGREES";
+    public static final String METER = "METER";
+    public static final String HERTZ = "HERTZ";
+    
     public Unit(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         this(reader, StationXMLTagNames.UNIT);
     }
