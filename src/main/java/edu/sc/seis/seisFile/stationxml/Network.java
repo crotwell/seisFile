@@ -23,7 +23,7 @@ public class Network extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.SELECTEDNUMSTATIONS)) {
                     selectedNumStations = StaxUtil.pullInt(reader, StationXMLTagNames.SELECTEDNUMSTATIONS);
                 } else if (elName.equals(StationXMLTagNames.STATION)) {
-                    stations = new StationIterator(reader);
+                    stations = new StationIterator(reader, getCode());
                     break;
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
