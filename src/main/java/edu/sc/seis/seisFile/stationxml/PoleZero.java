@@ -19,10 +19,10 @@ public abstract class PoleZero extends Complex {
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
                 if (elName.equals(StationXMLTagNames.REAL)) {
-                    realWithError = new CoefficientWithError(reader, StationXMLTagNames.REAL);
+                    realWithError = new FloatNoUnitType(reader, StationXMLTagNames.REAL);
                     real = realWithError.coefficient;
                 } else if (elName.equals(StationXMLTagNames.IMAGINARY)) {
-                    imaginaryWithError = new CoefficientWithError(reader, StationXMLTagNames.IMAGINARY);
+                    imaginaryWithError = new FloatNoUnitType(reader, StationXMLTagNames.IMAGINARY);
                     imaginary = imaginaryWithError.coefficient;
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
@@ -36,6 +36,6 @@ public abstract class PoleZero extends Complex {
         }
     }
 
-    CoefficientWithError realWithError;
-    CoefficientWithError imaginaryWithError;
+    FloatNoUnitType realWithError;
+    FloatNoUnitType imaginaryWithError;
 }

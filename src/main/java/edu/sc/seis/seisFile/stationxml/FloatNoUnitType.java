@@ -4,11 +4,13 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
-public class CoefficientWithError {
+public class FloatNoUnitType {
     
-    public CoefficientWithError(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(tagName, reader);
-
+    public FloatNoUnitType(String tagName) throws XMLStreamException, StationXMLException {
+        this.tagName = tagName;
+    }
+    
+    void parseAttributes(StartElement startE) throws StationXMLException {
         String plusErrorStr = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.PLUSERROR);
         String minusErrorStr = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.MINUSERROR);
         Float plusError = null;
@@ -19,12 +21,18 @@ public class CoefficientWithError {
         if (minusErrorStr != null) {
             minusError = Float.parseFloat(minusErrorStr);
         }
-        coefficient = StaxUtil.pullFloat(reader, tagName);
+    }
     
-
-            }
-
-    public CoefficientWithError(float coefficient, Float plusError, Float minusError) {
+    boolean parseSubElement(String elName, final XMLEventReader reader) throws StationXMLException, XMLStreamException {
+        if (elName.equals(StationXMLTagNames.VALUE)) {
+            coefficient = StaxUtil.pullFloat(reader, tagName);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public FloatNoUnitType(float coefficient, Float plusError, Float minusError) {
         this.coefficient = coefficient;
         this.plusError = plusError;
         this.minusError = minusError;
@@ -42,6 +50,8 @@ public class CoefficientWithError {
         this.minusError = minusError;
     }
 
+    String tagName;
+    
     float coefficient;
 
     Float plusError, minusError;
