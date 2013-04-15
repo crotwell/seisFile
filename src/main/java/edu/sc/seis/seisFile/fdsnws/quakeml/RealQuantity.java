@@ -6,8 +6,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StaxUtil;
 
 public class RealQuantity {
 

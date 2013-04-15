@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.fdsnws.stationxml;
+package edu.sc.seis.seisFile.fdsnws;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,8 +12,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StaxUtil;
 
 public class StaxUtil {
 

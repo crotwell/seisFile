@@ -8,13 +8,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.stationxml.DataLogger;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Equipment;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Response;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Sensor;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StaxUtil;
 
 public class Channel extends BaseNodeType {
 
