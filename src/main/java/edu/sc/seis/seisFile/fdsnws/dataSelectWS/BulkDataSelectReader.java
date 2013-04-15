@@ -16,10 +16,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.BuildVersion;
-import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
-import edu.sc.seis.seisFile.dataSelectWS.BulkDataSelectReader;
-import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
