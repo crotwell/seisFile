@@ -143,8 +143,25 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
         'contributor':'Limit to events contributed by a specified contributor.',
         'updatedafter':'Limit to events updated after the specified time.'
     ]
+    
+    def areaMethods = '''
+
+'''
 
     def extraPostCode = ['Station':'''
+
+
+    public FDSNStationQueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
+        return minlatitude(minLat).maxlatitude(maxLat).minlongitude(minLon).maxlongitude(maxLon);
+    }
+
+    public FDSNStationQueryParams ring(float lat, float lon, float maxRadius) {
+        return latitude(lat).longitude(lon).maxradius(maxRadius);
+    }
+
+    public FDSNStationQueryParams doughnut(float lat, float lon, float minRadius, float maxRadius) {
+        return ring(lat, lon, maxRadius).minradius(minRadius);
+    }
 
     public static final String NETWORK_LEVEL = "network";
 
@@ -155,6 +172,19 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
     public static final String RESPONSE_LEVEL = "response";
 ''',
         'Event':'''
+
+
+    public FDSNEventQueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
+        return minlatitude(minLat).maxlatitude(maxLat).minlongitude(minLon).maxlongitude(maxLon);
+    }
+
+    public FDSNEventQueryParams ring(float lat, float lon, float maxRadius) {
+        return latitude(lat).longitude(lon).maxradius(maxRadius);
+    }
+
+    public FDSNEventQueryParams doughnut(float lat, float lon, float minRadius, float maxRadius) {
+        return ring(lat, lon, maxRadius).minradius(minRadius);
+    }
 ''',
         'DataSelect':'''''']
 
