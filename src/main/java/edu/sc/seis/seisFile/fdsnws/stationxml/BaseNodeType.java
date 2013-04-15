@@ -8,9 +8,9 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StaxUtil;
 
 public class BaseNodeType {
 

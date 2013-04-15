@@ -7,11 +7,11 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
 import edu.sc.seis.seisFile.fdsnws.stationxml.NetworkIterator;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StaxUtil;
 
 public class FDSNStationXML {
 
