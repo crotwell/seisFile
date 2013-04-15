@@ -17,15 +17,15 @@ public class AbstractQueryParams {
         params.put(key, value);
     }
 
-    protected void setParam(String key, int value) {
+    protected void setParam(String key, Integer value) {
         params.put(key, ""+value);
     }
 
-    protected void setParam(String key, float value) {
+    protected void setParam(String key, Float value) {
         params.put(key, ""+value);
     }
 
-    protected void setParam(String key, boolean value) {
+    protected void setParam(String key, Boolean value) {
         params.put(key, value?"true":"false");
     }
 
@@ -36,7 +36,7 @@ public class AbstractQueryParams {
         params.put(key, params.get(key) + "," + value);
     }
     
-    protected void setDateParam(String key, Date value) {
+    protected void setParam(String key, Date value) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         setParam(key, sdf.format(value));
