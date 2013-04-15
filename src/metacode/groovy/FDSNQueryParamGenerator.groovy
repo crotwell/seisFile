@@ -4,15 +4,15 @@ import java.net.URISyntaxException;
 
 import groovy.text.SimpleTemplateEngine
 
-class FDSNStationQueryParamGenerator {
+class FDSNQueryParamGenerator {
     def engine = new SimpleTemplateEngine()
 
-    String createItem(key, doc) {
+    String createItem(key, doc, service) {
         String t = ""
         if (key in dateTypes) {t="Date"}
         else if(key in floatTypes) {t="Float"}
         else if (key in intTypes) {t="Integer"}
-        def binding = ['key':key, 'doc':doc, 'type':t]
+        def binding = ['key':key, 'doc':doc, 'type':t, 'service':service]
         return engine.createTemplate(templateText).make(binding)
     }
 
@@ -23,10 +23,7 @@ class FDSNStationQueryParamGenerator {
 
     String createPost(key) {
         def ws = key.toLowerCase()
-        if (key == 'QuakeML') { ws = 'event' }
-        else if(key == 'StationXML') { ws = 'station' }
-        else if(key == 'DataSelect') { ws = 'dataselect' }
-        def binding = ['key':key, 'ws':ws]
+        def binding = ['key':key, 'ws':ws, 'extra':extraPostCode[key]]
         return engine.createTemplate(postTemplate).make(binding)
     }
 
@@ -36,6 +33,7 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
 
@@ -50,6 +48,7 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
 '''
 
     def postTemplate = '''
+    ${extra}
 
     public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/${ws}/1/query?";
     
@@ -70,8 +69,8 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
 
     /** $doc
      */
-    public FDSNQuakeMLQueryParams $key($type value) {
-        set${type}Param(${key.toUpperCase()}, value);
+    public FDSN${service}QueryParams $key(${type==''?'String':type} value) {
+        setParam(${key.toUpperCase()}, value);
         return this;
     }
 '''
@@ -118,8 +117,6 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
         'includeavailability':'Specify if results should include information about time series data availability.',
         'updatedafter':'Limit to metadata updated after specified date; updates are data center specific.']
 
-    def stationTypes = ['starttime':'Date', 'endtime':'Date', ]
-
     def eventParams = ['starttime':'Limit to events on or after the specified start time.',
         'endtime':'Limit to events on or before the specified end time.',
         'minlatitude':'Limit to events with a latitude larger than the specified minimum.',
@@ -147,13 +144,28 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
         'updatedafter':'Limit to events updated after the specified time.'
     ]
 
+    def extraPostCode = ['Station':'''
+
+    public static final String NETWORK_LEVEL = "network";
+
+    public static final String STATION_LEVEL = "station";
+
+    public static final String CHANNEL_LEVEL = "channel";
+
+    public static final String RESPONSE_LEVEL = "response";
+''',
+        'Event':'''
+''',
+        'DataSelect':'''''']
+
     public static void main(String[] args) {
-        def x = new FDSNStationQueryParamGenerator()
+        def x = new FDSNQueryParamGenerator()
+        def data = ['Station':x.stationParams, 'Event':x.eventParams, 'DataSelect':x.dataSelectParams]
         for (s in ['Station', 'Event', 'DataSelect'])  {
             new File("FDSN${s}QueryParams.java").withWriter { writer ->
                 writer.println x.createPre(s)
-                x.stationParams.each() { k, v ->
-                    writer.println x.createItem(k, v)
+                data.get(s).each() { k, v ->
+                    writer.println x.createItem(k, v, s)
                 }
                 writer.println x.createPost(s)
             }
