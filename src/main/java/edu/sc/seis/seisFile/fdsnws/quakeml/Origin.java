@@ -1,0 +1,137 @@
+package edu.sc.seis.seisFile.fdsnws.quakeml;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Arrival;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Comment;
+import edu.sc.seis.seisFile.fdsnws.quakeml.CreationInfo;
+import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
+import edu.sc.seis.seisFile.fdsnws.quakeml.RealQuantity;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Time;
+import edu.sc.seis.seisFile.fdsnws.stationxml.StaxUtil;
+
+public class Origin {
+
+    public Origin(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
+        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.origin, reader);
+        publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
+        Attribute catalogAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace, QuakeMLTagNames.irisCatalog));
+        if (catalogAttr != null) {
+            irisCatalog = catalogAttr.getValue();
+        }
+        Attribute contributorAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace, QuakeMLTagNames.irisContributor));
+        if (contributorAttr != null) {
+            irisContributor = contributorAttr.getValue();
+        }
+        while (reader.hasNext()) {
+            XMLEvent e = reader.peek();
+            if (e.isStartElement()) {
+                String elName = e.asStartElement().getName().getLocalPart();
+                if (elName.equals(QuakeMLTagNames.waveformID)) {
+                    waveformID = StaxUtil.pullText(reader, QuakeMLTagNames.waveformID);
+                } else if (elName.equals(QuakeMLTagNames.comment)) {
+                    commentList.add(new Comment(reader));
+                } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
+                    creationInfo = new CreationInfo(reader);
+                } else if (elName.equals(QuakeMLTagNames.time)) {
+                    time = new Time(reader);
+                } else if (elName.equals(QuakeMLTagNames.latitude)) {
+                    latitude = new RealQuantity(reader, QuakeMLTagNames.latitude);
+                } else if (elName.equals(QuakeMLTagNames.longitude)) {
+                    longitude = new RealQuantity(reader, QuakeMLTagNames.longitude);
+                } else if (elName.equals(QuakeMLTagNames.depth)) {
+                    depth = new RealQuantity(reader, QuakeMLTagNames.depth);
+                } else if (elName.equals(QuakeMLTagNames.arrival)) {
+                    arrivalList.add(new Arrival(reader));
+                } else {
+                    System.out.println("Origin skip: "+elName);
+                    StaxUtil.skipToMatchingEnd(reader);
+                }
+            } else if (e.isEndElement()) {
+                reader.nextEvent();
+                return;
+            } else {
+                e = reader.nextEvent();
+            }
+        }
+    }
+
+    public String toString() {
+        return time.getValue() + " (" + latitude.getValue() + ", " + longitude.getValue() + ") " + depth.getValue();
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public RealQuantity getLatitude() {
+        return latitude;
+    }
+
+    public RealQuantity getLongitude() {
+        return longitude;
+    }
+
+    public RealQuantity getDepth() {
+        return depth;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public String getWaveformID() {
+        return waveformID;
+    }
+
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public String getIrisContributor() {
+        return irisContributor;
+    }
+
+    public String getIrisCatalog() {
+        return irisCatalog;
+    }
+    
+    public List<Arrival> getArrivalList() {
+        return arrivalList;
+    }
+
+    Time time;
+
+    RealQuantity latitude;
+
+    RealQuantity longitude;
+
+    RealQuantity depth = new RealQuantity(0.0f); // add default for origins without depth
+
+    List<Comment> commentList = new ArrayList<Comment>();
+
+    List<Arrival> arrivalList = new ArrayList<Arrival>();
+
+    String waveformID;
+
+    CreationInfo creationInfo;
+
+    String publicId;
+
+    String irisContributor = "";
+
+    String irisCatalog = "";
+}

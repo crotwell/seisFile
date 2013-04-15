@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
-import edu.sc.seis.seisFile.dataSelectWS.DataSelectException;
+import edu.sc.seis.seisFile.fdsnws.dataSelectWS.DataSelectException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
