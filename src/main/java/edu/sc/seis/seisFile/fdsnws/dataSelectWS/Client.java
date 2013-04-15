@@ -1,13 +1,8 @@
 package edu.sc.seis.seisFile.fdsnws.dataSelectWS;
 
 import edu.sc.seis.seisFile.MSeedQueryClient;
-import edu.sc.seis.seisFile.MSeedQueryReader;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.StringMSeedQueryReader;
-import edu.sc.seis.seisFile.dataSelectWS.BulkDataSelectReader;
-import edu.sc.seis.seisFile.dataSelectWS.Client;
-import edu.sc.seis.seisFile.dataSelectWS.DataSelectReader;
 
 
 public class Client extends MSeedQueryClient {
