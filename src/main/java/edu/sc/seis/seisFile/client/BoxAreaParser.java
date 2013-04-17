@@ -12,7 +12,7 @@ public class BoxAreaParser extends PatternParser {
     }
 
     public static FlaggedOption createParam(String helpMessage) {
-        return new FlaggedOption("box",
+        return new FlaggedOption(NAME,
                                  new BoxAreaParser(),
                                  null,
                                  false,
@@ -26,6 +26,8 @@ public class BoxAreaParser extends PatternParser {
                 + arg + "'";
     }
 
+    public static final String NAME = "box";
+    
     public static final String DECIMAL_NUMBER_RE = "(-?\\d+\\.?\\d*)";
 
     public static final String FOUR_SLASH_DELIMITED_DECIMALS_RE = DECIMAL_NUMBER_RE
