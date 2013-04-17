@@ -36,11 +36,11 @@ public class Event {
                      * { focalMechanismList.add(new FocalMechanism(reader)); }
                      * else if (elName.equals(QuakeMLTagNames.amplitude)) {
                      * amplitudeList.add(new Amplitude(reader)); } else if
-                     * (elName.equals(QuakeMLTagNames.magnitude)) {
-                     * magnitudeList.add(new Magnitude(reader)); } else if
                      * (elName.equals(QuakeMLTagNames.stationMagnitude)) {
                      * stationMagnitudeList.add(new StationMagnitude(reader));
                      */
+                } else if (elName.equals(QuakeMLTagNames.type)) {
+                    type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
                 } else if (elName.equals(QuakeMLTagNames.origin)) {
                     originList.add(new Origin(reader));
                 } else if (elName.equals(QuakeMLTagNames.magnitude)) {
@@ -53,6 +53,8 @@ public class Event {
                     preferredMagnitudeID = StaxUtil.pullText(reader, QuakeMLTagNames.preferredMagnitudeID);
                 } else if (elName.equals(QuakeMLTagNames.preferredFocalMechanismID)) {
                     preferredFocalMechanismID = StaxUtil.pullText(reader, QuakeMLTagNames.preferredFocalMechanismID);
+                } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
+                    creationInfo = new CreationInfo(reader);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -97,14 +99,20 @@ public class Event {
         return magnitudeList;
     }
 
-    
     public int getIrisFECode() {
         return irisFECode;
     }
 
-    
     public List<Pick> getPickList() {
         return pickList;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
     }
 
     private String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
@@ -118,15 +126,16 @@ public class Event {
     private List<Comment> commentList = new ArrayList<Comment>();
 
     private List<Pick> pickList = new ArrayList<Pick>();
-    
+
+    private String type;
+
     private int irisFECode = -1;
 
     /*
-     * List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
      * List<StationMagnitude> stationMagnitudeList = new
-     * ArrayList<StationMagnitude>(); List<Pick> pickList = new
-     * ArrayList<Pick>();
+     * ArrayList<StationMagnitude>();
      */
     private List<Origin> originList = new ArrayList<Origin>();
-    
+
+    private CreationInfo creationInfo;
 }
