@@ -7,16 +7,14 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.quakeml.EventParameters;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-
 
 public class Quakeml {
-    
+
     public Quakeml(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         this.reader = reader;
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.QUAKEML, reader);
+        schemaVersion = startE.getName().getNamespaceURI();
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -25,7 +23,6 @@ public class Quakeml {
                     eventParameters = new EventParameters(reader);
                     break;
                 } else {
-                    System.out.println("In Quakeml Skipping: "+elName);
                     StaxUtil.skipToMatchingEnd(reader);
                 }
             } else if (e.isEndElement()) {
@@ -36,17 +33,22 @@ public class Quakeml {
             }
         }
     }
-    
+
     public EventParameters getEventParameters() {
         return eventParameters;
     }
 
+    public String getSchemaVersion() {
+        return schemaVersion;
+    }
+
     EventParameters eventParameters;
-    
+
     XMLEventReader reader;
 
+    String schemaVersion;
+
     public boolean checkSchemaVersion() {
-        // TODO Auto-generated method stub
-        return false;
+        return QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION.equals(schemaVersion);
     }
 }
