@@ -10,7 +10,7 @@ public class DonutParser extends PatternParser {
     }
 
     public static FlaggedOption createParam(String helpMessage) {
-        return new FlaggedOption("donut",
+        return new FlaggedOption(NAME,
                                  new DonutParser(),
                                  null,
                                  false,
@@ -23,4 +23,6 @@ public class DonutParser extends PatternParser {
         return "A donut is specified as centerLat/centerLon/minRadiusDegrees/maxRadiusDegrees not '"
                 + arg + "'";
     }
+    
+    public static final String NAME = "donut";
 }
