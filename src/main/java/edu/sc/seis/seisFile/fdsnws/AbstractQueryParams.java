@@ -17,15 +17,15 @@ public class AbstractQueryParams {
         params.put(key, value);
     }
 
-    protected void setParam(String key, Integer value) {
+    protected void setParam(String key, int value) {
         params.put(key, ""+value);
     }
 
-    protected void setParam(String key, Float value) {
+    protected void setParam(String key, float value) {
         params.put(key, ""+value);
     }
 
-    protected void setParam(String key, Boolean value) {
+    protected void setParam(String key, boolean value) {
         params.put(key, value?"true":"false");
     }
 
@@ -33,7 +33,7 @@ public class AbstractQueryParams {
         if (params.containsKey(key)) {
             value = params.get(key) + "," + value;
         }
-        params.put(key, params.get(key) + "," + value);
+        params.put(key, value);
     }
     
     protected void setParam(String key, Date value) {
@@ -42,7 +42,7 @@ public class AbstractQueryParams {
         setParam(key, sdf.format(value));
     }
     
-    protected void removeParam(String key) {
+    protected void clearParam(String key) {
         params.remove(key);
     }
     
