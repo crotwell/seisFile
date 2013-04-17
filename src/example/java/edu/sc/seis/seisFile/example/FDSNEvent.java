@@ -11,27 +11,26 @@ import java.util.TimeZone;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
-import edu.sc.seis.seisFile.fdsnws.FDSNStationQueryParams;
+import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
+import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Magnitude;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
-import edu.sc.seis.seisFile.fdsnws.stationxml.NetworkIterator;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationIterator;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 
-
-public class FDSNStationExample {
+public class FDSNEvent {
 
     public void run() {
         try {
-            FDSNStationQueryParams queryParams = new FDSNStationQueryParams();
+            FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.area(30, 35, -83, -79)
                     .setStartTime(sdf.parse("2001-03-15"))
                     .setEndTime(sdf.parse("2010-03-21"))
-                    .appendToNetwork("CO")
-                    .setLevel(FDSNStationQueryParams.STATION_LEVEL);
+                    .setMaxDepth(100)
+                    .setMinMagnitude(3);
             URL url = queryParams.formURI().toURL();
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             if (conn.getResponseCode() == 204) {
@@ -39,22 +38,19 @@ public class FDSNStationExample {
             } else if (conn.getResponseCode() == 200) {
                 XMLInputFactory factory = XMLInputFactory.newInstance();
                 XMLEventReader r = factory.createXMLEventReader(url.toString(), conn.getInputStream());
-                FDSNStationXML xml = new FDSNStationXML(r);
-                if (!xml.checkSchemaVersion()) {
+                Quakeml quakeml = new Quakeml(r);
+                if (!quakeml.checkSchemaVersion()) {
                     System.out.println("");
                     System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
                     System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
-                    System.out.println("XmlSchema (doc): " + xml.getSchemaVersion());
+                    System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
                 }
-                NetworkIterator nIt = xml.getNetworks();
-                while (nIt.hasNext()) {
-                    Network n = nIt.next();
-                    System.out.println("Network: "+n.getCode()+"  "+n.getDescription());
-                    StationIterator sIt = n.getStations();
-                    while(sIt.hasNext()) {
-                        Station s = sIt.next();
-                        System.out.println(s.getLatitude()+"/"+s.getLongitude()+" "+s.getCode()+" "+s.getSite().getName()+" "+s.getStartDate());
-                    }
+                EventIterator eIt = quakeml.getEventParameters().getEvents();
+                while (eIt.hasNext()) {
+                    Event e = eIt.next();
+                    Origin o = e.getOriginList().get(0);
+                    Magnitude m = e.getMagnitudeList().get(0);
+                    System.out.println(o.getLatitude()+"/"+o.getLongitude()+" "+m.getMag().getValue()+" "+m.getType()+" "+o.getTime().getValue());
                 }
             } else {
                 System.err.println("oops, error Response Code :" + conn.getResponseCode());
@@ -86,7 +82,7 @@ public class FDSNStationExample {
      * @param args
      */
     public static void main(String[] args) {
-        FDSNStationExample ee = new FDSNStationExample();
+        FDSNEvent ee = new FDSNEvent();
         ee.run();
     }
 }
