@@ -1,0 +1,217 @@
+package edu.sc.seis.seisFile.fdsnws;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.XMLEvent;
+
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.JSAPResult;
+
+import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.client.AbstractClient;
+import edu.sc.seis.seisFile.client.BoxAreaParser;
+import edu.sc.seis.seisFile.client.DonutParser;
+import edu.sc.seis.seisFile.client.ISOTimeParser;
+import edu.sc.seis.seisFile.client.RangeParser;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
+import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
+import edu.sc.seis.seisFile.fdsnws.quakeml.EventParameters;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Magnitude;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
+import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
+import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
+
+public class EventClient extends AbstractClient {
+
+    private static final String DEPTH = "depth";
+
+    private static final String CONTRIBUTORS = "contributors";
+
+    private static final String CATALOGS = "catalogs";
+
+    private static final String MAGNITUDE = "magnitude";
+    
+    private static final String TYPES = "types";
+
+    @Override
+    protected void addParams() throws JSAPException {
+        super.addParams();
+        add(BoxAreaParser.createParam("Event constraining box as west/east/south/north"));
+        add(DonutParser.createParam("Event constraining donut as lat/lon/minRadius/maxRadius"));
+        add(ISOTimeParser.createYesterdayParam(BEGIN, "The earliest time for an accepted event", false));
+        add(ISOTimeParser.createParam(END, "now", "The latest time for an accepted event", true));
+        add(RangeParser.createParam(MAGNITUDE, "0", "10", "The range of acceptable magnitudes"));
+        add(createListOption(TYPES, 't', "types", "The types of magnitudes to retrieve."));
+        add(RangeParser.createParam(DEPTH, "0", "10000", "The range of acceptable depths in kilometers", 'D'));
+        add(createListOption(CATALOGS, 'c', CATALOGS, "A comma separated list of catalogs to search"));
+        add(createListOption(CONTRIBUTORS, 'C', CONTRIBUTORS, "A comma separated list of contributors to search"));
+    }
+
+    public EventClient(String[] args) throws JSAPException {
+        super(args);
+    }
+
+    public void run() {
+        FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
+        JSAPResult result = getResult();
+        if (!isSuccess()) {
+            for (Iterator errs = result.getErrorMessageIterator(); errs.hasNext();) {
+                System.err.println("Error: " + errs.next());
+            }
+            System.err.println();
+            System.err.println("Usage: java " + EventClient.class.getName());
+            System.err.println("                " + jsap.getUsage());
+            System.err.println();
+            System.err.println(jsap.getHelp());
+            return;
+        }
+        if (shouldPrintHelp()) {
+            System.out.println(jsap.getHelp());
+            return;
+        }
+        if (result.contains(BoxAreaParser.NAME)) {
+            HashMap<String, String> box = (HashMap<String, String>)result.getObject(BoxAreaParser.NAME);
+            queryParams.area(Float.parseFloat(box.get("west")),
+                             Float.parseFloat(box.get("east")),
+                             Float.parseFloat(box.get("south")),
+                             Float.parseFloat(box.get("north")));
+        }
+        if (result.contains(DonutParser.NAME)) {
+            HashMap<String, String> donut = (HashMap<String, String>)result.getObject(DonutParser.NAME);
+            queryParams.area(Float.parseFloat(donut.get("lat")),
+                             Float.parseFloat(donut.get("lon")),
+                             Float.parseFloat(donut.get("min")),
+                             Float.parseFloat(donut.get("max")));
+        }
+        if (result.contains(BEGIN)) {
+            queryParams.setStartTime((Date)result.getObject(BEGIN));
+        }
+        if (result.contains(END)) {
+            queryParams.setEndTime((Date)result.getObject(END));
+        }
+        if (result.contains(DEPTH)) {
+            HashMap<String, String> depthRange = (HashMap<String, String>)result.getObject(DEPTH);
+            queryParams.setMinDepth(Float.parseFloat(depthRange.get("min")))
+                    .setMaxDepth(Float.parseFloat(depthRange.get("max")));
+        }
+        if (result.contains(MAGNITUDE)) {
+            HashMap<String, String> magRange = (HashMap<String, String>)result.getObject(MAGNITUDE);
+            queryParams.setMinMagnitude(Float.parseFloat(magRange.get("min")))
+                    .setMaxMagnitude(Float.parseFloat(magRange.get("max")));
+            if (result.contains(TYPES)) {
+                queryParams.setMagnitudeType(result.getString(TYPES));                
+            }
+        }
+        if (result.contains(CATALOGS)) {
+            queryParams.setCatalog(result.getString(CATALOGS));
+        }
+        if (result.contains(CONTRIBUTORS)) {
+            queryParams.setContributor(result.getString(CONTRIBUTORS));
+        }
+        try {
+            process(queryParams.formURI());
+        } catch(IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch(XMLStreamException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch(SeisFileException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch(URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
+        URL url = uri.toURL();
+        System.out.println(url);
+        URLConnection urlConn = url.openConnection();
+        if (urlConn instanceof HttpURLConnection) {
+            HttpURLConnection conn = (HttpURLConnection)urlConn;
+            if (conn.getResponseCode() == 204) {
+                System.out.println("No Data");
+                return;
+            } else if (conn.getResponseCode() != 200) {
+                System.err.println("Response Code :" + conn.getResponseCode());
+                String out = "";
+                BufferedReader errReader = null;
+                try {
+                    errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    for (String line; (line = errReader.readLine()) != null;) {
+                        out += line + "\n";
+                    }
+                } finally {
+                    if (errReader != null)
+                        try {
+                            errReader.close();
+                            conn.disconnect();
+                        } catch(IOException e) {
+                            throw e;
+                        }
+                }
+                System.err.println("Error in connection with url: " + url);
+                System.err.println(out);
+                return;
+            } else {
+                // likely not an error in the http layer, so assume XML is
+                // returned
+                XMLInputFactory factory = XMLInputFactory.newInstance();
+                XMLEventReader r = factory.createXMLEventReader(url.toString(), urlConn.getInputStream());
+                XMLEvent e = r.peek();
+                while (!e.isStartElement()) {
+                    e = r.nextEvent(); // eat this one
+                    e = r.peek(); // peek at the next
+                }
+                Quakeml quakeml = new Quakeml(r);
+                if (!quakeml.checkSchemaVersion()) {
+                    System.out.println("");
+                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
+                    System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
+                    System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
+                }
+                handleResults(quakeml);
+            }
+        }
+    }
+
+    public void handleResults(Quakeml quakeml) throws XMLStreamException, SeisFileException {
+        EventIterator eIt = quakeml.getEventParameters().getEvents();
+        while (eIt.hasNext()) {
+            Event e = eIt.next();
+            Origin o = e.getOriginList().get(0);
+            Magnitude m = e.getMagnitudeList().get(0);
+            System.out.println(o.getLatitude() + "/" + o.getLongitude() + " " + m.getMag().getValue() + " "
+                    + m.getType() + " " + o.getTime().getValue());
+        }
+    }
+
+    /**
+     * @param args
+     * @throws JSAPException
+     */
+    public static void main(String[] args) throws JSAPException {
+        EventClient ev = new EventClient(args);
+        ev.run();
+    }
+
+    public static final String BEGIN = "begin";
+
+    public static final String END = "end";
+}
