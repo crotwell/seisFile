@@ -69,11 +69,11 @@ public class Station extends BaseNodeType {
         return creationDate;
     }
 
-    public FloatType getLat() {
+    public FloatType getLatitude() {
         return lat;
     }
 
-    public FloatType getLon() {
+    public FloatType getLongitude() {
         return lon;
     }
 
