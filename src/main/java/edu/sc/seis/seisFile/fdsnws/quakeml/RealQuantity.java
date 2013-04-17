@@ -40,4 +40,8 @@ public class RealQuantity {
     }
 
     Float value;
+    
+    public String toString() {
+        return ""+value;
+    }
 }
