@@ -4,15 +4,32 @@ group = 'edu.sc.seis'
 version = '1.6.0-SNAPSHOT'
 
 apply plugin: 'maven'
+apply plugin: 'groovy'
+apply plugin: 'application'
 
 dependencies {
     compile project(':seedCodec')
+    compile "JSAP:JSAP:2.1"
     compile "org.slf4j:slf4j-api:1.7.2"
     runtime group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.2", transitive: false
     compile "javax.xml.stream:stax-api:1.0-2"
     compile 'org.rxtx:rxtx:2.1.7'
     runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.1.0"
     runtime "mysql:mysql-connector-java:5.1.24"
+}
+
+sourceSets {
+   example {
+      java {
+         compileClasspath += main.output
+         runtimeClasspath += main.output
+      }
+   }
+   metacode {
+      groovy {
+         srcDir 'src/metacode/groovy'
+      }
+   }
 }
 
 def binDistFiles = copySpec {
@@ -85,26 +102,70 @@ task tarDist(type: Tar, dependsOn: ['explodeDist' ]) {
     }
 }
 
+task exampleJar(type: Jar) {
+    from sourceSets.example.output
+    baseName = 'seisFileExample'
+}
+explodeBin.dependsOn(exampleJar)
+artifacts {
+    exampleJar
+}
+
+task runFdsnEvent(type: JavaExec, dependsOn: ['exampleJar', 'classes'])  {
+    main = 'edu.sc.seis.seisFile.example.FDSNEventExample'
+    classpath = configurations.runtime
+    classpath += sourceSets.example.runtimeClasspath
+}
+
+task runFdsnStation(type: JavaExec, dependsOn: ['exampleJar', 'classes'])  {
+    main = 'edu.sc.seis.seisFile.example.FDSNStationExample'
+    classpath = configurations.runtime
+    classpath += sourceSets.example.runtimeClasspath
+}
+
+task runFdsnDataSelect(type: JavaExec, dependsOn: ['exampleJar', 'classes'])  {
+    main = 'edu.sc.seis.seisFile.example.FDSNDataSelect'
+    classpath = configurations.runtime
+    classpath += sourceSets.example.runtimeClasspath
+}
+
+    mainClassName = 'edu.sc.seis.seisFile.example.FDSNEventExample'
+import org.gradle.api.tasks.application.CreateStartScripts
+
+// this doesn't work yet...
+task scriptFdsnEvent(type: CreateStartScripts, dependsOn: ['exampleJar', 'jar'])  {
+    outputDir = file("$buildDir/explode/bin")
+    applicationName = "fdsnEvent"
+    mainClassName = 'edu.sc.seis.seisFile.example.FDSNEventExample'
+    classpath = configurations.runtime
+//    classpath += configurations.default.allArtifacts
+//    classpath.add(exampleJar)
+//    classpath += ["seisFileExample-${version}.jar"]
+
+
+}
+
+
 task makeScript(dependsOn: copyToLib) << { task ->
     group = 'build'
     def dExtras = getDExtras()
     def doBat = true
+    ScriptBuilder.create('fdsnevent', 'edu.sc.seis.seisFile.fdsnws.EventClient', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fdsnstation', 'edu.sc.seis.seisFile.fdsnws.StationClient', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fdsndataselect', 'edu.sc.seis.seisFile.fdsnws.DataSelectClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('saclh', 'edu.sc.seis.seisFile.sac.ListHeader', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('mseedlh', 'edu.sc.seis.seisFile.mseed.ListHeader', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('dswsclient', 'edu.sc.seis.seisFile.dataSelectWS.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('cwbclient', 'edu.sc.seis.seisFile.usgsCWB.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('winstonclient', 'edu.sc.seis.seisFile.winston.WinstonClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('earthwormExportTest', 'edu.sc.seis.seisFile.earthworm.EarthwormExport', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('earthwormImportTest', 'edu.sc.seis.seisFile.earthworm.EarthwormImport', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('stationxmlclient', 'edu.sc.seis.seisFile.stationxml.StationXMLClient', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('quakemlclient', 'edu.sc.seis.seisFile.quakeml.QuakeMLClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('waveserverclient', 'edu.sc.seis.seisFile.waveserver.WaveServerClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('syncfilecompare', 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('syncfile2gmt', 'edu.sc.seis.seisFile.syncFile.GMTSyncFile', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
+    //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
