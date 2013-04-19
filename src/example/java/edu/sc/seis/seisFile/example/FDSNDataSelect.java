@@ -32,7 +32,6 @@ public class FDSNDataSelect {
                     .appendToStation("CASEE")
                     .appendToChannel("HHZ");
             URL url = queryParams.formURI().toURL();
-System.out.println("URL: "+url);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             if (conn.getResponseCode() == 204) {
                 System.out.println("No Data");
