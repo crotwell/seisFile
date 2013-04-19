@@ -1,12 +1,9 @@
-package edu.sc.seis.seisFile.fdsnws.dataSelectWS;
+package edu.sc.seis.seisFile.mseed;
 
 import java.io.DataInput;
 import java.io.EOFException;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.mseed.DataRecord;
-import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 public class DataRecordIterator {
 
