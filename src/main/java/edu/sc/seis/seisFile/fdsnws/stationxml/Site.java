@@ -75,7 +75,8 @@ public class Site {
         return country;
     }
     
-    public String toSting() {
+    @Override
+    public String toString() {
         return getName()+" "+getDescription()+" "+getTown()+" "+getCounty()+" "+getRegion()+" "+getCountry();
     }
 
