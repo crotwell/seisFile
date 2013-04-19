@@ -47,8 +47,8 @@ public class StationClient extends AbstractFDSNClient {
         super.addParams();
         add(BoxAreaParser.createParam("Event constraining box as west/east/south/north"));
         add(DonutParser.createParam("Event constraining donut as lat/lon/minRadius/maxRadius"));
-        add(ISOTimeParser.createParam(BEGIN, null, "The earliest time for acceptance", false));
-        add(ISOTimeParser.createParam(END, "now", "The latest time for acceptance", true));
+        add(ISOTimeParser.createParam(BEGIN, "The earliest time for acceptance", false));
+        add(ISOTimeParser.createParam(END, "The latest time for acceptance", true));
         /*
         add(ISOTimeParser.createYesterdayParam(FDSNStationQueryParams.STARTBEFORE, "The level must have started by this time", false));
         add(ISOTimeParser.createParam(FDSNStationQueryParams.ENDBEFORE, "now", "The level must have ended by this time", true));
@@ -62,7 +62,7 @@ public class StationClient extends AbstractFDSNClient {
         add(LevelParser.createFlaggedOption());
         add(new Switch(FDSNStationQueryParams.INCLUDEAVAILABILITY, JSAP.NO_SHORTFLAG, "availability" , "include information about time series data availability"));
         add(new Switch(FDSNStationQueryParams.INCLUDERESTRICTED, JSAP.NO_SHORTFLAG, "restricted" , "include information for restricted stations"));
-        add(ISOTimeParser.createParam(FDSNStationQueryParams.UPDATEDAFTER, null, "Only results that have changed since the date are accepted", false));
+        add(ISOTimeParser.createParam(FDSNStationQueryParams.UPDATEDAFTER, "Only results that have changed since the date are accepted", false));
     }
 
     public void run() {
@@ -128,6 +128,10 @@ public class StationClient extends AbstractFDSNClient {
             queryParams.setIncludeRestricted(true);
         }
         try {
+            if (getResult().getBoolean(PRINTURL)) {
+                System.out.println(queryParams.formURI());
+                return;
+            }
             process(queryParams.formURI());
         } catch(IOException e) {
             // TODO Auto-generated catch block
@@ -146,7 +150,7 @@ public class StationClient extends AbstractFDSNClient {
 
     public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
         URL url = uri.toURL();
-        System.out.println(url);
+        System.out.println("Query: "+url);
         connect(uri);
         if (! isError()) {
             if (! isEmpty()) {

@@ -104,10 +104,28 @@ public class ISOTimeParser extends StringParser {
     }
 
 
+    public static FlaggedOption createRequiredParam(String name,
+                                                     String helpMessage,
+                                                     boolean ceiling) {
+        return new FlaggedOption(name,
+                                 new ISOTimeParser(ceiling),
+                                 null,
+                                 true,
+                                 name.charAt(0),
+                                 name,
+                                 helpMessage);
+    }
+
     public static FlaggedOption createYesterdayParam(String name,
                                                      String helpMessage,
                                                      boolean ceiling) {
         return createParam(name, YESTERDAY, helpMessage, ceiling);
+    }
+
+    public static FlaggedOption createParam(String name,
+                                                     String helpMessage,
+                                                     boolean ceiling) {
+        return createParam(name, null, helpMessage, ceiling);
     }
 
     public static FlaggedOption createParam(String name,
@@ -135,7 +153,7 @@ public class ISOTimeParser extends StringParser {
         return cal.getTime();
     }
 
-    public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?('T')?(\\d{2})?:?(\\d{2})?:?(\\d{2})?";
+    public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?(T)?(\\d{2})?:?(\\d{2})?:?(\\d{2})?";
 
     private static Pattern datePattern = Pattern.compile(ISO_TIME_RE);
     
