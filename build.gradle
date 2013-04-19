@@ -13,6 +13,8 @@ dependencies {
     compile "org.slf4j:slf4j-api:1.7.2"
     runtime group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.2", transitive: false
     compile "javax.xml.stream:stax-api:1.0-2"
+//
+//    compile 'org.rxtx:rxtx:2.2.pre2'  ...but not in maven
     compile 'org.rxtx:rxtx:2.1.7'
     runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.1.0"
     runtime "mysql:mysql-connector-java:5.1.24"
@@ -112,13 +114,13 @@ artifacts {
 }
 
 task runFdsnEvent(type: JavaExec, dependsOn: ['exampleJar', 'classes'])  {
-    main = 'edu.sc.seis.seisFile.example.FDSNEventExample'
+    main = 'edu.sc.seis.seisFile.example.FDSNEvent'
     classpath = configurations.runtime
     classpath += sourceSets.example.runtimeClasspath
 }
 
 task runFdsnStation(type: JavaExec, dependsOn: ['exampleJar', 'classes'])  {
-    main = 'edu.sc.seis.seisFile.example.FDSNStationExample'
+    main = 'edu.sc.seis.seisFile.example.FDSNStation'
     classpath = configurations.runtime
     classpath += sourceSets.example.runtimeClasspath
 }
