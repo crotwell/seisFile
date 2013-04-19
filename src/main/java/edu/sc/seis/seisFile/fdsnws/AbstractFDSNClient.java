@@ -42,22 +42,7 @@ public class AbstractFDSNClient extends AbstractClient {
             } else if (conn.getResponseCode() != 200) {
                 error = true;
                 System.err.println("Response Code :" + conn.getResponseCode());
-                errorMessage = "";
-                BufferedReader errReader = null;
-                try {
-                    errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    for (String line; (line = errReader.readLine()) != null;) {
-                        errorMessage += line + "\n";
-                    }
-                } finally {
-                    if (errReader != null)
-                        try {
-                            errReader.close();
-                            conn.disconnect();
-                        } catch(IOException e) {
-                            throw e;
-                        }
-                }
+                errorMessage = extractErrorMessage(conn);
                 return;
             } else {
                 // likely not an error in the http layer, so content is returned
@@ -111,4 +96,26 @@ public class AbstractFDSNClient extends AbstractClient {
     public static final String BEGIN = "begin";
 
     public static final String END = "end";
+
+    public static String extractErrorMessage(HttpURLConnection conn) {
+        String out = "";
+        BufferedReader errReader = null;
+        try {
+            errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            for (String line; (line = errReader.readLine()) != null;) {
+                out += line + "\n";
+            }
+        } catch(IOException e) {
+            out += "\nException reading error strea: "+e.toString();
+        } finally {
+            if (errReader != null)
+                try {
+                    errReader.close();
+                    conn.disconnect();
+                } catch(IOException e) {
+                    // oh well
+                }
+        }
+        return out;
+    }
 }
