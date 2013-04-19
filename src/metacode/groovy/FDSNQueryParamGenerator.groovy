@@ -10,9 +10,9 @@ class FDSNQueryParamGenerator {
     String createItem(key, doc, service) {
         String t = ""
         if (key in dateTypes) {t="Date"}
-        else if(key in floatTypes) {t="Float"}
-        else if (key in intTypes) {t="Integer"}
-        else if (key in booleanTypes) {t="Boolean"}
+        else if(key in floatTypes) {t="float"}
+        else if (key in intTypes) {t="int"}
+        else if (key in booleanTypes) {t="boolean"}
         String setter = 'set'
         if (key in addTypes) { setter = 'appendTo' }
         def binding = ['key':key, 'doc':doc, 'type':t, 'service':service, 'setter':setter]
@@ -161,38 +161,38 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
 
 
     public FDSNStationQueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
-        return minlatitude(minLat).maxlatitude(maxLat).minlongitude(minLon).maxlongitude(maxLon);
+        return setMinLatitude(minLat).setMaxLatitude(maxLat).setMinLongitude(minLon).setMaxLongitude(maxLon);
     }
 
     public FDSNStationQueryParams ring(float lat, float lon, float maxRadius) {
-        return latitude(lat).longitude(lon).maxradius(maxRadius);
+        return setLatitude(lat).setLongitude(lon).setMaxRadius(maxRadius);
     }
 
-    public FDSNStationQueryParams doughnut(float lat, float lon, float minRadius, float maxRadius) {
-        return ring(lat, lon, maxRadius).minradius(minRadius);
+    public FDSNStationQueryParams donut(float lat, float lon, float minRadius, float maxRadius) {
+        return ring(lat, lon, maxRadius).setMinRadius(minRadius);
     }
 
-    public static final String NETWORK_LEVEL = "network";
+    public static final String LEVEL_NETWORK = "network";
 
-    public static final String STATION_LEVEL = "station";
+    public static final String LEVEL_STATION = "station";
 
-    public static final String CHANNEL_LEVEL = "channel";
+    public static final String LEVEL_CHANNEL = "channel";
 
-    public static final String RESPONSE_LEVEL = "response";
+    public static final String LEVEL_RESPONSE = "response";
 ''',
         'Event':'''
 
 
     public FDSNEventQueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
-        return minlatitude(minLat).maxlatitude(maxLat).minlongitude(minLon).maxlongitude(maxLon);
+        return setMinLatitude(minLat).setMaxLatitude(maxLat).setMinLongitude(minLon).setMaxLongitude(maxLon);
     }
 
     public FDSNEventQueryParams ring(float lat, float lon, float maxRadius) {
-        return latitude(lat).longitude(lon).maxradius(maxRadius);
+        return setLatitude(lat).setLongitude(lon).setMaxRadius(maxRadius);
     }
 
-    public FDSNEventQueryParams doughnut(float lat, float lon, float minRadius, float maxRadius) {
-        return ring(lat, lon, maxRadius).minradius(minRadius);
+    public FDSNEventQueryParams donut(float lat, float lon, float minRadius, float maxRadius) {
+        return ring(lat, lon, maxRadius).setMinRadius(minRadius);
     }
 ''',
         'DataSelect':'''''']
@@ -201,7 +201,7 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
         def x = new FDSNQueryParamGenerator()
         def data = ['Station':x.stationParams, 'Event':x.eventParams, 'DataSelect':x.dataSelectParams]
         for (s in ['Station', 'Event', 'DataSelect'])  {
-            new File("FDSN${s}QueryParams.java").withWriter { writer ->
+            new File("../../main/java/edu/sc/seis/seisFile/fdsnws/FDSN${s}QueryParams.java").withWriter { writer ->
                 writer.println x.createPre(s)
                 data.get(s).each() { k, v ->
                     writer.println x.createItem(k, v, s)
