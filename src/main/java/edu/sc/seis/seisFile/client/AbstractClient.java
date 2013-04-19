@@ -11,63 +11,38 @@ import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.StringParser;
 import com.martiansoftware.jsap.Switch;
 
+import edu.sc.seis.seedCodec.BuildVersion;
 
 public class AbstractClient {
-
-    protected List params = new ArrayList();
 
     protected boolean requiresAtLeastOneArg() {
         return true;
     }
 
     protected FlaggedOption createListOption(String id, char shortFlag, String longFlag, String help) {
-        return createListOption(id,
-                                shortFlag,
-                                longFlag,
-                                help,
-                                null,
-                                JSAP.STRING_PARSER);
+        return createListOption(id, shortFlag, longFlag, help, null, JSAP.STRING_PARSER);
     }
 
     protected FlaggedOption createListOption(String id, char shortFlag, String longFlag, String help, String defaultArg) {
-        return createListOption(id,
-                                shortFlag,
-                                longFlag,
-                                help,
-                                defaultArg,
-                                JSAP.STRING_PARSER);
+        return createListOption(id, shortFlag, longFlag, help, defaultArg, JSAP.STRING_PARSER);
     }
 
-    protected FlaggedOption createListOption(String id, char shortFlag, String longFlag, String help, String defaultArg, StringParser parser) {
-        FlaggedOption listOption = new FlaggedOption(id,
-                                                     parser,
-                                                     defaultArg,
-                                                     false,
-                                                     shortFlag,
-                                                     longFlag,
-                                                     help);
+    protected FlaggedOption createListOption(String id,
+                                             char shortFlag,
+                                             String longFlag,
+                                             String help,
+                                             String defaultArg,
+                                             StringParser parser) {
+        FlaggedOption listOption = new FlaggedOption(id, parser, defaultArg, false, shortFlag, longFlag, help);
         listOption.setList(true);
         listOption.setListSeparator(',');
         return listOption;
     }
 
     protected void addParams() throws JSAPException {
-        add(new Switch("version",
-                       'v',
-                       "version",
-                       "Print SOD's version and exit"));
-        add(new Switch("recipe",
-                       'r',
-                       "recipe",
-                       "Print the created recipe to stdout instead of running it"));
+        add(new Switch("version", 'v', "version", "Print version and exit"));
         add(new Switch("help", 'h', "help", "Print this message."));
-        add(new FlaggedOption("props",
-                              JSAP.STRING_PARSER,
-                              null,
-                              false,
-                              'p',
-                              "props",
-                              "Use an additional props file"));
+        add(new FlaggedOption("props", JSAP.STRING_PARSER, null, false, 'p', "props", "Use an additional props file"));
     }
 
     protected void add(Parameter param) throws JSAPException {
@@ -90,15 +65,50 @@ public class AbstractClient {
     public boolean shouldPrintVersion() {
         return result.getBoolean("version");
     }
+    
+    public String getHelp() {
+        String out = "";
+        for (Parameter param : getParams()) {
+            out += param.getHelp()+"\n";
+        }
+        return out;
+    }
 
     public boolean isSuccess() {
         return result.success();
     }
 
+    public List<Parameter> getParams() {
+        return params;
+    }
+
+    public JSAPResult getResult() {
+        return result;
+    }
+
+    public String getCommandName() {
+        return commandName;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    protected List<Parameter> params = new ArrayList<Parameter>();
+
     protected JSAPResult result;
+
     protected JSAP jsap = new JSAP();
+
     protected String[] args;
+
     protected String commandName;
+    
+    protected String userAgent = "SeisFile-"+BuildVersion.getVersion();
 
     public AbstractClient(String[] args) throws JSAPException {
         this.args = args;
@@ -106,10 +116,8 @@ public class AbstractClient {
         String[] segs = getClass().getName().split("\\.");
         commandName = segs[segs.length - 1];
         result = jsap.parse(args);
-        if(requiresAtLeastOneArg() && args.length == 0) {
-            result.addException("Must use at least one option",
-                                new RuntimeException("Must use at least one option"));
+        if (requiresAtLeastOneArg() && args.length == 0) {
+            result.addException("Must use at least one option", new RuntimeException("Must use at least one option"));
         }
     }
-
 }

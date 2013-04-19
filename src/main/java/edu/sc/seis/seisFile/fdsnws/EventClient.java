@@ -1,41 +1,31 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
 
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.client.AbstractClient;
 import edu.sc.seis.seisFile.client.BoxAreaParser;
 import edu.sc.seis.seisFile.client.DonutParser;
 import edu.sc.seis.seisFile.client.ISOTimeParser;
 import edu.sc.seis.seisFile.client.RangeParser;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
 import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
-import edu.sc.seis.seisFile.fdsnws.quakeml.EventParameters;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Magnitude;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
-public class EventClient extends AbstractClient {
+public class EventClient extends AbstractFDSNClient {
 
     private static final String DEPTH = "depth";
 
@@ -73,7 +63,7 @@ public class EventClient extends AbstractClient {
                 System.err.println("Error: " + errs.next());
             }
             System.err.println();
-            System.err.println("Usage: java " + EventClient.class.getName());
+            System.err.println("Usage: java " + this.getClass().getName());
             System.err.println("                " + jsap.getUsage());
             System.err.println();
             System.err.println(jsap.getHelp());
@@ -92,7 +82,7 @@ public class EventClient extends AbstractClient {
         }
         if (result.contains(DonutParser.NAME)) {
             HashMap<String, String> donut = (HashMap<String, String>)result.getObject(DonutParser.NAME);
-            queryParams.area(Float.parseFloat(donut.get("lat")),
+            queryParams.donut(Float.parseFloat(donut.get("lat")),
                              Float.parseFloat(donut.get("lon")),
                              Float.parseFloat(donut.get("min")),
                              Float.parseFloat(donut.get("max")));
@@ -142,44 +132,10 @@ public class EventClient extends AbstractClient {
     public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
         URL url = uri.toURL();
         System.out.println(url);
-        URLConnection urlConn = url.openConnection();
-        if (urlConn instanceof HttpURLConnection) {
-            HttpURLConnection conn = (HttpURLConnection)urlConn;
-            if (conn.getResponseCode() == 204) {
-                System.out.println("No Data");
-                return;
-            } else if (conn.getResponseCode() != 200) {
-                System.err.println("Response Code :" + conn.getResponseCode());
-                String out = "";
-                BufferedReader errReader = null;
-                try {
-                    errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    for (String line; (line = errReader.readLine()) != null;) {
-                        out += line + "\n";
-                    }
-                } finally {
-                    if (errReader != null)
-                        try {
-                            errReader.close();
-                            conn.disconnect();
-                        } catch(IOException e) {
-                            throw e;
-                        }
-                }
-                System.err.println("Error in connection with url: " + url);
-                System.err.println(out);
-                return;
-            } else {
-                // likely not an error in the http layer, so assume XML is
-                // returned
-                XMLInputFactory factory = XMLInputFactory.newInstance();
-                XMLEventReader r = factory.createXMLEventReader(url.toString(), urlConn.getInputStream());
-                XMLEvent e = r.peek();
-                while (!e.isStartElement()) {
-                    e = r.nextEvent(); // eat this one
-                    e = r.peek(); // peek at the next
-                }
-                Quakeml quakeml = new Quakeml(r);
+        connect(uri);
+        if (! isError()) {
+            if (! isEmpty()) {
+                Quakeml quakeml = new Quakeml(getReader());
                 if (!quakeml.checkSchemaVersion()) {
                     System.out.println("");
                     System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
@@ -187,7 +143,11 @@ public class EventClient extends AbstractClient {
                     System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
                 }
                 handleResults(quakeml);
+            } else {
+                System.out.println("No Data");
             }
+        } else {
+            System.err.println("Error: "+getErrorMessage());
         }
     }
 
@@ -211,7 +171,4 @@ public class EventClient extends AbstractClient {
         ev.run();
     }
 
-    public static final String BEGIN = "begin";
-
-    public static final String END = "end";
 }

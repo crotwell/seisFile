@@ -359,17 +359,17 @@ public class FDSNStationQueryParams extends AbstractQueryParams {
         return setLatitude(lat).setLongitude(lon).setMaxRadius(maxRadius);
     }
 
-    public FDSNStationQueryParams doughnut(float lat, float lon, float minRadius, float maxRadius) {
+    public FDSNStationQueryParams donut(float lat, float lon, float minRadius, float maxRadius) {
         return ring(lat, lon, maxRadius).setMinRadius(minRadius);
     }
 
-    public static final String NETWORK_LEVEL = "network";
+    public static final String LEVEL_NETWORK = "network";
 
-    public static final String STATION_LEVEL = "station";
+    public static final String LEVEL_STATION = "station";
 
-    public static final String CHANNEL_LEVEL = "channel";
+    public static final String LEVEL_CHANNEL = "channel";
 
-    public static final String RESPONSE_LEVEL = "response";
+    public static final String LEVEL_RESPONSE = "response";
 
 
     public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/station/1/query?";
