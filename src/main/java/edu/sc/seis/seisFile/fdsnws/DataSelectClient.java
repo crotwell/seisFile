@@ -22,9 +22,9 @@ import com.martiansoftware.jsap.JSAPResult;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.client.ISOTimeParser;
-import edu.sc.seis.seisFile.fdsnws.dataSelectWS.DataRecordIterator;
 import edu.sc.seis.seisFile.mseed.DataHeader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.DataRecordIterator;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
 public class DataSelectClient extends AbstractFDSNClient {
