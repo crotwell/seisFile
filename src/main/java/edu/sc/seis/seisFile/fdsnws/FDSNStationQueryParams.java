@@ -140,7 +140,7 @@ public class FDSNStationQueryParams extends AbstractQueryParams {
 
     public static final String LOCATION = "location";
 
-    /** Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case Ò--Ò (two dashes) will be translated to a string of two space characters to match blank location IDs.
+    /** Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case "--" (two dashes) will be translated to a string of two space characters to match blank location IDs.
      */
     public FDSNStationQueryParams appendToLocation(String value) {
         appendToParam(LOCATION, value);
