@@ -113,6 +113,10 @@ public class EventClient extends AbstractFDSNClient {
             queryParams.setContributor(result.getString(CONTRIBUTORS));
         }
         try {
+            if (getResult().getBoolean(PRINTURL)) {
+                System.out.println(queryParams.formURI());
+                return;
+            }
             process(queryParams.formURI());
         } catch(IOException e) {
             // TODO Auto-generated catch block
@@ -131,7 +135,6 @@ public class EventClient extends AbstractFDSNClient {
 
     public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
         URL url = uri.toURL();
-        System.out.println(url);
         connect(uri);
         if (! isError()) {
             if (! isEmpty()) {

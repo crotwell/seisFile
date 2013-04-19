@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -12,7 +13,9 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
+import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.Switch;
 
 import edu.sc.seis.seisFile.client.AbstractClient;
 
@@ -22,7 +25,13 @@ public class AbstractFDSNClient extends AbstractClient {
         super(args);
     }
 
-    void connect(URI uri) throws MalformedURLException, IOException, XMLStreamException {
+    protected void addParams() throws JSAPException {
+        super.addParams();
+        add(new Switch(PRINTURL, JSAP.NO_SHORTFLAG, PRINTURL, "Construct and print URL and exit"));
+    }
+
+    void connect(URI uri) throws MalformedURLException, IOException {
+        connectionUri = uri;
         URLConnection urlConn = uri.toURL().openConnection();
         if (urlConn instanceof HttpURLConnection) {
             HttpURLConnection conn = (HttpURLConnection)urlConn;
@@ -51,10 +60,8 @@ public class AbstractFDSNClient extends AbstractClient {
                 }
                 return;
             } else {
-                // likely not an error in the http layer, so assume XML is
-                // returned
-                XMLInputFactory factory = XMLInputFactory.newInstance();
-                reader = factory.createXMLEventReader(uri.toString(), urlConn.getInputStream());
+                // likely not an error in the http layer, so content is returned
+                inputStream = urlConn.getInputStream();
             }
         }
     }
@@ -71,7 +78,19 @@ public class AbstractFDSNClient extends AbstractClient {
         return empty;
     }
 
-    public XMLEventReader getReader() {
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public URI getConnectionUri() {
+        return connectionUri;
+    }
+
+    public XMLEventReader getReader() throws XMLStreamException {
+        if (reader == null) {
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            reader = factory.createXMLEventReader(getConnectionUri().toString(), getInputStream());
+        }
         return reader;
     }
 
@@ -82,7 +101,12 @@ public class AbstractFDSNClient extends AbstractClient {
     boolean empty;
 
     XMLEventReader reader;
-    
+
+    InputStream inputStream;
+
+    private URI connectionUri;
+
+    public static final String PRINTURL = "printurl";
 
     public static final String BEGIN = "begin";
 

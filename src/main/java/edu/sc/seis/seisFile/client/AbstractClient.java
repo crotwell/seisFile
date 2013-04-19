@@ -59,11 +59,11 @@ public class AbstractClient {
     }
 
     public boolean shouldPrintHelp() {
-        return result.getBoolean("help");
+        return result.getBoolean(HELP);
     }
 
     public boolean shouldPrintVersion() {
-        return result.getBoolean("version");
+        return result.getBoolean(VERSION);
     }
     
     public String getHelp() {
@@ -98,6 +98,10 @@ public class AbstractClient {
         return userAgent;
     }
 
+    public static final String HELP = "help";
+    
+    public static final String VERSION  = "version";
+    
     protected List<Parameter> params = new ArrayList<Parameter>();
 
     protected JSAPResult result;
