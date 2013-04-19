@@ -70,16 +70,31 @@ public class DataSelectClient extends AbstractFDSNClient {
             queryParams.setEndTime((Date)result.getObject(END));
         }
         if (result.contains(FDSNStationQueryParams.NETWORK)) {
-            queryParams.appendToNetwork(result.getString(FDSNStationQueryParams.NETWORK));
+            String[] vals = result.getStringArray(FDSNStationQueryParams.NETWORK);
+            for (int i = 0; i < vals.length; i++) {
+                queryParams.appendToNetwork(vals[i]);
+            }
         }
         if (result.contains(FDSNStationQueryParams.STATION)) {
             queryParams.appendToStation(result.getString(FDSNStationQueryParams.STATION));
+            String[] vals = result.getStringArray(FDSNStationQueryParams.STATION);
+            for (int i = 0; i < vals.length; i++) {
+                queryParams.appendToStation(vals[i]);
+            }
         }
         if (result.contains(FDSNStationQueryParams.LOCATION)) {
             queryParams.appendToLocation(result.getString(FDSNStationQueryParams.LOCATION));
+            String[] vals = result.getStringArray(FDSNStationQueryParams.LOCATION);
+            for (int i = 0; i < vals.length; i++) {
+                queryParams.appendToLocation(vals[i]);
+            }
         }
         if (result.contains(FDSNStationQueryParams.CHANNEL)) {
             queryParams.appendToChannel(result.getString(FDSNStationQueryParams.CHANNEL));
+            String[] vals = result.getStringArray(FDSNStationQueryParams.CHANNEL);
+            for (int i = 0; i < vals.length; i++) {
+                queryParams.appendToChannel(vals[i]);
+            }
         }
         try {
             if (getResult().getBoolean(PRINTURL)) {
