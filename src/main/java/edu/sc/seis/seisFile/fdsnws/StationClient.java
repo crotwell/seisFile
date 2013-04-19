@@ -150,7 +150,6 @@ public class StationClient extends AbstractFDSNClient {
 
     public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
         URL url = uri.toURL();
-        System.out.println("Query: "+url);
         connect(uri);
         if (! isError()) {
             if (! isEmpty()) {
