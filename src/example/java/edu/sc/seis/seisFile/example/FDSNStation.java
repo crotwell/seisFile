@@ -31,7 +31,7 @@ public class FDSNStation {
                     .setStartTime(sdf.parse("2001-03-15"))
                     .setEndTime(sdf.parse("2010-03-21"))
                     .appendToNetwork("CO")
-                    .setLevel(FDSNStationQueryParams.STATION_LEVEL);
+                    .setLevel(FDSNStationQueryParams.LEVEL_STATION);
             URL url = queryParams.formURI().toURL();
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             if (conn.getResponseCode() == 204) {

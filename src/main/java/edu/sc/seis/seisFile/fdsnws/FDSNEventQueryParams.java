@@ -404,7 +404,7 @@ public class FDSNEventQueryParams extends AbstractQueryParams {
         return setLatitude(lat).setLongitude(lon).setMaxRadius(maxRadius);
     }
 
-    public FDSNEventQueryParams doughnut(float lat, float lon, float minRadius, float maxRadius) {
+    public FDSNEventQueryParams donut(float lat, float lon, float minRadius, float maxRadius) {
         return ring(lat, lon, maxRadius).setMinRadius(minRadius);
     }
 
