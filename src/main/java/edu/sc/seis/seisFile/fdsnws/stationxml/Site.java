@@ -55,32 +55,16 @@ public class Site {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getTown() {
         return town;
     }
 
-    public void setTown(String town) {
-        this.town = town;
-    }
-
     public String getCounty() {
         return county;
-    }
-
-    public void setCounty(String county) {
-        this.county = county;
     }
 
     public String getRegion() {
@@ -90,9 +74,9 @@ public class Site {
     public String getCountry() {
         return country;
     }
-
-    public void setCountry(String country) {
-        this.country = country;
+    
+    public String toSting() {
+        return getName()+" "+getDescription()+" "+getTown()+" "+getCounty()+" "+getRegion()+" "+getCountry();
     }
 
     String name, description, town, county, region, country;
