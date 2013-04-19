@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
-import edu.sc.seis.seisFile.fdsnws.dataSelectWS.DataSelectException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
@@ -61,7 +60,7 @@ public class CWBReader extends StringMSeedQueryReader {
     }
     
     @Override
-    public List<DataRecord> read(String query) throws IOException, DataSelectException, SeedFormatException {
+    public List<DataRecord> read(String query) throws IOException, SeedFormatException {
         Socket socket = new Socket(host, port);
         socket.setReceiveBufferSize(512000);
         if(timeoutMillis != 0) {
