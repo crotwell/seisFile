@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.fdsnws.AbstractFDSNClient;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.DataRecordIterator;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 public class FDSNDataSelect {
@@ -37,45 +39,21 @@ public class FDSNDataSelect {
                 System.out.println("No Data");
             } else if (conn.getResponseCode() == 200) {
                 // success
-                BufferedInputStream bif = new BufferedInputStream(conn.getInputStream());
-                DataInputStream in = new DataInputStream(bif);
-                List<DataRecord> records = new ArrayList<DataRecord>();
-                while (true) {
-                    try {
-                        SeedRecord sr = SeedRecord.read(in);
-                        if (sr instanceof DataRecord) {
-                            DataRecord dr = (DataRecord)sr;
-                            records.add(dr);
-                            System.out.println("Data Record: "+dr.getHeader());
-                        } else {
-                           // Not a data record, skipping...
-                        }
-                    } catch (EOFException e) {
-                        // end of data?
-                        break;
-                    }
-                }
-                in.close();
-            } else {
-                System.err.println("oops, error Response Code :" + conn.getResponseCode());
-                String out = "";
-                BufferedReader errReader = null;
+                DataInputStream in = new DataInputStream(new BufferedInputStream(conn.getInputStream()));
+                DataRecordIterator drIt = new DataRecordIterator(in);
                 try {
-                    errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    for (String line; (line = errReader.readLine()) != null;) {
-                        out += line + "\n";
+                    while(drIt.hasNext()) {
+                        DataRecord dr = drIt.next();
+                        // do something with the DataRecord
+                        System.out.println("Data Record: "+dr.getHeader());
                     }
                 } finally {
-                    if (errReader != null)
-                        try {
-                            errReader.close();
-                            conn.disconnect();
-                        } catch(IOException e) {
-                            throw e;
-                        }
+                    in.close();
                 }
+            } else {
+                System.err.println("oops, error Response Code :" + conn.getResponseCode());
                 System.err.println("Error in connection with url: " + url);
-                System.err.println(out);
+                System.err.println(AbstractFDSNClient.extractErrorMessage(conn));
             }
         } catch(Exception e) {
             System.err.println("Oops. " + e.getMessage());

@@ -6,13 +6,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
+import edu.sc.seis.seisFile.fdsnws.AbstractFDSNClient;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQueryParams;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
 import edu.sc.seis.seisFile.fdsnws.stationxml.NetworkIterator;
@@ -28,10 +31,11 @@ public class FDSNStation {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.area(30, 35, -83, -79)
-                    .setStartTime(sdf.parse("2001-03-15"))
-                    .setEndTime(sdf.parse("2010-03-21"))
+                    .setStartTime(sdf.parse("2010-03-15"))
+                    .setEndTime(sdf.parse("2013-03-21"))
                     .appendToNetwork("CO")
-                    .setLevel(FDSNStationQueryParams.LEVEL_STATION);
+                    .appendToChannel("?HZ")
+                    .setLevel(FDSNStationQueryParams.LEVEL_CHANNEL);
             URL url = queryParams.formURI().toURL();
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             if (conn.getResponseCode() == 204) {
@@ -54,28 +58,16 @@ public class FDSNStation {
                     while(sIt.hasNext()) {
                         Station s = sIt.next();
                         System.out.println(s.getLatitude()+"/"+s.getLongitude()+" "+s.getCode()+" "+s.getSite().getName()+" "+s.getStartDate());
+                        List<Channel> chanList= s.getChannelList();
+                        for (Channel channel : chanList) {
+                            System.out.println("        "+channel.getLocCode()+"."+channel.getCode()+" "+channel.getAzimuth()+"/"+channel.getDip()+" "+channel.getDepth().getValue()+" "+channel.getDepth().getUnit()+" "+channel.getStartDate());
+                        }
                     }
                 }
             } else {
                 System.err.println("oops, error Response Code :" + conn.getResponseCode());
-                String out = "";
-                BufferedReader errReader = null;
-                try {
-                    errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    for (String line; (line = errReader.readLine()) != null;) {
-                        out += line + "\n";
-                    }
-                } finally {
-                    if (errReader != null)
-                        try {
-                            errReader.close();
-                            conn.disconnect();
-                        } catch(IOException e) {
-                            throw e;
-                        }
-                }
                 System.err.println("Error in connection with url: " + url);
-                System.err.println(out);
+                System.err.println(AbstractFDSNClient.extractErrorMessage(conn));
             }
         } catch(Exception e) {
             System.err.println("Oops: " + e.getMessage());

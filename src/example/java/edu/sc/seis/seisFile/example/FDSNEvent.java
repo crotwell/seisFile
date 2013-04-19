@@ -11,6 +11,7 @@ import java.util.TimeZone;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
+import edu.sc.seis.seisFile.fdsnws.AbstractFDSNClient;
 import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
 import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
@@ -27,10 +28,11 @@ public class FDSNEvent {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.area(30, 35, -83, -79)
-                    .setStartTime(sdf.parse("2001-03-15"))
-                    .setEndTime(sdf.parse("2010-03-21"))
+                    .setStartTime(sdf.parse("2010-03-15"))
+                    .setEndTime(sdf.parse("2013-03-21"))
                     .setMaxDepth(100)
-                    .setMinMagnitude(3);
+                    .setMinMagnitude(1)
+                    .setOrderBy(FDSNEventQueryParams.ORDER_TIME_ASC);
             URL url = queryParams.formURI().toURL();
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             if (conn.getResponseCode() == 204) {
@@ -54,24 +56,8 @@ public class FDSNEvent {
                 }
             } else {
                 System.err.println("oops, error Response Code :" + conn.getResponseCode());
-                String out = "";
-                BufferedReader errReader = null;
-                try {
-                    errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    for (String line; (line = errReader.readLine()) != null;) {
-                        out += line + "\n";
-                    }
-                } finally {
-                    if (errReader != null)
-                        try {
-                            errReader.close();
-                            conn.disconnect();
-                        } catch(IOException e) {
-                            throw e;
-                        }
-                }
                 System.err.println("Error in connection with url: " + url);
-                System.err.println(out);
+                System.err.println(AbstractFDSNClient.extractErrorMessage(conn));
             }
         } catch(Exception e) {
             System.err.println("Oops: " + e.getMessage());
