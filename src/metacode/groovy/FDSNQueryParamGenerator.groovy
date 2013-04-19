@@ -194,6 +194,18 @@ public class FDSN${key.capitalize()}QueryParams extends AbstractQueryParams {
     public FDSNEventQueryParams donut(float lat, float lon, float minRadius, float maxRadius) {
         return ring(lat, lon, maxRadius).setMinRadius(minRadius);
     }
+
+    /** time: order by origin descending time */
+    public static final String ORDER_TIME = "time";
+
+    /** time-asc : order by origin ascending time */
+    public static final String ORDER_TIME_ASC = "time-asc";
+
+    /**magnitude: order by descending magnitude */
+    public static final String ORDER_MAGNITUDE = "magnitude";
+
+    /**magnitude-asc : order by ascending magnitude*/
+    public static final String ORDER_MAGNITUDE_ASC = "magnitude-asc";
 ''',
         'DataSelect':'''''']
 
