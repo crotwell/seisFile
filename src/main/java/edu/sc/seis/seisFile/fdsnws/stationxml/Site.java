@@ -77,7 +77,7 @@ public class Site {
     
     @Override
     public String toString() {
-        return getName()+" "+getDescription()+" "+getTown()+" "+getCounty()+" "+getRegion()+" "+getCountry();
+        return getDescription();
     }
 
     String name, description, town, county, region, country;
