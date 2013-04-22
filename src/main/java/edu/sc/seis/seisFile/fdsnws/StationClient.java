@@ -113,21 +113,18 @@ public class StationClient extends AbstractFDSNClient {
             }
         }
         if (result.contains(FDSNStationQueryParams.STATION)) {
-            queryParams.appendToStation(result.getString(FDSNStationQueryParams.STATION));
             String[] vals = result.getStringArray(FDSNStationQueryParams.STATION);
             for (int i = 0; i < vals.length; i++) {
                 queryParams.appendToStation(vals[i]);
             }
         }
         if (result.contains(FDSNStationQueryParams.LOCATION)) {
-            queryParams.appendToLocation(result.getString(FDSNStationQueryParams.LOCATION));
             String[] vals = result.getStringArray(FDSNStationQueryParams.LOCATION);
             for (int i = 0; i < vals.length; i++) {
                 queryParams.appendToLocation(vals[i]);
             }
         }
         if (result.contains(FDSNStationQueryParams.CHANNEL)) {
-            queryParams.appendToChannel(result.getString(FDSNStationQueryParams.CHANNEL));
             String[] vals = result.getStringArray(FDSNStationQueryParams.CHANNEL);
             for (int i = 0; i < vals.length; i++) {
                 queryParams.appendToChannel(vals[i]);
