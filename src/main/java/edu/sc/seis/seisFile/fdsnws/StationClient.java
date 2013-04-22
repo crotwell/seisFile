@@ -191,7 +191,7 @@ public class StationClient extends AbstractFDSNClient {
             StationIterator sIt = n.getStations();
             while(sIt.hasNext()) {
                 Station s = sIt.next();
-                System.out.println(n.getCode()+"."+s.getCode()+" "+s.getLatitude() + "/" + s.getLongitude() + " " + s.getName() + " "
+                System.out.println(n.getCode()+"."+s.getCode()+" "+s.getLatitude() + "/" + s.getLongitude() + " " 
                         + s.getSite() + " " + s.getStartDate());
                 List<Channel> chanList= s.getChannelList();
                 for (Channel channel : chanList) {
