@@ -3,8 +3,11 @@ package edu.sc.seis.seisFile.fdsnws;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 
 public class AbstractQueryParams {
@@ -55,7 +58,10 @@ public class AbstractQueryParams {
         if (newQuery.length() != 0) {
             newQuery.append("&");
         }
-        for (String key : params.keySet()) {
+        List<String> keyList = new ArrayList<String>();
+        keyList.addAll(params.keySet());
+        Collections.sort(keyList);
+        for (String key : keyList) {
             newQuery.append(key).append("=").append(params.get(key)).append("&");
         }
         newQuery.deleteCharAt(newQuery.length() - 1); // zap last &
@@ -73,4 +79,8 @@ public class AbstractQueryParams {
     URI baseURI;
 
     HashMap<String, String> params = new HashMap<String, String>();
+
+    public String getParam(String key) {
+        return params.get(key);
+    }
 }
