@@ -21,12 +21,6 @@ import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.client.BoxAreaParser;
 import edu.sc.seis.seisFile.client.DonutParser;
 import edu.sc.seis.seisFile.client.ISOTimeParser;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
-import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Magnitude;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
@@ -145,6 +139,9 @@ public class StationClient extends AbstractFDSNClient {
             queryParams.setIncludeRestricted(true);
         }
         try {
+            if (result.contains(BASEURL)) {
+                queryParams.setBaseURI(new URI(result.getString(BASEURL)));
+            }
             if (getResult().getBoolean(PRINTURL)) {
                 System.out.println(queryParams.formURI());
                 return;
