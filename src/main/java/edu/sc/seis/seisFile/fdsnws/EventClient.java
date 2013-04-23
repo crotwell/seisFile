@@ -118,6 +118,9 @@ public class EventClient extends AbstractFDSNClient {
             queryParams.setContributor(result.getString(CONTRIBUTORS));
         }
         try {
+            if (result.contains(BASEURL)) {
+                queryParams.setBaseURI(new URI(result.getString(BASEURL)));
+            }
             if (getResult().getBoolean(PRINTURL)) {
                 System.out.println(queryParams.formURI());
                 return;

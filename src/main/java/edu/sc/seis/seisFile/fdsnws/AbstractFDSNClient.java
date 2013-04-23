@@ -13,6 +13,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
+import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.Switch;
@@ -28,6 +29,7 @@ public class AbstractFDSNClient extends AbstractClient {
     protected void addParams() throws JSAPException {
         super.addParams();
         add(new Switch(PRINTURL, JSAP.NO_SHORTFLAG, PRINTURL, "Construct and print URL and exit"));
+        add(new FlaggedOption(BASEURL, JSAP.STRING_PARSER, null, false, JSAP.NO_SHORTFLAG, BASEURL, "Base URL for queries, ie everything before the '?'"));
     }
 
     void connect(URI uri) throws MalformedURLException, IOException {
@@ -91,6 +93,8 @@ public class AbstractFDSNClient extends AbstractClient {
 
     private URI connectionUri;
 
+    public static final String BASEURL = "baseurl";
+    
     public static final String PRINTURL = "printurl";
 
     public static final String BEGIN = "begin";
