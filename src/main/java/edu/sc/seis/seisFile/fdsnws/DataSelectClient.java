@@ -49,6 +49,14 @@ public class DataSelectClient extends AbstractFDSNClient {
     public void run() {
         FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
         JSAPResult result = getResult();
+        if (shouldPrintHelp()) {
+            System.out.println(jsap.getHelp());
+            return;
+        }
+        if (shouldPrintVersion()) {
+            System.out.println(BuildVersion.getVersion());
+            return;
+        }
         if (!isSuccess()) {
             for (Iterator errs = result.getErrorMessageIterator(); errs.hasNext();) {
                 System.err.println("Error: " + errs.next());
@@ -58,14 +66,6 @@ public class DataSelectClient extends AbstractFDSNClient {
             System.err.println("                " + jsap.getUsage());
             System.err.println();
             System.err.println(jsap.getHelp());
-            return;
-        }
-        if (shouldPrintHelp()) {
-            System.out.println(jsap.getHelp());
-            return;
-        }
-        if (shouldPrintVersion()) {
-            System.out.println(BuildVersion.getVersion());
             return;
         }
         if (result.contains(BEGIN)) {

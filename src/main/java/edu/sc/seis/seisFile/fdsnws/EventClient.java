@@ -59,6 +59,14 @@ public class EventClient extends AbstractFDSNClient {
     public void run() {
         FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
         JSAPResult result = getResult();
+        if (shouldPrintHelp()) {
+            System.out.println(jsap.getHelp());
+            return;
+        }
+        if (shouldPrintVersion()) {
+            System.out.println(BuildVersion.getVersion());
+            return;
+        }
         if (!isSuccess()) {
             for (Iterator errs = result.getErrorMessageIterator(); errs.hasNext();) {
                 System.err.println("Error: " + errs.next());
@@ -68,14 +76,6 @@ public class EventClient extends AbstractFDSNClient {
             System.err.println("                " + jsap.getUsage());
             System.err.println();
             System.err.println(jsap.getHelp());
-            return;
-        }
-        if (shouldPrintHelp()) {
-            System.out.println(jsap.getHelp());
-            return;
-        }
-        if (shouldPrintVersion()) {
-            System.out.println(BuildVersion.getVersion());
             return;
         }
         if (result.contains(BoxAreaParser.NAME)) {
