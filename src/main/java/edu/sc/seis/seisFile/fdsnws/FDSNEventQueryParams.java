@@ -422,7 +422,7 @@ public class FDSNEventQueryParams extends AbstractQueryParams {
 
 
     public FDSNEventQueryParams setBaseURI(URI baseURI)  {
-        this.baseURI = baseURI;
+        internalSetBaseURI(baseURI);
         return this;
     }
 

@@ -54,7 +54,7 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
     ${extra}
 
     public FDSN${service}QueryParams setBaseURI(URI baseURI)  {
-        this.baseURI = baseURI;
+        internalSetBaseURI(baseURI);
         return this;
     }
 
