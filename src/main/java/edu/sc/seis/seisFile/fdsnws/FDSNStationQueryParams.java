@@ -372,6 +372,11 @@ public class FDSNStationQueryParams extends AbstractQueryParams {
     public static final String LEVEL_RESPONSE = "response";
 
 
+    public FDSNStationQueryParams setBaseURI(URI baseURI)  {
+        this.baseURI = baseURI;
+        return this;
+    }
+
     public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/station/1/query?";
     
     public static final URI IRIS_BASE_URI;

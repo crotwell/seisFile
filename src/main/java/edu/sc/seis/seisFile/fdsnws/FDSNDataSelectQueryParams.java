@@ -155,6 +155,11 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams {
 
     
 
+    public FDSNDataSelectQueryParams setBaseURI(URI baseURI)  {
+        this.baseURI = baseURI;
+        return this;
+    }
+
     public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/dataselect/1/query?";
     
     public static final URI IRIS_BASE_URI;

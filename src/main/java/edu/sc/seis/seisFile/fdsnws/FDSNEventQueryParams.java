@@ -421,6 +421,11 @@ public class FDSNEventQueryParams extends AbstractQueryParams {
     public static final String ORDER_MAGNITUDE_ASC = "magnitude-asc";
 
 
+    public FDSNEventQueryParams setBaseURI(URI baseURI)  {
+        this.baseURI = baseURI;
+        return this;
+    }
+
     public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/event/1/query?";
     
     public static final URI IRIS_BASE_URI;
