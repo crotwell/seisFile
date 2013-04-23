@@ -54,7 +54,11 @@ public class AbstractQueryParams {
     }
 
     public URI formURI() throws URISyntaxException {
-        StringBuilder newQuery = new StringBuilder(baseURI.getQuery());
+        String baseQuery = getBaseURI().getQuery();
+        if (baseQuery == null) {
+            baseQuery = "";
+        }
+        StringBuilder newQuery = new StringBuilder(baseQuery);
         if (newQuery.length() != 0) {
             newQuery.append("&");
         }
@@ -79,6 +83,16 @@ public class AbstractQueryParams {
     URI baseURI;
 
     HashMap<String, String> params = new HashMap<String, String>();
+    
+    public URI getBaseURI() {
+        return baseURI;
+    }
+    
+    protected void internalSetBaseURI(URI baseURI) {
+        this.baseURI = baseURI;
+        this.baseURL = baseURI.toString();
+        System.out.println("set BaseURI: "+this.baseURI.toString());
+    }
 
     public String getParam(String key) {
         return params.get(key);
