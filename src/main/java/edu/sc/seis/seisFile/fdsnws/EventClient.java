@@ -13,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 
+import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.client.BoxAreaParser;
 import edu.sc.seis.seisFile.client.DonutParser;
@@ -71,6 +72,10 @@ public class EventClient extends AbstractFDSNClient {
         }
         if (shouldPrintHelp()) {
             System.out.println(jsap.getHelp());
+            return;
+        }
+        if (shouldPrintVersion()) {
+            System.out.println(BuildVersion.getVersion());
             return;
         }
         if (result.contains(BoxAreaParser.NAME)) {
