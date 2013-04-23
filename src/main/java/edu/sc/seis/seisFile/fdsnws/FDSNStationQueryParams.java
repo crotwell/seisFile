@@ -373,7 +373,7 @@ public class FDSNStationQueryParams extends AbstractQueryParams {
 
 
     public FDSNStationQueryParams setBaseURI(URI baseURI)  {
-        this.baseURI = baseURI;
+        internalSetBaseURI(baseURI);
         return this;
     }
 

@@ -156,7 +156,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams {
     
 
     public FDSNDataSelectQueryParams setBaseURI(URI baseURI)  {
-        this.baseURI = baseURI;
+        internalSetBaseURI(baseURI);
         return this;
     }
 
