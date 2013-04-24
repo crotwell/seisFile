@@ -58,7 +58,7 @@ public class FDSNDataSelect {
     
     public void runPost() {
         try {
-            // A simple one channel request using GET
+            // A simple request using POST
             FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
