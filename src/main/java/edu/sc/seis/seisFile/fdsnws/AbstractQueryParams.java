@@ -40,8 +40,7 @@ public class AbstractQueryParams {
     }
     
     protected void setParam(String key, Date value) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat sdf = createDateFormat();
         setParam(key, sdf.format(value));
     }
     
@@ -51,6 +50,12 @@ public class AbstractQueryParams {
     
     public void clear() {
         params.clear();
+    }
+    
+    public static SimpleDateFormat createDateFormat() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return sdf;
     }
 
     public URI formURI() throws URISyntaxException {
@@ -68,7 +73,9 @@ public class AbstractQueryParams {
         for (String key : keyList) {
             newQuery.append(key).append("=").append(params.get(key)).append("&");
         }
-        newQuery.deleteCharAt(newQuery.length() - 1); // zap last &
+        if (newQuery.length() > 1) {
+            newQuery.deleteCharAt(newQuery.length() - 1); // zap last &
+        }
         return new URI(baseURI.getScheme(),
                        baseURI.getUserInfo(),
                        baseURI.getHost(),
