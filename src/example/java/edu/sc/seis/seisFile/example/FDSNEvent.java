@@ -1,17 +1,9 @@
 package edu.sc.seis.seisFile.example;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-
-import edu.sc.seis.seisFile.fdsnws.AbstractFDSNClient;
+import edu.sc.seis.seisFile.fdsnws.FDSNEventQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
 import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
@@ -33,31 +25,20 @@ public class FDSNEvent {
                     .setMaxDepth(100)
                     .setMinMagnitude(1)
                     .setOrderBy(FDSNEventQueryParams.ORDER_TIME_ASC);
-            URL url = queryParams.formURI().toURL();
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            if (conn.getResponseCode() == 204) {
-                System.out.println("No Data");
-            } else if (conn.getResponseCode() == 200) {
-                XMLInputFactory factory = XMLInputFactory.newInstance();
-                XMLEventReader r = factory.createXMLEventReader(url.toString(), conn.getInputStream());
-                Quakeml quakeml = new Quakeml(r);
-                if (!quakeml.checkSchemaVersion()) {
-                    System.out.println("");
-                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-                    System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
-                    System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
-                }
-                EventIterator eIt = quakeml.getEventParameters().getEvents();
-                while (eIt.hasNext()) {
-                    Event e = eIt.next();
-                    Origin o = e.getOriginList().get(0);
-                    Magnitude m = e.getMagnitudeList().get(0);
-                    System.out.println(o.getLatitude()+"/"+o.getLongitude()+" "+m.getMag().getValue()+" "+m.getType()+" "+o.getTime().getValue());
-                }
-            } else {
-                System.err.println("oops, error Response Code :" + conn.getResponseCode());
-                System.err.println("Error in connection with url: " + url);
-                System.err.println(AbstractFDSNClient.extractErrorMessage(conn));
+            FDSNEventQuerier querier = new FDSNEventQuerier(queryParams); 
+            Quakeml quakeml = querier.getQuakeML();
+            if (!quakeml.checkSchemaVersion()) {
+                System.out.println("");
+                System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
+                System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
+                System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
+            }
+            EventIterator eIt = quakeml.getEventParameters().getEvents();
+            while (eIt.hasNext()) {
+                Event e = eIt.next();
+                Origin o = e.getOriginList().get(0);
+                Magnitude m = e.getMagnitudeList().get(0);
+                System.out.println(o.getLatitude()+"/"+o.getLongitude()+" "+m.getMag().getValue()+" "+m.getType()+" "+o.getTime().getValue());
             }
         } catch(Exception e) {
             System.err.println("Oops: " + e.getMessage());
@@ -68,7 +49,6 @@ public class FDSNEvent {
      * @param args
      */
     public static void main(String[] args) {
-        FDSNEvent ee = new FDSNEvent();
-        ee.run();
+        new FDSNEvent().run();
     }
 }

@@ -1,9 +1,7 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,7 +33,7 @@ public class EventClient extends AbstractFDSNClient {
     private static final String CATALOGS = "catalogs";
 
     private static final String MAGNITUDE = "magnitude";
-    
+
     private static final String TYPES = "types";
 
     @Override
@@ -57,7 +55,6 @@ public class EventClient extends AbstractFDSNClient {
     }
 
     public void run() {
-        FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
         JSAPResult result = getResult();
         if (shouldPrintHelp()) {
             System.out.println(jsap.getHelp());
@@ -78,6 +75,31 @@ public class EventClient extends AbstractFDSNClient {
             System.err.println(jsap.getHelp());
             return;
         }
+        FDSNEventQueryParams queryParams;
+        try {
+            queryParams = configureQuery(result);
+            if (getResult().getBoolean(PRINTURL)) {
+                System.out.println(queryParams.formURI());
+                return;
+            } else {
+                FDSNEventQuerier querier = new FDSNEventQuerier(queryParams);
+                Quakeml quakeml = querier.getQuakeML();
+                if (!quakeml.checkSchemaVersion()) {
+                    System.out.println("");
+                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
+                    System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
+                    System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
+                }
+                handleResults(quakeml);
+            }
+        } catch(Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    FDSNEventQueryParams configureQuery(JSAPResult result) throws URISyntaxException {
+        FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
         if (result.contains(BoxAreaParser.NAME)) {
             HashMap<String, String> box = (HashMap<String, String>)result.getObject(BoxAreaParser.NAME);
             queryParams.area(Float.parseFloat(box.get("west")),
@@ -88,9 +110,9 @@ public class EventClient extends AbstractFDSNClient {
         if (result.contains(DonutParser.NAME)) {
             HashMap<String, String> donut = (HashMap<String, String>)result.getObject(DonutParser.NAME);
             queryParams.donut(Float.parseFloat(donut.get("lat")),
-                             Float.parseFloat(donut.get("lon")),
-                             Float.parseFloat(donut.get("min")),
-                             Float.parseFloat(donut.get("max")));
+                              Float.parseFloat(donut.get("lon")),
+                              Float.parseFloat(donut.get("min")),
+                              Float.parseFloat(donut.get("max")));
         }
         if (result.contains(BEGIN)) {
             queryParams.setStartTime((Date)result.getObject(BEGIN));
@@ -108,7 +130,7 @@ public class EventClient extends AbstractFDSNClient {
             queryParams.setMinMagnitude(Float.parseFloat(magRange.get("min")))
                     .setMaxMagnitude(Float.parseFloat(magRange.get("max")));
             if (result.contains(TYPES)) {
-                queryParams.setMagnitudeType(result.getString(TYPES));                
+                queryParams.setMagnitudeType(result.getString(TYPES));
             }
         }
         if (result.contains(CATALOGS)) {
@@ -117,50 +139,12 @@ public class EventClient extends AbstractFDSNClient {
         if (result.contains(CONTRIBUTORS)) {
             queryParams.setContributor(result.getString(CONTRIBUTORS));
         }
-        try {
-            if (result.contains(BASEURL)) {
-                queryParams.setBaseURI(new URI(result.getString(BASEURL)));
-            }
-            if (getResult().getBoolean(PRINTURL)) {
-                System.out.println(queryParams.formURI());
-                return;
-            }
-            process(queryParams.formURI());
-        } catch(IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(XMLStreamException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(SeisFileException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (result.contains(BASEURL)) {
+            queryParams.setBaseURI(new URI(result.getString(BASEURL)));
         }
+        return queryParams;
     }
 
-    public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
-        URL url = uri.toURL();
-        connect(uri);
-        if (! isError()) {
-            if (! isEmpty()) {
-                Quakeml quakeml = new Quakeml(getReader());
-                if (!quakeml.checkSchemaVersion()) {
-                    System.out.println("");
-                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-                    System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
-                    System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
-                }
-                handleResults(quakeml);
-            } else {
-                System.out.println("No Data");
-            }
-        } else {
-            System.err.println("Error: "+getErrorMessage());
-        }
-    }
 
     public void handleResults(Quakeml quakeml) throws XMLStreamException, SeisFileException {
         EventIterator eIt = quakeml.getEventParameters().getEvents();
@@ -178,8 +162,6 @@ public class EventClient extends AbstractFDSNClient {
      * @throws JSAPException
      */
     public static void main(String[] args) throws JSAPException {
-        EventClient ev = new EventClient(args);
-        ev.run();
+        new EventClient(args).run();
     }
-
 }
