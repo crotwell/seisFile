@@ -1,9 +1,5 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.URL;
 
 import javax.xml.stream.XMLEventReader;
@@ -14,7 +10,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
 
 public class Quakeml {
 
