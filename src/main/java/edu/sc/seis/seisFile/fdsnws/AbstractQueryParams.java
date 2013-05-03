@@ -98,7 +98,6 @@ public class AbstractQueryParams {
     protected void internalSetBaseURI(URI baseURI) {
         this.baseURI = baseURI;
         this.baseURL = baseURI.toString();
-        System.out.println("set BaseURI: "+this.baseURI.toString());
     }
 
     public String getParam(String key) {
