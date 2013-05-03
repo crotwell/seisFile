@@ -1,9 +1,7 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,12 +27,10 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationIterator;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
-
 public class StationClient extends AbstractFDSNClient {
 
     public StationClient(String[] args) throws JSAPException {
         super(args);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -45,23 +41,47 @@ public class StationClient extends AbstractFDSNClient {
         add(ISOTimeParser.createParam(BEGIN, "The earliest time for acceptance", false));
         add(ISOTimeParser.createParam(END, "The latest time for acceptance", true));
         /*
-        add(ISOTimeParser.createYesterdayParam(FDSNStationQueryParams.STARTBEFORE, "The level must have started by this time", false));
-        add(ISOTimeParser.createParam(FDSNStationQueryParams.ENDBEFORE, "now", "The level must have ended by this time", true));
-        add(ISOTimeParser.createYesterdayParam(FDSNStationQueryParams.STARTAFTER, "The level must have started after this time", false));
-        add(ISOTimeParser.createParam(FDSNStationQueryParams.ENDAFTER, "now", "The level must have ended after this time", true));
-*/
-        add(createListOption(FDSNStationQueryParams.NETWORK, 'n', FDSNStationQueryParams.NETWORK, "A comma separated list of networks to search"));
-        add(createListOption(FDSNStationQueryParams.STATION, 's', FDSNStationQueryParams.STATION, "A comma separated list of stations to search"));
-        add(createListOption(FDSNStationQueryParams.LOCATION, 'l', FDSNStationQueryParams.LOCATION, "A comma separated list of locations to search"));
-        add(createListOption(FDSNStationQueryParams.CHANNEL, 'c', FDSNStationQueryParams.CHANNEL, "A comma separated list of channels to search"));
+         * add(ISOTimeParser.createYesterdayParam(FDSNStationQueryParams.STARTBEFORE
+         * , "The level must have started by this time", false));
+         * add(ISOTimeParser.createParam(FDSNStationQueryParams.ENDBEFORE,
+         * "now", "The level must have ended by this time", true));
+         * add(ISOTimeParser
+         * .createYesterdayParam(FDSNStationQueryParams.STARTAFTER,
+         * "The level must have started after this time", false));
+         * add(ISOTimeParser.createParam(FDSNStationQueryParams.ENDAFTER, "now",
+         * "The level must have ended after this time", true));
+         */
+        add(createListOption(FDSNStationQueryParams.NETWORK,
+                             'n',
+                             FDSNStationQueryParams.NETWORK,
+                             "A comma separated list of networks to search"));
+        add(createListOption(FDSNStationQueryParams.STATION,
+                             's',
+                             FDSNStationQueryParams.STATION,
+                             "A comma separated list of stations to search"));
+        add(createListOption(FDSNStationQueryParams.LOCATION,
+                             'l',
+                             FDSNStationQueryParams.LOCATION,
+                             "A comma separated list of locations to search"));
+        add(createListOption(FDSNStationQueryParams.CHANNEL,
+                             'c',
+                             FDSNStationQueryParams.CHANNEL,
+                             "A comma separated list of channels to search"));
         add(LevelParser.createFlaggedOption());
-        add(new Switch(FDSNStationQueryParams.INCLUDEAVAILABILITY, JSAP.NO_SHORTFLAG, "availability" , "include information about time series data availability"));
-        add(new Switch(FDSNStationQueryParams.INCLUDERESTRICTED, JSAP.NO_SHORTFLAG, "restricted" , "include information for restricted stations"));
-        add(ISOTimeParser.createParam(FDSNStationQueryParams.UPDATEDAFTER, "Only results that have changed since the date are accepted", false));
+        add(new Switch(FDSNStationQueryParams.INCLUDEAVAILABILITY,
+                       JSAP.NO_SHORTFLAG,
+                       "availability",
+                       "include information about time series data availability"));
+        add(new Switch(FDSNStationQueryParams.INCLUDERESTRICTED,
+                       JSAP.NO_SHORTFLAG,
+                       "restricted",
+                       "include information for restricted stations"));
+        add(ISOTimeParser.createParam(FDSNStationQueryParams.UPDATEDAFTER,
+                                      "Only results that have changed since the date are accepted",
+                                      false));
     }
 
     public void run() {
-        FDSNStationQueryParams queryParams = new FDSNStationQueryParams();
         JSAPResult result = getResult();
         if (shouldPrintHelp()) {
             System.out.println(jsap.getHelp());
@@ -82,6 +102,30 @@ public class StationClient extends AbstractFDSNClient {
             System.err.println(jsap.getHelp());
             return;
         }
+        try {
+            FDSNStationQueryParams queryParams = configureQuery(result);
+            if (getResult().getBoolean(PRINTURL)) {
+                System.out.println(queryParams.formURI());
+                return;
+            } else {
+                FDSNStationQuerier querier = new FDSNStationQuerier(queryParams);
+                FDSNStationXML stationXml = querier.getFDSNStationXML();
+                if (!stationXml.checkSchemaVersion()) {
+                    System.out.println("");
+                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
+                    System.out.println("XmlSchema (code): " + StationXMLTagNames.CURRENT_SCHEMA_VERSION);
+                    System.out.println("XmlSchema (doc): " + stationXml.getSchemaVersion());
+                }
+                handleResults(stationXml);
+            }
+        } catch(Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    FDSNStationQueryParams configureQuery(JSAPResult result) throws URISyntaxException {
+        FDSNStationQueryParams queryParams = new FDSNStationQueryParams();
         if (result.contains(BoxAreaParser.NAME)) {
             HashMap<String, String> box = (HashMap<String, String>)result.getObject(BoxAreaParser.NAME);
             queryParams.area(Float.parseFloat(box.get("west")),
@@ -92,9 +136,9 @@ public class StationClient extends AbstractFDSNClient {
         if (result.contains(DonutParser.NAME)) {
             HashMap<String, String> donut = (HashMap<String, String>)result.getObject(DonutParser.NAME);
             queryParams.donut(Float.parseFloat(donut.get("lat")),
-                             Float.parseFloat(donut.get("lon")),
-                             Float.parseFloat(donut.get("min")),
-                             Float.parseFloat(donut.get("max")));
+                              Float.parseFloat(donut.get("lon")),
+                              Float.parseFloat(donut.get("min")),
+                              Float.parseFloat(donut.get("max")));
         }
         if (result.contains(FDSNStationQueryParams.UPDATEDAFTER)) {
             queryParams.setUpdatedAfter((Date)result.getObject(FDSNStationQueryParams.UPDATEDAFTER));
@@ -138,49 +182,10 @@ public class StationClient extends AbstractFDSNClient {
         if (result.getBoolean(FDSNStationQueryParams.INCLUDERESTRICTED)) {
             queryParams.setIncludeRestricted(true);
         }
-        try {
-            if (result.contains(BASEURL)) {
-                queryParams.setBaseURI(new URI(result.getString(BASEURL)));
-            }
-            if (getResult().getBoolean(PRINTURL)) {
-                System.out.println(queryParams.formURI());
-                return;
-            }
-            process(queryParams.formURI());
-        } catch(IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(XMLStreamException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(SeisFileException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (result.contains(BASEURL)) {
+            queryParams.setBaseURI(new URI(result.getString(BASEURL)));
         }
-    }
-
-    public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
-        URL url = uri.toURL();
-        connect(uri);
-        if (! isError()) {
-            if (! isEmpty()) {
-                FDSNStationXML stationXml = new FDSNStationXML(getReader());
-                if (!stationXml.checkSchemaVersion()) {
-                    System.out.println("");
-                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-                    System.out.println("XmlSchema (code): " + StationXMLTagNames.CURRENT_SCHEMA_VERSION);
-                    System.out.println("XmlSchema (doc): " + stationXml.getSchemaVersion());
-                }
-                handleResults(stationXml);
-            } else {
-                System.out.println("No Data");
-            }
-        } else {
-            System.err.println("Error: "+getErrorMessage());
-        }
+        return queryParams;
     }
 
     public void handleResults(FDSNStationXML stationXml) throws XMLStreamException, SeisFileException {
@@ -188,13 +193,15 @@ public class StationClient extends AbstractFDSNClient {
         while (nIt.hasNext()) {
             Network n = nIt.next();
             StationIterator sIt = n.getStations();
-            while(sIt.hasNext()) {
+            while (sIt.hasNext()) {
                 Station s = sIt.next();
-                System.out.println(n.getCode()+"."+s.getCode()+" "+s.getLatitude() + "/" + s.getLongitude() + " " 
-                        + s.getSite() + " " + s.getStartDate());
-                List<Channel> chanList= s.getChannelList();
+                System.out.println(n.getCode() + "." + s.getCode() + " " + s.getLatitude() + "/" + s.getLongitude()
+                        + " " + s.getSite() + " " + s.getStartDate());
+                List<Channel> chanList = s.getChannelList();
                 for (Channel channel : chanList) {
-                    System.out.println("        "+channel.getLocCode()+"."+channel.getCode()+" "+channel.getAzimuth()+"/"+channel.getDip()+" "+channel.getDepth().getValue()+" "+channel.getDepth().getUnit()+" "+channel.getStartDate());
+                    System.out.println("        " + channel.getLocCode() + "." + channel.getCode() + " "
+                            + channel.getAzimuth() + "/" + channel.getDip() + " " + channel.getDepth().getValue() + " "
+                            + channel.getDepth().getUnit() + " " + channel.getStartDate());
                 }
             }
         }
@@ -205,7 +212,6 @@ public class StationClient extends AbstractFDSNClient {
      * @throws JSAPException
      */
     public static void main(String[] args) throws JSAPException {
-        StationClient sc = new StationClient(args);
-        sc.run();
+        new StationClient(args).run();
     }
 }

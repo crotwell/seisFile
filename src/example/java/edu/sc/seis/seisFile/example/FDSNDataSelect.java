@@ -1,30 +1,18 @@
 package edu.sc.seis.seisFile.example;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
-import edu.sc.seis.seisFile.fdsnws.AbstractFDSNClient;
+import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.DataRecordIterator;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 public class FDSNDataSelect {
 
@@ -32,10 +20,10 @@ public class FDSNDataSelect {
         runGet();
         runPost();
     }
-    
+
     public void runGet() {
         try {
-            // A simple one channel request using GET
+            // A simple one time window request using GET
             FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -46,16 +34,18 @@ public class FDSNDataSelect {
                     .appendToStation("JSC")
                     .appendToStation("CASEE")
                     .appendToChannel("HHZ");
-            URL url = queryParams.formURI().toURL();
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestProperty("User-Agent", BuildVersion.getName()+"-"+BuildVersion.getVersion());
-            handleOutput(conn);
+            FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams);
+            handleOutput(querier.getDataRecordIterator());
         } catch(Exception e) {
             System.err.println("Oops. " + e.getMessage());
             e.printStackTrace();
+            if (e.getCause() != null) {
+                System.err.println(e.getCause().getMessage());
+                e.getCause().printStackTrace();
+            }
         }
     }
-    
+
     public void runPost() {
         try {
             // A simple request using POST
@@ -72,40 +62,19 @@ public class FDSNDataSelect {
                     request.add(new ChannelTimeWindow("CO", staCodes[s], "00", chanCodes[c], start, durationSecs));
                 }
             }
-            String postQuery = queryParams.formPostString(request);
-            URL url = queryParams.formURI().toURL();
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("User-Agent", BuildVersion.getName()+"-"+BuildVersion.getVersion());
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            byte[] queryBytes = postQuery.getBytes();
-            conn.setRequestProperty("Content-Length", "" + 
-                    Integer.toString(queryBytes.length));
-            conn.setUseCaches(false);
-            conn.setAllowUserInteraction(false);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.connect();
-            OutputStream outputStream = conn.getOutputStream();
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(outputStream));
-            out.write(postQuery);
-            out.close();
-            outputStream.close();
-            queryBytes = null;
-            handleOutput(conn);
+            FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams, request);
+            handleOutput(querier.getDataRecordIterator());
         } catch(Exception e) {
             System.err.println("Oops. " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void handleOutput(HttpURLConnection conn) throws IOException, SeedFormatException {
-        if (conn.getResponseCode() == 204) {
+    public void handleOutput(DataRecordIterator drIt) throws IOException, SeedFormatException {
+        if (!drIt.hasNext()) {
             System.out.println("No Data");
-        } else if (conn.getResponseCode() == 200) {
+        } else {
             // success
-            DataInputStream in = new DataInputStream(new BufferedInputStream(conn.getInputStream()));
-            DataRecordIterator drIt = new DataRecordIterator(in);
             try {
                 while (drIt.hasNext()) {
                     DataRecord dr = drIt.next();
@@ -113,20 +82,12 @@ public class FDSNDataSelect {
                     System.out.println("Data Record: " + dr.getHeader());
                 }
             } finally {
-                in.close();
+                drIt.close();
             }
-        } else {
-            System.err.println("oops, error Response Code :" + conn.getResponseCode());
-            System.err.println("Error in connection with url: " + conn.getURL());
-            System.err.println(AbstractFDSNClient.extractErrorMessage(conn));
         }
     }
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
-        FDSNDataSelect ds = new FDSNDataSelect();
-        ds.run();
+        new FDSNDataSelect().run();
     }
 }
