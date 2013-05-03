@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 
@@ -41,6 +42,23 @@ public class DataRecordIterator {
             return out;
         }
         return null;
+    }
+    
+    public void close() {
+        if (in != null && in instanceof DataInputStream) {
+            try {
+                ((DataInputStream)in).close();
+            } catch(IOException e) {
+                // oh well...
+            }
+            in = null;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        close();
     }
 
     DataRecord nextDr;
