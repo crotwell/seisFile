@@ -39,10 +39,9 @@ public abstract class AbstractFDSNQuerier {
                 errorMessage = extractErrorMessage(conn);
                 return;
             }
-        } else {
-            // likely not an error in the http layer, so content is returned
-            inputStream = urlConn.getInputStream();
         }
+        // likely not an error in the http layer, so content is returned
+        inputStream = urlConn.getInputStream();
     }
 
     public boolean isError() {
