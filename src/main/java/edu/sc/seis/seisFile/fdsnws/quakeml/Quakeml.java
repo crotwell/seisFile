@@ -1,12 +1,20 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.URL;
+
 import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
 
 public class Quakeml {
 
@@ -50,5 +58,17 @@ public class Quakeml {
 
     public boolean checkSchemaVersion() {
         return QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION.equals(schemaVersion);
+    }
+
+    public static Quakeml createEmptyQuakeML() {
+        try {
+            URL url = Quakeml.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/empty.quakeml");
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            XMLEventReader r;
+            r = factory.createXMLEventReader(url.toString(), url.openStream());
+            return new Quakeml(r);
+        } catch(Exception e) {
+            throw new RuntimeException("Should not happen", e);
+        }
     }
 }

@@ -112,7 +112,9 @@ public class AbstractClient {
 
     protected String commandName;
     
-    protected String userAgent = "SeisFile-"+BuildVersion.getVersion();
+    protected String userAgent = DEFAULT_USER_AGENT;
+    
+    public static final String DEFAULT_USER_AGENT = "SeisFile-"+BuildVersion.getVersion();
 
     public AbstractClient(String[] args) throws JSAPException {
         this.args = args;

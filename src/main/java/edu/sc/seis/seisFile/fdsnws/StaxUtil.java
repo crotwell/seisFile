@@ -76,9 +76,9 @@ public class StaxUtil {
         if (cur.isStartElement() && reader.hasNext()) {
             count++;
             reader.nextEvent(); // pop this one
-            System.out.println("Warning: Skipping: "+cur.asStartElement().getName().getLocalPart()
-                               +" "+cur.getLocation().getLineNumber()+", "+cur.getLocation().getColumnNumber()
-                               +" in "+parent);
+            System.out.println("Warning: Skipping: '"+cur.asStartElement().getName().getLocalPart()
+                               +"' at line "+cur.getLocation().getLineNumber()+", "+cur.getLocation().getColumnNumber()
+                               +" in '"+parent+"'");
         }
         while (count > 0 && reader.hasNext()) {
             cur = reader.peek();

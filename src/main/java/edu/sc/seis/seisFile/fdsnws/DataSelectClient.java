@@ -1,15 +1,12 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -39,15 +36,32 @@ public class DataSelectClient extends AbstractFDSNClient {
         super.addParams();
         add(ISOTimeParser.createRequiredParam(BEGIN, "The start time", false));
         add(ISOTimeParser.createRequiredParam(END, "The end time", true));
-        add(createListOption(FDSNStationQueryParams.NETWORK, 'n', FDSNStationQueryParams.NETWORK, "A comma separated list of networks to search"));
-        add(createListOption(FDSNStationQueryParams.STATION, 's', FDSNStationQueryParams.STATION, "A comma separated list of stations to search"));
-        add(createListOption(FDSNStationQueryParams.LOCATION, 'l', FDSNStationQueryParams.LOCATION, "A comma separated list of locations to search"));
-        add(createListOption(FDSNStationQueryParams.CHANNEL, 'c', FDSNStationQueryParams.CHANNEL, "A comma separated list of channels to search"));
-        add(new FlaggedOption(OUTPUT, JSAP.STRING_PARSER, null, false, 'o', OUTPUT, "Filename for outputing DataRecords"));
+        add(createListOption(FDSNStationQueryParams.NETWORK,
+                             'n',
+                             FDSNStationQueryParams.NETWORK,
+                             "A comma separated list of networks to search"));
+        add(createListOption(FDSNStationQueryParams.STATION,
+                             's',
+                             FDSNStationQueryParams.STATION,
+                             "A comma separated list of stations to search"));
+        add(createListOption(FDSNStationQueryParams.LOCATION,
+                             'l',
+                             FDSNStationQueryParams.LOCATION,
+                             "A comma separated list of locations to search"));
+        add(createListOption(FDSNStationQueryParams.CHANNEL,
+                             'c',
+                             FDSNStationQueryParams.CHANNEL,
+                             "A comma separated list of channels to search"));
+        add(new FlaggedOption(OUTPUT,
+                              JSAP.STRING_PARSER,
+                              null,
+                              false,
+                              'o',
+                              OUTPUT,
+                              "Filename for outputing DataRecords"));
     }
 
     public void run() {
-        FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
         JSAPResult result = getResult();
         if (shouldPrintHelp()) {
             System.out.println(jsap.getHelp());
@@ -68,6 +82,29 @@ public class DataSelectClient extends AbstractFDSNClient {
             System.err.println(jsap.getHelp());
             return;
         }
+        FDSNDataSelectQueryParams queryParams;
+        try {
+            queryParams = configureQuery(result);
+            if (getResult().getBoolean(PRINTURL)) {
+                System.out.println(queryParams.formURI());
+                return;
+            } else {
+                FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams);
+                DataRecordIterator it = querier.getDataRecordIterator();
+                try {
+                    handleResults(it);
+                } finally {
+                    it.close();
+                }
+            }
+        } catch(Exception e) {
+            System.err.println("Error: "+e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public FDSNDataSelectQueryParams configureQuery(JSAPResult result) throws SeisFileException {
+        FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
         if (result.contains(BEGIN)) {
             queryParams.setStartTime((Date)result.getObject(BEGIN));
         }
@@ -98,70 +135,41 @@ public class DataSelectClient extends AbstractFDSNClient {
                 queryParams.appendToChannel(vals[i]);
             }
         }
-        try {
-            if (result.contains(BASEURL)) {
+        if (result.contains(BASEURL)) {
+            try {
                 queryParams.setBaseURI(new URI(result.getString(BASEURL)));
+            } catch(URISyntaxException e) {
+                throw new SeisFileException("unable to parse base URI: " + result.getString(BASEURL), e);
             }
-            if (getResult().getBoolean(PRINTURL)) {
-                System.out.println(queryParams.formURI());
-                return;
-            }
+        }
+        return queryParams;
+    }
+
+    public void handleResults(DataRecordIterator drIter) throws IOException, SeedFormatException {
+        if (!drIter.hasNext()) {
+            System.out.println("No Data (empty iterator)");
+        }
+        DataOutputStream out = null;
+        try {
             if (result.contains(OUTPUT)) {
                 out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(new File(result.getString(OUTPUT)))));
             }
-            process(queryParams.formURI());
-        } catch(IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(XMLStreamException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(SeisFileException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    public void process(URI uri) throws IOException, XMLStreamException, SeisFileException {
-        URL url = uri.toURL();
-        connect(uri);
-        if (!isError()) {
-            if (!isEmpty()) {
-                BufferedInputStream bif = new BufferedInputStream(getInputStream());
-                final DataInputStream in = new DataInputStream(bif);
-                try {
-                    handleResults(new DataRecordIterator(in));
-                } finally {
-                    in.close();
+            while (drIter.hasNext()) {
+                DataRecord dr = drIter.next();
+                if (out != null) {
+                    dr.write(out);
+                } else {
+                    DataHeader dh = dr.getHeader();
+                    System.out.println(dh);
                 }
-            } else {
-                System.out.println("No Data");
             }
-        } else {
-            System.err.println("Error: " + getErrorMessage());
-        }
-    }
-
-    public void handleResults(DataRecordIterator drIter) throws  IOException, SeedFormatException {
-        if (! drIter.hasNext()) {
-            System.out.println("No Data (empty iterator)");
-        }
-        while (drIter.hasNext()) {
-            DataRecord dr = drIter.next();
+        } finally {
             if (out != null) {
-                dr.write(out);
-            } else {
-                DataHeader dh = dr.getHeader();
-                System.out.println(dh);
+                out.close();
             }
         }
     }
 
-    private DataOutputStream out;
-    
     private static final String OUTPUT = "output";
 
     /**
@@ -169,7 +177,6 @@ public class DataSelectClient extends AbstractFDSNClient {
      * @throws JSAPException
      */
     public static void main(String[] args) throws JSAPException {
-        DataSelectClient ds = new DataSelectClient(args);
-        ds.run();
+        new DataSelectClient(args).run();
     }
 }

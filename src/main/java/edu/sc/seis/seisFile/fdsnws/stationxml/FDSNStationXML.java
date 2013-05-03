@@ -1,13 +1,17 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.net.URL;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
 import edu.sc.seis.seisFile.fdsnws.stationxml.NetworkIterator;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
@@ -168,4 +172,16 @@ public class FDSNStationXML {
     NetworkIterator networks;
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FDSNStationXML.class);
+
+    public static FDSNStationXML createEmpty() {
+        try {
+            URL url = FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/empty.quakeml");
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            XMLEventReader r;
+            r = factory.createXMLEventReader(url.toString(), url.openStream());
+            return new FDSNStationXML(r);
+        } catch(Exception e) {
+            throw new RuntimeException("Should not happen", e);
+        }
+    }
 }
