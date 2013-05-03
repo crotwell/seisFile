@@ -18,6 +18,7 @@ public class GCFBlockTest {
     public void testGetSize() {
         boolean isSerial = true;
         int[] data = new int[200];
+        data[0] = Short.MAX_VALUE+1;
         GCFBlock mock = GCFBlock.mockGCF(new Date(), data, isSerial);
         assertEquals("serial size", GCFHeader.SIZE+(isSerial?3:4)*data.length + 8, mock.getSize());
         isSerial = false;
@@ -28,23 +29,50 @@ public class GCFBlockTest {
 
     @Test
     public void testRoundTrip() throws Exception {
-        boolean isSerial = true;
         int[] data = new int[200];
+        data[0] = 1;
         for (int i = 0; i < data.length; i++) {
             data[i] = i % 20;
             if (i % 20 > 10 ) {data[i] *= -1;}
-            data[i] *= 10000;
         }
+        testRoundTrip(data);
+        for (int i = 0; i < data.length; i++) {
+            data[i] *= 128;
+        }
+        testRoundTrip(data);
+        for (int i = 0; i < data.length; i++) {
+            data[i] *= 128;
+        }
+    }
+
+    public void testRoundTrip(int[] data) throws Exception {
+        boolean isSerial = true;
         GCFBlock block = GCFBlock.mockGCF(new Date(), data, isSerial);
+        assertArrayEquals(data, block.getUndiffData());
+        
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(bout);
         block.write(out);
         out.close();
         byte[] stlBytes = bout.toByteArray();
-        assertEquals("GCFBlock size", GCFHeader.SIZE+(isSerial?3:4)*data.length+2*4, block.getSize());
-        int expectedSize = GCFHeader.SIZE+(isSerial?3:4)*data.length+2*4;
-        assertEquals("saved bytes "+GCFHeader.SIZE+" "+(isSerial?3:4)*data.length+" "+2*4+" ", expectedSize, stlBytes.length);
-        GCFBlock outBlock = (GCFBlock)AbstractGCFBlock.read(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(stlBytes))), isSerial);
-        assertEquals(block, outBlock);
+        int dataSize = data.length;
+        if (block.getHeader().getCompression() == 1 && block.isSerial) {
+            dataSize = data.length * 3;
+        } else {
+            dataSize = data.length * 4 / block.getHeader().getCompression();
+        }
+        assertEquals("GCFBlock size", GCFHeader.SIZE+dataSize+2*4, block.getSize());
+        int expectedSize = GCFHeader.SIZE+dataSize+2*4;
+        assertEquals("saved bytes c="+block.getHeader().getCompression()+" "+GCFHeader.SIZE+" "+dataSize+" "+2*4+" ", expectedSize, stlBytes.length);
+        GCFBlock outBlock = (GCFBlock)AbstractGCFBlock.read(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(stlBytes))),
+                                                            isSerial);
+        GCFHeaderTest.checkEquals(block.getHeader(), outBlock.getHeader());
+        assertEquals("size", block.getSize(), outBlock.getSize());
+        assertEquals("first", block.getFirstSample(), outBlock.getFirstSample());
+        assertEquals("last", block.getLastSample(), outBlock.getLastSample());
+        assertArrayEquals(block.getUndiffData(), outBlock.getUndiffData());
+        assertArrayEquals(block.getDiffData(), outBlock.getDiffData());
+        
+        assertTrue(block.equals(outBlock));
     }
 }

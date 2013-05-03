@@ -59,34 +59,54 @@ public class GCFBlock extends AbstractGCFBlock {
             out.write(0);
             out.writeShort(0);
             for (int i = 1; i < diffData.length; i++) {
-                diff = diffData[i] - diffData[i - 1];
-                out.write((diff & 0xff0000) >> 16);
-                out.writeShort((short)(diff & 0xffff));
+                out.write((diffData[i] & 0xff0000) >> 16);
+                out.writeShort((short)(diffData[i] & 0xffff));
             }
         } else if (header.getCompression() == 1 && !isSerial) {
             out.writeInt(0);
             for (int i = 1; i < diffData.length; i++) {
-                diff = diffData[i] - diffData[i - 1];
-                out.writeInt(diff);
+                out.writeInt(diffData[i]);
             }
         } else if (header.getCompression() == 2) {
+            out.writeShort(0);
             for (int i = 1; i < diffData.length; i++) {
-                diff = diffData[i] - diffData[i - 1];
-                out.writeShort((short)(diff & 0xffff));
+                out.writeShort((short)(diffData[i] & 0xffff));
             }
         } else if (header.getCompression() == 4) {
+            out.write(0);
             for (int i = 1; i < diffData.length; i++) {
-                diff = diffData[i] - diffData[i - 1];
-                out.write((byte)diff);
+                out.write((byte)diffData[i]);
             }
         }
         out.writeInt(lastSample);
     }
 
+    /** creates a mock GCFBlock. Note the data is not differenced, that is taken care of 
+     * internal to this method.
+     * @param startTime
+     * @param data raw samples.
+     * @param isSerial
+     * @return
+     */
     public static GCFBlock mockGCF(Date startTime, int[] data, boolean isSerial) {
         int[] daySec = Convert.convertTime(startTime);
-        GCFHeader h = new GCFHeader(MOCK_SYSID, MOCK_STREAMID, daySec[0], daySec[1], 100, 1, data.length);
-        GCFBlock block = new GCFBlock(h, data, data[0], data[data.length - 1], isSerial);
+        int max = 0;
+        for (int i = 0; i < data.length; i++) {
+            max = Math.max(max, Math.abs(data[i]));
+        }
+        int compression = 1;
+        if (max < 128) {
+            compression = 4;
+        } else if (max < Short.MAX_VALUE) {
+            compression = 2;
+        }
+        GCFHeader h = new GCFHeader(MOCK_SYSID, MOCK_STREAMID, daySec[0], daySec[1], 100, compression, data.length/compression);
+        int[] diff = new int[data.length];
+        diff[0] = 0; // first diff always zero
+        for (int i = 1; i < diff.length; i++) {
+            diff[i] = data[i] - data[i-1];
+        }
+        GCFBlock block = new GCFBlock(h, diff, data[0], data[data.length - 1], isSerial);
         return block;
     }
 
