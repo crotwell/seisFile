@@ -33,11 +33,7 @@ public class ConvertTest {
                 data[i] *= -1;
             }
         }
-        int[] diffData = new int[data.length];
-        for (int i = 1; i < data.length; i++) {
-            diffData[i] = data[i]-data[i-1];
-        }
-        GCFBlock mock = GCFBlock.mockGCF(Convert.convertTime(0,  0).getTime(), diffData, isSerial);
+        GCFBlock mock = GCFBlock.mockGCF(Convert.convertTime(0,  0).getTime(), data, isSerial);
         Map<String, String[]> sysId_StreamIdToSCNL = new HashMap<String, String[]>();
         sysId_StreamIdToSCNL.put(GCFBlock.MOCK_SYSID+"_"+GCFBlock.MOCK_STREAMID, new String[] {"TEST", "ENZ", "XX", "00"});  
         

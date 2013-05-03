@@ -2,9 +2,7 @@ package edu.sc.seis.seisFile.gcf;
 
 import java.io.DataInput;
 import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import edu.iris.dmc.seedcodec.Utility;
 
