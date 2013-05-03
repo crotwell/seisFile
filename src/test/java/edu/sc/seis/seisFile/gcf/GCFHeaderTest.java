@@ -53,13 +53,16 @@ public class GCFHeaderTest {
         */
         assertEquals("saved bytes ", GCFHeader.SIZE, stlBytes.length);
         GCFHeader outHeader = GCFHeader.read(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(stlBytes))));
-        assertEquals("systemid equals", block.getHeader().getSystemId(), outHeader.getSystemId());
-        assertEquals("streamid equals", block.getHeader().getStreamId(), outHeader.getStreamId());
-        assertEquals("day number equals", block.getHeader().getDayNumber(), outHeader.getDayNumber());
-        assertEquals("seconds equals", block.getHeader().getSecondsInDay(), outHeader.getSecondsInDay());
-        assertEquals("compression equals", block.getHeader().getCompression(), outHeader.getCompression());
-        assertEquals("sps equals", block.getHeader().getSps(), outHeader.getSps());
-        assertEquals("num32 equals", block.getHeader().getNum32Records(), outHeader.getNum32Records());
-        assertEquals("header equals", block.getHeader(), outHeader);
+        checkEquals(block.getHeader(), outHeader);
+    }
+    
+    public static void checkEquals(GCFHeader expectedHeader, GCFHeader actualHeader) {
+        assertEquals("systemid equals", expectedHeader.getSystemId(), actualHeader.getSystemId());
+        assertEquals("streamid equals", expectedHeader.getStreamId(), actualHeader.getStreamId());
+        assertEquals("day number equals", expectedHeader.getDayNumber(), actualHeader.getDayNumber());
+        assertEquals("seconds equals", expectedHeader.getSecondsInDay(), actualHeader.getSecondsInDay());
+        assertEquals("compression equals", expectedHeader.getCompression(), actualHeader.getCompression());
+        assertEquals("sps equals", expectedHeader.getSps(), actualHeader.getSps());
+        assertEquals("num32 equals", expectedHeader.getNum32Records(), actualHeader.getNum32Records());
     }
 }
