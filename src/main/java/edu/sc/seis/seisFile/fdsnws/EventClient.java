@@ -8,8 +8,10 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.Switch;
 
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.SeisFileException;
@@ -36,6 +38,12 @@ public class EventClient extends AbstractFDSNClient {
 
     private static final String TYPES = "types";
 
+    private static final String INCLUDEALLORIGINS = "includeallorigins";
+
+    private static final String INCLUDEALLMAGNITUDES = "includeallmagnitudes";
+
+    private static final String INCLUDEARRIVALS = "includearrivals";
+
     @Override
     protected void addParams() throws JSAPException {
         super.addParams();
@@ -48,6 +56,10 @@ public class EventClient extends AbstractFDSNClient {
         add(RangeParser.createParam(DEPTH, "0", "10000", "The range of acceptable depths in kilometers", 'D'));
         add(createListOption(CATALOGS, 'c', CATALOGS, "A comma separated list of catalogs to search"));
         add(createListOption(CONTRIBUTORS, 'C', CONTRIBUTORS, "A comma separated list of contributors to search"));
+
+        add(new Switch(INCLUDEALLORIGINS, JSAP.NO_SHORTFLAG, INCLUDEALLORIGINS, "Retrieve all origins instead of only the primary origin associated with each event."));
+        add(new Switch(INCLUDEALLMAGNITUDES, JSAP.NO_SHORTFLAG, INCLUDEALLMAGNITUDES, "Retrieve all magnitudes for the event instead of only the primary magnitude."));
+        add(new Switch(INCLUDEARRIVALS, JSAP.NO_SHORTFLAG, INCLUDEARRIVALS, "Specify if phase arrivals should be included."));
     }
 
     public EventClient(String[] args) throws JSAPException {
@@ -143,6 +155,15 @@ public class EventClient extends AbstractFDSNClient {
         }
         if (result.contains(CONTRIBUTORS)) {
             queryParams.setContributor(result.getString(CONTRIBUTORS));
+        }
+        if (result.getBoolean(INCLUDEARRIVALS)) {
+            queryParams.setIncludeArrivals(true);
+        }
+        if (result.getBoolean(INCLUDEALLMAGNITUDES)) {
+            queryParams.setIncludeAllMagnitudes(true);
+        }
+        if (result.getBoolean(INCLUDEALLORIGINS)) {
+            queryParams.setIncludeAllOrigins(true);
         }
         if (result.getBoolean(VALIDATE)) {
             queryParams.setValidate(true);
