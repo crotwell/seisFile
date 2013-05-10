@@ -175,7 +175,7 @@ public class FDSNStationXML {
 
     public static FDSNStationXML createEmpty() {
         try {
-            URL url = FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/empty.quakeml");
+            URL url = FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/empty.stationxml");
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader r;
             r = factory.createXMLEventReader(url.toString(), url.openStream());
