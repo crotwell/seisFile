@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -90,11 +91,16 @@ public class DataSelectClient extends AbstractFDSNClient {
                 return;
             } else {
                 FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams);
-                DataRecordIterator it = querier.getDataRecordIterator();
-                try {
-                    handleResults(it);
-                } finally {
-                    it.close();
+
+                if (getResult().getBoolean(RAW)) {
+                    querier.outputRaw(System.out);
+                } else {
+                    DataRecordIterator it = querier.getDataRecordIterator();
+                    try {
+                        handleResults(it);
+                    } finally {
+                        it.close();
+                    }
                 }
             }
         } catch(Exception e) {

@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -97,4 +98,15 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     List<ChannelTimeWindow> request;
 
     FDSNDataSelectQueryParams queryParams;
+
+    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException {
+        if (request == null) {
+            // normal GET request, so use super
+            connect(queryParams.formURI());
+        } else {
+            // POST request, so we have to do connection special
+            connectForPost();
+        }
+        outputRaw(getInputStream(), out);
+    }
 }

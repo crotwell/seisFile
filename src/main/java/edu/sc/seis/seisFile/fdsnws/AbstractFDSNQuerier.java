@@ -1,9 +1,12 @@
 package edu.sc.seis.seisFile.fdsnws;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.StringBufferInputStream;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
@@ -68,7 +71,20 @@ public abstract class AbstractFDSNQuerier {
         validator.validate(new StAXSource(reader), null);
         
     }
-
+    
+    public void outputRaw(InputStream in, OutputStream out) throws IOException {
+        BufferedInputStream bufIn = new BufferedInputStream(in);
+        BufferedOutputStream bufOut = new BufferedOutputStream(out);
+        byte[] buf = new byte[1024];
+        int numRead = bufIn.read(buf);
+        while(numRead != -1) {
+            bufOut.write(buf, 0, numRead);
+            numRead = bufIn.read(buf);
+        }
+        bufIn.close(); // close as we hit EOF
+        bufOut.flush();// only flush in case outside wants to write more
+    }
+    
     public boolean isError() {
         checkConnectionInitiated();
         return error;
@@ -145,7 +161,7 @@ public abstract class AbstractFDSNQuerier {
     String errorMessage;
 
     boolean empty;
-
+    
     XMLEventReader reader;
 
     InputStream inputStream;

@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -60,6 +61,8 @@ public class EventClient extends AbstractFDSNClient {
         add(new Switch(INCLUDEALLORIGINS, JSAP.NO_SHORTFLAG, INCLUDEALLORIGINS, "Retrieve all origins instead of only the primary origin associated with each event."));
         add(new Switch(INCLUDEALLMAGNITUDES, JSAP.NO_SHORTFLAG, INCLUDEALLMAGNITUDES, "Retrieve all magnitudes for the event instead of only the primary magnitude."));
         add(new Switch(INCLUDEARRIVALS, JSAP.NO_SHORTFLAG, INCLUDEARRIVALS, "Specify if phase arrivals should be included."));
+        
+        add(new Switch(VALIDATE, JSAP.NO_SHORTFLAG, VALIDATE, "Validate XML against schema"));
     }
 
     public EventClient(String[] args) throws JSAPException {
@@ -95,18 +98,20 @@ public class EventClient extends AbstractFDSNClient {
                 return;
             } else {
                 FDSNEventQuerier querier = new FDSNEventQuerier(queryParams);
-                if (queryParams.isValidate()) {
+                if (getResult().getBoolean(VALIDATE)) {
                     querier.validateQuakeML();
                     System.out.println("Valid");
+                } else if (getResult().getBoolean(RAW)) {
+                    querier.outputRaw(System.out);
                 } else {
-                Quakeml quakeml = querier.getQuakeML();
-                if (!quakeml.checkSchemaVersion()) {
-                    System.out.println("");
-                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-                    System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
-                    System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
-                }
-                handleResults(quakeml);
+                    Quakeml quakeml = querier.getQuakeML();
+                    if (!quakeml.checkSchemaVersion()) {
+                        System.out.println("");
+                        System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
+                        System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
+                        System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
+                    }
+                    handleResults(quakeml);
                 }
             }
         } catch(Exception e) {
@@ -164,9 +169,6 @@ public class EventClient extends AbstractFDSNClient {
         }
         if (result.getBoolean(INCLUDEALLORIGINS)) {
             queryParams.setIncludeAllOrigins(true);
-        }
-        if (result.getBoolean(VALIDATE)) {
-            queryParams.setValidate(true);
         }
         if (result.contains(BASEURL)) {
             queryParams.setBaseURI(new URI(result.getString(BASEURL)));

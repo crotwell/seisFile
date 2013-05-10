@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
@@ -76,6 +77,11 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
         } catch(IOException e) {
             throw new SeisFileException("IOException trying to validate", e);
         }
+    }
+
+    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException {
+        connect(queryParams.formURI());
+        outputRaw(getInputStream(), out);
     }
     
 }
