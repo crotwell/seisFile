@@ -28,7 +28,7 @@ public class FIR extends BaseFilterType {
                 } else if (elName.equals(StationXMLTagNames.SYMMETRY)) {
                     symmetry = StaxUtil.pullText(reader, StationXMLTagNames.SYMMETRY);
                 } else if (elName.equals(StationXMLTagNames.NUMERATORCOEFFICIENT)) {
-                    numeratorCoefficientList.add(StaxUtil.pullFloat(reader, StationXMLTagNames.NORMALIZATIONFACTOR));
+                    numeratorCoefficientList.add(StaxUtil.pullFloat(reader, StationXMLTagNames.NUMERATORCOEFFICIENT));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
