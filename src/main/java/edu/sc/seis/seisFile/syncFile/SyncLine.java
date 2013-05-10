@@ -112,6 +112,15 @@ public class SyncLine implements Comparable<SyncLine> {
     public String toString() {
         return formatLine();
     }
+    
+
+
+    public String formatChannel() {
+        return concatWithSeparator(new String[] {net,
+                                                 sta,
+                                                 loc,
+                                                 chan}, ".");
+    }
 
     public String formatLine() {
         return concatWithSeparator(new String[] {net,
@@ -140,6 +149,34 @@ public class SyncLine implements Comparable<SyncLine> {
                 && ((loc == null && line.loc == null) || (loc != null && loc.equals(line.loc)))
                 && chan.equals(line.chan)
                 && Math.abs((line.startTime.getTime() - endTime.getTime()) / 1000.0) <= tolerenceSeconds;
+    }
+
+    public boolean isSameChannel(SyncLine other) {
+        if (this == other)
+            return true;
+        if (other == null)
+            return false;
+        if (chan == null) {
+            if (other.chan != null)
+                return false;
+        } else if (!chan.equals(other.chan))
+            return false;
+        if (loc == null) {
+            if (other.loc != null)
+                return false;
+        } else if (!loc.equals(other.loc))
+            return false;
+        if (net == null) {
+            if (other.net != null)
+                return false;
+        } else if (!net.equals(other.net))
+            return false;
+        if (sta == null) {
+            if (other.sta != null)
+                return false;
+        } else if (!sta.equals(other.sta))
+            return false;
+        return true;
     }
 
     public SyncLine concat(SyncLine after) {

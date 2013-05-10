@@ -77,7 +77,16 @@ public class SyncFileCompare {
 
     static SyncLine[] processItem(SyncLine aLine, SyncLine bLine, SyncFile inAinB, SyncFile notAinB, SyncFile inAnotB) {
         if (aLine != null && bLine != null) {
-            if (aLine.getEndTime().before(bLine.getStartTime())) {
+            if ( ! aLine.isSameChannel(bLine)) {
+                // find one that is sorted earlier and output it
+                if (aLine.compareTo(bLine) < 0) {
+                    inAnotB.addLine(aLine, true);
+                    aLine = null;
+                } else {
+                    notAinB.addLine(bLine, true);
+                    bLine = null;
+                }
+            } else  if (aLine.getEndTime().before(bLine.getStartTime())) {
                 // both sorted, so know only in A
                 inAnotB.addLine(aLine, true);
                 aLine = null;
