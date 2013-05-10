@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
@@ -19,6 +22,26 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
 
     public FDSNStationQuerier(FDSNStationQueryParams queryParams) {
         this.queryParams = queryParams;
+    }
+    
+    public void validateFDSNStationXML() throws SeisFileException, URISyntaxException {
+        try {
+            connect(queryParams.formURI());
+            if (!isError()) {
+                if (!isEmpty()) {
+                    XMLInputFactory factory = XMLInputFactory.newInstance();
+                    XMLStreamReader reader = factory.createXMLStreamReader(getConnectionUri().toString(),
+                                                                           getInputStream());
+                    validate(reader, FDSNStationXML.loadSchema());
+                }
+            }
+        } catch(SAXException e) {
+            throw new SeisFileException("Unable to validate xml", e);
+        } catch(XMLStreamException e) {
+            throw new SeisFileException("Unable to read xml", e);
+        } catch(IOException e) {
+            throw new SeisFileException("IOException trying to validate", e);
+        }
     }
 
     public FDSNStationXML getFDSNStationXML() throws SeisFileException {

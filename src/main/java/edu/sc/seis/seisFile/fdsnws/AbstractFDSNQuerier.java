@@ -4,14 +4,27 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringBufferInputStream;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.net.URLConnection;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.Result;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
+import org.xml.sax.SAXException;
 
 import edu.sc.seis.seisFile.client.AbstractClient;
 
@@ -42,6 +55,18 @@ public abstract class AbstractFDSNQuerier {
         }
         // likely not an error in the http layer, so content is returned
         inputStream = urlConn.getInputStream();
+    }
+    
+    protected void validate(XMLStreamReader reader, URL schemaURL) throws SAXException, IOException {
+        
+        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = factory.newSchema(schemaURL);
+
+        Validator validator = schema.newValidator();
+        //StringWriter buf = new StringWriter();
+        //Result result = new StaXResult(buf);
+        validator.validate(new StAXSource(reader), null);
+        
     }
 
     public boolean isError() {
