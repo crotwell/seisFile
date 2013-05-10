@@ -18,7 +18,7 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 public class Operator {
     
     public Operator(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.NETWORK, reader);
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.OPERATOR, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -26,7 +26,7 @@ public class Operator {
                 if (elName.equals(StationXMLTagNames.AGENCY)) {
                     agencyList.add(StaxUtil.pullText(reader, StationXMLTagNames.AGENCY));
                 } else if (elName.equals(StationXMLTagNames.CONTACT)) {
-                    contactList.add(new Person(reader));
+                    contactList.add(new Person(reader, StationXMLTagNames.CONTACT));
                 } else if (elName.equals(StationXMLTagNames.WEBSITE)) {
                     website = StaxUtil.pullText(reader, StationXMLTagNames.WEBSITE);
                 } else {

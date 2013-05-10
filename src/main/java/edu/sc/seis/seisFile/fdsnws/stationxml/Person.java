@@ -16,8 +16,8 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 public class Person {
     
 
-    public Person(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.NETWORK, reader);
+    public Person(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
+        StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {

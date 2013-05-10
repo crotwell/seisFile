@@ -17,7 +17,7 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 public class ResponseList extends BaseFilterType {
     
     public ResponseList(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.RESPONSELIST, reader);
         super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();

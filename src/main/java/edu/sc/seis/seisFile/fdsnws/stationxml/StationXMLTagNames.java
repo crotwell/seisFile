@@ -163,5 +163,6 @@ public final class StationXMLTagNames {
     public static final String ENDEFFECTIVETIME = "EndEffectiveTime";
     public static final String AUTHOR = "Author";
     public static final String ID = "id";
+    public static final String OPERATOR = "Operator";
     
     }

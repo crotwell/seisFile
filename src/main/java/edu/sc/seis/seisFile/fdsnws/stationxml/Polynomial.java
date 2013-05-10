@@ -16,7 +16,7 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 public class Polynomial extends BaseFilterType {
 
     public Polynomial(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLYNOMIAL, reader);
         super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
