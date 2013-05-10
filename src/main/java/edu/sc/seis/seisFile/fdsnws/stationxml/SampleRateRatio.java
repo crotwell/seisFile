@@ -12,7 +12,7 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 public class SampleRateRatio {
 
     public SampleRateRatio(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.NETWORK, reader);
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.SAMPLE_RATE_RATIO, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {

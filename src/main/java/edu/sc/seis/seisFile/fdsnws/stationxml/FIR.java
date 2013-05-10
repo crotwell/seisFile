@@ -17,7 +17,7 @@ public class FIR extends BaseFilterType {
 
     
     public FIR(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
+        StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.FIR, reader);
         super.parseAttributes(startE);
         while(reader.hasNext()) {
             XMLEvent e = reader.peek();
