@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -79,6 +80,7 @@ public class StationClient extends AbstractFDSNClient {
         add(ISOTimeParser.createParam(FDSNStationQueryParams.UPDATEDAFTER,
                                       "Only results that have changed since the date are accepted",
                                       false));
+        add(new Switch(VALIDATE, JSAP.NO_SHORTFLAG, VALIDATE, "Validate XML against schema"));
     }
 
     public void run() {
@@ -110,18 +112,20 @@ public class StationClient extends AbstractFDSNClient {
                 return;
             } else {
                 FDSNStationQuerier querier = new FDSNStationQuerier(queryParams);
-                if (queryParams.isValidate()) {
+                if (getResult().getBoolean(VALIDATE)) {
                     querier.validateFDSNStationXML();
                     System.out.println("Valid");
+                } else if (getResult().getBoolean(RAW)) {
+                    querier.outputRaw(System.out);
                 } else {
-                FDSNStationXML stationXml = querier.getFDSNStationXML();
-                if (!stationXml.checkSchemaVersion()) {
-                    System.out.println("");
-                    System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
-                    System.out.println("XmlSchema (code): " + StationXMLTagNames.CURRENT_SCHEMA_VERSION);
-                    System.out.println("XmlSchema (doc): " + stationXml.getSchemaVersion());
-                }
-                handleResults(stationXml);
+                    FDSNStationXML stationXml = querier.getFDSNStationXML();
+                    if (!stationXml.checkSchemaVersion()) {
+                        System.out.println("");
+                        System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
+                        System.out.println("XmlSchema (code): " + StationXMLTagNames.CURRENT_SCHEMA_VERSION);
+                        System.out.println("XmlSchema (doc): " + stationXml.getSchemaVersion());
+                    }
+                    handleResults(stationXml);
                 }
             }
         } catch(Exception e) {
@@ -188,9 +192,6 @@ public class StationClient extends AbstractFDSNClient {
         if (result.getBoolean(FDSNStationQueryParams.INCLUDERESTRICTED)) {
             queryParams.setIncludeRestricted(true);
         }
-        if (result.getBoolean(VALIDATE)) {
-            queryParams.setValidate(true);
-        }
         if (result.contains(BASEURL)) {
             queryParams.setBaseURI(new URI(result.getString(BASEURL)));
         }
@@ -201,6 +202,7 @@ public class StationClient extends AbstractFDSNClient {
         NetworkIterator nIt = stationXml.getNetworks();
         while (nIt.hasNext()) {
             Network n = nIt.next();
+            System.out.println(n.getCode()+" "+n.getStartDate() + " " + n.getDescription());
             StationIterator sIt = n.getStations();
             while (sIt.hasNext()) {
                 Station s = sIt.next();
