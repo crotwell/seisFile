@@ -184,4 +184,8 @@ public class FDSNStationXML {
             throw new RuntimeException("Should not happen", e);
         }
     }
+
+    public static URL loadSchema() {
+        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station-1.0.xsd");
+    }
 }

@@ -29,12 +29,15 @@ public class AbstractFDSNClient extends AbstractClient {
     protected void addParams() throws JSAPException {
         super.addParams();
         add(new Switch(PRINTURL, JSAP.NO_SHORTFLAG, PRINTURL, "Construct and print URL and exit"));
+        add(new Switch(VALIDATE, JSAP.NO_SHORTFLAG, VALIDATE, "Validate XML against schema"));
         add(new FlaggedOption(BASEURL, JSAP.STRING_PARSER, null, false, JSAP.NO_SHORTFLAG, BASEURL, "Base URL for queries, ie everything before the '?'"));
     }
 
     public static final String BASEURL = "baseurl";
-    
+
     public static final String PRINTURL = "printurl";
+    
+    public static final String VALIDATE = "validate";
 
     public static final String BEGIN = "begin";
 

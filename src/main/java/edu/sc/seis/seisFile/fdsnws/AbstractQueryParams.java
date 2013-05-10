@@ -88,6 +88,8 @@ public class AbstractQueryParams {
     String baseURL;
 
     URI baseURI;
+    
+    boolean validate = false;
 
     HashMap<String, String> params = new HashMap<String, String>();
     
@@ -98,6 +100,14 @@ public class AbstractQueryParams {
     protected void internalSetBaseURI(URI baseURI) {
         this.baseURI = baseURI;
         this.baseURL = baseURI.toString();
+    }
+
+    public boolean isValidate() {
+        return validate;
+    }
+    
+    public void setValidate(boolean validate) {
+        this.validate = validate;
     }
 
     public String getParam(String key) {

@@ -1,22 +1,20 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
-import edu.sc.seis.seisFile.mseed.DataRecordIterator;
 
 public class FDSNEventQuerier extends AbstractFDSNQuerier {
 
@@ -59,4 +57,25 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
     FDSNEventQueryParams queryParams;
 
     private static Logger logger = LoggerFactory.getLogger(FDSNEventQuerier.class);
+
+    public void validateQuakeML() throws SeisFileException, URISyntaxException {
+        try {
+            connect(queryParams.formURI());
+            if (!isError()) {
+                if (!isEmpty()) {
+                    XMLInputFactory factory = XMLInputFactory.newInstance();
+                    XMLStreamReader reader = factory.createXMLStreamReader(getConnectionUri().toString(),
+                                                                           getInputStream());
+                    validate(reader, Quakeml.loadSchema());
+                }
+            }
+        } catch(SAXException e) {
+            throw new SeisFileException("Unable to validate xml", e);
+        } catch(XMLStreamException e) {
+            throw new SeisFileException("Unable to read xml", e);
+        } catch(IOException e) {
+            throw new SeisFileException("IOException trying to validate", e);
+        }
+    }
+    
 }
