@@ -91,6 +91,7 @@ public class StationClient extends AbstractFDSNClient {
             System.out.println(BuildVersion.getVersion());
             return;
         }
+        // check arg parsing isSuccess()
         if (!isSuccess()) {
             for (Iterator errs = result.getErrorMessageIterator(); errs.hasNext();) {
                 System.err.println("Error: " + errs.next());
@@ -109,6 +110,10 @@ public class StationClient extends AbstractFDSNClient {
                 return;
             } else {
                 FDSNStationQuerier querier = new FDSNStationQuerier(queryParams);
+                if (queryParams.isValidate()) {
+                    querier.validateFDSNStationXML();
+                    System.out.println("Valid");
+                } else {
                 FDSNStationXML stationXml = querier.getFDSNStationXML();
                 if (!stationXml.checkSchemaVersion()) {
                     System.out.println("");
@@ -117,6 +122,7 @@ public class StationClient extends AbstractFDSNClient {
                     System.out.println("XmlSchema (doc): " + stationXml.getSchemaVersion());
                 }
                 handleResults(stationXml);
+                }
             }
         } catch(Exception e) {
             System.err.println("Error: " + e.getMessage());
@@ -181,6 +187,9 @@ public class StationClient extends AbstractFDSNClient {
         }
         if (result.getBoolean(FDSNStationQueryParams.INCLUDERESTRICTED)) {
             queryParams.setIncludeRestricted(true);
+        }
+        if (result.getBoolean(VALIDATE)) {
+            queryParams.setValidate(true);
         }
         if (result.contains(BASEURL)) {
             queryParams.setBaseURI(new URI(result.getString(BASEURL)));

@@ -10,6 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
 
 public class Quakeml {
 
@@ -65,5 +66,10 @@ public class Quakeml {
         } catch(Exception e) {
             throw new RuntimeException("Should not happen", e);
         }
+    }
+
+
+    public static URL loadSchema() {
+        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/QuakeML-1.2.xsd");
     }
 }
