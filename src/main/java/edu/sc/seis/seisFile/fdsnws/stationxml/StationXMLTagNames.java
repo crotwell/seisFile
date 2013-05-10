@@ -164,5 +164,8 @@ public final class StationXMLTagNames {
     public static final String AUTHOR = "Author";
     public static final String ID = "id";
     public static final String OPERATOR = "Operator";
+    public static final String NONE = "NONE";
+    public static final String ODD = "ODD";
+    public static final String EVEN = "EVEN";
     
     }
