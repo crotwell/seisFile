@@ -38,8 +38,6 @@ class FDSNQueryParamGenerator {
     def preTemplate = '''
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -49,41 +47,30 @@ import edu.sc.seis.seisFile.ChannelTimeWindow;
 public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams implements Cloneable {
 
     public FDSN${service}QueryParams() {
-        this(IRIS_BASE_URI);
+        this(IRIS_HOST);
     }
     
-    public FDSN${service}QueryParams(URI baseUri) {
-        super(baseUri);
+    public FDSN${service}QueryParams(String host) {
+        super(host);
     }
 
     public FDSN${service}QueryParams clone() {
-        FDSN${service}QueryParams out = new FDSN${service}QueryParams(getBaseURI());
+        FDSN${service}QueryParams out = new FDSN${service}QueryParams(getHost());
         for (String key : params.keySet()) {
             out.setParam(key, params.get(key));
         }
         return out;
+    }
+
+    public FDSN${service}QueryParams setHost(String host) {
+        this.host = host;
+        return this;
     }
 '''
 
     def postTemplate = '''
     ${extra}
 
-    public FDSN${service}QueryParams setBaseURI(URI baseURI)  {
-        internalSetBaseURI(baseURI);
-        return this;
-    }
-
-    public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/${ws}/1/query?";
-    
-    public static final URI IRIS_BASE_URI;
-    
-    static {
-        try {
-            IRIS_BASE_URI = new URI(IRIS_BASE_URL);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Should no happen, bad default uri string"+IRIS_BASE_URL);
-        }
-    }
 }
 '''
 
@@ -199,6 +186,13 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
     public static final String LEVEL_CHANNEL = "channel";
 
     public static final String LEVEL_RESPONSE = "response";
+
+    @Override
+    public String getServiceName() {
+        return STATION_SERVICE;
+    }
+
+    public static final String STATION_SERVICE = "station";
 ''',
         'Event':'''
 
@@ -226,6 +220,13 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
 
     /**magnitude-asc : order by ascending magnitude*/
     public static final String ORDER_MAGNITUDE_ASC = "magnitude-asc";
+
+    @Override
+    public String getServiceName() {
+        return EVENT_SERVICE;
+    }
+
+    public static final String EVENT_SERVICE = "event";
 ''',
         'DataSelect':'''
 
@@ -285,6 +286,13 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         }
         return out.toString();
     }
+
+    @Override
+    public String getServiceName() {
+        return DATASELECT_SERVICE;
+    }
+
+    public static final String DATASELECT_SERVICE = "dataselect";
 
 ''']
 

@@ -16,7 +16,12 @@ public class AbstractQueryParamsTest {
         String first = "first";
         String second = "second";
         String third = "third";
-        AbstractQueryParams aqp = new AbstractQueryParams(new URI("http://test.seis.sc.edu/fdsnws/event/query/1?")) {};
+        AbstractQueryParams aqp = new AbstractQueryParams("test.seis.sc.edu") {
+            @Override
+            protected String getServiceName() {
+                return "event";
+            }
+        };
         aqp.appendToParam(T, first);
         assertEquals("first", first, aqp.getParam(T));
         aqp.appendToParam(T, second);

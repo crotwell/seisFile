@@ -7,15 +7,14 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
 
-import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.mseed.DataRecordIterator;
@@ -35,11 +34,19 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         this.queryParams = queryParams;
         this.request = request;
     }
+    
+    public void enableRestrictedData(String username, String password) {
+        this.username = username;
+        this.password = password;
+        Authenticator.setDefault(new MyAuthenticator(username, password));
+        queryParams.setFdsnQueryStyle("queryauth");
+    }
 
     public DataRecordIterator getDataRecordIterator() throws SeisFileException {
         try {
             if (request == null) {
                 // normal GET request, so use super
+                System.out.println(queryParams.formURI().toURL().toString());
                 connect(queryParams.formURI());
             } else {
                 // POST request, so we have to do connection special
@@ -76,7 +83,15 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
      */
     void connectForPost() throws URISyntaxException, MalformedURLException, IOException {
         String postQuery = queryParams.formPostString(request);
-        connectionUri = queryParams.getBaseURI(); // don't form as all parameters in POST
+        connectionUri = new URI(queryParams.getScheme(), // don't form as all parameters in POST
+                                queryParams.getUserInfo(),
+                                queryParams.getHost(),
+                                queryParams.getPort(),
+                                queryParams.getPath(),
+                                "",
+                                queryParams.getFragment());
+        System.out.println("FDSNDataSelectQuerier connection: "+connectionUri.toURL().toString());
+        System.out.println("Posting: "+postQuery);
         HttpURLConnection conn = (HttpURLConnection)connectionUri.toURL().openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("User-Agent", getUserAgent());
@@ -95,6 +110,10 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         processConnection(conn);
     }
 
+    String username;
+    
+    String password;
+    
     List<ChannelTimeWindow> request;
 
     FDSNDataSelectQueryParams queryParams;
@@ -108,5 +127,23 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
             connectForPost();
         }
         outputRaw(getInputStream(), out);
+    }
+}
+
+
+class MyAuthenticator extends Authenticator {
+
+    String user;
+
+    String password;
+
+    public MyAuthenticator(String user, String password) {
+        this.user = user;
+        this.password = password;
+    }
+
+    public PasswordAuthentication getPasswordAuthentication() {
+        System.out.println("Password requested, returning: '"+user+"' pw: '"+password);
+        return new PasswordAuthentication(user, password.toCharArray());
     }
 }
