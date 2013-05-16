@@ -3,7 +3,7 @@ package edu.sc.seis.seisFile.fdsnws.quakeml;
 
 public final class QuakeMLTagNames {
     
-    public static final String irisNameSpace = "http://www.iris.edu/ws/event";
+    public static final String irisNameSpace = "http://service.iris.edu/fdsnws/event/1/";
     public static final String CODE_BED_SCHEMA_VERSION = "http://quakeml.org/xmlns/bed/1.2";
     public static final String CODE_MAIN_SCHEMA_VERSION = "http://quakeml.org/xmlns/quakeml/1.2";
     
