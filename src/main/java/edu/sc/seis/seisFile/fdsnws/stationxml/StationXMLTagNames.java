@@ -98,11 +98,11 @@ public final class StationXMLTagNames {
     public static final String NUMERATORCOEFFICIENT = "NumeratorCoefficient";
     public static final String COEFFICIENT = "Coefficient";
     public static final String APPROXIMATIONTYPE = "ApproximationType";
-    public static final String FREQLOWERBOUND = "FreqLowerBound";
-    public static final String FREQUPPERBOUND = "FreqUpperBound";
+    public static final String FREQLOWERBOUND = "FrequencyLowerBound";
+    public static final String FREQUPPERBOUND = "FrequencyUpperBound";
     public static final String APPROXLOWERBOUND = "ApproximationLowerBound";
     public static final String APPROXUPPERBOUND = "ApproximationUpperBound";
-    public static final String MAXERROR = "MaxError";
+    public static final String MAXERROR = "MaximumError";
     public static final String GENCOMMENT = "GenComment";
     public static final String SENSITIVITY = "Sensitivity";
     public static final String FREEFREQ = "FreeFreq";
