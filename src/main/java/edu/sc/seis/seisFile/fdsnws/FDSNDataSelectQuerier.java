@@ -46,7 +46,6 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         try {
             if (request == null) {
                 // normal GET request, so use super
-                System.out.println(queryParams.formURI().toURL().toString());
                 connect(queryParams.formURI());
             } else {
                 // POST request, so we have to do connection special
@@ -90,8 +89,6 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                                 queryParams.getPath(),
                                 "",
                                 queryParams.getFragment());
-        System.out.println("FDSNDataSelectQuerier connection: "+connectionUri.toURL().toString());
-        System.out.println("Posting: "+postQuery);
         HttpURLConnection conn = (HttpURLConnection)connectionUri.toURL().openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("User-Agent", getUserAgent());
@@ -143,7 +140,6 @@ class MyAuthenticator extends Authenticator {
     }
 
     public PasswordAuthentication getPasswordAuthentication() {
-        System.out.println("Password requested, returning: '"+user+"' pw: '"+password);
         return new PasswordAuthentication(user, password.toCharArray());
     }
 }
