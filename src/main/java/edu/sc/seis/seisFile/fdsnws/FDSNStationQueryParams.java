@@ -1,8 +1,6 @@
 
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -12,19 +10,24 @@ import edu.sc.seis.seisFile.ChannelTimeWindow;
 public class FDSNStationQueryParams extends AbstractQueryParams implements Cloneable {
 
     public FDSNStationQueryParams() {
-        this(IRIS_BASE_URI);
+        this(IRIS_HOST);
     }
     
-    public FDSNStationQueryParams(URI baseUri) {
-        super(baseUri);
+    public FDSNStationQueryParams(String host) {
+        super(host);
     }
 
     public FDSNStationQueryParams clone() {
-        FDSNStationQueryParams out = new FDSNStationQueryParams(getBaseURI());
+        FDSNStationQueryParams out = new FDSNStationQueryParams(getHost());
         for (String key : params.keySet()) {
             out.setParam(key, params.get(key));
         }
         return out;
+    }
+
+    public FDSNStationQueryParams setHost(String host) {
+        this.host = host;
+        return this;
     }
 
 
@@ -381,22 +384,13 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     public static final String LEVEL_RESPONSE = "response";
 
-
-    public FDSNStationQueryParams setBaseURI(URI baseURI)  {
-        internalSetBaseURI(baseURI);
-        return this;
+    @Override
+    public String getServiceName() {
+        return STATION_SERVICE;
     }
 
-    public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/station/1/query?";
-    
-    public static final URI IRIS_BASE_URI;
-    
-    static {
-        try {
-            IRIS_BASE_URI = new URI(IRIS_BASE_URL);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Should no happen, bad default uri string"+IRIS_BASE_URL);
-        }
-    }
+    public static final String STATION_SERVICE = "station";
+
+
 }
 

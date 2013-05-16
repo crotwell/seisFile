@@ -10,10 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-public class AbstractQueryParams {
+public abstract class AbstractQueryParams {
 
-    public AbstractQueryParams(URI baseURI) {
-        this.baseURI = baseURI;
+    public AbstractQueryParams(String host) {
+        this.host = host;
     }
 
     protected void setParam(String key, String value) {
@@ -21,15 +21,15 @@ public class AbstractQueryParams {
     }
 
     protected void setParam(String key, int value) {
-        params.put(key, ""+value);
+        params.put(key, "" + value);
     }
 
     protected void setParam(String key, float value) {
-        params.put(key, ""+value);
+        params.put(key, "" + value);
     }
 
     protected void setParam(String key, boolean value) {
-        params.put(key, value?"true":"false");
+        params.put(key, value ? "true" : "false");
     }
 
     protected void appendToParam(String key, String value) {
@@ -38,20 +38,20 @@ public class AbstractQueryParams {
         }
         params.put(key, value);
     }
-    
+
     protected void setParam(String key, Date value) {
         SimpleDateFormat sdf = createDateFormat();
         setParam(key, sdf.format(value));
     }
-    
+
     protected void clearParam(String key) {
         params.remove(key);
     }
-    
+
     public void clear() {
         params.clear();
     }
-    
+
     public static SimpleDateFormat createDateFormat() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -59,11 +59,7 @@ public class AbstractQueryParams {
     }
 
     public URI formURI() throws URISyntaxException {
-        String baseQuery = getBaseURI().getQuery();
-        if (baseQuery == null) {
-            baseQuery = "";
-        }
-        StringBuilder newQuery = new StringBuilder(baseQuery);
+        StringBuilder newQuery = new StringBuilder();
         if (newQuery.length() != 0) {
             newQuery.append("&");
         }
@@ -76,31 +72,79 @@ public class AbstractQueryParams {
         if (newQuery.length() > 1) {
             newQuery.deleteCharAt(newQuery.length() - 1); // zap last &
         }
-        return new URI(baseURI.getScheme(),
-                       baseURI.getUserInfo(),
-                       baseURI.getHost(),
-                       baseURI.getPort(),
-                       baseURI.getPath(),
-                       newQuery.toString(),
-                       baseURI.getFragment());
+        return new URI(getScheme(), getUserInfo(), getHost(), getPort(), getPath(), newQuery.toString(), getFragment());
     }
 
-    String baseURL;
+    String host = IRIS_HOST;
 
-    URI baseURI;
+    int port = 80;
+
+    String scheme = "http";
+    
+    String fdsnQueryStyle = "query";
 
     HashMap<String, String> params = new HashMap<String, String>();
-    
-    public URI getBaseURI() {
-        return baseURI;
+
+    void internalSetBaseURI(URI baseURI) {
+        setScheme(baseURI.getScheme());
+        setPort(baseURI.getPort());
+        this.host = baseURI.getHost();
+    }
+
+    public HashMap<String, String> getParams() {
+        return params;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
+
+    String getScheme() {
+        return scheme;
+    }
+
+    int getPort() {
+        return port;
+    }
+
+    String getUserInfo() {
+        return null;
+    }
+
+    String getFragment() {
+        return null;
+    }
+
+    String getPath() {
+        return "/fdsnws/" + getServiceName() + "/" + getFDSNMajorVersion() + "/"+getFdsnQueryStyle();
     }
     
-    protected void internalSetBaseURI(URI baseURI) {
-        this.baseURI = baseURI;
-        this.baseURL = baseURI.toString();
+    String getFdsnQueryStyle() {
+        return fdsnQueryStyle;
+    }
+    
+    void setFdsnQueryStyle(String queryStyle) {
+        fdsnQueryStyle = queryStyle;
+    }
+
+    String getFDSNMajorVersion() {
+        return "1";
+    }
+
+    /** Service name as defined by the fdsn, ie event, station or dataselect. */
+    public abstract String getServiceName();
+
+    protected String getHost() {
+        return host;
     }
 
     public String getParam(String key) {
         return params.get(key);
     }
+
+    public static final String IRIS_HOST = "service.iris.edu";
 }

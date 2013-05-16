@@ -5,13 +5,10 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Iterator;
-
-import javax.xml.stream.XMLStreamException;
 
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
@@ -141,11 +138,14 @@ public class DataSelectClient extends AbstractFDSNClient {
                 queryParams.appendToChannel(vals[i]);
             }
         }
+        if (result.contains(HOST)) {
+            queryParams.setHost(result.getString(HOST));
+        }
         if (result.contains(BASEURL)) {
             try {
-                queryParams.setBaseURI(new URI(result.getString(BASEURL)));
+                queryParams.internalSetBaseURI(new URI(result.getString(BASEURL)));
             } catch(URISyntaxException e) {
-                throw new SeisFileException("unable to parse base URI: " + result.getString(BASEURL), e);
+                throw new SeisFileException("Unable to parse URI: "+result.getString(BASEURL), e);
             }
         }
         return queryParams;
