@@ -1,8 +1,6 @@
 
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -12,19 +10,24 @@ import edu.sc.seis.seisFile.ChannelTimeWindow;
 public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cloneable {
 
     public FDSNDataSelectQueryParams() {
-        this(IRIS_BASE_URI);
+        this(IRIS_HOST);
     }
     
-    public FDSNDataSelectQueryParams(URI baseUri) {
-        super(baseUri);
+    public FDSNDataSelectQueryParams(String host) {
+        super(host);
     }
 
     public FDSNDataSelectQueryParams clone() {
-        FDSNDataSelectQueryParams out = new FDSNDataSelectQueryParams(getBaseURI());
+        FDSNDataSelectQueryParams out = new FDSNDataSelectQueryParams(getHost());
         for (String key : params.keySet()) {
             out.setParam(key, params.get(key));
         }
         return out;
+    }
+
+    public FDSNDataSelectQueryParams setHost(String host) {
+        this.host = host;
+        return this;
     }
 
 
@@ -222,23 +225,14 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
         return out.toString();
     }
 
-
-
-    public FDSNDataSelectQueryParams setBaseURI(URI baseURI)  {
-        internalSetBaseURI(baseURI);
-        return this;
+    @Override
+    public String getServiceName() {
+        return DATASELECT_SERVICE;
     }
 
-    public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/dataselect/1/query?";
-    
-    public static final URI IRIS_BASE_URI;
-    
-    static {
-        try {
-            IRIS_BASE_URI = new URI(IRIS_BASE_URL);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Should no happen, bad default uri string"+IRIS_BASE_URL);
-        }
-    }
+    public static final String DATASELECT_SERVICE = "dataselect";
+
+
+
 }
 

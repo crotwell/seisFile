@@ -1,8 +1,6 @@
 
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -12,19 +10,24 @@ import edu.sc.seis.seisFile.ChannelTimeWindow;
 public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneable {
 
     public FDSNEventQueryParams() {
-        this(IRIS_BASE_URI);
+        this(IRIS_HOST);
     }
     
-    public FDSNEventQueryParams(URI baseUri) {
-        super(baseUri);
+    public FDSNEventQueryParams(String host) {
+        super(host);
     }
 
     public FDSNEventQueryParams clone() {
-        FDSNEventQueryParams out = new FDSNEventQueryParams(getBaseURI());
+        FDSNEventQueryParams out = new FDSNEventQueryParams(getHost());
         for (String key : params.keySet()) {
             out.setParam(key, params.get(key));
         }
         return out;
+    }
+
+    public FDSNEventQueryParams setHost(String host) {
+        this.host = host;
+        return this;
     }
 
 
@@ -430,22 +433,13 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     /**magnitude-asc : order by ascending magnitude*/
     public static final String ORDER_MAGNITUDE_ASC = "magnitude-asc";
 
-
-    public FDSNEventQueryParams setBaseURI(URI baseURI)  {
-        internalSetBaseURI(baseURI);
-        return this;
+    @Override
+    public String getServiceName() {
+        return EVENT_SERVICE;
     }
 
-    public static final String IRIS_BASE_URL = "http://service.iris.edu/fdsnws/event/1/query?";
-    
-    public static final URI IRIS_BASE_URI;
-    
-    static {
-        try {
-            IRIS_BASE_URI = new URI(IRIS_BASE_URL);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Should no happen, bad default uri string"+IRIS_BASE_URL);
-        }
-    }
+    public static final String EVENT_SERVICE = "event";
+
+
 }
 

@@ -1,6 +1,5 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -120,7 +119,7 @@ public class EventClient extends AbstractFDSNClient {
         }
     }
 
-    FDSNEventQueryParams configureQuery(JSAPResult result) throws URISyntaxException {
+    FDSNEventQueryParams configureQuery(JSAPResult result) throws SeisFileException {
         FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
         if (result.contains(BoxAreaParser.NAME)) {
             HashMap<String, String> box = (HashMap<String, String>)result.getObject(BoxAreaParser.NAME);
@@ -170,8 +169,15 @@ public class EventClient extends AbstractFDSNClient {
         if (result.getBoolean(INCLUDEALLORIGINS)) {
             queryParams.setIncludeAllOrigins(true);
         }
+        if (result.contains(HOST)) {
+            queryParams.setHost(result.getString(HOST));
+        }
         if (result.contains(BASEURL)) {
-            queryParams.setBaseURI(new URI(result.getString(BASEURL)));
+            try {
+                queryParams.internalSetBaseURI(new URI(result.getString(BASEURL)));
+            } catch(URISyntaxException e) {
+                throw new SeisFileException("Unable to parse URI: "+result.getString(BASEURL), e);
+            }
         }
         return queryParams;
     }

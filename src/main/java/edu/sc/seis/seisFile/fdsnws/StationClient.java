@@ -1,6 +1,5 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -134,7 +133,7 @@ public class StationClient extends AbstractFDSNClient {
         }
     }
 
-    FDSNStationQueryParams configureQuery(JSAPResult result) throws URISyntaxException {
+    FDSNStationQueryParams configureQuery(JSAPResult result) throws SeisFileException {
         FDSNStationQueryParams queryParams = new FDSNStationQueryParams();
         if (result.contains(BoxAreaParser.NAME)) {
             HashMap<String, String> box = (HashMap<String, String>)result.getObject(BoxAreaParser.NAME);
@@ -192,8 +191,15 @@ public class StationClient extends AbstractFDSNClient {
         if (result.getBoolean(FDSNStationQueryParams.INCLUDERESTRICTED)) {
             queryParams.setIncludeRestricted(true);
         }
+        if (result.contains(HOST)) {
+            queryParams.setHost(result.getString(HOST));
+        }
         if (result.contains(BASEURL)) {
-            queryParams.setBaseURI(new URI(result.getString(BASEURL)));
+            try {
+                queryParams.internalSetBaseURI(new URI(result.getString(BASEURL)));
+            } catch(URISyntaxException e) {
+                throw new SeisFileException("Unable to parse URI: "+result.getString(BASEURL), e);
+            }
         }
         return queryParams;
     }
@@ -206,7 +212,7 @@ public class StationClient extends AbstractFDSNClient {
             StationIterator sIt = n.getStations();
             while (sIt.hasNext()) {
                 Station s = sIt.next();
-                System.out.println(n.getCode() + "." + s.getCode() + " " + s.getLatitude() + "/" + s.getLongitude()
+                System.out.println("    "+n.getCode() + "." + s.getCode() + " " + s.getLatitude() + "/" + s.getLongitude()
                         + " " + s.getSite() + " " + s.getStartDate());
                 List<Channel> chanList = s.getChannelList();
                 for (Channel channel : chanList) {
