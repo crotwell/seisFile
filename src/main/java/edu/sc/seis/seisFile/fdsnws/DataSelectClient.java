@@ -57,6 +57,20 @@ public class DataSelectClient extends AbstractFDSNClient {
                               'o',
                               OUTPUT,
                               "Filename for outputing DataRecords"));
+        add(new FlaggedOption(USER,
+                              JSAP.STRING_PARSER,
+                              null,
+                              false,
+                              JSAP.NO_SHORTFLAG,
+                              USER,
+                              "username for restricted data access"));
+        add(new FlaggedOption(PASSWORD,
+                              JSAP.STRING_PARSER,
+                              null,
+                              false,
+                              JSAP.NO_SHORTFLAG,
+                              PASSWORD,
+                              "password for restricted data access"));
     }
 
     public void run() {
@@ -89,6 +103,13 @@ public class DataSelectClient extends AbstractFDSNClient {
             } else {
                 FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams);
 
+                if (result.contains(USER) && result.contains(PASSWORD)) {
+                    querier.enableRestrictedData(result.getString(USER), result.getString(PASSWORD));
+                } else if (( ! result.contains(USER) && result.contains(PASSWORD)) 
+                        || (result.contains(USER) && ! result.contains(PASSWORD))) {
+                    System.err.println("Must specify both --"+USER+" and --"+PASSWORD+" or neither.");
+                    return;
+                }
                 if (getResult().getBoolean(RAW)) {
                     querier.outputRaw(System.out);
                 } else {
@@ -177,6 +198,10 @@ public class DataSelectClient extends AbstractFDSNClient {
     }
 
     private static final String OUTPUT = "output";
+
+    private static final String USER = "user";
+
+    private static final String PASSWORD = "password";
 
     /**
      * @param args
