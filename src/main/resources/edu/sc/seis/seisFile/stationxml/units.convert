@@ -1,0 +1,42 @@
+1, m/m, strain
+A, A, ampere
+BITS/SEC, bit/s, bits per second
+BYTES, byte, bytes
+C, °C, degree Celsius
+CELSIUS, °C, degree Celsius
+CM/SEC**2, cm/s^2, centimeter per second squared
+COUNT_UNIT, count, digital count
+COUNTS, count, digital count
+CYCLES, count, cycle count
+D, °, degree
+DEGREES, °, degree
+GAPS, count, gap count
+H/M**2*S, count/(m^2 s)i, hail intensity in hits per meter squared second
+HPA, hPa, hectopascal
+KPA, kPa, kilopascal
+MBAR, mbar, millibar
+M, m, meter 
+M, min, minute
+M/M, m/m, strain
+M/S**2, m/s^2, meter per second squared
+M/(S**2), m/s^2, meter per second squared
+M/S**2/ACCELERATION, m/s^2, meter per second squared
+M/S/S, m/s^2, meter per second squared
+M/S, m/s, meter per second
+NM, nm, nanometer
+NM/SEC, nm/s, nanometer per second
+NM/S, nm/s, nanometer per second
+PA, Pa, pascal
+PERCENT, %, percentage
+RAD/S, rad/s, radian per second
+REBOOTS, count, reboot count
+SEC, s, second
+S, s, second
+TILT, rad, radian
+T, T, tesla
+USEC, µs, microsecond
+V, v, volt
+VOLTS, v, volt
+VOLT_UNIT, v, volt
+V/M, v/m, volt per meter
+W/M2, w/m^2, watt per square meter
