@@ -56,6 +56,11 @@ public class Network extends BaseNodeType {
         return selectedNumStations;
     }
 
+    @Override
+    public String toString() {
+        return getCode();
+    }
+
 
     int totalNumStations, selectedNumStations;
     

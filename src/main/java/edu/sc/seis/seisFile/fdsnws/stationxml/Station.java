@@ -125,6 +125,11 @@ public class Station extends BaseNodeType {
         return externalReferenceList;
     }
 
+    @Override
+    public String toString() {
+        return getNetworkCode()+"."+getCode();
+    }
+
     String creationDate, terminationDate;
 
     FloatType lat, lon, elevation;

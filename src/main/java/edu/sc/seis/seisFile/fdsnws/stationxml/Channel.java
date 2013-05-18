@@ -159,6 +159,11 @@ public class Channel extends BaseNodeType {
         return storageFormat;
     }
 
+    @Override
+    public String toString() {
+        return getNetworkCode()+"."+getStationCode()+"."+getLocCode()+"."+getCode();
+    }
+
     private SampleRateRatio sampleRateRatio;
 
     private FloatType sampleRate;
