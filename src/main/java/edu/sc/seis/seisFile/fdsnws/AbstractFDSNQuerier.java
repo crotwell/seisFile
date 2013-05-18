@@ -7,22 +7,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringBufferInputStream;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.zip.GZIPInputStream;
 
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.Result;
 import javax.xml.transform.stax.StAXSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
@@ -38,7 +35,9 @@ public abstract class AbstractFDSNQuerier {
         connectionUri = uri;
         URLConnection urlConn = uri.toURL().openConnection();
         if (urlConn instanceof HttpURLConnection) {
-            ((HttpURLConnection)urlConn).setRequestProperty("User-Agent", getUserAgent());
+            ((HttpURLConnection)urlConn).setRequestProperty("User-Agent", getUserAgent()); 
+            ((HttpURLConnection)urlConn).setRequestProperty("Accept", "application/xml");
+            ((HttpURLConnection)urlConn).setRequestProperty("Accept-Encoding", "gzip, deflate");
         }
         processConnection(urlConn);
     }
@@ -57,7 +56,11 @@ public abstract class AbstractFDSNQuerier {
             }
         }
         // likely not an error in the http layer, so content is returned
-        inputStream = urlConn.getInputStream();
+        if ("gzip".equals(urlConn.getContentEncoding())) {
+            inputStream = new GZIPInputStream(new BufferedInputStream(urlConn.getInputStream()));
+        } else {
+            inputStream = new BufferedInputStream(urlConn.getInputStream());
+        }
     }
     
     protected void validate(XMLStreamReader reader, URL schemaURL) throws SAXException, IOException {
