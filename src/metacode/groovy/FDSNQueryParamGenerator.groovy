@@ -20,7 +20,9 @@ class FDSNQueryParamGenerator {
         else if (key in booleanTypes) {t="boolean"}
         String setter = 'set'
         if (key in addTypes) { setter = 'appendTo' }
-        def binding = ['key':key, 'doc':doc, 'type':t, 'service':service, 'setter':setter]
+        String locidSpaceCheck = ""
+        if (key in locIdTypes) {locidSpaceCheck = 'if ("  ".equals(value)) { value = "--";}\n        ' }
+        def binding = ['key':key, 'doc':doc, 'type':t, 'service':service, 'setter':setter, 'locidSpaceCheck':locidSpaceCheck]
         return engine.createTemplate(templateText).make(binding)
     }
 
@@ -80,7 +82,7 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
     /** $doc
      */
     public FDSN${service}QueryParams ${setter}${key.capitalize()}(${type==''?'String':type} value) {
-        ${setter}Param(${key.toUpperCase()}, value);
+        ${locidSpaceCheck}${setter}Param(${key.toUpperCase()}, value);
         return this;
     }
 
@@ -91,6 +93,8 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
 '''
 
     def addTypes = ['network', 'station', 'location', 'channel']
+    
+    def locIdTypes = ['location', 'loc']
 
     def dateTypes = ['startTime', 'endTime', 'startBefore', 'startAfter', 'endBefore', 'endAfter', 'updatedAfter']
 
@@ -282,7 +286,7 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         }
         String SEP = " ";
         for (ChannelTimeWindow ctw : request) {
-            out.append(ctw.toString(SEP, createDateFormat())+"\\n");
+            out.append(ctw.formString(SEP, createDateFormat(), true)+"\\n");
         }
         return out.toString();
     }

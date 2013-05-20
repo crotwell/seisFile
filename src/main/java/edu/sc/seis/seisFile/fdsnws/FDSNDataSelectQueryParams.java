@@ -96,6 +96,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
     /** Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case "--" (two dashes) will be translated to a string of two space characters to match blank location IDs.
      */
     public FDSNDataSelectQueryParams appendToLocation(String value) {
+        if ("  ".equals(value)) { value = "--";}
         appendToParam(LOCATION, value);
         return this;
     }
@@ -220,7 +221,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
         }
         String SEP = " ";
         for (ChannelTimeWindow ctw : request) {
-            out.append(ctw.toString(SEP, createDateFormat())+"\n");
+            out.append(ctw.formString(SEP, createDateFormat(), true)+"\n");
         }
         return out.toString();
     }
