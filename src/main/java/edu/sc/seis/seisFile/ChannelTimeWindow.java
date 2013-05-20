@@ -56,10 +56,10 @@ public class ChannelTimeWindow {
     }
 
     public String toString() {
-        return toString(" ", AbstractQueryParams.createDateFormat());
+        return formString(" ", AbstractQueryParams.createDateFormat());
     }
     
-    public String toString(String seperator, DateFormat df) {
+    public String formString(String seperator, DateFormat df) {
         return network + seperator + station + seperator + location + seperator + channel + seperator
                 + df.format(beginTime) + seperator + df.format(endTime);
     }
