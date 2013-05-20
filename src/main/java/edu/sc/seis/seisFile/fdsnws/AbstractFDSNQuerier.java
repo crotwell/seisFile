@@ -131,7 +131,13 @@ public abstract class AbstractFDSNQuerier {
         String out = "";
         BufferedReader errReader = null;
         try {
-            errReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            InputStream inError;
+            if ("gzip".equals(conn.getContentEncoding())) {
+                inError = new GZIPInputStream(conn.getErrorStream());
+            } else {
+                inError = conn.getErrorStream();
+            }
+            errReader = new BufferedReader(new InputStreamReader(inError));
             for (String line; (line = errReader.readLine()) != null;) {
                 out += line + "\n";
             }
