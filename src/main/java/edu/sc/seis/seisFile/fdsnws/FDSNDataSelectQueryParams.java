@@ -221,7 +221,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
         }
         String SEP = " ";
         for (ChannelTimeWindow ctw : request) {
-            out.append(ctw.formString(SEP, createDateFormat(), true)+"\n");
+            out.append(ctw.formString(SEP, createDateFormat())+"\n");
         }
         return out.toString();
     }
