@@ -56,11 +56,15 @@ public class ChannelTimeWindow {
     }
 
     public String toString() {
-        return formString(" ", AbstractQueryParams.createDateFormat());
+        return formString(" ", AbstractQueryParams.createDateFormat(), false);
     }
     
-    public String formString(String seperator, DateFormat df) {
-        return network + seperator + station + seperator + location + seperator + channel + seperator
+    public String formString(String seperator, DateFormat df, boolean dashifyLocId) {
+        String locId = location;
+        if (dashifyLocId && ( "".equals(locId) || "  ".equals(locId))) {
+            locId = "--";
+        }
+        return network + seperator + station + seperator + locId + seperator + channel + seperator
                 + df.format(beginTime) + seperator + df.format(endTime);
     }
 
