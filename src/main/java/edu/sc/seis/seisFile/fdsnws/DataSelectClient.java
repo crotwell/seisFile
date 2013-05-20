@@ -174,7 +174,7 @@ public class DataSelectClient extends AbstractFDSNClient {
 
     public void handleResults(DataRecordIterator drIter) throws IOException, SeedFormatException {
         if (!drIter.hasNext()) {
-            System.out.println("No Data (empty iterator)");
+            System.out.println("No Data");
         }
         DataOutputStream out = null;
         try {
