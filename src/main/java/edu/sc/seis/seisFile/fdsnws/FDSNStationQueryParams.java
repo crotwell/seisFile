@@ -156,6 +156,7 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     /** Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case "--" (two dashes) will be translated to a string of two space characters to match blank location IDs.
      */
     public FDSNStationQueryParams appendToLocation(String value) {
+        if ("  ".equals(value)) { value = "--";}
         appendToParam(LOCATION, value);
         return this;
     }
