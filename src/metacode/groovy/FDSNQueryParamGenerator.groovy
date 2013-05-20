@@ -286,7 +286,7 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         }
         String SEP = " ";
         for (ChannelTimeWindow ctw : request) {
-            out.append(ctw.formString(SEP, createDateFormat(), true)+"\\n");
+            out.append(ctw.formString(SEP, createDateFormat())+"\\n");
         }
         return out.toString();
     }
