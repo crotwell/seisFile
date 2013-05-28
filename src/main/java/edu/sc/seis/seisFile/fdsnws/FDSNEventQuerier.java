@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.fdsnws;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.xml.stream.XMLInputFactory;
@@ -23,9 +24,11 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
         this.queryParams = queryParams;
     }
 
-    public Quakeml getQuakeML() throws SeisFileException {
+    public Quakeml getQuakeML() throws FDSNWSException {
+        URI uri = null;
         try {
-            connect(queryParams.formURI());
+            uri = queryParams.formURI();
+            connect(uri);
             if (!isError()) {
                 if (!isEmpty()) {
                     try {
@@ -47,11 +50,14 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                 throw new SeisFileException("Error: " + getErrorMessage());
             }
         } catch(URISyntaxException e) {
-            throw new SeisFileException("Error with URL syntax", e);
-        } catch(MalformedURLException e) {
-            throw new SeisFileException("Error forming URL", e);
-        } catch(IOException e) {
-            throw new SeisFileException("Error with Connection", e);
+            throw new FDSNWSException("Error with URL syntax", e);
+        } catch(SeisFileException e) {
+            if (e instanceof FDSNWSException) {
+                ((FDSNWSException)e).setTargetURI(uri);
+                throw (FDSNWSException)e;
+            } else {
+                throw new FDSNWSException(e.getMessage(), e, uri);
+            }
         }
     }
 
@@ -79,7 +85,7 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
         }
     }
 
-    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException {
+    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException, FDSNWSException {
         connect(queryParams.formURI());
         outputRaw(getInputStream(), out);
     }

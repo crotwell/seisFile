@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -28,21 +27,27 @@ import org.xml.sax.SAXException;
 
 import edu.sc.seis.seisFile.client.AbstractClient;
 
-
 public abstract class AbstractFDSNQuerier {
 
-    void connect(URI uri) throws MalformedURLException, IOException {
+    void connect(URI uri) throws FDSNWSException {
         connectionUri = uri;
-        URLConnection urlConn = uri.toURL().openConnection();
-        if (urlConn instanceof HttpURLConnection) {
-            ((HttpURLConnection)urlConn).setRequestProperty("User-Agent", getUserAgent()); 
-            ((HttpURLConnection)urlConn).setRequestProperty("Accept", "application/xml");
-            ((HttpURLConnection)urlConn).setRequestProperty("Accept-Encoding", "gzip, deflate");
+        URLConnection urlConn;
+        try {
+            urlConn = uri.toURL().openConnection();
+            urlConn.setConnectTimeout(getConnectTimeout());
+            urlConn.setReadTimeout(getReadTimeout());
+            if (urlConn instanceof HttpURLConnection) {
+                ((HttpURLConnection)urlConn).setRequestProperty("User-Agent", getUserAgent());
+                ((HttpURLConnection)urlConn).setRequestProperty("Accept", "application/xml");
+                ((HttpURLConnection)urlConn).setRequestProperty("Accept-Encoding", "gzip, deflate");
+            }
+            processConnection(urlConn);
+        } catch(IOException e) {
+            throw new FDSNWSException("Problem with connection", e, uri);
         }
-        processConnection(urlConn);
     }
-    
-    protected void processConnection(URLConnection urlConn) throws MalformedURLException, IOException {
+
+    protected void processConnection(URLConnection urlConn) throws IOException {
         if (urlConn instanceof HttpURLConnection) {
             HttpURLConnection conn = (HttpURLConnection)urlConn;
             if (conn.getResponseCode() == 204) {
@@ -62,32 +67,29 @@ public abstract class AbstractFDSNQuerier {
             inputStream = new BufferedInputStream(urlConn.getInputStream());
         }
     }
-    
+
     protected void validate(XMLStreamReader reader, URL schemaURL) throws SAXException, IOException {
-        
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = factory.newSchema(schemaURL);
-
         Validator validator = schema.newValidator();
-        //StringWriter buf = new StringWriter();
-        //Result result = new StaXResult(buf);
+        // StringWriter buf = new StringWriter();
+        // Result result = new StaXResult(buf);
         validator.validate(new StAXSource(reader), null);
-        
     }
-    
+
     public void outputRaw(InputStream in, OutputStream out) throws IOException {
         BufferedInputStream bufIn = new BufferedInputStream(in);
         BufferedOutputStream bufOut = new BufferedOutputStream(out);
         byte[] buf = new byte[1024];
         int numRead = bufIn.read(buf);
-        while(numRead != -1) {
+        while (numRead != -1) {
             bufOut.write(buf, 0, numRead);
             numRead = bufIn.read(buf);
         }
         bufIn.close(); // close as we hit EOF
         bufOut.flush();// only flush in case outside wants to write more
     }
-    
+
     public boolean isError() {
         checkConnectionInitiated();
         return error;
@@ -112,7 +114,7 @@ public abstract class AbstractFDSNQuerier {
         checkConnectionInitiated();
         return connectionUri;
     }
-    
+
     public void checkConnectionInitiated() {
         if (connectionUri == null) {
             throw new RuntimeException("Not connected yet");
@@ -142,7 +144,7 @@ public abstract class AbstractFDSNQuerier {
                 out += line + "\n";
             }
         } catch(IOException e) {
-            out += "\nException reading error strea: "+e.toString();
+            out += "\nException reading error strea: " + e.toString();
         } finally {
             if (errReader != null)
                 try {
@@ -162,18 +164,44 @@ public abstract class AbstractFDSNQuerier {
     public String getUserAgent() {
         return userAgent;
     }
-    
+
+    /** set the HttpConnection connectionTimeout in milliseconds. */
+    public void setConnectTimeout(int milliseconds) {
+        connectTimeout = milliseconds;
+    }
+
+    /** set the HttpConnection readTimeout in milliseconds. */
+    public void setReadTimeout(int milliseconds) {
+        readTimeout = milliseconds;
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
-    
+
     boolean error;
 
     String errorMessage;
 
     boolean empty;
-    
+
     XMLEventReader reader;
 
     InputStream inputStream;
 
     protected URI connectionUri;
+
+    protected int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
+
+    protected int readTimeout = DEFAULT_READ_TIMEOUT;
+
+    public static int DEFAULT_CONNECT_TIMEOUT = 5 * 1000;
+
+    public static int DEFAULT_READ_TIMEOUT = 15 * 1000;
 }
