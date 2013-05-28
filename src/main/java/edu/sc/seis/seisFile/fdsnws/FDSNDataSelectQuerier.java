@@ -43,10 +43,12 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     }
 
     public DataRecordIterator getDataRecordIterator() throws SeisFileException {
+        URI uri = null;
         try {
             if (request == null) {
                 // normal GET request, so use super
-                connect(queryParams.formURI());
+                uri = queryParams.formURI();
+                connect(uri);
             } else {
                 // POST request, so we have to do connection special
                 connectForPost();
@@ -64,11 +66,11 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                 throw new SeisFileException("Error: " + getErrorMessage());
             }
         } catch(URISyntaxException e) {
-            throw new SeisFileException("Error with URL syntax", e);
+            throw new FDSNWSException("Error with URL syntax", e);
         } catch(MalformedURLException e) {
-            throw new SeisFileException("Error forming URL", e);
+            throw new FDSNWSException("Error forming URL", e, uri);
         } catch(IOException e) {
-            throw new SeisFileException("Error with Connection", e);
+            throw new FDSNWSException("Error with Connection", e, uri);
         }
     }
 
@@ -91,6 +93,8 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                                 queryParams.getFragment());
         HttpURLConnection conn = (HttpURLConnection)connectionUri.toURL().openConnection();
         conn.setRequestMethod("POST");
+        conn.setConnectTimeout(getConnectTimeout());
+        conn.setReadTimeout(getReadTimeout());
         conn.setRequestProperty("User-Agent", getUserAgent());
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         byte[] queryBytes = postQuery.getBytes();
@@ -115,7 +119,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
 
     FDSNDataSelectQueryParams queryParams;
 
-    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException {
+    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, FDSNWSException, URISyntaxException {
         if (request == null) {
             // normal GET request, so use super
             connect(queryParams.formURI());
