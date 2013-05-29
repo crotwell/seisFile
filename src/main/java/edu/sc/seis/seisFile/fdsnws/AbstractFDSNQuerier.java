@@ -44,18 +44,20 @@ public abstract class AbstractFDSNQuerier {
             processConnection(urlConn);
         } catch(IOException e) {
             throw new FDSNWSException("Problem with connection", e, uri);
+        } catch(RuntimeException e) {
+            throw new FDSNWSException("Problem with connection", e, uri);
         }
     }
 
     protected void processConnection(URLConnection urlConn) throws IOException {
         if (urlConn instanceof HttpURLConnection) {
             HttpURLConnection conn = (HttpURLConnection)urlConn;
-            if (conn.getResponseCode() == 204) {
+            responseCode = conn.getResponseCode();
+            if (responseCode == 204) {
                 empty = true;
                 return;
-            } else if (conn.getResponseCode() != 200) {
+            } else if (responseCode != 200) {
                 error = true;
-                System.err.println("Response Code :" + conn.getResponseCode());
                 errorMessage = extractErrorMessage(conn);
                 return;
             }
@@ -133,18 +135,20 @@ public abstract class AbstractFDSNQuerier {
         String out = "";
         BufferedReader errReader = null;
         try {
-            InputStream inError;
-            if ("gzip".equals(conn.getContentEncoding())) {
-                inError = new GZIPInputStream(conn.getErrorStream());
+            InputStream inError = conn.getErrorStream();
+            if (inError == null) {
+                out = "<Empty Error Message From Server>";
             } else {
-                inError = conn.getErrorStream();
-            }
-            errReader = new BufferedReader(new InputStreamReader(inError));
-            for (String line; (line = errReader.readLine()) != null;) {
-                out += line + "\n";
+                if ("gzip".equals(conn.getContentEncoding())) {
+                    inError = new GZIPInputStream(inError);
+                }
+                errReader = new BufferedReader(new InputStreamReader(inError));
+                for (String line; (line = errReader.readLine()) != null;) {
+                    out += line + "\n";
+                }
             }
         } catch(IOException e) {
-            out += "\nException reading error strea: " + e.toString();
+            out += "\nException reading error stream: " + e.toString();
         } finally {
             if (errReader != null)
                 try {
@@ -163,6 +167,10 @@ public abstract class AbstractFDSNQuerier {
 
     public String getUserAgent() {
         return userAgent;
+    }
+    
+    public int getResponseCode() {
+        return responseCode;
     }
 
     /** set the HttpConnection connectionTimeout in milliseconds. */
@@ -185,6 +193,8 @@ public abstract class AbstractFDSNQuerier {
 
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
 
+    int responseCode;
+    
     boolean error;
 
     String errorMessage;
