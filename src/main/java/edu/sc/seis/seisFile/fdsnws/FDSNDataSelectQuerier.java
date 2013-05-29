@@ -63,7 +63,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                     return new DataRecordIterator(new DataInputStream(new ByteArrayInputStream(new byte[0])));
                 }
             } else {
-                throw new SeisFileException("Error: " + getErrorMessage());
+                throw new FDSNWSException("Error: " + getErrorMessage(), uri);
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);
@@ -144,6 +144,7 @@ class MyAuthenticator extends Authenticator {
     }
 
     public PasswordAuthentication getPasswordAuthentication() {
+        System.out.println("getPasswordAuthentication() user="+user+"  pw="+password);
         return new PasswordAuthentication(user, password.toCharArray());
     }
 }
