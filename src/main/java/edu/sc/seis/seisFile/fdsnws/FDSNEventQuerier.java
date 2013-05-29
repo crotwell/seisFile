@@ -66,8 +66,9 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
     private static Logger logger = LoggerFactory.getLogger(FDSNEventQuerier.class);
 
     public void validateQuakeML() throws SeisFileException, URISyntaxException {
+        URI uri = queryParams.formURI();
         try {
-            connect(queryParams.formURI());
+            connect(uri);
             if (!isError()) {
                 if (!isEmpty()) {
                     XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -77,11 +78,11 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                 }
             }
         } catch(SAXException e) {
-            throw new SeisFileException("Unable to validate xml", e);
+            throw new FDSNWSException("Unable to validate xml", e, uri);
         } catch(XMLStreamException e) {
-            throw new SeisFileException("Unable to read xml", e);
+            throw new FDSNWSException("Unable to read xml", e, uri);
         } catch(IOException e) {
-            throw new SeisFileException("IOException trying to validate", e);
+            throw new FDSNWSException("IOException trying to validate", e, uri);
         }
     }
 
