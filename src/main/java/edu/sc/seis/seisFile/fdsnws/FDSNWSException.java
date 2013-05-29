@@ -44,4 +44,5 @@ public class FDSNWSException extends SeisFileException {
     public void setTargetURI(URI uri) {
         this.targetURI = uri;
     }
+    
 }
