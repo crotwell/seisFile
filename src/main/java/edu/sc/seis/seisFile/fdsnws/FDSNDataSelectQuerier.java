@@ -144,7 +144,6 @@ class MyAuthenticator extends Authenticator {
     }
 
     public PasswordAuthentication getPasswordAuthentication() {
-        System.out.println("getPasswordAuthentication() user="+user+"  pw="+password);
         return new PasswordAuthentication(user, password.toCharArray());
     }
 }
