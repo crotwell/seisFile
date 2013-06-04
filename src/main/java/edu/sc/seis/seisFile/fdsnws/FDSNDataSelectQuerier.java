@@ -52,6 +52,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
             } else {
                 // POST request, so we have to do connection special
                 connectForPost();
+                uri = connectionUri; // depending on where exception happens in connectForPost, this might still be null
             }
             if (!isError()) {
                 if (!isEmpty()) {
