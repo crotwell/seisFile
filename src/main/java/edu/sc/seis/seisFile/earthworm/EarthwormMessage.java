@@ -39,4 +39,5 @@ public class EarthwormMessage {
 
     public static final byte MESSAGE_TYPE_TRACEBUF2 = 19;
     public static final byte MESSAGE_TYPE_HEARTBEAT = 3;
+    public static final int MESSAGE_TYPE_MINISEED = 35;
 }
