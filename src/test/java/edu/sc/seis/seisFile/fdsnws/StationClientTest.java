@@ -13,7 +13,7 @@ public class StationClientTest {
         StationClient sc = new StationClient(new String[] {"-n", "CO"});
         JSAPResult result = sc.getResult();
         FDSNStationQueryParams queryParams = sc.configureQuery(result);
-        assertEquals("uri", FDSNStationQueryParams.IRIS_BASE_URI + "network=CO", queryParams.formURI().toString());
+        assertEquals("uri", "http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO", queryParams.formURI().toString());
     }
 
     @Test
@@ -21,7 +21,7 @@ public class StationClientTest {
         StationClient sc = new StationClient(new String[] {"-n", "CO", "-s", "JSC"});
         JSAPResult result = sc.getResult();
         FDSNStationQueryParams queryParams = sc.configureQuery(result);
-        assertEquals("uri", FDSNStationQueryParams.IRIS_BASE_URI + "network=CO&station=JSC", queryParams.formURI().toString());
+        assertEquals("uri", "http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC", queryParams.formURI().toString());
     }
 
     @Test
@@ -29,6 +29,6 @@ public class StationClientTest {
         StationClient sc = new StationClient(new String[] {"-n", "CO", "-s", "JSC,CASEE"});
         JSAPResult result = sc.getResult();
         FDSNStationQueryParams queryParams = sc.configureQuery(result);
-        assertEquals("uri", FDSNStationQueryParams.IRIS_BASE_URI + "network=CO&station=JSC,CASEE", queryParams.formURI().toString());
+        assertEquals("uri", "http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC,CASEE", queryParams.formURI().toString());
     }
 }
