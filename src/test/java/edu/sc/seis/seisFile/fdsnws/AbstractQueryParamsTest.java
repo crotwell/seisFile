@@ -18,7 +18,7 @@ public class AbstractQueryParamsTest {
         String third = "third";
         AbstractQueryParams aqp = new AbstractQueryParams("test.seis.sc.edu") {
             @Override
-            protected String getServiceName() {
+            public String getServiceName() {
                 return "event";
             }
         };
