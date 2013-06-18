@@ -1,8 +1,10 @@
 package edu.sc.seis.seisFile.waveserver;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.text.DecimalFormat;
@@ -44,7 +46,7 @@ public class WaveServer extends StringMSeedQueryReader {
         String nextReqId = getNextRequestId();
         PrintWriter socketOut = getOut();
         socketOut.println("MENU: " + nextReqId + " SCNL");
-        String all = getIn().readLine(); // newline ends reply
+        String all = new BufferedReader(new InputStreamReader(getIn())).readLine(); // newline ends reply
         String[] sections = all.split("  "); // double space separates entries
         for (int i = 1; i < sections.length; i++) {
             String[] cols = sections[i].split(" +");
