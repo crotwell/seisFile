@@ -211,7 +211,7 @@ public abstract class AbstractFDSNQuerier {
 
     protected int readTimeout = DEFAULT_READ_TIMEOUT;
 
-    public static int DEFAULT_CONNECT_TIMEOUT = 5 * 1000;
+    public static int DEFAULT_CONNECT_TIMEOUT = 10 * 1000;
 
-    public static int DEFAULT_READ_TIMEOUT = 15 * 1000;
+    public static int DEFAULT_READ_TIMEOUT = 60 * 1000;
 }
