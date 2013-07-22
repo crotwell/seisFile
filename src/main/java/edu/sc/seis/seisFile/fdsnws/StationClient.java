@@ -19,7 +19,9 @@ import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.client.BoxAreaParser;
 import edu.sc.seis.seisFile.client.DonutParser;
 import edu.sc.seis.seisFile.client.ISOTimeParser;
+import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
+import edu.sc.seis.seisFile.fdsnws.stationxml.DataAvailability;
 import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
 import edu.sc.seis.seisFile.fdsnws.stationxml.NetworkIterator;
@@ -208,20 +210,29 @@ public class StationClient extends AbstractFDSNClient {
         NetworkIterator nIt = stationXml.getNetworks();
         while (nIt.hasNext()) {
             Network n = nIt.next();
-            System.out.println(n.getCode()+" "+n.getStartDate() + " " + n.getDescription());
+            System.out.println(n.getCode()+" "+n.getStartDate() + " " + n.getDescription()+" "+extractDataAvailability(n));
             StationIterator sIt = n.getStations();
             while (sIt.hasNext()) {
                 Station s = sIt.next();
                 System.out.println("    "+n.getCode() + "." + s.getCode() + " " + s.getLatitude() + "/" + s.getLongitude()
-                        + " " + s.getSite() + " " + s.getStartDate());
+                        + " " + s.getSite() + " " + s.getStartDate()+" "+extractDataAvailability(s));
                 List<Channel> chanList = s.getChannelList();
                 for (Channel channel : chanList) {
                     System.out.println("        " + channel.getLocCode() + "." + channel.getCode() + " "
                             + channel.getAzimuth() + "/" + channel.getDip() + " " + channel.getDepth().getValue() + " "
-                            + channel.getDepth().getUnit() + " " + channel.getStartDate());
+                            + channel.getDepth().getUnit() + " " + channel.getStartDate()+" "+extractDataAvailability(channel));
+                    
                 }
             }
         }
+    }
+    
+    String extractDataAvailability(BaseNodeType node) {
+        DataAvailability da = node.getDataAvailability();
+        if (da != null && da.getExtent() != null) {
+            return " ("+da.getExtent().getStart()+" to "+da.getExtent().getEnd()+") ";
+        }
+        return "";
     }
 
     /**
