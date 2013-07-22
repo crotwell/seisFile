@@ -34,7 +34,16 @@ public abstract class AbstractQueryParams {
 
     protected void appendToParam(String key, String value) {
         if (params.containsKey(key)) {
-            value = params.get(key) + "," + value;
+            if (params.get(key).equals(value) 
+                    || params.get(key).startsWith(value+",") 
+                    || params.get(key).endsWith(","+value) 
+                    || params.get(key).contains(","+value+",")) {
+                // already in list
+                value = params.get(key);
+            } else {
+                // not already in list
+                value = params.get(key) + "," + value;
+            }
         }
         params.put(key, value);
     }
