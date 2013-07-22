@@ -167,5 +167,12 @@ public final class StationXMLTagNames {
     public static final String NONE = "NONE";
     public static final String ODD = "ODD";
     public static final String EVEN = "EVEN";
+    public static final String DATAAVAILABILITY = "DataAvailability";
+    public static final String EXTENT = "Extent";
+    public static final String SPAN = "Span";
+    public static final String START = "start";
+    public static final String END = "end";
+    public static final String NUMBERSEGMENTS = "numberSegments";
+    public static final String MAXIMUMTIMETEAR = "maximumTimeTear";
     
     }

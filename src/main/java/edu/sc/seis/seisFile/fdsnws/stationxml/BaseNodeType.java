@@ -30,6 +30,9 @@ public class BaseNodeType {
         } else if (elName.equals(StationXMLTagNames.COMMENT)) {
             commentList.add(new Comment(reader, StationXMLTagNames.COMMENT));
             return true;
+        } else if (elName.equals(StationXMLTagNames.DATAAVAILABILITY)) {
+            dataAvailability = new DataAvailability(reader);
+            return true;
         } else {
             return false;
         }
@@ -67,6 +70,10 @@ public class BaseNodeType {
         return commentList;
     }
 
+    public DataAvailability getDataAvailability() {
+        return dataAvailability;
+    }
+
     String code;
 
     String startDate;
@@ -82,4 +89,6 @@ public class BaseNodeType {
     String description;
 
     List<Comment> commentList = new ArrayList<Comment>();
+
+    DataAvailability dataAvailability;
 }
