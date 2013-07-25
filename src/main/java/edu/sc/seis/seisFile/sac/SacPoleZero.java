@@ -41,6 +41,8 @@ public class SacPoleZero {
     }
 
     public String toString() {
+        DecimalFormat formatter = new DecimalFormat(" 0.0000;-0.0000");
+        DecimalFormat constantFormatter = new DecimalFormat("0.0#######E00");
         String out = ZEROS+" "+zeros.length+"\n";
         for (int i = 0; i < zeros.length; i++) {
             out += formatter.format(zeros[i].getReal())+" "+formatter.format(zeros[i].getImaginary())+"\n";
@@ -254,6 +256,4 @@ public class SacPoleZero {
 
     static String CONSTANT = "CONSTANT";
 
-    protected static DecimalFormat formatter = new DecimalFormat(" 0.0000;-0.0000");
-    protected static DecimalFormat constantFormatter = new DecimalFormat("0.0#######E00");
 }
