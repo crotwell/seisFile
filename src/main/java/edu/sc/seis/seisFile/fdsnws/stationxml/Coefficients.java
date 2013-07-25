@@ -42,7 +42,7 @@ public class Coefficients extends BaseFilterType {
         }
     }
 
-    public static String getCfTransferType() {
+    public String getCfTransferType() {
         return cfTransferType;
     }
 
@@ -55,7 +55,7 @@ public class Coefficients extends BaseFilterType {
         return denominatorList;
     }
 
-    private static String cfTransferType;
+    private String cfTransferType;
     List<FloatType> numeratorList = new ArrayList<FloatType>();
     List<FloatType> denominatorList = new ArrayList<FloatType>();
 }
