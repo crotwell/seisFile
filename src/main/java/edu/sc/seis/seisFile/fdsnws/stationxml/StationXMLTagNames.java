@@ -174,5 +174,11 @@ public final class StationXMLTagNames {
     public static final String END = "end";
     public static final String NUMBERSEGMENTS = "numberSegments";
     public static final String MAXIMUMTIMETEAR = "maximumTimeTear";
+    public static final String POLEZERO_LAPLACE_RAD_PER_SEC = "LAPLACE (RADIANS/SECOND)";
+    public static final String POLEZERO_LAPLACE_HERTZ = "LAPLACE (HERTZ)";
+    public static final String POLEZERO_DIGITAL = "DIGITAL (Z-TRANSFORM)";
+    public static final String COEFFICIENT_ANALOG_RAD_PER_SEC = "ANALOG (RADIANS/SECOND)";
+    public static final String COEFFICIENT_ANALOG_HERTZ = "ANALOG (HERTZ)";
+    public static final String COEFFICIENT_DIGITAL = "DIGITAL";
     
     }
