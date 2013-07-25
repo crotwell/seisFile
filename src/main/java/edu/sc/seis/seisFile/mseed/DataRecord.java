@@ -191,6 +191,7 @@ public class DataRecord extends SeedRecord implements Serializable {
 
     public void writeData(PrintWriter out) {
         byte[] d = getData();
+        DecimalFormat byteFormat = new DecimalFormat("000");
         for (int i = 0; i < d.length; i++) {
             out.write(byteFormat.format(0xff & d[i])+" ");
             if (i % 4 == 3) {out.write("  ");}
@@ -328,5 +329,4 @@ public class DataRecord extends SeedRecord implements Serializable {
 
     byte ZERO_BYTE = 0;
     
-    private static DecimalFormat byteFormat = new DecimalFormat("000");
 } // DataRecord
