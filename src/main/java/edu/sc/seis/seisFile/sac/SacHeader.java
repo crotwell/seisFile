@@ -488,10 +488,15 @@ public class SacHeader {
         return s;
     }
 
-    public static final DecimalFormat decimalFormat = new DecimalFormat("#####.####");
-
+    private static final ThreadLocal<DecimalFormat> decimalFormat = new ThreadLocal<DecimalFormat>() {  
+        @Override  
+        protected DecimalFormat initialValue() {  
+            return (new DecimalFormat("#####.####"));  
+        }  
+    };
+    
     public static String format(String label, float f) {
-        return format(label, decimalFormat.format(f), 10, 8);
+        return format(label, decimalFormat.get().format(f), 10, 8);
     }
 
     public static String format(String label, String val, int labelWidth, int valWidth) {
