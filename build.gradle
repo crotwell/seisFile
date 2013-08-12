@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.6.1'
+version = '1.6.2-SNAPSHOT'
 
 apply plugin: 'maven'
 apply plugin: 'groovy'
@@ -152,6 +152,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     def dExtras = getDExtras()
     def doBat = true
     ScriptBuilder.create('fdsnevent', 'edu.sc.seis.seisFile.fdsnws.EventClient', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fdsnstationxml', 'edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('fdsnstation', 'edu.sc.seis.seisFile.fdsnws.StationClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('fdsndataselect', 'edu.sc.seis.seisFile.fdsnws.DataSelectClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('saclh', 'edu.sc.seis.seisFile.sac.ListHeader', task.project, dExtras:dExtras, bat:doBat)
