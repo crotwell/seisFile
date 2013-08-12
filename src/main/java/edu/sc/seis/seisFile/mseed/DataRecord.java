@@ -123,6 +123,11 @@ public class DataRecord extends SeedRecord implements Serializable {
      * @throws CodecException
      */
     public DecompressedData decompress() throws SeedFormatException, UnsupportedCompressionType, CodecException {
+        // in case of record with only blockettes, ex detection blockette, which often have compression type
+        // set to 0, which messes up the decompresser even though it doesn't matter since there is no data.
+        if (getHeader().getNumSamples() == 0) {
+            return new DecompressedData(new int[0]);
+        }
         Blockette1000 b1000 = (Blockette1000)getUniqueBlockette(1000);
         if (b1000 == null) {
             throw new MissingBlockette1000(getHeader());
