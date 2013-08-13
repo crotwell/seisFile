@@ -14,7 +14,7 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
     
     public FDSNStationQueryParams(String host) {
-        super(host);
+        super(host==null?IRIS_HOST:host);
     }
 
     public FDSNStationQueryParams clone() {

@@ -14,7 +14,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
     }
     
     public FDSNDataSelectQueryParams(String host) {
-        super(host);
+        super(host==null?IRIS_HOST:host);
     }
 
     public FDSNDataSelectQueryParams clone() {

@@ -53,7 +53,7 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
     }
     
     public FDSN${service}QueryParams(String host) {
-        super(host);
+        super(host==null?IRIS_HOST:host);
     }
 
     public FDSN${service}QueryParams clone() {
