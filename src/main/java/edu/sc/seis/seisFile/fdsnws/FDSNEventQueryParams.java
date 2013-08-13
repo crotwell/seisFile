@@ -14,7 +14,7 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
     
     public FDSNEventQueryParams(String host) {
-        super(host);
+        super(host==null?IRIS_HOST:host);
     }
 
     public FDSNEventQueryParams clone() {
