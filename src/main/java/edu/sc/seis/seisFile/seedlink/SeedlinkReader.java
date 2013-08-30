@@ -99,7 +99,14 @@ public class SeedlinkReader {
         }
         return in.available() > 256;
     }
-
+    
+    /** Returns available() from the underlying InputStream, in bytes
+     * 
+     */
+    public int availableBytes() throws IOException {
+        return in.available();
+    }
+    
 	/**
 	 * Get the SeedLink information string for streams.
 	 * @return the SeedLink information string.
