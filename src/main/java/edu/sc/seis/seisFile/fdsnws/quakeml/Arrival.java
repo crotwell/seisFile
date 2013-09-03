@@ -18,7 +18,7 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 public class Arrival {
 
     public Arrival(XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.magnitude, reader);
+        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.arrival, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();

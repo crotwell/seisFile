@@ -16,7 +16,7 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Time;
 public class Pick {
 
     public Pick(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.origin, reader);
+        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.pick, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
