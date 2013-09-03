@@ -15,7 +15,7 @@ public class Comment {
     
     public Comment(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StaxUtil.skipToStartElement(reader);
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.eventParameter, reader);
+        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.comment, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
