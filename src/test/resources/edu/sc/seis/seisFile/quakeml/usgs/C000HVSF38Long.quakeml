@@ -1,0 +1,1413 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<q:quakeml xmlns:q="http://quakeml.org/xmlns/quakeml/1.2" xmlns="http://quakeml.org/xmlns/bed/1.2" xmlns:catalog="http://anss.org/xmlns/catalog/0.1" xmlns:tensor="http://anss.org/xmlns/tensor/0.1">
+
+  <eventParameters xmlns="http://quakeml.org/xmlns/bed/1.2" publicID="quakeml:us.anss.org/eventparameters/c000hvsf/1377546641">
+    <event catalog:dataid="usc000hvsf" catalog:datasource="us" catalog:eventid="c000hvsf" catalog:eventsource="us" publicID="quakeml:us.anss.org/event/c000hvsf">
+      <description>
+        <text>NEW BRUNSWICK, CANADA</text>
+        <type>Flinn-Engdahl region</type>
+      </description>
+      <description>
+        <text>71 km (44 miles) NNE of Fredericton, Canada (pop 52337)
+80 km (49 miles) SW of Miramichi, Canada (pop 18129)
+120 km (74 miles) WNW of Moncton, Canada (pop 87467)
+130 km (80 miles) WNW of Dieppe, Canada (pop 18565)
+71 km (44 miles) NNE of Fredericton, Canada (pop 52337)
+</text>
+        <type>nearest cities</type>
+      </description>
+      <comment>
+        <text>mbLg 2.9 (OTT). Felt at Fredericton and in the Rogersville area.
+
+</text>
+      </comment>
+      <magnitude catalog:dataid="us_ott_c000hvsf_mb_lg" catalog:datasource="us" publicID="quakeml:us.anss.org/magnitude/ott_c000hvsf/mb_lg">
+        <mag>
+          <value>2.9</value>
+        </mag>
+        <type>mb_Lg</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <agencyID>us_ott</agencyID>
+          <creationTime>2013-07-28T22:43:26Z</creationTime>
+        </creationInfo>
+      </magnitude>
+      <origin catalog:dataid="us_ottlocationdisp_20130728223102_47_-66" catalog:datasource="us_ott" catalog:eventid="locationdisp_20130728223102_47_-66" publicID="quakeml:us.anss.org/origin/ott_locationdisp_20130728223102_47_-66">
+        <originUncertainty>
+          <horizontalUncertainty>4500</horizontalUncertainty>
+          <maxHorizontalUncertainty>9300</maxHorizontalUncertainty>
+          <azimuthMaxHorizontalUncertainty>204</azimuthMaxHorizontalUncertainty>
+          <confidenceEllipsoid>
+            <semiMajorAxisLength>12400</semiMajorAxisLength>
+            <semiMinorAxisLength>4500</semiMinorAxisLength>
+            <semiIntermediateAxisLength>9500</semiIntermediateAxisLength>
+            <majorAxisPlunge>76</majorAxisPlunge>
+            <majorAxisAzimuth>204</majorAxisAzimuth>
+            <majorAxisRotation>134</majorAxisRotation>
+          </confidenceEllipsoid>
+          <preferredDescription>confidence ellipsoid</preferredDescription>
+        </originUncertainty>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524522">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524522</pickID>
+          <phase>Pg</phase>
+          <azimuth>9.64124</azimuth>
+          <distance>0.768427</distance>
+          <takeoffAngle>
+            <value>87.1</value>
+          </takeoffAngle>
+          <timeResidual>-0.20</timeResidual>
+          <timeWeight>0.2480</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-20T01:38:47Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524526">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524526</pickID>
+          <phase>Pn</phase>
+          <azimuth>196.151</azimuth>
+          <distance>1.45895</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.20</timeResidual>
+          <timeWeight>0.0910</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-20T01:39:08Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524523">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524523</pickID>
+          <phase>Pg</phase>
+          <azimuth>123.147</azimuth>
+          <distance>1.20446</distance>
+          <takeoffAngle>
+            <value>88.4</value>
+          </takeoffAngle>
+          <timeResidual>-1.00</timeResidual>
+          <timeWeight>0.1960</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:05:31Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524524">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524524</pickID>
+          <phase>Pg</phase>
+          <azimuth>277.729</azimuth>
+          <distance>1.22999</distance>
+          <takeoffAngle>
+            <value>88.5</value>
+          </takeoffAngle>
+          <timeResidual>-0.50</timeResidual>
+          <timeWeight>0.2090</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:05:36Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524525">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524525</pickID>
+          <phase>Sn</phase>
+          <azimuth>277.729</azimuth>
+          <distance>1.22999</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-0.90</timeResidual>
+          <timeWeight>0.0690</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:05:40Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524527">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524527</pickID>
+          <phase>Pn</phase>
+          <azimuth>205.513</azimuth>
+          <distance>2.0009</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>0.60</timeResidual>
+          <timeWeight>0.0810</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:05:57Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524530">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524530</pickID>
+          <phase>Pn</phase>
+          <azimuth>240.526</azimuth>
+          <distance>2.46801</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.90</timeResidual>
+          <timeWeight>0.0610</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:06:04Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524533">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524533</pickID>
+          <phase>Pn</phase>
+          <azimuth>106.893</azimuth>
+          <distance>3.48505</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.90</timeResidual>
+          <timeWeight>0.1110</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:06:17Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524534">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524534</pickID>
+          <phase>Sn</phase>
+          <azimuth>106.893</azimuth>
+          <distance>3.48505</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-1.10</timeResidual>
+          <timeWeight>0.0720</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:06:23Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524535">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524535</pickID>
+          <phase>Pn</phase>
+          <azimuth>256.1</azimuth>
+          <distance>4.36162</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.60</timeResidual>
+          <timeWeight>0.0460</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:06:29Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524536">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524536</pickID>
+          <phase>Pn</phase>
+          <azimuth>242.371</azimuth>
+          <distance>4.6033</distance>
+          <takeoffAngle>
+            <value>45.8</value>
+          </takeoffAngle>
+          <timeResidual>0.30</timeResidual>
+          <timeWeight>0.0490</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:06:40Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524537">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524537</pickID>
+          <phase>Pn</phase>
+          <azimuth>61.8482</azimuth>
+          <distance>6.48627</distance>
+          <takeoffAngle>
+            <value>45.8</value>
+          </takeoffAngle>
+          <timeResidual>-1.50</timeResidual>
+          <timeWeight>0.0760</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:07:06Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524544">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524544</pickID>
+          <phase>Sb</phase>
+          <azimuth>9.64124</azimuth>
+          <distance>0.768427</distance>
+          <takeoffAngle>
+            <value>63.7</value>
+          </takeoffAngle>
+          <timeResidual>-2.30</timeResidual>
+          <timeWeight>0.2150</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:12:11Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524546">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524546</pickID>
+          <phase>Sn</phase>
+          <azimuth>196.151</azimuth>
+          <distance>1.45895</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-0.80</timeResidual>
+          <timeWeight>0.1010</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:12:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us_3222_bpid-11002524547">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524547</pickID>
+          <phase>Sn</phase>
+          <azimuth>205.513</azimuth>
+          <distance>2.0009</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-1.60</timeResidual>
+          <timeWeight>0.0760</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-06-30T11:12:25Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213016">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213016</pickID>
+          <phase>Pn</phase>
+          <azimuth>298.003</azimuth>
+          <distance>2.63146</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.30</timeResidual>
+          <timeWeight>0.0460</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:09Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213017">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213017</pickID>
+          <phase>Sn</phase>
+          <azimuth>298.003</azimuth>
+          <distance>2.63146</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-0.90</timeResidual>
+          <timeWeight>0.0380</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213018">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213018</pickID>
+          <phase>Pn</phase>
+          <azimuth>295.504</azimuth>
+          <distance>2.87404</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.50</timeResidual>
+          <timeWeight>0.0450</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213019">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213019</pickID>
+          <phase>Sn</phase>
+          <azimuth>295.504</azimuth>
+          <distance>2.87404</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-0.90</timeResidual>
+          <timeWeight>0.0350</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213020">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213020</pickID>
+          <phase>Pn</phase>
+          <azimuth>278.636</azimuth>
+          <distance>3.41122</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.50</timeResidual>
+          <timeWeight>0.0450</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213021">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213021</pickID>
+          <phase>Sn</phase>
+          <azimuth>278.636</azimuth>
+          <distance>3.41122</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-1.60</timeResidual>
+          <timeWeight>0.0300</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213022">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213022</pickID>
+          <phase>Lg</phase>
+          <azimuth>336.873</azimuth>
+          <distance>3.04301</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-1.70</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213023">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213023</pickID>
+          <phase>Pn</phase>
+          <azimuth>336.873</azimuth>
+          <distance>3.04301</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.90</timeResidual>
+          <timeWeight>0.0510</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213024">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213024</pickID>
+          <phase>Sn</phase>
+          <azimuth>336.873</azimuth>
+          <distance>3.04301</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-2.70</timeResidual>
+          <timeWeight>0.0360</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213025">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213025</pickID>
+          <phase>Lg</phase>
+          <azimuth>270.465</azimuth>
+          <distance>7.72896</distance>
+          <takeoffAngle>
+            <value>50.0</value>
+          </takeoffAngle>
+          <timeResidual>-15.50</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213026">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213026</pickID>
+          <phase>Sn</phase>
+          <azimuth>270.465</azimuth>
+          <distance>7.72896</distance>
+          <takeoffAngle>
+            <value>50.0</value>
+          </takeoffAngle>
+          <timeResidual>-7.00</timeResidual>
+          <timeWeight>0.0110</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213027">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213027</pickID>
+          <phase>Lg</phase>
+          <azimuth>61.8482</azimuth>
+          <distance>6.48627</distance>
+          <takeoffAngle>
+            <value>50.1</value>
+          </takeoffAngle>
+          <timeResidual>-10.70</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213028">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213028</pickID>
+          <phase>Sn</phase>
+          <azimuth>61.8482</azimuth>
+          <distance>6.48627</distance>
+          <takeoffAngle>
+            <value>50.1</value>
+          </takeoffAngle>
+          <timeResidual>-5.60</timeResidual>
+          <timeWeight>0.0300</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213030">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213030</pickID>
+          <phase>Sn</phase>
+          <azimuth>254.521</azimuth>
+          <distance>5.41201</distance>
+          <takeoffAngle>
+            <value>50.1</value>
+          </takeoffAngle>
+          <timeResidual>-2.40</timeResidual>
+          <timeWeight>0.0200</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:13Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213031">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213031</pickID>
+          <phase>Lg</phase>
+          <azimuth>106.893</azimuth>
+          <distance>3.48505</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-7.30</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:13Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213033">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213033</pickID>
+          <phase>Pn</phase>
+          <azimuth>346.668</azimuth>
+          <distance>2.46566</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.20</timeResidual>
+          <timeWeight>0.0580</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:15Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213034">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213034</pickID>
+          <phase>Lg</phase>
+          <azimuth>347.502</azimuth>
+          <distance>3.08158</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-3.90</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:15Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213035">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213035</pickID>
+          <phase>Pn</phase>
+          <azimuth>347.502</azimuth>
+          <distance>3.08158</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.30</timeResidual>
+          <timeWeight>0.0550</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:15Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213036">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213036</pickID>
+          <phase>Sn</phase>
+          <azimuth>347.502</azimuth>
+          <distance>3.08158</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>0.20</timeResidual>
+          <timeWeight>0.0390</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:15Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213038">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213038</pickID>
+          <phase>Sg</phase>
+          <azimuth>123.147</azimuth>
+          <distance>1.20446</distance>
+          <takeoffAngle>
+            <value>88.4</value>
+          </takeoffAngle>
+          <timeResidual>-1.70</timeResidual>
+          <timeWeight>0.0880</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:16Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213039">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213039</pickID>
+          <phase>Pn</phase>
+          <azimuth>291.744</azimuth>
+          <distance>2.97211</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-1.40</timeResidual>
+          <timeWeight>0.0450</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:16Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213040">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213040</pickID>
+          <phase>Sn</phase>
+          <azimuth>291.744</azimuth>
+          <distance>2.97211</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-1.40</timeResidual>
+          <timeWeight>0.0340</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:16Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213042">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213042</pickID>
+          <phase>Sn</phase>
+          <azimuth>256.1</azimuth>
+          <distance>4.36162</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-2.50</timeResidual>
+          <timeWeight>0.0260</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:17Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213043">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213043</pickID>
+          <phase>Pn</phase>
+          <azimuth>30.0137</azimuth>
+          <distance>4.41108</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.50</timeResidual>
+          <timeWeight>0.0720</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213044">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213044</pickID>
+          <phase>Sn</phase>
+          <azimuth>30.0137</azimuth>
+          <distance>4.41108</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-3.40</timeResidual>
+          <timeWeight>0.0390</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213045">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213045</pickID>
+          <phase>Lg</phase>
+          <azimuth>240.526</azimuth>
+          <distance>2.46801</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-2.80</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213046">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213046</pickID>
+          <phase>Sn</phase>
+          <azimuth>240.526</azimuth>
+          <distance>2.46801</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-1.80</timeResidual>
+          <timeWeight>0.0500</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213047">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213047</pickID>
+          <phase>Lg</phase>
+          <azimuth>276.112</azimuth>
+          <distance>3.47227</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-4.50</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213048">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213048</pickID>
+          <phase>Lg</phase>
+          <azimuth>355.503</azimuth>
+          <distance>3.71804</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-6.60</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213049">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213049</pickID>
+          <phase>Pn</phase>
+          <azimuth>355.503</azimuth>
+          <distance>3.71804</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>-0.50</timeResidual>
+          <timeWeight>0.0550</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213050">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213050</pickID>
+          <phase>Sn</phase>
+          <azimuth>355.503</azimuth>
+          <distance>3.71804</distance>
+          <takeoffAngle>
+            <value>50.2</value>
+          </takeoffAngle>
+          <timeResidual>-2.00</timeResidual>
+          <timeWeight>0.0340</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000hvsf/us.ott_2173_bpid-12003213051">
+          <pickID>quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213051</pickID>
+          <phase>Pn</phase>
+          <azimuth>270.003</azimuth>
+          <distance>5.75429</distance>
+          <takeoffAngle>
+            <value>45.8</value>
+          </takeoffAngle>
+          <timeResidual>-1.50</timeResidual>
+          <timeWeight>0.0380</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-28T22:42:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <time>
+          <value>2013-06-20T01:37:20.41Z</value>
+          <uncertainty>1.97</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </time>
+        <longitude>
+          <value>-66.2489</value>
+          <uncertainty>0.0378</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </longitude>
+        <latitude>
+          <value>46.5196</value>
+          <uncertainty>0.0549</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </latitude>
+        <depth>
+          <value>5000</value>
+          <uncertainty>8000</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </depth>
+        <depthType>from location</depthType>
+        <quality>
+          <associatedPhaseCount>47</associatedPhaseCount>
+          <usedPhaseCount>0</usedPhaseCount>
+          <standardError>0.97</standardError>
+        </quality>
+        <type>hypocenter</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <agencyID>us_ott</agencyID>
+          <creationTime>2013-07-28T22:43:51Z</creationTime>
+          <version>0</version>
+        </creationInfo>
+      </origin>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524522">
+        <time>
+          <value>2013-06-20T01:37:35Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="--" networkCode="CN" stationCode="BATG"/>
+        <phaseHint>Pg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-20T01:38:47Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524526">
+        <time>
+          <value>2013-06-20T01:37:47.19Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="GGN"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-20T01:39:08Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524523">
+        <time>
+          <value>2013-06-20T01:37:42.46Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="LMN"/>
+        <phaseHint>Pg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:05:31Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524524">
+        <time>
+          <value>2013-06-20T01:37:43.53Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="00" networkCode="NE" stationCode="PQI"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:05:36Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524525">
+        <time>
+          <value>2013-06-20T01:38:00.33Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="00" networkCode="NE" stationCode="PQI"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:05:40Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524527">
+        <time>
+          <value>2013-06-20T01:37:55.4Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="00" networkCode="NE" stationCode="EMMW"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:05:57Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524530">
+        <time>
+          <value>2013-06-20T01:38:00.32Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="00" networkCode="US" stationCode="PKME"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:06:04Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524533">
+        <time>
+          <value>2013-06-20T01:38:14.31Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="--" networkCode="CN" stationCode="GBN"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:06:17Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524534">
+        <time>
+          <value>2013-06-20T01:38:55.73Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="--" networkCode="CN" stationCode="GBN"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:06:23Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524535">
+        <time>
+          <value>2013-06-20T01:38:26.74Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="MOQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:06:29Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524536">
+        <time>
+          <value>2013-06-20T01:38:30.93Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="00" networkCode="US" stationCode="LBNH"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:06:40Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524537">
+        <time>
+          <value>2013-06-20T01:38:54.97Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="DRLN"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:07:06Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524544">
+        <time>
+          <value>2013-06-20T01:37:44.71Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="--" networkCode="CN" stationCode="BATG"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:12:11Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524546">
+        <time>
+          <value>2013-06-20T01:38:06Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="GGN"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:12:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us_3222_bpid-11002524547">
+        <time>
+          <value>2013-06-20T01:38:18.59Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="00" networkCode="NE" stationCode="EMMW"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-06-30T11:12:25Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213016">
+        <time>
+          <value>2013-06-20T01:38:03.24Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="A21"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:09Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213017">
+        <time>
+          <value>2013-06-20T01:38:34.83Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="A21"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213018">
+        <time>
+          <value>2013-06-20T01:38:06.35Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="A61"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213019">
+        <time>
+          <value>2013-06-20T01:38:40.92Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="A61"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213020">
+        <time>
+          <value>2013-06-20T01:38:13.7Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="BCLQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213021">
+        <time>
+          <value>2013-06-20T01:38:53.44Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="BCLQ"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213022">
+        <time>
+          <value>2013-06-20T01:38:58.24Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="CNQ"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213023">
+        <time>
+          <value>2013-06-20T01:38:08.31Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="CNQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213024">
+        <time>
+          <value>2013-06-20T01:38:43.29Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="CNQ"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213025">
+        <time>
+          <value>2013-06-20T01:41:17.64Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="CRLO"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213026">
+        <time>
+          <value>2013-06-20T01:40:34.4Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="CRLO"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213027">
+        <time>
+          <value>2013-06-20T01:40:41.82Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="DRLN"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213028">
+        <time>
+          <value>2013-06-20T01:40:05.15Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="DRLN"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213030">
+        <time>
+          <value>2013-06-20T01:39:42Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="LD" stationCode="FRNY"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:13Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213031">
+        <time>
+          <value>2013-06-20T01:39:07.04Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="GBN"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:13Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213033">
+        <time>
+          <value>2013-06-20T01:38:01.05Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="GSQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:15Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213034">
+        <time>
+          <value>2013-06-20T01:38:57.27Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="ICQ"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:15Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213035">
+        <time>
+          <value>2013-06-20T01:38:09.42Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="ICQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:15Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213036">
+        <time>
+          <value>2013-06-20T01:38:47.05Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="ICQ"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:15Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213038">
+        <time>
+          <value>2013-06-20T01:37:57.47Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="LMN"/>
+        <phaseHint>Sg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:16Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213039">
+        <time>
+          <value>2013-06-20T01:38:06.82Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="LMQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:16Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213040">
+        <time>
+          <value>2013-06-20T01:38:42.82Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="CN" stationCode="LMQ"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:16Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213042">
+        <time>
+          <value>2013-06-20T01:39:16.04Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="MOQ"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:17Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213043">
+        <time>
+          <value>2013-06-20T01:38:27.48Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="NATG"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213044">
+        <time>
+          <value>2013-06-20T01:39:16.24Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IR" stationCode="NATG"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213045">
+        <time>
+          <value>2013-06-20T01:38:38.3Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="00" networkCode="US" stationCode="PKME"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213046">
+        <time>
+          <value>2013-06-20T01:38:29.95Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="00" networkCode="US" stationCode="PKME"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213047">
+        <time>
+          <value>2013-06-20T01:39:09.5Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="QCQ"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213048">
+        <time>
+          <value>2013-06-20T01:39:15.39Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="SMQ"/>
+        <phaseHint>Lg</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213049">
+        <time>
+          <value>2013-06-20T01:38:17.95Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="SMQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213050">
+        <time>
+          <value>2013-06-20T01:39:00.65Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="SMQ"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000hvsf/us.ott_2173_bpid-12003213051">
+        <time>
+          <value>2013-06-20T01:38:44.96Z</value>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="--" networkCode="CN" stationCode="TRQ"/>
+        <phaseHint>Pn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.ott</agencyID>
+          <creationTime>2013-07-28T22:42:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <preferredOriginID>quakeml:us.anss.org/origin/ott_locationdisp_20130728223102_47_-66</preferredOriginID>
+      <preferredMagnitudeID>quakeml:us.anss.org/magnitude/ott_c000hvsf/mb_lg</preferredMagnitudeID>
+      <type>earthquake</type>
+      <creationInfo>
+        <agencyID>us</agencyID>
+        <creationTime>2013-08-04T21:35:17Z</creationTime>
+      </creationInfo>
+    </event>
+    <creationInfo>
+      <agencyID>us</agencyID>
+      <creationTime>2013-08-04T21:36:18Z</creationTime>
+    </creationInfo>
+  </eventParameters>
+
+</q:quakeml>
