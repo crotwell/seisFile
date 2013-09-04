@@ -70,7 +70,7 @@ public abstract class AbstractFDSNQuerier {
         }
     }
 
-    protected void validate(XMLStreamReader reader, URL schemaURL) throws SAXException, IOException {
+    public static void validate(XMLStreamReader reader, URL schemaURL) throws SAXException, IOException {
         SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = factory.newSchema(schemaURL);
         Validator validator = schema.newValidator();
