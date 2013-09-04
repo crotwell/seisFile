@@ -1,5 +1,7 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
@@ -10,6 +12,10 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import com.martiansoftware.jsap.JSAPException;
+
+import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.StationClient;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
@@ -187,5 +193,38 @@ public class FDSNStationXML {
 
     public static URL loadSchema() {
         return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station-1.0.xsd");
+    }
+    
+
+    
+    public static FDSNStationXML loadStationXML(String filename) throws XMLStreamException, IOException, SeisFileException {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        XMLEventReader r = factory.createXMLEventReader(filename, new FileInputStream(filename));
+        XMLEvent e = r.peek();
+        while (!e.isStartElement()) {
+            e = r.nextEvent(); // eat this one
+            e = r.peek(); // peek at the next
+        }
+        System.out.println("StaMessage");
+        FDSNStationXML fdsnStationXML = new FDSNStationXML(r);
+        return fdsnStationXML;
+    }
+    
+    public static void main(String[] args) throws XMLStreamException, IOException, SeisFileException, JSAPException {
+        final FDSNStationXML stationXml = loadStationXML(args[0]);
+        StationClient sc = new StationClient(new String[0]) {
+            public void run()  {
+                try {
+                    handleResults(stationXml);
+                } catch(XMLStreamException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch(SeisFileException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        };
+        sc.run();
     }
 }
