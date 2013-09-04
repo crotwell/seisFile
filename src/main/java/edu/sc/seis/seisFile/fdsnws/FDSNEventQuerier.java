@@ -74,7 +74,7 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                     XMLInputFactory factory = XMLInputFactory.newInstance();
                     XMLStreamReader reader = factory.createXMLStreamReader(getConnectionUri().toString(),
                                                                            getInputStream());
-                    validate(reader, Quakeml.loadSchema());
+                    validateQuakeML(reader);
                 }
             }
         } catch(SAXException e) {
@@ -84,6 +84,10 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
         } catch(IOException e) {
             throw new FDSNWSException("IOException trying to validate", e, uri);
         }
+    }
+    
+    public static void validateQuakeML(XMLStreamReader reader) throws SAXException, IOException {
+        validate(reader, Quakeml.loadSchema());
     }
 
     public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException, FDSNWSException {
