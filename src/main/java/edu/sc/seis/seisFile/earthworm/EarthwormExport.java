@@ -76,8 +76,12 @@ public class EarthwormExport {
         serverSocket.setSoTimeout(10*1000);
     }
     
-    public void waitForClient() throws IOException {
-        while(true) {
+    public boolean isConnected() {
+        return outStream != null;
+    }
+    
+    public synchronized void waitForClient() throws IOException {
+        while( ! isConnected()) {
             try {
                 getHeartbeater().setOutStream(null);
                 if (serverSocket == null) {
@@ -103,7 +107,7 @@ public class EarthwormExport {
         }
     }
     
-    public void closeClient() {
+    public synchronized void closeClient() {
         logger.info("close client connection");
         if (outStream != null) {
             synchronized(outStream) {
