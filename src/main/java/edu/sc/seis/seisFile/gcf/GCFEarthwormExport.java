@@ -99,7 +99,7 @@ public class GCFEarthwormExport implements SerialPortEventListener {
                 logger.info("serial in buffer"+serialPort.getInputBufferSize());
                 in = new DataInputStream(new BufferedInputStream(serialPort.getInputStream(), 4096));
                 out = new DataOutputStream(serialPort.getOutputStream());
-                logger.info("connect, clean buffer");
+                logger.info("serial connect, clean buffer");
                 // clean the buffer so hopefully we start at the beginning of a packet
                 while(in.available()>0) {
                     in.read();
