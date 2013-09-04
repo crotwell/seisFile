@@ -25,6 +25,13 @@ public class BufferingEarthwormExport {
             @Override
             public void run() {
                 while (true) {
+                    try {
+                        if (! export.isConnected()) {
+                            export.waitForClient();
+                        }
+                    } catch(IOException e1) {
+                        logger.error("Problem waiting for client connection", e1);
+                    }
                     TraceBuf2 tb = pop();
                     logger.info("Try to send "+tb);
                     boolean notSent = true;
