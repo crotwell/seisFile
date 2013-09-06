@@ -10,6 +10,6 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 public class InstrumentPolynomial extends Polynomial {
 
     public InstrumentPolynomial(XMLEventReader reader) throws XMLStreamException, StationXMLException {
-        super(reader);
+        super(reader, StationXMLTagNames.INSTRUMENT_POLYNOMIAL);
     }
 }
