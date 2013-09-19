@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rng:grammar ns="http://quakeml.org/xmlns/quakeml/1.2"
-             xmlns:bed="http://quakeml.org/xmlns/bed/1.2"
+<rng:grammar ns="http://quakeml.org/xmlns/quakeml-rt/1.2"
+             xmlns:bed="http://quakeml.org/xmlns/bed-rt/1.2"
              xmlns:rng="http://relaxng.org/ns/structure/1.0"
              datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
     
-    <rng:include href="QuakeML-BED-1.2.rng"/>
+    <rng:include href="QuakeML-RT-BED-1.2.rng"/>
 
     <!-- wildcard definitions
          see: Eric van der Vlist, Relax NG, O'Reilly & Associates (ISBN: 0596004214) 
@@ -33,8 +33,8 @@
                 <rng:anyName>
                     <rng:except>
                         <rng:nsName ns=""/>
-                        <rng:nsName ns="http://quakeml.org/xmlns/quakeml/1.2"/>
-                        <rng:nsName ns="http://quakeml.org/xmlns/bed/1.2"/>
+                        <rng:nsName ns="http://quakeml.org/xmlns/quakeml-rt/1.2"/>
+                        <rng:nsName ns="http://quakeml.org/xmlns/bed-rt/1.2"/>
                     </rng:except>
                 </rng:anyName>
                 <rng:ref name="anything"/>
@@ -48,8 +48,8 @@
                 <rng:anyName>
                     <rng:except>
                         <rng:nsName ns=""/>
-                        <rng:nsName ns="http://quakeml.org/xmlns/quakeml/1.2"/>
-                        <rng:nsName ns="http://quakeml.org/xmlns/bed/1.2"/>
+                        <rng:nsName ns="http://quakeml.org/xmlns/quakeml-rt/1.2"/>
+                        <rng:nsName ns="http://quakeml.org/xmlns/bed-rt/1.2"/>
                     </rng:except>
                 </rng:anyName>
             </rng:attribute>
