@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<q:quakeml xmlns:q="http://quakeml.org/xmlns/quakeml/1.2" xmlns="http://quakeml.org/xmlns/bed/1.2" xmlns:catalog="http://anss.org/xmlns/catalog/0.1" xmlns:tensor="http://anss.org/xmlns/tensor/0.1">
+
+  <eventParameters xmlns="http://quakeml.org/xmlns/bed/1.2" publicID="quakeml:us.anss.org/eventparameters/b000i683/1378327468">
+    <comment>
+      <text>HYDRA - us</text>
+    </comment>
+    <event catalog:dataid="usb000i683" catalog:datasource="us" catalog:eventid="b000i683" catalog:eventsource="us" publicID="quakeml:us.anss.org/event/b000i683">
+      <description>
+        <text>CENTRAL ALASKA</text>
+        <type>Flinn-Engdahl region</type>
+      </description>
+      <description>
+        <text>18 km (11 miles) E of Y, Alaska (pop 1260)
+72 km (44 miles) N of Knik-Fairview, Alaska (pop 14923)
+107 km (66 miles) N of Anchorage, Alaska (pop 291826)
+310 km (192 miles) SSW of Badger, Alaska (pop 19482)
+785 km (487 miles) WNW of Whitehorse, Canada (pop 23272)
+</text>
+        <type>nearest cities</type>
+      </description>
+      <comment>
+        <text>ML 3.8 (AEIC). Felt at Anchorage, Eagle River and Talkeetna.
+</text>
+      </comment>
+      <focalMechanism catalog:dataid="us_b000i683_mwr" catalog:datasource="us" publicID="quakeml:us.anss.org/focalmechanism/b000i683/mwr">
+        <momentTensor publicID="quakeml:us.anss.org/momenttensor/b000i683/mwr">
+          <derivedOriginID>quakeml:us.anss.org/origin/b000i683/mwr</derivedOriginID>
+          <momentMagnitudeID>quakeml:us.anss.org/magnitude/b000i683/mwr</momentMagnitudeID>
+          <scalarMoment>
+            <value>7.66e+014</value>
+          </scalarMoment>
+          <tensor>
+            <Mrr>
+              <value>-4.0493e+014</value>
+            </Mrr>
+            <Mtt>
+              <value>-2.1597e+014</value>
+            </Mtt>
+            <Mpp>
+              <value>6.209e+014</value>
+            </Mpp>
+            <Mrt>
+              <value>3.947e+014</value>
+            </Mrt>
+            <Mrp>
+              <value>3.3855e+014</value>
+            </Mrp>
+            <Mtp>
+              <value>-1.3689e+014</value>
+            </Mtp>
+          </tensor>
+          <doubleCouple>79.99</doubleCouple>
+          <clvd>20.01</clvd>
+        </momentTensor>
+        <nodalPlanes>
+          <nodalPlane1>
+            <strike>
+              <value>204.9</value>
+            </strike>
+            <dip>
+              <value>69.37</value>
+            </dip>
+            <rake>
+              <value>-53.14</value>
+            </rake>
+          </nodalPlane1>
+          <nodalPlane2>
+            <strike>
+              <value>320.08</value>
+            </strike>
+            <dip>
+              <value>41.51</value>
+            </dip>
+            <rake>
+              <value>-147.88</value>
+            </rake>
+          </nodalPlane2>
+        </nodalPlanes>
+        <principalAxes>
+          <tAxis>
+            <azimuth>
+              <value>269</value>
+            </azimuth>
+            <plunge>
+              <value>16</value>
+            </plunge>
+            <length>
+              <value>7.22945e+014</value>
+            </length>
+          </tAxis>
+          <pAxis>
+            <azimuth>
+              <value>157</value>
+            </azimuth>
+            <plunge>
+              <value>51</value>
+            </plunge>
+            <length>
+              <value>-8.0331e+014</value>
+            </length>
+          </pAxis>
+          <nAxis>
+            <azimuth>
+              <value>10</value>
+            </azimuth>
+            <plunge>
+              <value>34</value>
+            </plunge>
+            <length>
+              <value>8.03651e+013</value>
+            </length>
+          </nAxis>
+        </principalAxes>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <creationTime>2013-07-07T16:08:49Z</creationTime>
+        </creationInfo>
+        <waveformFit xmlns="http://anss.org/xmlns/tensor/0.1">0.80</waveformFit>
+      </focalMechanism>
+      <magnitude catalog:dataid="ak_b000i683_ml" catalog:datasource="us" publicID="quakeml:ak.anss.org/magnitude/b000i683/ml">
+        <mag>
+          <value>3.8</value>
+        </mag>
+        <type>ML</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <agencyID>ak</agencyID>
+          <creationTime>2013-07-06T18:21:33Z</creationTime>
+        </creationInfo>
+      </magnitude>
+      <magnitude catalog:dataid="us_b000i683_mwr" catalog:datasource="us" publicID="quakeml:us.anss.org/magnitude/b000i683/mwr">
+        <mag>
+          <value>3.9</value>
+          <uncertainty>0.063</uncertainty>
+          <confidenceLevel>90</confidenceLevel>
+        </mag>
+        <type>Mwr</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <creationTime>2013-07-07T16:08:49Z</creationTime>
+        </creationInfo>
+      </magnitude>
+      <origin catalog:dataid="usb000i683" catalog:datasource="us" catalog:eventid="b000i683" publicID="quakeml:us.anss.org/origin/b000i683">
+        <originUncertainty>
+          <horizontalUncertainty>3100</horizontalUncertainty>
+          <maxHorizontalUncertainty>5600</maxHorizontalUncertainty>
+          <azimuthMaxHorizontalUncertainty>84</azimuthMaxHorizontalUncertainty>
+          <confidenceEllipsoid>
+            <semiMajorAxisLength>12300</semiMajorAxisLength>
+            <semiMinorAxisLength>3200</semiMinorAxisLength>
+            <semiIntermediateAxisLength>5700</semiIntermediateAxisLength>
+            <majorAxisPlunge>76</majorAxisPlunge>
+            <majorAxisAzimuth>84</majorAxisAzimuth>
+            <majorAxisRotation>132</majorAxisRotation>
+          </confidenceEllipsoid>
+          <preferredDescription>confidence ellipsoid</preferredDescription>
+        </originUncertainty>
+        <time>
+          <value>2013-07-03T19:34:01.05Z</value>
+          <uncertainty>1.06</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </time>
+        <longitude>
+          <value>-149.5836</value>
+          <uncertainty>0.0118</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </longitude>
+        <latitude>
+          <value>62.1580</value>
+          <uncertainty>0.0252</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </latitude>
+        <depth>
+          <value>53190</value>
+          <uncertainty>7900</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </depth>
+        <depthType>from location</depthType>
+        <earthModelID>quakeml:us.anss.org/earthmodel/ak135</earthModelID>
+        <quality>
+          <associatedPhaseCount>85</associatedPhaseCount>
+          <usedPhaseCount>61</usedPhaseCount>
+          <standardError>0.52</standardError>
+          <azimuthalGap>27</azimuthalGap>
+          <secondaryAzimuthalGap>34</secondaryAzimuthalGap>
+          <minimumDistance>0.607</minimumDistance>
+        </quality>
+        <type>hypocenter</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-08-12T14:31:42Z</creationTime>
+          <version>0</version>
+        </creationInfo>
+      </origin>
+      <origin catalog:dataid="usb000i683_mwr" catalog:datasource="us" catalog:eventid="b000i683_mwr" publicID="quakeml:us.anss.org/origin/b000i683_mwr">
+        <originUncertainty>
+          <horizontalUncertainty>3500</horizontalUncertainty>
+          <maxHorizontalUncertainty>7200</maxHorizontalUncertainty>
+          <azimuthMaxHorizontalUncertainty>150</azimuthMaxHorizontalUncertainty>
+          <confidenceEllipsoid>
+            <semiMajorAxisLength>12100</semiMajorAxisLength>
+            <semiMinorAxisLength>3800</semiMinorAxisLength>
+            <semiIntermediateAxisLength>7300</semiIntermediateAxisLength>
+            <majorAxisPlunge>83</majorAxisPlunge>
+            <majorAxisAzimuth>150</majorAxisAzimuth>
+            <majorAxisRotation>162</majorAxisRotation>
+          </confidenceEllipsoid>
+          <preferredDescription>confidence ellipsoid</preferredDescription>
+        </originUncertainty>
+        <time>
+          <value>2013-07-03T19:34:01Z</value>
+          <uncertainty>0.76</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </time>
+        <longitude>
+          <value>-149.5002</value>
+          <uncertainty>0.0113</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </longitude>
+        <latitude>
+          <value>62.1599</value>
+          <uncertainty>0.0243</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </latitude>
+        <depth>
+          <value>49900</value>
+          <uncertainty>7900</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </depth>
+        <depthType>from location</depthType>
+        <earthModelID>quakeml:us.anss.org/earthmodel/ak135</earthModelID>
+        <quality>
+          <associatedPhaseCount>85</associatedPhaseCount>
+          <usedPhaseCount>115</usedPhaseCount>
+          <standardError>0.37</standardError>
+          <azimuthalGap>25</azimuthalGap>
+        </quality>
+        <type>hypocenter</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-08-12T14:31:49Z</creationTime>
+          <version>0</version>
+        </creationInfo>
+      </origin>
+      <origin catalog:dataid="ak20130703193402_62_-149" catalog:datasource="ak" catalog:eventid="20130703193402_62_-149" publicID="quakeml:ak.anss.org/origin/20130703193402_62_-149">
+        <originUncertainty>
+          <horizontalUncertainty>3500</horizontalUncertainty>
+          <maxHorizontalUncertainty>7200</maxHorizontalUncertainty>
+          <azimuthMaxHorizontalUncertainty>150</azimuthMaxHorizontalUncertainty>
+          <confidenceEllipsoid>
+            <semiMajorAxisLength>12100</semiMajorAxisLength>
+            <semiMinorAxisLength>3800</semiMinorAxisLength>
+            <semiIntermediateAxisLength>7300</semiIntermediateAxisLength>
+            <majorAxisPlunge>83</majorAxisPlunge>
+            <majorAxisAzimuth>150</majorAxisAzimuth>
+            <majorAxisRotation>162</majorAxisRotation>
+          </confidenceEllipsoid>
+          <preferredDescription>confidence ellipsoid</preferredDescription>
+        </originUncertainty>
+        <time>
+          <value>2013-07-03T19:34:01.89Z</value>
+          <uncertainty>0.77</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </time>
+        <longitude>
+          <value>-149.5000</value>
+          <uncertainty>0.0113</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </longitude>
+        <latitude>
+          <value>62.1600</value>
+          <uncertainty>0.0243</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </latitude>
+        <depth>
+          <value>49900</value>
+          <uncertainty>7900</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </depth>
+        <depthType>from location</depthType>
+        <quality>
+          <associatedPhaseCount>85</associatedPhaseCount>
+          <usedPhaseCount>0</usedPhaseCount>
+          <standardError>0.38</standardError>
+        </quality>
+        <type>hypocenter</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <agencyID>ak</agencyID>
+          <creationTime>2013-08-12T14:31:50Z</creationTime>
+          <version>0</version>
+        </creationInfo>
+      </origin>
+      <origin publicID="quakeml:us.anss.org/origin/b000i683/mwr">
+        <time>
+          <value>2013-01-01T00:00:00Z</value>
+        </time>
+        <longitude>
+          <value>0.0000</value>
+        </longitude>
+        <latitude>
+          <value>0.0000</value>
+        </latitude>
+        <depth>
+          <value>58000</value>
+        </depth>
+        <depthType>from moment tensor inversion</depthType>
+      </origin>
+      <preferredOriginID>quakeml:ak.anss.org/origin/20130703193402_62_-149</preferredOriginID>
+      <preferredMagnitudeID>quakeml:ak.anss.org/magnitude/b000i683/ml</preferredMagnitudeID>
+      <type>earthquake</type>
+      <creationInfo>
+        <agencyID>us</agencyID>
+        <creationTime>2013-08-12T22:14:50Z</creationTime>
+      </creationInfo>
+    </event>
+    <creationInfo>
+      <agencyID>us</agencyID>
+      <creationTime>2013-08-12T22:15:31Z</creationTime>
+    </creationInfo>
+  </eventParameters>
+
+</q:quakeml>
