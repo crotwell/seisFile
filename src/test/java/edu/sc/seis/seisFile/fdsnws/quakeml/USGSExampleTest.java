@@ -21,10 +21,7 @@ public class USGSExampleTest {
 
     @Test
     public void test() throws IOException, SeisFileException, XMLStreamException, StationXMLException, SAXException {
-        String[] filenames = new String[] {"usgs/B000I89Z20Long.quakeml", 
-                                           "usgs/C000HX2T18Long.quakeml", 
-                                           "usgs/C000HVSF38Long.quakeml", 
-                                           "usgs/C000HZFK62Long.quakeml"};
+        String[] filenames = new String[] {"usgs/B000I68313Short.quakeml"};
         for (String filename : filenames) {
             try {
         URL url = QuakeMLTest.loadResourceURL(filename);
