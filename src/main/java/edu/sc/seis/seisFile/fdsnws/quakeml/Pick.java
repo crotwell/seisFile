@@ -1,17 +1,12 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Time;
-
 
 public class Pick {
 
@@ -37,26 +32,22 @@ public class Pick {
             }
         }
     }
-    
-    
+
     public String getPublicId() {
         return publicId;
     }
 
-    
     public Time getTime() {
         return time;
     }
 
-    
     public String getWaveformID() {
         return waveformID;
     }
 
-
     private String publicId;
-    
+
     private Time time;
-    
+
     private String waveformID;
 }

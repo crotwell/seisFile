@@ -12,23 +12,21 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Arrival;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Comment;
-import edu.sc.seis.seisFile.fdsnws.quakeml.CreationInfo;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.quakeml.RealQuantity;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Time;
 
 public class Origin {
 
+    public static final String ELEMENT_NAME = QuakeMLTagNames.origin;
+
     public Origin(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.origin, reader);
+        StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
-        Attribute catalogAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace, QuakeMLTagNames.irisCatalog));
+        Attribute catalogAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace,
+                                                                    QuakeMLTagNames.irisCatalog));
         if (catalogAttr != null) {
             irisCatalog = catalogAttr.getValue();
         }
-        Attribute contributorAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace, QuakeMLTagNames.irisContributor));
+        Attribute contributorAttr = startE.getAttributeByName(new QName(QuakeMLTagNames.irisNameSpace,
+                                                                        QuakeMLTagNames.irisContributor));
         if (contributorAttr != null) {
             irisContributor = contributorAttr.getValue();
         }
@@ -50,10 +48,23 @@ public class Origin {
                     longitude = new RealQuantity(reader, QuakeMLTagNames.longitude);
                 } else if (elName.equals(QuakeMLTagNames.depth)) {
                     depth = new RealQuantity(reader, QuakeMLTagNames.depth);
+                } else if (elName.equals(QuakeMLTagNames.depthType)) {
+                    depthType = StaxUtil.pullText(reader, QuakeMLTagNames.depthType);
+                } else if (elName.equals(QuakeMLTagNames.earthModelID)) {
+                    earthModelID = StaxUtil.pullText(reader, QuakeMLTagNames.earthModelID);
+                } else if (elName.equals(QuakeMLTagNames.quality)) {
+                    quality = new OriginQuality(reader);
+                } else if (elName.equals(QuakeMLTagNames.originUncertainty)) {
+                    originUncertainty = new OriginUncertainty(reader);
+                } else if (elName.equals(QuakeMLTagNames.type)) {
+                    type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
+                } else if (elName.equals(QuakeMLTagNames.evaluationMode)) {
+                    evaluationMode = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationMode);
+                } else if (elName.equals(QuakeMLTagNames.evaluationStatus)) {
+                    evaluationStatus = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationStatus);
                 } else if (elName.equals(QuakeMLTagNames.arrival)) {
                     arrivalList.add(new Arrival(reader));
                 } else {
-                    System.out.println("Origin skip: "+elName);
                     StaxUtil.skipToMatchingEnd(reader);
                 }
             } else if (e.isEndElement()) {
@@ -108,9 +119,37 @@ public class Origin {
     public String getIrisCatalog() {
         return irisCatalog;
     }
-    
+
     public List<Arrival> getArrivalList() {
         return arrivalList;
+    }
+
+    public OriginUncertainty getOriginUncertainty() {
+        return originUncertainty;
+    }
+
+    public String getDepthType() {
+        return depthType;
+    }
+
+    public String getEarthModelID() {
+        return earthModelID;
+    }
+
+    public OriginQuality getQuality() {
+        return quality;
+    }
+
+    public String getEvaluationMode() {
+        return evaluationMode;
+    }
+
+    public String getEvaluationStatus() {
+        return evaluationStatus;
+    }
+
+    public String getType() {
+        return type;
     }
 
     Time time;
@@ -119,13 +158,28 @@ public class Origin {
 
     RealQuantity longitude;
 
-    RealQuantity depth = new RealQuantity(0.0f); // add default for origins without depth
+    RealQuantity depth = new RealQuantity(0.0f); // add default for origins
+                                                 // without depth
+
+    String depthType;
+
+    String earthModelID;
 
     List<Comment> commentList = new ArrayList<Comment>();
 
     List<Arrival> arrivalList = new ArrayList<Arrival>();
 
     String waveformID;
+
+    OriginQuality quality;
+
+    OriginUncertainty originUncertainty;
+
+    String evaluationMode;
+
+    String evaluationStatus;
+
+    String type;
 
     CreationInfo creationInfo;
 

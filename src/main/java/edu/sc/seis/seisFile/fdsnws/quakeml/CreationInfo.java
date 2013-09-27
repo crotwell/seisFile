@@ -12,8 +12,10 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 
 public class CreationInfo {
     
+    public static final String ELEMENT_NAME = QuakeMLTagNames.creationInfo;
+    
     public CreationInfo(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.creationInfo, reader);
+        StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {

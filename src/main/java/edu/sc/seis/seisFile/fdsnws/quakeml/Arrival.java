@@ -10,10 +10,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Comment;
-import edu.sc.seis.seisFile.fdsnws.quakeml.CreationInfo;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-
 
 public class Arrival {
 
@@ -32,8 +28,12 @@ public class Arrival {
                     azimuth = StaxUtil.pullFloat(reader, QuakeMLTagNames.azimuth);
                 } else if (elName.equals(QuakeMLTagNames.distance)) {
                     distance = StaxUtil.pullFloat(reader, QuakeMLTagNames.distance);
+                } else if (elName.equals(QuakeMLTagNames.distance)) {
+                    distance = StaxUtil.pullFloat(reader, QuakeMLTagNames.distance);
                 } else if (elName.equals(QuakeMLTagNames.timeResidual)) {
                     timeResidual = StaxUtil.pullFloat(reader, QuakeMLTagNames.timeResidual);
+                } else if (elName.equals(QuakeMLTagNames.timeCorrection)) {
+                    timeCorrection = StaxUtil.pullFloat(reader, QuakeMLTagNames.timeCorrection);
                 } else if (elName.equals(QuakeMLTagNames.pickID)) {
                     pickID = StaxUtil.pullText(reader, QuakeMLTagNames.pickID);
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
@@ -49,19 +49,57 @@ public class Arrival {
             }
         }
     }
-    
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public float getAzimuth() {
+        return azimuth;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public float getTimeResidual() {
+        return timeResidual;
+    }
+
+    public float getTimeCorrection() {
+        return timeCorrection;
+    }
+
+    public String getPickID() {
+        return pickID;
+    }
+
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
     String publicId;
-    
+
     String phase;
-    
+
     float azimuth;
-    
+
     float distance;
 
     float timeResidual;
-    
+
+    float timeCorrection;
+
     String pickID;
-    
+
     CreationInfo creationInfo;
 
     List<Comment> commentList = new ArrayList<Comment>();

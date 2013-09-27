@@ -19,9 +19,11 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 
 public class Event {
 
+    public static final String ELEMENT_NAME = QuakeMLTagNames.event;
+
     public Event(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StaxUtil.skipToStartElement(reader);
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.event, reader);
+        StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
@@ -31,18 +33,17 @@ public class Event {
                     descriptionList.add(new EventDescription(reader));
                 } else if (elName.equals(QuakeMLTagNames.comment)) {
                     commentList.add(new Comment(reader));
-                    /*
-                     * } else if (elName.equals(QuakeMLTagNames.focalMechanism))
-                     * { focalMechanismList.add(new FocalMechanism(reader)); }
-                     * else if (elName.equals(QuakeMLTagNames.amplitude)) {
-                     * amplitudeList.add(new Amplitude(reader)); } else if
-                     * (elName.equals(QuakeMLTagNames.stationMagnitude)) {
-                     * stationMagnitudeList.add(new StationMagnitude(reader));
-                     */
+                    // } else if (elName.equals(QuakeMLTagNames.amplitude)) {
+                    // amplitudeList.add(new Amplitude(reader));
+                    // } else if
+                    // (elName.equals(QuakeMLTagNames.stationMagnitude)) {
+                    // stationMagnitudeList.add(new StationMagnitude(reader));
                 } else if (elName.equals(QuakeMLTagNames.type)) {
                     type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
                 } else if (elName.equals(QuakeMLTagNames.origin)) {
                     originList.add(new Origin(reader));
+                } else if (elName.equals(QuakeMLTagNames.focalMechanism)) {
+                    focalMechanismList.add(new FocalMechanism(reader));
                 } else if (elName.equals(QuakeMLTagNames.magnitude)) {
                     magnitudeList.add(new Magnitude(reader));
                 } else if (elName.equals(QuakeMLTagNames.pick)) {
@@ -115,6 +116,10 @@ public class Event {
         return creationInfo;
     }
 
+    public List<FocalMechanism> getFocalMechanismList() {
+        return focalMechanismList;
+    }
+
     private String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
 
     private String publicId;
@@ -136,6 +141,8 @@ public class Event {
      * ArrayList<StationMagnitude>();
      */
     private List<Origin> originList = new ArrayList<Origin>();
+
+    private List<FocalMechanism> focalMechanismList = new ArrayList<FocalMechanism>();
 
     private CreationInfo creationInfo;
 }

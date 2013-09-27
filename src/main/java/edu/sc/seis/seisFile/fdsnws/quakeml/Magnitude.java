@@ -13,8 +13,10 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.RealQuantity;
 
 public class Magnitude {
 
+    public static final String ELEMENT_NAME = QuakeMLTagNames.magnitude;
+
     public Magnitude(XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.magnitude, reader);
+        StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
@@ -26,6 +28,10 @@ public class Magnitude {
                     type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
                 } else if (elName.equals(QuakeMLTagNames.mag)) {
                     mag = new RealQuantity(reader, QuakeMLTagNames.mag);
+                } else if (elName.equals(QuakeMLTagNames.evaluationMode)) {
+                    evaluationMode = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationMode);
+                } else if (elName.equals(QuakeMLTagNames.evaluationStatus)) {
+                    evaluationStatus = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationStatus);
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
                     creationInfo = new CreationInfo(reader);
                 } else {
@@ -56,6 +62,14 @@ public class Magnitude {
         return mag;
     }
 
+    public String getEvaluationMode() {
+        return evaluationMode;
+    }
+
+    public String getEvaluationStatus() {
+        return evaluationStatus;
+    }
+
     public CreationInfo getCreationInfo() {
         return creationInfo;
     }
@@ -67,6 +81,10 @@ public class Magnitude {
     String type;
 
     RealQuantity mag;
+
+    String evaluationMode;
+
+    String evaluationStatus;
 
     CreationInfo creationInfo;
 }

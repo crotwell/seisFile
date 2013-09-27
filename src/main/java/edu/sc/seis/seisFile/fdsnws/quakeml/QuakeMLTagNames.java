@@ -6,6 +6,8 @@ public final class QuakeMLTagNames {
     public static final String irisNameSpace = "http://service.iris.edu/fdsnws/event/1/";
     public static final String CODE_BED_SCHEMA_VERSION = "http://quakeml.org/xmlns/bed/1.2";
     public static final String CODE_MAIN_SCHEMA_VERSION = "http://quakeml.org/xmlns/quakeml/1.2";
+    public static final String anssCatalogNameSpace="http://anss.org/xmlns/catalog/0.1";
+    public static final String anssTensorNameSpace="http://anss.org/xmlns/tensor/0.1";
     
     private QuakeMLTagNames() {}
     
@@ -15,7 +17,7 @@ public final class QuakeMLTagNames {
     public static final String amplitude = "amplitude";
     public static final String amplitudeID = "amplitudeID";
     public static final String arrival = "arrival";
-    public static final String asociatedStationCount = "asociatedStationCount";
+    public static final String associatedStationCount = "associatedStationCount";
     public static final String associatedPhaseCount = "associatedPhaseCount";
     public static final String author = "author";
     public static final String authorURI = "authorURI";
