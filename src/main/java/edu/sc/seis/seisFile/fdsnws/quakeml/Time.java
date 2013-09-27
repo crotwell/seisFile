@@ -10,8 +10,8 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Time {
 
-    public Time(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.time, reader);
+    public Time(final XMLEventReader reader, String elementName) throws XMLStreamException, SeisFileException {
+        StartElement startE = StaxUtil.expectStartElement(elementName, reader);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {

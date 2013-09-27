@@ -41,7 +41,7 @@ public class Origin {
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
                     creationInfo = new CreationInfo(reader);
                 } else if (elName.equals(QuakeMLTagNames.time)) {
-                    time = new Time(reader);
+                    time = new Time(reader, QuakeMLTagNames.time);
                 } else if (elName.equals(QuakeMLTagNames.latitude)) {
                     latitude = new RealQuantity(reader, QuakeMLTagNames.latitude);
                 } else if (elName.equals(QuakeMLTagNames.longitude)) {

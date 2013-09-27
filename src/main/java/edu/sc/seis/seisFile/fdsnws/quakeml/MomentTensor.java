@@ -17,7 +17,13 @@ public class MomentTensor {
 
     public MomentTensor(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
-        publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
+        publicId = StaxUtil.pullAttributeIfExists(startE, QuakeMLTagNames.publicId); // usgs
+                                                                                     // doesn't
+                                                                                     // have
+                                                                                     // publicId
+                                                                                     // on
+                                                                                     // momentTensors
+                                                                                     // yet
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -38,6 +44,8 @@ public class MomentTensor {
                     doubleCouple = StaxUtil.pullFloat(reader, QuakeMLTagNames.doubleCouple);
                 } else if (elName.equals(QuakeMLTagNames.clvd)) {
                     clvd = StaxUtil.pullFloat(reader, QuakeMLTagNames.clvd);
+                } else if (elName.equals(QuakeMLTagNames.methodID)) {
+                    methodID = StaxUtil.pullText(reader, QuakeMLTagNames.methodID);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -86,6 +94,10 @@ public class MomentTensor {
         return creationInfo;
     }
 
+    public String getMethodID() {
+        return methodID;
+    }
+
     String publicId;
 
     String derivedOriginID;
@@ -99,6 +111,8 @@ public class MomentTensor {
     float doubleCouple;
 
     float clvd;
+
+    String methodID;
 
     List<Comment> commentList = new ArrayList<Comment>();
 

@@ -67,19 +67,8 @@ public class FocalMechanism {
                     evaluationMode = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationMode);
                 } else if (elName.equals(QuakeMLTagNames.evaluationStatus)) {
                     evaluationStatus = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationStatus);
-                    /*
-                     * } else if (elName.equals(QuakeMLTagNames.time)) { time =
-                     * new Time(reader); } else if
-                     * (elName.equals(QuakeMLTagNames.latitude)) { latitude =
-                     * new RealQuantity(reader, QuakeMLTagNames.latitude); }
-                     * else if (elName.equals(QuakeMLTagNames.longitude)) {
-                     * longitude = new RealQuantity(reader,
-                     * QuakeMLTagNames.longitude); } else if
-                     * (elName.equals(QuakeMLTagNames.depth)) { depth = new
-                     * RealQuantity(reader, QuakeMLTagNames.depth); } else if
-                     * (elName.equals(QuakeMLTagNames.arrival)) {
-                     * arrivalList.add(new Arrival(reader));
-                     */
+                } else if (elName.equals(QuakeMLTagNames.methodID)) {
+                    methodID = StaxUtil.pullText(reader, QuakeMLTagNames.methodID);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -124,6 +113,10 @@ public class FocalMechanism {
         return creationInfo;
     }
 
+    public String getMethodID() {
+        return methodID;
+    }
+
     String publicId;
 
     MomentTensor momentTensor;
@@ -135,6 +128,8 @@ public class FocalMechanism {
     String evaluationMode;
 
     String evaluationStatus;
+
+    String methodID;
 
     List<Comment> commentList = new ArrayList<Comment>();
 

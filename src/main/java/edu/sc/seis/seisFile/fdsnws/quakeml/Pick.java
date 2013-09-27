@@ -20,7 +20,7 @@ public class Pick {
                 if (elName.equals(QuakeMLTagNames.waveformID)) {
                     waveformID = StaxUtil.pullText(reader, QuakeMLTagNames.waveformID);
                 } else if (elName.equals(QuakeMLTagNames.time)) {
-                    time = new Time(reader);
+                    time = new Time(reader, QuakeMLTagNames.time);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
