@@ -20,8 +20,11 @@ public class EventIterator {
     }
 
     public Event next() throws XMLStreamException, SeisFileException {
-        hasNext(); // side effect, make sure hasNext was called to skip over any non-Event elements
-        return new Event(reader);
+        if (hasNext()) { // side effect, make sure hasNext was called to skip over any non-Event elements
+            return new Event(reader);
+        } else {
+            return null;
+        }
     }
 
     XMLEventReader reader;
