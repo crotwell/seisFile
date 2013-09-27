@@ -15,6 +15,7 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.CreationInfo;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
 import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
+import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 
 
 public class EventParameters {
@@ -27,24 +28,34 @@ public class EventParameters {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(QuakeMLTagNames.description)) {
-                    description = StaxUtil.pullText(reader, QuakeMLTagNames.description);
-                } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
-                    creationInfo = new CreationInfo(reader);
-                } else if (elName.equals(QuakeMLTagNames.comment)) {
-                    commentList.add(new Comment(reader));
-                } else if (elName.equals(QuakeMLTagNames.event)) {
-                    events = new EventIterator(reader);
+                if (elName.equals(QuakeMLTagNames.event)) {
+                    events = new EventIterator(reader, this);
                     break;
                 } else {
-                    System.out.println("In EventParameters Skipping: "+elName);
-                    StaxUtil.skipToMatchingEnd(reader);
+                    processOneStartElement(reader);
                 }
             } else if (e.isEndElement()) {
                 reader.nextEvent();
                 return;
             } else {
                 e = reader.nextEvent();
+            }
+        }
+    }
+    
+    void processOneStartElement(XMLEventReader reader) throws XMLStreamException, SeisFileException {
+        XMLEvent e = reader.peek();
+        if (e.isStartElement()) {
+            String elName = e.asStartElement().getName().getLocalPart();
+            if (elName.equals(QuakeMLTagNames.description)) {
+                description = StaxUtil.pullText(reader, QuakeMLTagNames.description);
+            } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
+                creationInfo = new CreationInfo(reader);
+            } else if (elName.equals(QuakeMLTagNames.comment)) {
+                commentList.add(new Comment(reader));
+            } else {
+                System.out.println("In EventParameters Skipping: "+elName);
+                StaxUtil.skipToMatchingEnd(reader);
             }
         }
     }
@@ -62,7 +73,7 @@ public class EventParameters {
     
     public EventIterator getEvents() {
         if (events == null) {
-            events = new EventIterator(null) {
+            events = new EventIterator(null, this) {
 
                 @Override
                 public boolean hasNext() throws XMLStreamException {

@@ -24,6 +24,10 @@ public class Magnitude {
                 String elName = e.asStartElement().getName().getLocalPart();
                 if (elName.equals(QuakeMLTagNames.originID)) {
                     originId = StaxUtil.pullText(reader, QuakeMLTagNames.originID);
+                } else if (elName.equals(QuakeMLTagNames.stationCount)) {
+                    stationCount = StaxUtil.pullInt(reader, QuakeMLTagNames.stationCount);
+                } else if (elName.equals(QuakeMLTagNames.azimuthalGap)) {
+                    azimuthalGap = StaxUtil.pullFloat(reader, QuakeMLTagNames.azimuthalGap);
                 } else if (elName.equals(QuakeMLTagNames.type)) {
                     type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
                 } else if (elName.equals(QuakeMLTagNames.mag)) {
@@ -34,6 +38,8 @@ public class Magnitude {
                     evaluationStatus = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationStatus);
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
                     creationInfo = new CreationInfo(reader);
+                } else if (elName.equals(QuakeMLTagNames.methodID)) {
+                    methodID = StaxUtil.pullText(reader, QuakeMLTagNames.methodID);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -74,17 +80,35 @@ public class Magnitude {
         return creationInfo;
     }
 
+    public String getMethodID() {
+        return methodID;
+    }
+
+    public Integer getStationCount() {
+        return stationCount;
+    }
+
+    public Float getAzimuthalGap() {
+        return azimuthalGap;
+    }
+
     String publicId;
 
     String originId;
 
     String type;
 
+    Integer stationCount;
+
+    Float azimuthalGap;
+
     RealQuantity mag;
 
     String evaluationMode;
 
     String evaluationStatus;
+
+    String methodID;
 
     CreationInfo creationInfo;
 }

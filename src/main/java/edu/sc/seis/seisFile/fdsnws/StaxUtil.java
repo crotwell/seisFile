@@ -12,6 +12,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 
@@ -76,9 +77,11 @@ public class StaxUtil {
         if (cur.isStartElement() && reader.hasNext()) {
             count++;
             reader.nextEvent(); // pop this one
+            Exception justForStackTrace = new Exception();
             System.out.println("Warning: Skipping: '"+cur.asStartElement().getName().getLocalPart()
                                +"' at line "+cur.getLocation().getLineNumber()+", "+cur.getLocation().getColumnNumber()
                                +" in or after '"+parent+"'");
+            justForStackTrace.printStackTrace();
         }
         while (count > 0 && reader.hasNext()) {
             cur = reader.peek();
@@ -106,16 +109,31 @@ public class StaxUtil {
      * @param endElementName end element name to not go past, ie the parent element
      * @return true if there is another element, false otherwise
      * @throws XMLStreamException
+     * @throws SeisFileException 
      */
     public static boolean hasNext(XMLEventReader reader, String elementName, String endElementName) throws XMLStreamException {
+        try {
+        return hasNext(reader, elementName, endElementName, new StaxElementProcessor() {
+            
+            @Override
+            public void processNextStartElement(XMLEventReader reader) throws XMLStreamException {
+                // humm, unexpected start element so skip this element and go to the next one and try again
+                reader.next();
+                StaxUtil.skipToMatchingEnd(reader);
+            }
+        });
+        } catch(SeisFileException e) {
+            throw new RuntimeException("Should not happen, but I guess it did! :(", e);
+        }
+    }
+
+    public static boolean hasNext(XMLEventReader reader, String elementName, String endElementName, StaxElementProcessor unknownProcessor) throws XMLStreamException, SeisFileException {
         while (reader.hasNext()) {
             if (reader.peek().isStartElement()) {
                 if (reader.peek().asStartElement().getName().getLocalPart().equals(elementName)) {
                     return true;
                 }
-                // humm, unexpected start element so skip this element and go to the next one and try again
-                reader.next();
-                StaxUtil.skipToMatchingEnd(reader);
+                unknownProcessor.processNextStartElement(reader);
             } else if (reader.peek().isEndElement() && reader.peek().asEndElement().getName().getLocalPart().equals(endElementName)) {
                 return false;
             } else {
@@ -125,7 +143,7 @@ public class StaxUtil {
         }
         return false;
     }
-
+    
     public static boolean hasAttribute(StartElement start, String name) {
         Iterator<Attribute> it = start.getAttributes();
         while(it.hasNext()) {

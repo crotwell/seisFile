@@ -27,6 +27,7 @@ public class Quakeml {
                     eventParameters = new EventParameters(reader);
                     break;
                 } else {
+                    System.err.println("QuakeML skipping "+elName);
                     StaxUtil.skipToMatchingEnd(reader);
                 }
             } else if (e.isEndElement()) {
