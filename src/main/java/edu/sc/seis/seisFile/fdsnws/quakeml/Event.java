@@ -46,6 +46,8 @@ public class Event {
                     focalMechanismList.add(new FocalMechanism(reader));
                 } else if (elName.equals(QuakeMLTagNames.magnitude)) {
                     magnitudeList.add(new Magnitude(reader));
+                } else if (elName.equals(QuakeMLTagNames.amplitude)) {
+                    amplitudeList.add(new Amplitude(reader));
                 } else if (elName.equals(QuakeMLTagNames.pick)) {
                     pickList.add(new Pick(reader));
                 } else if (elName.equals(QuakeMLTagNames.preferredOriginID)) {
@@ -57,6 +59,7 @@ public class Event {
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
                     creationInfo = new CreationInfo(reader);
                 } else {
+                    System.err.println("Event skipping " + elName);
                     StaxUtil.skipToMatchingEnd(reader);
                 }
             } else if (e.isEndElement()) {
@@ -120,6 +123,10 @@ public class Event {
         return focalMechanismList;
     }
 
+    public List<Amplitude> getAmplitudeList() {
+        return amplitudeList;
+    }
+
     private String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
 
     private String publicId;
@@ -127,6 +134,8 @@ public class Event {
     private List<EventDescription> descriptionList = new ArrayList<EventDescription>();
 
     private List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
+
+    private List<Amplitude> amplitudeList = new ArrayList<Amplitude>();
 
     private List<Comment> commentList = new ArrayList<Comment>();
 

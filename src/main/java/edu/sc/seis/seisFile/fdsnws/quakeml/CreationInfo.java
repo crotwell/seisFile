@@ -33,6 +33,7 @@ public class CreationInfo {
                 } else if (elName.equals(QuakeMLTagNames.version)) {
                     version = StaxUtil.pullText(reader, QuakeMLTagNames.version);
                 } else {
+                    System.err.println("CreationInfo skipping "+elName);
                     StaxUtil.skipToMatchingEnd(reader);
                 }
             } else if (e.isEndElement()) {
