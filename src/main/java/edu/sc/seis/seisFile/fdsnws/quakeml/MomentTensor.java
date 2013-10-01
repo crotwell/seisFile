@@ -46,6 +46,10 @@ public class MomentTensor {
                     clvd = StaxUtil.pullFloat(reader, QuakeMLTagNames.clvd);
                 } else if (elName.equals(QuakeMLTagNames.methodID)) {
                     methodID = StaxUtil.pullText(reader, QuakeMLTagNames.methodID);
+                } else if (elName.equals(QuakeMLTagNames.category)) {
+                    category = StaxUtil.pullText(reader, QuakeMLTagNames.category);
+                } else if (elName.equals(QuakeMLTagNames.dataUsed)) {
+                    dataUsed = new DataUsed(reader);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -98,6 +102,15 @@ public class MomentTensor {
         return methodID;
     }
 
+    public DataUsed getDataUsed() {
+        return dataUsed;
+    }
+
+    
+    public String getCategory() {
+        return category;
+    }
+
     String publicId;
 
     String derivedOriginID;
@@ -113,6 +126,10 @@ public class MomentTensor {
     float clvd;
 
     String methodID;
+
+    private DataUsed dataUsed;
+
+    private String category;
 
     List<Comment> commentList = new ArrayList<Comment>();
 

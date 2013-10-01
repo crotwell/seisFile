@@ -22,10 +22,28 @@ public class USGSExampleTest {
 
     @Test
     public void test() throws IOException, SeisFileException, XMLStreamException, StationXMLException, SAXException {
+        String[] usgsFilename = new String[] {};
         String[] filenames = new String[] {"usgs/B000I68313Short.quakeml",
-                                           "usgs/201330/201330_1374538994_C000IRGM_24_Long.quakeml_Verified"};
+                                           "usgs/201330/201330_1374538994_C000IRGM_24_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374600435_B000IKUF_48_Long.quakeml_Verified"
+                                        };
+        /*
+            "usgs/201330/201330_1374541979_B000IKFK_21_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374543994_B000IKG9_30_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374544987_B000IKGM_8_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374545027_B000IKGR_39_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374545986_B000IKGX_31_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374548533_B000IKH7_31_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374549661_B000IKHG_7_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374551665_C000IRGP_4_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374553118_B000IKI5_12_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374556280_B000IKIR_36_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374557156_C000IRGT_4_Long.quakeml_Verified",
+                                           "usgs/201330/201330_1374563445_B000IKJJ_7_Long.quakeml_Verified"
+         */
         for (String filename : filenames) {
             try {
+                System.out.println("checking "+filename);
                 URL url = QuakeMLTest.loadResourceURL(filename);
                 XMLInputFactory factory = XMLInputFactory.newInstance();
                 XMLEventReader r = factory.createXMLEventReader(url.toString(), QuakeMLTest.loadResource(filename));
