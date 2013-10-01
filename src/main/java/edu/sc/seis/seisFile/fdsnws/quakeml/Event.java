@@ -46,6 +46,8 @@ public class Event {
                     focalMechanismList.add(new FocalMechanism(reader));
                 } else if (elName.equals(QuakeMLTagNames.magnitude)) {
                     magnitudeList.add(new Magnitude(reader));
+                } else if (elName.equals(QuakeMLTagNames.stationMagnitude)) {
+                    stationMagnitudeList.add(new StationMagnitude(reader));
                 } else if (elName.equals(QuakeMLTagNames.amplitude)) {
                     amplitudeList.add(new Amplitude(reader));
                 } else if (elName.equals(QuakeMLTagNames.pick)) {
@@ -103,6 +105,10 @@ public class Event {
         return magnitudeList;
     }
 
+    public List<StationMagnitude> getStationMagnitudeList() {
+        return stationMagnitudeList;
+    }
+
     public int getIrisFECode() {
         return irisFECode;
     }
@@ -134,6 +140,8 @@ public class Event {
     private List<EventDescription> descriptionList = new ArrayList<EventDescription>();
 
     private List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
+
+    private List<StationMagnitude> stationMagnitudeList = new ArrayList<StationMagnitude>();
 
     private List<Amplitude> amplitudeList = new ArrayList<Amplitude>();
 

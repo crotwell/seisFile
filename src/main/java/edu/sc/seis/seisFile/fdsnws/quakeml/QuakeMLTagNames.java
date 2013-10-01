@@ -173,5 +173,10 @@ public final class QuakeMLTagNames {
     public static final String value = "value";
     public static final String waveType = "waveType";
     public static final String publicId = "publicID";
+    public static final String waveformStreamID = "waveformStreamID";
+    public static final String networkCode = "networkCode";
+    public static final String stationCode = "stationCode";
+    public static final String channelCode = "channelCode";
+    public static final String locationCode = "locationCode";
 
 }

@@ -69,6 +69,10 @@ public class FocalMechanism {
                     evaluationStatus = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationStatus);
                 } else if (elName.equals(QuakeMLTagNames.methodID)) {
                     methodID = StaxUtil.pullText(reader, QuakeMLTagNames.methodID);
+                } else if (elName.equals(QuakeMLTagNames.waveformID)) {
+                    waveformID = new WaveformStreamID(reader, QuakeMLTagNames.waveformID);
+                } else if (elName.equals(QuakeMLTagNames.triggeringOriginID)) {
+                    triggeringOriginID = StaxUtil.pullText(reader, QuakeMLTagNames.triggeringOriginID);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -117,6 +121,14 @@ public class FocalMechanism {
         return methodID;
     }
 
+    public WaveformStreamID getWaveformID() {
+        return waveformID;
+    }
+
+    public String getTriggeringOriginID() {
+        return triggeringOriginID;
+    }
+
     String publicId;
 
     MomentTensor momentTensor;
@@ -130,6 +142,10 @@ public class FocalMechanism {
     String evaluationStatus;
 
     String methodID;
+
+    WaveformStreamID waveformID;
+
+    String triggeringOriginID;
 
     List<Comment> commentList = new ArrayList<Comment>();
 

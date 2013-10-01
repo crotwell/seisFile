@@ -77,11 +77,12 @@ public class StaxUtil {
         if (cur.isStartElement() && reader.hasNext()) {
             count++;
             reader.nextEvent(); // pop this one
+            if (true) {
             Exception justForStackTrace = new Exception();
             System.out.println("Warning: Skipping: '"+cur.asStartElement().getName().getLocalPart()
                                +"' at line "+cur.getLocation().getLineNumber()+", "+cur.getLocation().getColumnNumber()
-                               +" in or after '"+parent+"'");
-            justForStackTrace.printStackTrace();
+                               +" in or after '"+parent+"' in class "+justForStackTrace.getStackTrace()[1]);
+            } 
         }
         while (count > 0 && reader.hasNext()) {
             cur = reader.peek();
