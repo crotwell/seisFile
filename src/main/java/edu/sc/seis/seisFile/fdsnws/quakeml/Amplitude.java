@@ -39,7 +39,7 @@ public class Amplitude {
                 } else if (elName.equals(QuakeMLTagNames.timeWindow)) {
                     timeWindow = new TimeWindow(reader);
                 } else if (elName.equals(QuakeMLTagNames.waveformID)) {
-                    waveformID = StaxUtil.pullText(reader, QuakeMLTagNames.waveformID);
+                    waveformID = new WaveformStreamID(reader, QuakeMLTagNames.waveformID);
                 } else if (elName.equals(QuakeMLTagNames.filterID)) {
                     filterID = StaxUtil.pullText(reader, QuakeMLTagNames.filterID);
                 } else if (elName.equals(QuakeMLTagNames.magnitudeHint)) {
@@ -112,7 +112,7 @@ public class Amplitude {
         return methodID;
     }
 
-    public String getWaveformID() {
+    public WaveformStreamID getWaveformID() {
         return waveformID;
     }
 
@@ -162,7 +162,7 @@ public class Amplitude {
 
     String methodID;
 
-    String waveformID;
+    WaveformStreamID waveformID;
 
     String filterID;
 

@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -7,9 +10,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.quakeml.CreationInfo;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.quakeml.RealQuantity;
 
 public class Magnitude {
 
@@ -32,6 +32,8 @@ public class Magnitude {
                     type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
                 } else if (elName.equals(QuakeMLTagNames.mag)) {
                     mag = new RealQuantity(reader, QuakeMLTagNames.mag);
+                } else if (elName.equals(QuakeMLTagNames.stationMagnitudeContribution)) {
+                    stationMagnitudeContributionList.add(new StationMagnitudeContribution(reader));
                 } else if (elName.equals(QuakeMLTagNames.evaluationMode)) {
                     evaluationMode = StaxUtil.pullText(reader, QuakeMLTagNames.evaluationMode);
                 } else if (elName.equals(QuakeMLTagNames.evaluationStatus)) {
@@ -92,6 +94,10 @@ public class Magnitude {
         return azimuthalGap;
     }
 
+    public List<StationMagnitudeContribution> getStationMagnitudeContributionList() {
+        return stationMagnitudeContributionList;
+    }
+
     String publicId;
 
     String originId;
@@ -103,6 +109,8 @@ public class Magnitude {
     Float azimuthalGap;
 
     RealQuantity mag;
+
+    List<StationMagnitudeContribution> stationMagnitudeContributionList = new ArrayList<StationMagnitudeContribution>();
 
     String evaluationMode;
 

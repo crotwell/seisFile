@@ -28,12 +28,26 @@ public class Arrival {
                     azimuth = StaxUtil.pullFloat(reader, QuakeMLTagNames.azimuth);
                 } else if (elName.equals(QuakeMLTagNames.distance)) {
                     distance = StaxUtil.pullFloat(reader, QuakeMLTagNames.distance);
-                } else if (elName.equals(QuakeMLTagNames.distance)) {
-                    distance = StaxUtil.pullFloat(reader, QuakeMLTagNames.distance);
+                } else if (elName.equals(QuakeMLTagNames.takeoffAngle)) {
+                    takeoffAngle = new RealQuantity(reader, QuakeMLTagNames.takeoffAngle);
                 } else if (elName.equals(QuakeMLTagNames.timeResidual)) {
                     timeResidual = StaxUtil.pullFloat(reader, QuakeMLTagNames.timeResidual);
+                } else if (elName.equals(QuakeMLTagNames.horizontalSlownessResidual)) {
+                    horizontalSlownessResidual = StaxUtil.pullFloat(reader, QuakeMLTagNames.horizontalSlownessResidual);
+                } else if (elName.equals(QuakeMLTagNames.backazimuthResidual)) {
+                    backazimuthResidual = StaxUtil.pullFloat(reader, QuakeMLTagNames.backazimuthResidual);
+                } else if (elName.equals(QuakeMLTagNames.timeWeight)) {
+                    timeWeight = StaxUtil.pullFloat(reader, QuakeMLTagNames.timeWeight);
+                } else if (elName.equals(QuakeMLTagNames.backazimuthWeight)) {
+                    backazimuthWeight = StaxUtil.pullFloat(reader, QuakeMLTagNames.backazimuthWeight);
+                } else if (elName.equals(QuakeMLTagNames.horizontalSlownessWeight)) {
+                    horizontalSlownessWeight = StaxUtil.pullFloat(reader, QuakeMLTagNames.horizontalSlownessWeight);
                 } else if (elName.equals(QuakeMLTagNames.timeCorrection)) {
                     timeCorrection = StaxUtil.pullFloat(reader, QuakeMLTagNames.timeCorrection);
+                } else if (elName.equals(QuakeMLTagNames.earthModelID)) {
+                    earthModelID = StaxUtil.pullText(reader, QuakeMLTagNames.earthModelID);
+                } else if (elName.equals(QuakeMLTagNames.phase)) {
+                    phase = StaxUtil.pullText(reader, QuakeMLTagNames.phase);
                 } else if (elName.equals(QuakeMLTagNames.pickID)) {
                     pickID = StaxUtil.pullText(reader, QuakeMLTagNames.pickID);
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
@@ -94,9 +108,23 @@ public class Arrival {
 
     float distance;
 
+    RealQuantity takeoffAngle;
+
     float timeResidual;
 
     float timeCorrection;
+
+    Float horizontalSlownessWeight;
+
+    Float backazimuthWeight;
+
+    Float horizontalSlownessResidual;
+
+    Float backazimuthResidual;
+
+    Float timeWeight;
+
+    String earthModelID;
 
     String pickID;
 
