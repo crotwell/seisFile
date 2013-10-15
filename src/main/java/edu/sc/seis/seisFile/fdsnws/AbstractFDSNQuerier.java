@@ -58,7 +58,7 @@ public abstract class AbstractFDSNQuerier {
                 return;
             } else if (responseCode != 200) {
                 error = true;
-                errorMessage = extractErrorMessage(conn);
+                errorMessage = "Code: "+responseCode+" "+extractErrorMessage(conn);
                 return;
             }
         }
@@ -214,4 +214,7 @@ public abstract class AbstractFDSNQuerier {
     public static int DEFAULT_CONNECT_TIMEOUT = 10 * 1000;
 
     public static int DEFAULT_READ_TIMEOUT = 60 * 1000;
+    
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AbstractFDSNQuerier.class);
+
 }
