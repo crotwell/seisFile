@@ -47,7 +47,7 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                     return Quakeml.createEmptyQuakeML();
                 }
             } else {
-                throw new SeisFileException("Error: " + getErrorMessage());
+                throw new FDSNWSException("Error: " + getErrorMessage());
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);
