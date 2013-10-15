@@ -76,7 +76,9 @@ public abstract class AbstractQueryParams {
         keyList.addAll(params.keySet());
         Collections.sort(keyList);
         for (String key : keyList) {
-            newQuery.append(key).append("=").append(params.get(key)).append("&");
+            if (params.get(key) != null) {
+                newQuery.append(key).append("=").append(params.get(key)).append("&");
+            }
         }
         if (newQuery.length() > 1) {
             newQuery.deleteCharAt(newQuery.length() - 1); // zap last &
@@ -91,6 +93,8 @@ public abstract class AbstractQueryParams {
     String scheme = "http";
     
     String fdsnQueryStyle = "query";
+    
+    String fdsnwsPath = "fdsnws";
 
     HashMap<String, String> params = new HashMap<String, String>();
 
@@ -129,9 +133,19 @@ public abstract class AbstractQueryParams {
     }
 
     String getPath() {
-        return "/fdsnws/" + getServiceName() + "/" + getFDSNMajorVersion() + "/"+getFdsnQueryStyle();
+        return "/"+getFdsnwsPath()+"/" + getServiceName() + "/" + getFDSNMajorVersion() + "/"+getFdsnQueryStyle();
     }
     
+    
+    public String getFdsnwsPath() {
+        return fdsnwsPath;
+    }
+
+    
+    public void setFdsnwsPath(String fdsnwsPath) {
+        this.fdsnwsPath = fdsnwsPath;
+    }
+
     String getFdsnQueryStyle() {
         return fdsnQueryStyle;
     }
@@ -155,5 +169,6 @@ public abstract class AbstractQueryParams {
         return params.get(key);
     }
 
+    
     public static final String IRIS_HOST = "service.iris.edu";
 }
