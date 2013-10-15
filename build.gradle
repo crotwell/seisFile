@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.6.2'
+version = '1.6.3-SNAPSHOT'
 
 apply plugin: 'maven'
 apply plugin: 'groovy'
@@ -168,6 +168,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('syncfile2gmt', 'edu.sc.seis.seisFile.syncFile.GMTSyncFile', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', task.project, dExtras:dExtras, bat:doBat)
     //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
