@@ -81,6 +81,19 @@ public class Event {
         return preferredMagnitudeID;
     }
 
+    /** Finds the preferred magnitude, returns null if no magnitude
+     * matches the preferredMagnitudeID
+     * @return preferred magnitude
+     */
+    public Magnitude getPreferredMagnitude() {
+        for (Magnitude mag : getMagnitudeList()) {
+            if (mag.getPublicId().equals(getPreferredMagnitudeID())) {
+                return mag;
+            }
+        }
+        return null;
+    }
+
     public String getPreferredFocalMechanismID() {
         return preferredFocalMechanismID;
     }
@@ -132,7 +145,7 @@ public class Event {
     public List<Amplitude> getAmplitudeList() {
         return amplitudeList;
     }
-
+    
     private String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
 
     private String publicId;
