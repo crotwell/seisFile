@@ -14,12 +14,13 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
 public abstract class MSeedQueryClient {
 
-    public MSeedQueryClient(String[] args) throws SeisFileException {
+    public MSeedQueryClient(String[] args) throws SeisFileException  {
         BasicConfigurator.configure();
-        params = new QueryParams(args);
-        if (params.getUnknownArgs().size() != 0) {
-            throw new SeisFileException("Unknown arg: "+params.getUnknownArgs().get(0));
-        }
+        params = initQueryParams(args);
+    }
+    
+    QueryParams initQueryParams(String[] args) throws SeisFileException {
+        QueryParams params = new QueryParams(args);
         Logger.getRootLogger().setLevel(Level.WARN);
         if (params.isVerbose()) {
             Logger.getLogger("root").setLevel(Level.DEBUG);
@@ -31,6 +32,7 @@ public abstract class MSeedQueryClient {
             System.out.println("Version: " + BuildVersion.getDetailedVersion());
             System.exit(0);
         }
+        return params;
     }
 
     public void readData() throws SeedFormatException, IOException, SeisFileException {
