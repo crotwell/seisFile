@@ -1,7 +1,9 @@
 package edu.sc.seis.seisFile.waveserver;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import edu.sc.seis.seisFile.BuildVersion;
@@ -13,21 +15,39 @@ public class WaveServerClient extends MSeedQueryClient {
 
     public WaveServerClient(String[] args) throws SeisFileException {
         super(args);
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("--steim1")) {
+        List<String> unknownArgs = params.getUnknownArgs();
+        List<String> reallyUnknownArgs = new ArrayList<String>();
+        for (int i = 0; i < unknownArgs.size(); i++) {
+            if (unknownArgs.get(i).equals("--steim1")) {
                 doSteim1 = true;
-            } else if (args[i].equals("--menu")) {
+            } else if (unknownArgs.get(i).equals("--menu")) {
                 doMenu = true;
-            } else if (i < args.length - 1) {
+            } else if (i < unknownArgs.size() - 1) {
                 // arg with value
-                if (args[i].equals("--recLen")) {
-                    recordSize = Integer.parseInt(args[i + 1]);
-                } else if (args[i].equals("-h")) {
-                    host = args[i + 1];
-                } else if (args[i].equals("-p")) {
-                    port = Integer.parseInt(args[i + 1]);
+                if (unknownArgs.get(i).equals("--recLen")) {
+                    recordSize = Integer.parseInt(unknownArgs.get(i + 1));
+                    i++;
+                } else if (unknownArgs.get(i).equals("-h") || unknownArgs.get(i).equals("--help")) {
+                    host = unknownArgs.get(i + 1);
+                    i++;
+                } else if (unknownArgs.get(i).equals("-p")) {
+                    port = Integer.parseInt(unknownArgs.get(i + 1));
+                    i++;
+                } else {
+                    reallyUnknownArgs.add(unknownArgs.get(i));
                 }
+            } else {
+                reallyUnknownArgs.add(unknownArgs.get(i));
             }
+        }
+        if (reallyUnknownArgs.size() != 0) {
+            String s = "";
+            for (String a : reallyUnknownArgs) {
+                s += " "+a;
+            }
+            System.out.println("Unknown args: "+s);
+            System.out.println(getHelp());
+            System.exit(-1);
         }
         if (params.getOutFile() == null) {
             params.setOutFile("output.mseed");
