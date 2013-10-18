@@ -76,7 +76,7 @@ public abstract class AbstractQueryParams {
         keyList.addAll(params.keySet());
         Collections.sort(keyList);
         for (String key : keyList) {
-            if (params.get(key) != null) {
+            if (params.get(key) != null && params.get(key).length() != 0) {
                 newQuery.append(key).append("=").append(params.get(key)).append("&");
             }
         }
