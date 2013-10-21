@@ -101,10 +101,12 @@ public class GCFEarthwormExport implements SerialPortEventListener {
                 out = new DataOutputStream(serialPort.getOutputStream());
                 logger.info("serial connect, clean buffer");
                 // clean the buffer so hopefully we start at the beginning of a packet
+                int cleanBytes = 0;
                 while(in.available()>0) {
                     in.read();
+                    cleanBytes++;
                 }
-                logger.info("serial buffer cleaned");
+                logger.info("serial buffer cleaned: "+cleanBytes+" bytes discarded.");
                 serialPort.addEventListener(this);
                 serialPort.notifyOnDataAvailable(true);
             } else {
