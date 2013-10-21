@@ -73,7 +73,7 @@ public class EarthwormExport {
             serverSocket.close();
         }
         serverSocket = new ServerSocket(port);
-        serverSocket.setSoTimeout(10*1000);
+        serverSocket.setSoTimeout(30*1000);
     }
     
     public boolean isConnected() {
