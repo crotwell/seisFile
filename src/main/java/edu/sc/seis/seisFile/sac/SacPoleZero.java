@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * @author crotwell Created on Jul 15, 2005
@@ -41,8 +43,8 @@ public class SacPoleZero {
     }
 
     public String toString() {
-        DecimalFormat formatter = new DecimalFormat(" 0.0000;-0.0000");
-        DecimalFormat constantFormatter = new DecimalFormat("0.0#######E00");
+        DecimalFormat formatter = new DecimalFormat(" 0.0000;-0.0000", new DecimalFormatSymbols(Locale.US));
+        DecimalFormat constantFormatter = new DecimalFormat("0.0#######E00", new DecimalFormatSymbols(Locale.US));
         String out = ZEROS+" "+zeros.length+"\n";
         for (int i = 0; i < zeros.length; i++) {
             out += formatter.format(zeros[i].getReal())+" "+formatter.format(zeros[i].getImaginary())+"\n";
