@@ -26,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 
 /**
@@ -491,7 +493,7 @@ public class SacHeader {
     private static final ThreadLocal<DecimalFormat> decimalFormat = new ThreadLocal<DecimalFormat>() {  
         @Override  
         protected DecimalFormat initialValue() {  
-            return (new DecimalFormat("#####.####"));  
+            return (new DecimalFormat("#####.####", new DecimalFormatSymbols(Locale.US)));  
         }  
     };
     
