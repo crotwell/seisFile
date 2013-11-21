@@ -8,9 +8,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
@@ -193,7 +195,7 @@ public class WaveServer extends StringMSeedQueryReader {
     @Override
     public String createQuery(String network, String station, String location, String channel, Date begin, Date end) {
         String nextReqId = getNextRequestId();
-        DecimalFormat df = new DecimalFormat("0.0###");
+        DecimalFormat df = new DecimalFormat("0.0###", new DecimalFormatSymbols(Locale.US));
         String cmd = "GETSCNLRAW: " + nextReqId + " " + station + " " + channel + " " + network + " "
                 + (location == null ? "--" : location) + " " + df.format(begin.getTime() / 1000.0) + " "
                 + df.format(end.getTime() / 1000.0);
