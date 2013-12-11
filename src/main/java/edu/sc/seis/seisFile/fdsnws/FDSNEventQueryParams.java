@@ -275,6 +275,10 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
 
     /** Specify if all magnitudes for the event should be included, default is data center dependent but is suggested to be the preferred magnitude only.
      */
+    public FDSNEventQueryParams setIncludeAllMagnitudes(String value) {
+        setParam(INCLUDEALLMAGNITUDES, value);
+        return this;
+    }
     public FDSNEventQueryParams setIncludeAllMagnitudes(boolean value) {
         setParam(INCLUDEALLMAGNITUDES, value);
         return this;
