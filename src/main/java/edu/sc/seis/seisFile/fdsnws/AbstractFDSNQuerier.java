@@ -29,7 +29,7 @@ import edu.sc.seis.seisFile.client.AbstractClient;
 
 public abstract class AbstractFDSNQuerier {
 
-    void connect(URI uri) throws FDSNWSException {
+    protected void connect(URI uri) throws FDSNWSException {
         connectionUri = uri;
         URLConnection urlConn;
         try {
