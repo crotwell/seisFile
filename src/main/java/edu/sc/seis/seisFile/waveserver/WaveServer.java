@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
@@ -212,7 +213,12 @@ public class WaveServer extends StringMSeedQueryReader {
                         + traceBuf2.getLocId() + "." + traceBuf2.getChannel() + " " + traceBuf2.getStartDate() + " "
                         + traceBuf2.getNumSamples());
             }
-            List<DataRecord> mseed = traceBuf2.toMiniSeed(recordSizeExp, doSteim1);
+            List<DataRecord> mseed;
+            if (doSteim1) {
+                mseed = traceBuf2.toMiniSeed(recordSizeExp, B1000Types.STEIM1);
+            } else {
+                mseed = traceBuf2.toMiniSeedNoCompression(recordSizeExp);
+            }
             out.addAll(mseed);
         }
         return out;

@@ -120,7 +120,7 @@ public class TraceBuf2Test {
     @Test
     public void testToMiniSeed() throws SeedFormatException {
         TraceBuf2 tb = createTraceBuf(4000);
-        List<DataRecord> mseedList = tb.toMiniSeed(9, true);
+        List<DataRecord> mseedList = tb.toMiniSeed(9, B1000Types.STEIM1);
         assertEquals("start", tb.getStartDate(), mseedList.get(0)
                 .getHeader()
                 .getStartBtime()

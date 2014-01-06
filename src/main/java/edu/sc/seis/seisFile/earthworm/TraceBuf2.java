@@ -14,6 +14,7 @@ import java.util.TimeZone;
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.iris.dmc.seedcodec.Codec;
 import edu.iris.dmc.seedcodec.Steim1;
+import edu.iris.dmc.seedcodec.Steim2;
 import edu.iris.dmc.seedcodec.SteimException;
 import edu.iris.dmc.seedcodec.SteimFrameBlock;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
@@ -627,35 +628,91 @@ public class TraceBuf2 {
         }
     }
 
+
+    /** encodes the data as Steim2. The encoding will stop when full, the caller must check
+     * the number of samples in the returned SteimFramBlock to ensure all samples were included.
+     * 
+     * @param recLenExp power of 2 for record size, generally 8-12
+     * @return Steim2 encoding of the data
+     * @throws SeedFormatException  if data is not integer or compression errors occur
+     */
+    public SteimFrameBlock encodeSteim2(int recLenExp) throws SeedFormatException {
+        return encodeSteim2(recLenExp, 0);
+    }
+
+    /**encodes the data starting at offset as Steim1. The encoding will stop when full, the caller must check
+     * the number of samples in the returned SteimFramBlock to ensure all samples were included.
+     * 
+     * @param recLenExp power of 2 for record size, generally 8-12
+     * @param offset starting point for encoding, first sample to use
+     * @return Steim2 encoding of the data
+     * @throws SeedFormatException if data is not integer or compression errors occur
+     */
+    public SteimFrameBlock encodeSteim2(int recLenExp, int offset) throws SeedFormatException {
+        try {
+            if (isShortData() || isIntData()) {
+                return Steim2.encode(getIntData(), (1<<recLenExp)/64 -1 , 0, offset);
+            } else {
+                throw new SeedFormatException("Steim2 only applicable to integer data, not float or double: "+getDataType());
+            }
+        } catch(SteimException e) {
+            throw new SeedFormatException(e);
+        }
+    }
+
     /**
      * Coverts the data to Miniseed, spliting into multiple data records if it will not fit into one.
      * @param recLenExp power of 2 for record size, generally 8-12
      * @param doSteim1 if Steim1 compression should be applied
      * @return Miniseed records
      * @throws SeedFormatException
+     * @deprecated use toMiniSeedNoCompression(int) or toMiniSeed(int, int) instead
      */
+    @Deprecated
     public List<DataRecord> toMiniSeed(int recLenExp, boolean doSteim1) throws SeedFormatException {
+        if (doSteim1) {
+            return toMiniSeed(recLenExp, B1000Types.STEIM1);
+        } else {
+            return toMiniSeedNoCompression(recLenExp);
+        }
+    }
+
+    public static void checkRecordLengthExp(int recLenExp) {
         if (recLenExp > 32) {
             throw new IllegalArgumentException("recLenExp should be exponent of 2, not actual size, "+recLenExp+" is too large, should be <21 and usually 8-12.");
         }
+    }
+    
+    public List<DataRecord> toMiniSeedNoCompression(int recLenExp) throws SeedFormatException {
+        checkRecordLengthExp(recLenExp);
+        // no compression so split tb to be small enough to fit in the mseed data record
+        int recordSize = (1 << recLenExp);
+        List<DataRecord> out = new ArrayList<DataRecord>();
+        List<TraceBuf2> subList = split(recordSize-64+HEADER_SIZE);
+        for (TraceBuf2 subTBuf : subList) {
+            // subTBuf should fit into one data record
+            out.add(subTBuf.toMiniSeedNoSplit(recLenExp, false));
+        }
+        return out;
+    }
+    
+    public List<DataRecord> toMiniSeed(int recLenExp, int compressionType) throws SeedFormatException {
+        checkRecordLengthExp(recLenExp);
         List<DataRecord> out = new ArrayList<DataRecord>();
         int recordSize = (1 << recLenExp);
-        
-        if (! doSteim1) {
-            // no compression so split tb to be small enough to fit in the mseed data record
-            List<TraceBuf2> subList = split(recordSize-64+HEADER_SIZE);
-            for (TraceBuf2 subTBuf : subList) {
-                // subTBuf should fit into one data record
-                out.add(subTBuf.toMiniSeedNoSplit(recLenExp, doSteim1));
-            }
-        } else {
+        if (compressionType == B1000Types.STEIM1 || compressionType == B1000Types.STEIM2) {
             int offset = 0;
             boolean done = false;
             while (!done) {
-                SteimFrameBlock sfb = encodeSteim1(recLenExp, offset); 
+                SteimFrameBlock sfb = null;
+                if (compressionType == B1000Types.STEIM1) {
+                    sfb = encodeSteim1(recLenExp, offset); 
+                } else if (compressionType == B1000Types.STEIM2) {
+                    sfb = encodeSteim2(recLenExp, offset);
+                }
                 sfb.trimEmptyFrames(); // remove all empties
                 try {
-                    out.add(toMiniSeedWithCompressedData(recLenExp, B1000Types.STEIM1, sfb.getEncodedData(), sfb.getNumSamples(), offset));
+                    out.add(toMiniSeedWithCompressedData(recLenExp, compressionType, sfb.getEncodedData(), sfb.getNumSamples(), offset));
                 } catch(IOException e) {
                     throw new SeedFormatException("unable to get encoded data from SteimFrameBlock", e);
                 }
@@ -665,6 +722,8 @@ public class TraceBuf2 {
                     done = true;
                 }
             }
+        } else {
+            throw new SeedFormatException("Compression type "+compressionType+" not known or implemented.");
         }
         return out;
     }

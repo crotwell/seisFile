@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -58,14 +59,14 @@ public class WaveServerTest extends TestCase {
                                      "00",
                                      data);
         // without compression
-        List<DataRecord> mseedList = tb.toMiniSeed(12, false);
+        List<DataRecord> mseedList = tb.toMiniSeedNoCompression(12);
         int numPoints = 0;
         for (DataRecord dr : mseedList) {
             numPoints += dr.getHeader().getNumSamples();
         }
         assertEquals("num points without compression", tb.getNumSamples(), numPoints);
         // with compression
-        mseedList = tb.toMiniSeed(12, true);
+        mseedList = tb.toMiniSeed(12, B1000Types.STEIM1);
         numPoints = 0;
         for (DataRecord dr : mseedList) {
             numPoints += dr.getHeader().getNumSamples();
