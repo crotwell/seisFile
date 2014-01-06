@@ -61,7 +61,7 @@ public class EarthwormHeartbeater extends TimerTask {
         try {
             heartbeat();
         } catch(IOException e) {
-            System.err.println("IOException with heartbeat, closing connection." + e);
+            logger.error("IOException with heartbeat, closing connection.", e);
             try {
                 outStream.close();
                 outStream = null;
