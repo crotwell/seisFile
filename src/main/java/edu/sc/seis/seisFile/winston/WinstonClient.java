@@ -28,6 +28,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.BasicConfigurator;
 
+import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
@@ -51,7 +52,13 @@ public class WinstonClient {
             if (nextArg.equals("--sync")) {
                 doSync = true;
             } else if (nextArg.equals("--steim1")) {
-                doSteim1 = true;
+                if ( ! doSteim2) {
+                    // only allow one of steim1 and steim2
+                    doSteim1 = true;
+                }
+            } else if (nextArg.equals("--steim2")) {
+                doSteim1 = false;
+                doSteim2 = true;
             } else if (nextArg.equals("--heartbeatverbose")) {
                 heartbeatverbose = true;
             } else if (nextArg.equals("--tbzip")) {
@@ -75,6 +82,8 @@ public class WinstonClient {
                     institution = Integer.parseInt(it.next());
                 } else if (nextArg.equals("--heartbeat")) {
                     heartbeat = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--heartbeatText")) {
+                    heartbeatText = it.next();
                 } else if (nextArg.equals("--sleepmillis")) {
                     sleepMillis = Integer.parseInt(it.next());
                 } else {
@@ -106,7 +115,11 @@ public class WinstonClient {
     int recordSize = 12;
 
     boolean doSteim1 = false;
+    
+    boolean doSteim2 = false;
 
+    String heartbeatText = "alive";
+    
     /**
      * @param args
      */
@@ -174,7 +187,7 @@ public class WinstonClient {
             }
             zip.close();
         } else if (doExport) {
-            EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, "heartbeat", heartbeat);
+            EarthwormExport exporter = new EarthwormExport(exportPort, module, institution, heartbeatText, heartbeat);
             if (heartbeatverbose) {
                 exporter.getHeartbeater().setVerbose(heartbeatverbose);
             }
@@ -306,7 +319,15 @@ public class WinstonClient {
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
         for (TraceBuf2 traceBuf2 : tbList) {
-            List<DataRecord> mseedList = traceBuf2.toMiniSeed(recordSize, doSteim1);
+            List<DataRecord> mseedList;
+            if (doSteim1) {
+                mseedList = traceBuf2.toMiniSeed(recordSize, B1000Types.STEIM1);
+            } else if (doSteim2) {
+                mseedList = traceBuf2.toMiniSeed(recordSize, B1000Types.STEIM2);
+            } else {
+                // no compression
+                mseedList = traceBuf2.toMiniSeedNoCompression(recordSize);
+            }
             for (DataRecord dr : mseedList) {
                 dr.write(params.getDataOutputStream());
             }
