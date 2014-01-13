@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.6.3'
+version = '1.6.4-SNAPSHOT'
 
 apply plugin: 'maven'
 apply plugin: 'groovy'
