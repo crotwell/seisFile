@@ -71,7 +71,7 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
                     return FDSNStationXML.createEmpty();
                 }
             } else {
-                throw new FDSNWSException("Error: " + getErrorMessage(), uri);
+                throw new FDSNWSException("Error: " + getErrorMessage(), uri, responseCode);
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);
