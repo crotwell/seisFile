@@ -24,6 +24,12 @@ public class FDSNWSException extends SeisFileException {
         this(message);
         this.targetURI = targetURI;
     }
+    
+    public FDSNWSException(String message, URI targetURI, int httpResponseCode) {
+        this(message);
+        this.targetURI = targetURI;
+        this.httpResponseCode = httpResponseCode;
+    }
 
     public FDSNWSException(Throwable cause, URI targetURI) {
         this(cause);
@@ -36,6 +42,8 @@ public class FDSNWSException extends SeisFileException {
     }
 
     URI targetURI;
+    
+    int httpResponseCode = 0;
 
     public URI getTargetURI() {
         return targetURI;
@@ -43,6 +51,11 @@ public class FDSNWSException extends SeisFileException {
 
     public void setTargetURI(URI uri) {
         this.targetURI = uri;
+    }
+
+    
+    public int getHttpResponseCode() {
+        return httpResponseCode;
     }
     
 }

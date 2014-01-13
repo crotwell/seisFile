@@ -64,7 +64,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                     return new DataRecordIterator(new DataInputStream(new ByteArrayInputStream(new byte[0])));
                 }
             } else {
-                throw new FDSNWSException("Error: " + getErrorMessage(), uri);
+                throw new FDSNWSException("Error: " + getErrorMessage(), uri, responseCode);
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);

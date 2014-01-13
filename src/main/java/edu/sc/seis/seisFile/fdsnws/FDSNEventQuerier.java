@@ -40,14 +40,14 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                         }
                         return quakeml;
                     } catch(XMLStreamException e) {
-                        throw new SeisFileException("Unable to load xml", e);
+                        throw new FDSNWSException("Unable to load xml from ", e, uri);
                     }
                 } else {
                     // return iterator with nothing in it
                     return Quakeml.createEmptyQuakeML();
                 }
             } else {
-                throw new FDSNWSException("Error: " + getErrorMessage());
+                throw new FDSNWSException("Error: " + getErrorMessage(), uri, responseCode);
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);
