@@ -58,4 +58,8 @@ public class FDSNWSException extends SeisFileException {
         return httpResponseCode;
     }
     
+    public String toString() {
+        return super.toString()+" uri: "+getTargetURI()+" ret code"+getHttpResponseCode();
+    }
+    
 }
