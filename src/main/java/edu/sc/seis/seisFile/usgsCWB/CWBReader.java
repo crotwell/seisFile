@@ -127,7 +127,7 @@ public class CWBReader extends StringMSeedQueryReader {
     
     protected int timeoutMillis;
     
-    public static final String DEFAULT_HOST = "cwb-pub.cr.usgs.gov";
+    public static final String DEFAULT_HOST = "cwbpub.cr.usgs.gov";
     
     public static final int DEFAULT_PORT = 2061;
 }
