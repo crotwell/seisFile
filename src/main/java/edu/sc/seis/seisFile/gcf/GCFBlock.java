@@ -90,9 +90,14 @@ public class GCFBlock extends AbstractGCFBlock {
      */
     public static GCFBlock mockGCF(Date startTime, int[] data, boolean isSerial) {
         int[] daySec = Convert.convertTime(startTime);
+        int[] diff = new int[data.length];
+        diff[0] = 0; // first diff always zero
+        for (int i = 1; i < diff.length; i++) {
+            diff[i] = data[i] - data[i-1];
+        }
         int max = 0;
-        for (int i = 0; i < data.length; i++) {
-            max = Math.max(max, Math.abs(data[i]));
+        for (int i = 0; i < diff.length; i++) {
+            max = Math.max(max, Math.abs(diff[i]));
         }
         int compression = 1;
         if (max < 128) {
@@ -101,11 +106,6 @@ public class GCFBlock extends AbstractGCFBlock {
             compression = 2;
         }
         GCFHeader h = new GCFHeader(MOCK_SYSID, MOCK_STREAMID, daySec[0], daySec[1], 100, compression, data.length/compression);
-        int[] diff = new int[data.length];
-        diff[0] = 0; // first diff always zero
-        for (int i = 1; i < diff.length; i++) {
-            diff[i] = data[i] - data[i-1];
-        }
         GCFBlock block = new GCFBlock(h, diff, data[0], data[data.length - 1], isSerial);
         return block;
     }
