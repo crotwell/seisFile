@@ -46,8 +46,8 @@ public class GCFHeader {
         out.writeShort(dayPlusBit);
         out.writeShort(getSecondsInDay() & 0xffff);
         out.writeByte(0); // unused byte
-        out.write((startOffsetNumerator << 4) + (getSpsByte() & 0x7));
-        out.write(getCompression());
+        out.write(getSpsByte());
+        out.write((startOffsetNumerator << 4) + (getCompression() & 0x7));
         out.write(getNum32Records());
     }
     
@@ -178,7 +178,7 @@ public class GCFHeader {
     }
     
     public String toString() {
-        return "GCFHeader: "+systemId+" "+streamId+" "+dayNumber+" "+secondsInDay+" "+sps+" "+compression+" "+num32Records;
+        return "GCFHeader: "+systemId+" "+streamId+" "+dayNumber+" "+secondsInDay+" "+sps+" "+getStartOffsetNumerator()+" "+getCompression()+" "+num32Records;
     }
 
     String systemId;
