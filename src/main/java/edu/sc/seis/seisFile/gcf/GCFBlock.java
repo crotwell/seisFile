@@ -105,7 +105,7 @@ public class GCFBlock extends AbstractGCFBlock {
         } else if (max < Short.MAX_VALUE) {
             compression = 2;
         }
-        GCFHeader h = new GCFHeader(MOCK_SYSID, MOCK_STREAMID, daySec[0], daySec[1], 100, compression, data.length/compression);
+        GCFHeader h = new GCFHeader(MOCK_SYSID, MOCK_STREAMID, daySec[0], daySec[1], 100, compression, 0, data.length/compression);
         GCFBlock block = new GCFBlock(h, diff, data[0], data[data.length - 1], isSerial);
         return block;
     }

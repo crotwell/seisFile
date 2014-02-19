@@ -24,7 +24,7 @@ public class Convert {
             scnl[2] = "XX";
             scnl[3] = "0"+h.getStreamId().charAt(5);
         }
-        Calendar startTime = convertTime(h.getDayNumber(), h.getSecondsInDay());
+        Calendar startTime = convertTime(h.getDayNumber(), h.getSecondsInDay(), h.getStartOffsetNumerator()/h.getStartOffsetDenominator());
         TraceBuf2 out = new TraceBuf2(0,
                                       h.getNumPoints(),
                                       startTime.getTimeInMillis()/1000.0,
@@ -38,7 +38,7 @@ public class Convert {
         return out;
     }
 
-    public static Calendar convertTime(int dayNumber, int secInDay) {
+    public static Calendar convertTime(int dayNumber, int secInDay, float fracSeconds) {
         Calendar cal = Calendar.getInstance(TZ_GMT);
         cal.set(Calendar.YEAR, 1989);
         cal.set(Calendar.DAY_OF_YEAR, NOV_17_DAY_OF_YEAR);
@@ -48,6 +48,7 @@ public class Convert {
         cal.set(Calendar.MILLISECOND, 0);
         cal.add(Calendar.DAY_OF_YEAR, dayNumber);
         cal.add(Calendar.SECOND, secInDay);
+        cal.add(Calendar.MILLISECOND, Math.round(fracSeconds*1000));
         return cal;
     }
     

@@ -10,12 +10,16 @@ import edu.iris.dmc.seedcodec.Utility;
 
 public class GCFHeader {
 
+    /*
+     * For 
+     */
     public GCFHeader(String systemId,
                      String streamId,
                      int dayNumber,
                      int secondsInDay,
                      int sps,
                      int compression,
+                     int startOffsetNumerator,
                      int num32Records) {
         super();
         if ( ! (compression == 1 || compression == 2 || compression == 4)) {
@@ -28,8 +32,10 @@ public class GCFHeader {
         this.streamId = streamId.toUpperCase();
         this.dayNumber = dayNumber;
         this.secondsInDay = secondsInDay;
+        
         this.sps = sps;
         this.compression = compression;
+        this.startOffsetNumerator = startOffsetNumerator;
         this.num32Records = num32Records;
     }
     
@@ -40,7 +46,7 @@ public class GCFHeader {
         out.writeShort(dayPlusBit);
         out.writeShort(getSecondsInDay() & 0xffff);
         out.writeByte(0); // unused byte
-        out.write(getSps());
+        out.write((startOffsetNumerator << 4) + (getSpsByte() & 0x7));
         out.write(getCompression());
         out.write(getNum32Records());
     }
@@ -50,7 +56,10 @@ public class GCFHeader {
                              Integer.toString(Utility.bytesToInt(data[4], data[5], data[6], data[7], false), 36),
                              Utility.bytesToInt(data[8], data[9], false) >> 1,
                              Utility.bytesToInt((byte)(data[9] & 0x1), data[10], data[11], false),
-                             data[13] & 0xff, data[14] & 0xff, data[15] & 0xff);
+                             data[13] & 0xff,
+                             data[14] & 0x07, // compression uses low 3 bits, and with 0111=7
+                             data[14] >> 4, // high 4 bits are numerator of start time offset for high sps 
+                             data[15] & 0xff);
         
     }
     
@@ -81,7 +90,7 @@ public class GCFHeader {
     }
     
     public Date getStartAsDate() {
-        return Convert.convertTime(getDayNumber(), getSecondsInDay()).getTime();
+        return Convert.convertTime(getDayNumber(), getSecondsInDay(), getStartOffsetNumerator()/getStartOffsetDenominator()).getTime();
     }
     
     public Date getLastSampleTime() {
@@ -104,8 +113,39 @@ public class GCFHeader {
         return new int[] { day, sec};
     }
     
-    public int getSps() {
+    public int getSpsByte() {
         return sps;
+    }
+    
+    /**
+     * see http://www.guralp.com/documents/SWA-RFC-GCFR.pdf page 8 for special values
+     * @return
+     */
+    public float getSps() {
+        switch (sps) {
+            case 157:
+                return 0.1f;
+            case 161:
+                return 0.125f;
+            case 162:
+                return 0.2f;
+            case 164:
+                return 0.25f;
+            case 167:
+                return 0.5f;
+            case 171:
+                return 400;
+            case 174:
+                return 500;
+            case 176:
+                return 1000;
+            case 179:
+                return 2000;
+            case 181:
+                return 4000;
+            default:
+                return sps;
+        }
     }
 
     
@@ -113,6 +153,21 @@ public class GCFHeader {
         return compression;
     }
 
+    public int getStartOffsetNumerator() {
+        return startOffsetNumerator;
+    }
+
+    /** return float so when we divide we get a float fraction. */
+    public float getStartOffsetDenominator() {
+        switch (getSpsByte() & 0x7) {
+            case 171: return 8;
+            case 174: return 2;
+            case 176: return 4;
+            case 179: return 8;
+            case 181: return 16;
+            default: return 1;
+        }
+    }
     
     public int getNum32Records() {
         return num32Records;
@@ -132,6 +187,7 @@ public class GCFHeader {
     int secondsInDay;
     int sps;
     int compression;
+    int startOffsetNumerator;
     int num32Records;
     
     @Override
@@ -139,6 +195,7 @@ public class GCFHeader {
         final int prime = 31;
         int result = 1;
         result = prime * result + compression;
+        result = prime * result + startOffsetNumerator;
         result = prime * result + dayNumber;
         result = prime * result + num32Records;
         result = prime * result + secondsInDay;
@@ -158,6 +215,8 @@ public class GCFHeader {
             return false;
         GCFHeader other = (GCFHeader)obj;
         if (compression != other.compression)
+            return false;
+        if (startOffsetNumerator != other.startOffsetNumerator)
             return false;
         if (dayNumber != other.dayNumber)
             return false;
