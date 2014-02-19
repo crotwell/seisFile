@@ -24,7 +24,7 @@ public class GCFHeaderTest {
             if (i % 20 > 10 ) {data[i] *= -1;}
             data[i] *= 10000;
         }
-        GCFBlock block = GCFBlock.mockGCF(Convert.convertTime(0, 0).getTime(), data, isSerial);
+        GCFBlock block = GCFBlock.mockGCF(Convert.convertTime(0, 0, 0).getTime(), data, isSerial);
         assertEquals("day", 0, block.getHeader().getDayNumber());
         assertEquals("Sec", 0, block.getHeader().getSecondsInDay());
         assertEquals("end", 2, block.getHeader().getPredictedNextStartDaySec()[1]);
@@ -62,7 +62,7 @@ public class GCFHeaderTest {
         assertEquals("day number equals", expectedHeader.getDayNumber(), actualHeader.getDayNumber());
         assertEquals("seconds equals", expectedHeader.getSecondsInDay(), actualHeader.getSecondsInDay());
         assertEquals("compression equals", expectedHeader.getCompression(), actualHeader.getCompression());
-        assertEquals("sps equals", expectedHeader.getSps(), actualHeader.getSps());
+        assertEquals("sps equals", expectedHeader.getSps(), actualHeader.getSps(), 0.0000001f);
         assertEquals("num32 equals", expectedHeader.getNum32Records(), actualHeader.getNum32Records());
     }
 }

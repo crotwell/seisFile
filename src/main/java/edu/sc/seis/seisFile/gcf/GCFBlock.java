@@ -17,10 +17,10 @@ public class GCFBlock extends AbstractGCFBlock {
 
     public int getSize() {
         int size = 24;
-        if (isSerial && header.compression == 1) {
+        if (isSerial && header.getCompression() == 1) {
             size += diffData.length * 3;
         } else {
-            size += diffData.length * 4 / header.compression;
+            size += diffData.length * 4 / header.getCompression();
         }
         return size;
     }
