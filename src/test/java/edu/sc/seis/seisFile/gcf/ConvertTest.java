@@ -33,7 +33,7 @@ public class ConvertTest {
                 data[i] *= -1;
             }
         }
-        GCFBlock mock = GCFBlock.mockGCF(Convert.convertTime(0,  0).getTime(), data, isSerial);
+        GCFBlock mock = GCFBlock.mockGCF(Convert.convertTime(0,  0, 0).getTime(), data, isSerial);
         Map<String, String[]> sysId_StreamIdToSCNL = new HashMap<String, String[]>();
         sysId_StreamIdToSCNL.put(GCFBlock.MOCK_SYSID+"_"+GCFBlock.MOCK_STREAMID, new String[] {"TEST", "ENZ", "XX", "00"});  
         
@@ -99,7 +99,7 @@ public class ConvertTest {
         Date d = sdf.parse(date);
         int[] daySec = Convert.convertTime(d);
         assertArrayEquals(date, daySecExpected, daySec);
-        Calendar calcCal = Convert.convertTime(daySecExpected[0], daySecExpected[1]);
+        Calendar calcCal = Convert.convertTime(daySecExpected[0], daySecExpected[1], 0);
         if (daySecExpected[0] < 45) {
             // same year so easy check
             assertEquals(date, daySecExpected[0], calcCal.get(Calendar.DAY_OF_YEAR)-Convert.NOV_17_DAY_OF_YEAR);
