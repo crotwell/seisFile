@@ -26,11 +26,12 @@ public class BufferingEarthwormExport {
             public void run() {
                 while (true) {
                     try {
-                        if (! export.isConnected()) {
+                    while (! export.isConnected()) {
+                        try {
                             export.waitForClient();
+                        } catch(IOException e1) {
+                            logger.error("Problem waiting for client connection, retry", e1);
                         }
-                    } catch(IOException e1) {
-                        logger.error("Problem waiting for client connection", e1);
                     }
                     TraceBuf2 tb = pop();
                     logger.info("Try to send "+tb);
@@ -49,8 +50,12 @@ public class BufferingEarthwormExport {
                             Thread.sleep(getSleepMillis());
                         } catch(Throwable e) {
                             export.closeClient();
+                            export.closeSocket();
                             logger.error("problem sending " + tb, e);
                         }
+                    }
+                    } catch (Throwable t) {
+                        logger.error("This should not happen: ", t);
                     }
                 }
             }
