@@ -161,7 +161,7 @@ public abstract class AbstractQueryParams {
     /** Service name as defined by the fdsn, ie event, station or dataselect. */
     public abstract String getServiceName();
 
-    protected String getHost() {
+    public String getHost() {
         return host;
     }
 
