@@ -1,6 +1,8 @@
 package edu.sc.seis.seisFile.gcf;
 
+import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.BufferingEarthwormExport;
+import edu.sc.seis.seisFile.earthworm.FileBufferingEarthwormExport;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -54,6 +56,8 @@ public class GCFEarthwormExport implements SerialPortEventListener {
         } catch(GCFFormatException e) {
             handleError(e);
         } catch(IOException e) {
+            handleError(e);
+        } catch(Throwable e) {
             handleError(e);
         }
     }
@@ -129,7 +133,7 @@ public class GCFEarthwormExport implements SerialPortEventListener {
     
     public static final String GCF_CHAN_PROP = "gcf2ew.channel.";
 
-    public static void main(String[] args) throws IOException, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, TooManyListenersException {
+    public static void main(String[] args) throws IOException, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, TooManyListenersException, SeisFileException {
         BasicConfigurator.configure();
         int port = 3000;
         int module = 999;
@@ -138,6 +142,7 @@ public class GCFEarthwormExport implements SerialPortEventListener {
         int buffer = 1000;
         String serial = "/dev/ttyS0";
         String propsFilename = null;
+        String bufferDir = null;
         Properties props = new Properties();
         for (int i = 0; i < args.length; i++) {
             if (i < args.length-1) {
@@ -159,6 +164,9 @@ public class GCFEarthwormExport implements SerialPortEventListener {
                 } else if (args[i].equals("--buffer")) {
                     buffer = Integer.parseInt(args[i + 1]);
                     i++;
+                } else if (args[i].equals("--bufferdir")) {
+                    bufferDir = args[i + 1];
+                    i++;
                 } else if (args[i].equals("-p")) {
                     propsFilename = args[i + 1];
                     i++;
@@ -170,14 +178,15 @@ public class GCFEarthwormExport implements SerialPortEventListener {
             PropertyConfigurator.configure(props);
         }
         logger.info("Start: port="+port+" mod="+module+" inst="+institution
-                    +" heartbeat="+heartbeat+" serial="+serial+" buffer="+buffer);
-        BufferingEarthwormExport export = new BufferingEarthwormExport(port,
+                    +" heartbeat="+heartbeat+" serial="+serial+" buffer="+buffer+" bufferDir="+bufferDir);
+        FileBufferingEarthwormExport export = new FileBufferingEarthwormExport(port,
                                                                        module,
                                                                        institution,
                                                                        "heartbeat",
                                                                        heartbeat,
                                                                        buffer,
-                                                                       50);
+                                                                       50,
+                                                                       bufferDir);
         Map<String, String[]> sysId_StreamIdToSCNL = new HashMap<String, String[]>();
         for (String key : props.stringPropertyNames()) {
             if (key.startsWith(GCF_CHAN_PROP)) {
