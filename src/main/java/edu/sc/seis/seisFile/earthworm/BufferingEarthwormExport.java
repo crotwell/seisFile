@@ -85,6 +85,7 @@ public class BufferingEarthwormExport {
                 } catch(InterruptedException e) {}
             }
             TraceBuf2 out = buffer.remove(0);
+            buffer.notifyAll();
             return out;
         }
     }
