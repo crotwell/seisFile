@@ -24,43 +24,43 @@ public class BufferingEarthwormExport {
 
             @Override
             public void run() {
+                TraceBuf2 tb = null;
                 while (true) {
                     try {
-                    while (! export.isConnected()) {
+                    if (! export.isConnected()) {
                         try {
                             export.waitForClient();
                         } catch(IOException e1) {
                             logger.error("Problem waiting for client connection, retry", e1);
                         }
-                    }
-                    TraceBuf2 tb = pop();
-                    logger.info("Try to send "+tb);
-                    boolean notSent = true;
-                    while(notSent) {
-                        try {
-                            export.export(tb);
-                            notSent = false;
-                            sentCount++;
-                            if (export.inStream.available() > 0) {
-                                // should really look for heartbeats
-                                byte[] availableInBytes = new byte[export.inStream.available()];
-                                export.inStream.read(availableInBytes);
-                                logger.info("possible heartbeat: "+availableInBytes[0]+" "+availableInBytes[1]+" "+availableInBytes[2]);
-                            }
-                            Thread.sleep(getSleepMillis());
-                        } catch(Throwable e) {
-                            export.closeClient();
-                            export.closeSocket();
-                            logger.error("problem sending " + tb, e);
+                    } else {
+                        if (tb == null) {
+                            tb = pop(); // next tb
                         }
+                        if (tb != null) {
+                            logger.info("Try to send "+tb);
+                            export.export(tb);
+                            sentCount++;
+                            tb = null;
+                        }
+                        if (export.inStream.available() > 0) {
+                            // should really look for heartbeats
+                            byte[] availableInBytes = new byte[export.inStream.available()];
+                            export.inStream.read(availableInBytes);
+                            logger.info("possible heartbeat: "+availableInBytes[0]+" "+availableInBytes[1]+" "+availableInBytes[2]);
+                        }
+                        Thread.sleep(getSleepMillis());
                     }
                     } catch (Throwable t) {
-                        logger.error("This should not happen: ", t);
+                        export.closeSocket();
+                        logger.error("problem sending " + tb, t);
                     }
+                    
                 }
             }
         });
         exportThread.setDaemon(true);
+        exportThread.setName("exportThread");
         exportThread.start();
     }
 
