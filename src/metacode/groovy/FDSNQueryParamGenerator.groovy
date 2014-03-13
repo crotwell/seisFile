@@ -58,6 +58,7 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
 
     public FDSN${service}QueryParams clone() {
         FDSN${service}QueryParams out = new FDSN${service}QueryParams(getHost());
+        out.cloneNonParams(this);
         for (String key : params.keySet()) {
             out.setParam(key, params.get(key));
         }

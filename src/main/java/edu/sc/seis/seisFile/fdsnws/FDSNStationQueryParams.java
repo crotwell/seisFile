@@ -19,6 +19,7 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     public FDSNStationQueryParams clone() {
         FDSNStationQueryParams out = new FDSNStationQueryParams(getHost());
+        out.cloneNonParams(this);
         for (String key : params.keySet()) {
             out.setParam(key, params.get(key));
         }
