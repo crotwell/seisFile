@@ -19,6 +19,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     public FDSNDataSelectQueryParams clone() {
         FDSNDataSelectQueryParams out = new FDSNDataSelectQueryParams(getHost());
+        out.cloneNonParams(this);
         for (String key : params.keySet()) {
             out.setParam(key, params.get(key));
         }
