@@ -98,6 +98,14 @@ public abstract class AbstractQueryParams {
 
     HashMap<String, String> params = new HashMap<String, String>();
 
+    void cloneNonParams(AbstractQueryParams other) {
+        host = other.getHost();
+        port = other.getPort();
+        scheme = other.getScheme();
+        fdsnQueryStyle = other.getFdsnQueryStyle();
+        fdsnwsPath = other.getFdsnwsPath();
+    }
+    
     void internalSetBaseURI(URI baseURI) {
         setScheme(baseURI.getScheme());
         setPort(baseURI.getPort());
