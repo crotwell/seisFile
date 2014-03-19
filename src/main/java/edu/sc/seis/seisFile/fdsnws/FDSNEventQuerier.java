@@ -89,6 +89,10 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
     public static void validateQuakeML(XMLStreamReader reader) throws SAXException, IOException {
         validate(reader, Quakeml.loadSchema());
     }
+    
+    public URI formURI() throws URISyntaxException {
+        return queryParams.formURI();
+    }
 
     public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException, FDSNWSException {
         connect(queryParams.formURI());

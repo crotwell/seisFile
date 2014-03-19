@@ -130,6 +130,11 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         }
         outputRaw(getInputStream(), out);
     }
+
+    @Override
+    public URI formURI() throws URISyntaxException {
+        return queryParams.formURI();
+    }
 }
 
 
