@@ -124,11 +124,11 @@ public abstract class AbstractQueryParams {
         this.scheme = scheme;
     }
 
-    String getScheme() {
+    public String getScheme() {
         return scheme;
     }
 
-    int getPort() {
+    public int getPort() {
         return port;
     }
 
@@ -154,7 +154,7 @@ public abstract class AbstractQueryParams {
         this.fdsnwsPath = fdsnwsPath;
     }
 
-    String getFdsnQueryStyle() {
+    public String getFdsnQueryStyle() {
         return fdsnQueryStyle;
     }
     
@@ -162,7 +162,7 @@ public abstract class AbstractQueryParams {
         fdsnQueryStyle = queryStyle;
     }
 
-    String getFDSNMajorVersion() {
+    public String getFDSNMajorVersion() {
         return "1";
     }
 
