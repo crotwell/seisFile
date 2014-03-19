@@ -51,7 +51,7 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
     public FDSNStationXML getFDSNStationXML() throws FDSNWSException {
         URI uri = null;
         try {
-            uri = queryParams.formURI();
+            uri = formURI();
             connect(uri);
             if (!isError()) {
                 if (!isEmpty()) {
@@ -83,6 +83,11 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
                 throw new FDSNWSException(e.getMessage(), e, uri);
             }
         }
+    }
+
+    @Override
+    public URI formURI() throws URISyntaxException {
+        return queryParams.formURI();
     }
 
     FDSNStationQueryParams queryParams;

@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
@@ -29,6 +33,8 @@ import edu.sc.seis.seisFile.client.AbstractClient;
 
 public abstract class AbstractFDSNQuerier {
 
+    public abstract URI formURI() throws URISyntaxException;
+    
     protected void connect(URI uri) throws FDSNWSException {
         connectionUri = uri;
         URLConnection urlConn;
@@ -79,6 +85,11 @@ public abstract class AbstractFDSNQuerier {
         validator.validate(new StAXSource(reader), null);
     }
 
+    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException, FDSNWSException {
+        connect(formURI());
+        outputRaw(getInputStream(), out);
+    }
+    
     public void outputRaw(InputStream in, OutputStream out) throws IOException {
         BufferedInputStream bufIn = new BufferedInputStream(in);
         BufferedOutputStream bufOut = new BufferedOutputStream(out);
@@ -90,6 +101,19 @@ public abstract class AbstractFDSNQuerier {
         }
         bufIn.close(); // close as we hit EOF
         bufOut.flush();// only flush in case outside wants to write more
+    }
+    
+    public String getRawXML() throws IOException {
+        StringWriter out = new StringWriter();
+        BufferedReader in = new BufferedReader(new InputStreamReader(getInputStream()));
+        char[] buf = new char[1024];
+        int numRead = in.read(buf);
+        while(numRead != -1) {
+            out.write(buf, 0, numRead);
+        }
+        in.close();
+        out.close();
+        return out.toString();
     }
 
     public boolean isError() {
@@ -189,6 +213,13 @@ public abstract class AbstractFDSNQuerier {
 
     public int getReadTimeout() {
         return readTimeout;
+    }
+    
+    public static Throwable extractRootCause(Throwable t) {
+        if (t.getCause() == null) {
+            return t;
+        }
+        return extractRootCause(t.getCause());
     }
 
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
