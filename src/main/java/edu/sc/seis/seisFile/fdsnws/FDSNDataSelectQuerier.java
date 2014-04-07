@@ -43,16 +43,13 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     }
 
     public DataRecordIterator getDataRecordIterator() throws SeisFileException {
-        URI uri = null;
         try {
             if (request == null) {
                 // normal GET request, so use super
-                uri = queryParams.formURI();
-                connect(uri);
+                connect();
             } else {
                 // POST request, so we have to do connection special
                 connectForPost();
-                uri = connectionUri; // depending on where exception happens in connectForPost, this might still be null
             }
             if (!isError()) {
                 if (!isEmpty()) {
@@ -64,14 +61,14 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                     return new DataRecordIterator(new DataInputStream(new ByteArrayInputStream(new byte[0])));
                 }
             } else {
-                throw new FDSNWSException("Error: " + getErrorMessage(), uri, responseCode);
+                throw new FDSNWSException("Error: " + getErrorMessage(), getConnectionUri(), responseCode);
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);
         } catch(MalformedURLException e) {
-            throw new FDSNWSException("Error forming URL", e, uri);
+            throw new FDSNWSException("Error forming URL", e, getConnectionUri());
         } catch(IOException e) {
-            throw new FDSNWSException("Error with Connection", e, uri);
+            throw new FDSNWSException("Error with Connection", e, getConnectionUri());
         }
     }
 
@@ -93,6 +90,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                                 "",
                                 queryParams.getFragment());
         HttpURLConnection conn = (HttpURLConnection)connectionUri.toURL().openConnection();
+        urlConn = conn; // for isConnected check
         conn.setRequestMethod("POST");
         conn.setConnectTimeout(getConnectTimeout());
         conn.setReadTimeout(getReadTimeout());
@@ -123,7 +121,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     public void outputRaw(OutputStream out) throws MalformedURLException, IOException, FDSNWSException, URISyntaxException {
         if (request == null) {
             // normal GET request, so use super
-            connect(queryParams.formURI());
+            connect();
         } else {
             // POST request, so we have to do connection special
             connectForPost();
