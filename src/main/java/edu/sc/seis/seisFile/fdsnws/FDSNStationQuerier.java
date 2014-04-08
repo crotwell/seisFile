@@ -25,7 +25,7 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
     
     public void validateFDSNStationXML() throws SeisFileException, URISyntaxException {
         try {
-            connect(queryParams.formURI());
+            connect();
             if (!isError()) {
                 if (!isEmpty()) {
                     XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -44,15 +44,13 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
     }
 
     public void outputRaw(OutputStream out) throws IOException, URISyntaxException, FDSNWSException {
-        connect(queryParams.formURI());
+        connect();
         outputRaw(getInputStream(), out);
     }
 
     public FDSNStationXML getFDSNStationXML() throws FDSNWSException {
-        URI uri = null;
         try {
-            uri = formURI();
-            connect(uri);
+            connect();
             if (!isError()) {
                 if (!isEmpty()) {
                     try {
@@ -64,23 +62,23 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
                         }
                         return stationxml;
                     } catch(XMLStreamException e) {
-                        throw new FDSNWSException("Unable to load xml", e, uri);
+                        throw new FDSNWSException("Unable to load xml", e, getConnectionUri());
                     }
                 } else {
                     // return iterator with nothing in it
                     return FDSNStationXML.createEmpty();
                 }
             } else {
-                throw new FDSNWSException("Error: " + getErrorMessage(), uri, responseCode);
+                throw new FDSNWSException("Error: " + getErrorMessage(), getConnectionUri(), responseCode);
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);
         } catch(SeisFileException e) {
             if (e instanceof FDSNWSException) {
-                ((FDSNWSException)e).setTargetURI(uri);
+                ((FDSNWSException)e).setTargetURI(getConnectionUri());
                 throw (FDSNWSException)e;
             } else {
-                throw new FDSNWSException(e.getMessage(), e, uri);
+                throw new FDSNWSException(e.getMessage(), e, getConnectionUri());
             }
         }
     }

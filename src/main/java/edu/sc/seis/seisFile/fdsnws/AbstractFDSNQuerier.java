@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -33,13 +32,15 @@ import edu.sc.seis.seisFile.client.AbstractClient;
 
 public abstract class AbstractFDSNQuerier {
 
+    public AbstractFDSNQuerier() {
+    }
+    
     public abstract URI formURI() throws URISyntaxException;
     
-    protected void connect(URI uri) throws FDSNWSException {
-        connectionUri = uri;
-        URLConnection urlConn;
+    public void connect() throws URISyntaxException, FDSNWSException {
+        connectionUri = formURI();
         try {
-            urlConn = uri.toURL().openConnection();
+            urlConn = connectionUri.toURL().openConnection();
             urlConn.setConnectTimeout(getConnectTimeout());
             urlConn.setReadTimeout(getReadTimeout());
             if (urlConn instanceof HttpURLConnection) {
@@ -49,9 +50,9 @@ public abstract class AbstractFDSNQuerier {
             }
             processConnection(urlConn);
         } catch(IOException e) {
-            throw new FDSNWSException("Problem with connection", e, uri);
+            throw new FDSNWSException("Problem with connection", e, connectionUri);
         } catch(RuntimeException e) {
-            throw new FDSNWSException("Problem with connection", e, uri);
+            throw new FDSNWSException("Problem with connection", e, connectionUri);
         }
     }
 
@@ -86,7 +87,7 @@ public abstract class AbstractFDSNQuerier {
     }
 
     public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException, FDSNWSException {
-        connect(formURI());
+        connect();
         outputRaw(getInputStream(), out);
     }
     
@@ -136,18 +137,26 @@ public abstract class AbstractFDSNQuerier {
         return inputStream;
     }
 
+    /** returns the URI that was used to open the connection.
+     * This may be null if connect() has not yet been called. formUri()
+     * can be used to get the URI without connecting.
+     * @return
+     */
     public URI getConnectionUri() {
-        checkConnectionInitiated();
         return connectionUri;
     }
 
+    public boolean isConnectionInitiated() {
+        return urlConn != null;
+    }
+    
     public void checkConnectionInitiated() {
-        if (connectionUri == null) {
+        if ( ! isConnectionInitiated()) {
             throw new RuntimeException("Not connected yet");
         }
     }
 
-    public XMLEventReader getReader() throws XMLStreamException {
+    public XMLEventReader getReader() throws XMLStreamException, URISyntaxException {
         if (reader == null) {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             reader = factory.createXMLEventReader(getConnectionUri().toString(), getInputStream());
@@ -235,6 +244,8 @@ public abstract class AbstractFDSNQuerier {
     XMLEventReader reader;
 
     InputStream inputStream;
+    
+    URLConnection urlConn;
 
     protected URI connectionUri;
 
