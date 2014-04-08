@@ -57,6 +57,13 @@ public class Quakeml {
         return QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION.equals(schemaVersion);
     }
 
+    public void close() throws XMLStreamException {
+        if (reader != null) {
+            reader.close();
+        }
+        reader = null;
+    }
+
     public static Quakeml createEmptyQuakeML() {
         try {
             URL url = Quakeml.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/empty.quakeml");
