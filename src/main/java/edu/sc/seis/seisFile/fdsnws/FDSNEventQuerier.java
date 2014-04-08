@@ -25,10 +25,8 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
     }
 
     public Quakeml getQuakeML() throws FDSNWSException {
-        URI uri = null;
         try {
-            uri = queryParams.formURI();
-            connect(uri);
+            connect();
             if (!isError()) {
                 if (!isEmpty()) {
                     try {
@@ -40,23 +38,23 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                         }
                         return quakeml;
                     } catch(XMLStreamException e) {
-                        throw new FDSNWSException("Unable to load xml from ", e, uri);
+                        throw new FDSNWSException("Unable to load xml from ", e, getConnectionUri());
                     }
                 } else {
                     // return iterator with nothing in it
                     return Quakeml.createEmptyQuakeML();
                 }
             } else {
-                throw new FDSNWSException("Error: " + getErrorMessage(), uri, responseCode);
+                throw new FDSNWSException("Error: " + getErrorMessage(), getConnectionUri(), responseCode);
             }
         } catch(URISyntaxException e) {
             throw new FDSNWSException("Error with URL syntax", e);
         } catch(SeisFileException e) {
             if (e instanceof FDSNWSException) {
-                ((FDSNWSException)e).setTargetURI(uri);
+                ((FDSNWSException)e).setTargetURI(getConnectionUri());
                 throw (FDSNWSException)e;
             } else {
-                throw new FDSNWSException(e.getMessage(), e, uri);
+                throw new FDSNWSException(e.getMessage(), e, getConnectionUri());
             }
         }
     }
@@ -66,9 +64,8 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
     private static Logger logger = LoggerFactory.getLogger(FDSNEventQuerier.class);
 
     public void validateQuakeML() throws SeisFileException, URISyntaxException {
-        URI uri = queryParams.formURI();
         try {
-            connect(uri);
+            connect();
             if (!isError()) {
                 if (!isEmpty()) {
                     XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -78,11 +75,11 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                 }
             }
         } catch(SAXException e) {
-            throw new FDSNWSException("Unable to validate xml", e, uri);
+            throw new FDSNWSException("Unable to validate xml", e, getConnectionUri());
         } catch(XMLStreamException e) {
-            throw new FDSNWSException("Unable to read xml", e, uri);
+            throw new FDSNWSException("Unable to read xml", e, getConnectionUri());
         } catch(IOException e) {
-            throw new FDSNWSException("IOException trying to validate", e, uri);
+            throw new FDSNWSException("IOException trying to validate", e, getConnectionUri());
         }
     }
     
@@ -90,12 +87,13 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
         validate(reader, Quakeml.loadSchema());
     }
     
+    @Override
     public URI formURI() throws URISyntaxException {
         return queryParams.formURI();
     }
 
     public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException, FDSNWSException {
-        connect(queryParams.formURI());
+        connect();
         outputRaw(getInputStream(), out);
     }
     
