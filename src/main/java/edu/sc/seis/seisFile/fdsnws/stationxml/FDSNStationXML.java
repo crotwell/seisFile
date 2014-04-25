@@ -30,7 +30,11 @@ public class FDSNStationXML {
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.FDSNSTATIONXML, reader);
         Attribute schemaLocAttr = startE.getAttributeByName(new QName("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation"));
-        xmlSchemaLocation = schemaLocAttr.getValue();
+        if (schemaLocAttr != null) {
+            xmlSchemaLocation = schemaLocAttr.getValue();
+        } else {
+            xmlSchemaLocation = StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION+" "+StationXMLTagNames.CURRENT_SCHEMALOCATION_LOCATION;
+        }
         schemaVersion = StaxUtil.pullAttribute(startE, StationXMLTagNames.SCHEMAVERSION);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
