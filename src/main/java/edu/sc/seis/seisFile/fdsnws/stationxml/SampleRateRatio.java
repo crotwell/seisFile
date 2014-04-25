@@ -17,9 +17,9 @@ public class SampleRateRatio {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
                 String elName = e.asStartElement().getName().getLocalPart();
-                if (elName.equals(StationXMLTagNames.NAME)) {
+                if (elName.equals(StationXMLTagNames.NUMBERSAMPLES)) {
                     numberSamples = StaxUtil.pullInt(reader, StationXMLTagNames.NUMBERSAMPLES);
-                } else if (elName.equals(StationXMLTagNames.AGENCY)) {
+                } else if (elName.equals(StationXMLTagNames.NUMBERSECONDS)) {
                     numberSeconds = StaxUtil.pullInt(reader, StationXMLTagNames.NUMBERSECONDS);
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
