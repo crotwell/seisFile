@@ -49,6 +49,8 @@ public class Channel extends BaseNodeType {
                     sampleRate = new FloatType(reader, StationXMLTagNames.SAMPLE_RATE, Unit.HERTZ);
                 } else if (elName.equals(StationXMLTagNames.SAMPLE_RATE_RATIO)) {
                     sampleRateRatio = new SampleRateRatio(reader);
+                } else if (elName.equals(StationXMLTagNames.STORAGEFORMAT)) {
+                    storageFormat = StaxUtil.pullText(reader, StationXMLTagNames.STORAGEFORMAT);
                 } else if (elName.equals(StationXMLTagNames.CLOCK_DRIFT)) {
                     clockDrift = new FloatType(reader, StationXMLTagNames.CLOCK_DRIFT, clockDriftUnit);
                 } else if (elName.equals(StationXMLTagNames.CALIBRATIONUNITS)) {
