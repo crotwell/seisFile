@@ -89,6 +89,8 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                                 queryParams.getPath(),
                                 "",
                                 queryParams.getFragment());
+        logger.info("Post Query: "+connectionUri);
+        logger.info(postQuery);
         HttpURLConnection conn = (HttpURLConnection)connectionUri.toURL().openConnection();
         urlConn = conn; // for isConnected check
         conn.setRequestMethod("POST");
@@ -133,6 +135,8 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     public URI formURI() throws URISyntaxException {
         return queryParams.formURI();
     }
+    
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FDSNDataSelectQuerier.class);
 }
 
 
