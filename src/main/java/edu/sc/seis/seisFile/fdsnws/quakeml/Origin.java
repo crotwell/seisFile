@@ -50,12 +50,22 @@ public class Origin {
                     depth = new RealQuantity(reader, QuakeMLTagNames.depth);
                 } else if (elName.equals(QuakeMLTagNames.depthType)) {
                     depthType = StaxUtil.pullText(reader, QuakeMLTagNames.depthType);
+                } else if (elName.equals(QuakeMLTagNames.timeFixed)) {
+                    timeFixed = Boolean.parseBoolean(StaxUtil.pullText(reader, QuakeMLTagNames.timeFixed));
+                } else if (elName.equals(QuakeMLTagNames.epicenterFixed)) {
+                    epicenterFixed = Boolean.parseBoolean(StaxUtil.pullText(reader, QuakeMLTagNames.epicenterFixed));
                 } else if (elName.equals(QuakeMLTagNames.earthModelID)) {
                     earthModelID = StaxUtil.pullText(reader, QuakeMLTagNames.earthModelID);
                 } else if (elName.equals(QuakeMLTagNames.quality)) {
                     quality = new OriginQuality(reader);
                 } else if (elName.equals(QuakeMLTagNames.originUncertainty)) {
                     originUncertainty = new OriginUncertainty(reader);
+                } else if (elName.equals(QuakeMLTagNames.methodID)) {
+                    methodID = StaxUtil.pullText(reader, QuakeMLTagNames.methodID);
+                } else if (elName.equals(QuakeMLTagNames.referenceSystemID)) {
+                    referenceSystemID = StaxUtil.pullText(reader, QuakeMLTagNames.referenceSystemID);
+                } else if (elName.equals(QuakeMLTagNames.region)) {
+                    region = StaxUtil.pullText(reader, QuakeMLTagNames.region);
                 } else if (elName.equals(QuakeMLTagNames.type)) {
                     type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
                 } else if (elName.equals(QuakeMLTagNames.evaluationMode)) {
@@ -152,6 +162,26 @@ public class Origin {
         return type;
     }
 
+    public boolean isTimeFixed() {
+        return timeFixed;
+    }
+
+    public boolean isEpicenterFixed() {
+        return epicenterFixed;
+    }
+
+    public String getMethodID() {
+        return methodID;
+    }
+
+    public String getReferenceSystemID() {
+        return referenceSystemID;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
     Time time;
 
     RealQuantity latitude;
@@ -162,6 +192,10 @@ public class Origin {
                                                  // without depth
 
     String depthType;
+
+    boolean timeFixed = false;
+
+    boolean epicenterFixed = false;
 
     String earthModelID;
 
@@ -182,6 +216,12 @@ public class Origin {
     String type;
 
     CreationInfo creationInfo;
+
+    String methodID;
+
+    String referenceSystemID;
+
+    String region;
 
     String publicId;
 
