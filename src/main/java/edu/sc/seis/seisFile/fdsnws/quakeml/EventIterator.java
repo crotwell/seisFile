@@ -9,9 +9,8 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 
-
 public class EventIterator {
-    
+
     public EventIterator(XMLEventReader reader, EventParameters parent) {
         this.reader = reader;
         this.parent = parent;
@@ -21,7 +20,7 @@ public class EventIterator {
         return StaxUtil.hasNext(reader, QuakeMLTagNames.event,
                                 QuakeMLTagNames.QUAKEML,
                                 new StaxElementProcessor() {
-            
+
             @Override
             public void processNextStartElement(XMLEventReader reader) throws XMLStreamException, SeisFileException {
                 parent.processOneStartElement(reader);
@@ -38,6 +37,6 @@ public class EventIterator {
     }
 
     XMLEventReader reader;
-    
+
     final EventParameters parent;
 }
