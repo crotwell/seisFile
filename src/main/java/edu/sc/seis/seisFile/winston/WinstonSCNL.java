@@ -55,6 +55,55 @@ public class WinstonSCNL {
         return getDatabaseName();
     }
     
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((channel == null) ? 0 : channel.hashCode());
+        result = prime * result + ((locId == null) ? 0 : locId.hashCode());
+        result = prime * result + ((network == null) ? 0 : network.hashCode());
+        result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+        result = prime * result + ((station == null) ? 0 : station.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        WinstonSCNL other = (WinstonSCNL)obj;
+        if (channel == null) {
+            if (other.channel != null)
+                return false;
+        } else if (!channel.equals(other.channel))
+            return false;
+        if (locId == null) {
+            if (other.locId != null)
+                return false;
+        } else if (!locId.equals(other.locId))
+            return false;
+        if (network == null) {
+            if (other.network != null)
+                return false;
+        } else if (!network.equals(other.network))
+            return false;
+        if (prefix == null) {
+            if (other.prefix != null)
+                return false;
+        } else if (!prefix.equals(other.prefix))
+            return false;
+        if (station == null) {
+            if (other.station != null)
+                return false;
+        } else if (!station.equals(other.station))
+            return false;
+        return true;
+    }
+
     static final String SEP = "$";
 
     String station;
@@ -66,4 +115,6 @@ public class WinstonSCNL {
     String locId;
     
     String prefix;
+    
+    
 }
