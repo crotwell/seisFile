@@ -381,13 +381,15 @@ public class WinstonUtil {
 
     String password;
 
-    String prefix = "W_";
+    String prefix = DEFAULT_PREFIX;
 
     String driver = MYSQL_DRIVER;
     
     static boolean verbose = false;
 
     public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    
+    public static final String DEFAULT_PREFIX = "W_";
 
     public static final long Y1970_TO_Y2000_SECONDS = 946728000l;
     
