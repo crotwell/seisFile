@@ -8,6 +8,14 @@ import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.SeisFileException;
 
+/** Represents a single line in a Sync File. 
+ * 
+ * Documentation here:
+ * http://www.iris.edu/bud_stuff/goat/syncformat.html
+ * 
+ * @author crotwell
+ *
+ */
 public class SyncLine implements Comparable<SyncLine> {
 
     public static SyncLine parse(String line) throws SeisFileException {
