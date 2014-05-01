@@ -30,7 +30,7 @@ public class SyncFileReader implements Iterator<SyncLine> {
 
     String header;
     
-    SyncLine nextLine;
+    SyncLine nextLine = null;
     
     void loadNext() throws SeisFileRuntimeException {
         try {
@@ -57,7 +57,7 @@ public class SyncFileReader implements Iterator<SyncLine> {
     @Override
     public boolean hasNext() {
         loadNext();
-        return nextLine == null;
+        return nextLine != null;
     }
 
     @Override

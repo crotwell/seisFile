@@ -17,6 +17,12 @@ import java.util.List;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.SeisFileRuntimeException;
 
+/**
+ * Represents an IRIS sync file.
+ * 
+ * Documentation here:
+ * http://www.iris.edu/bud_stuff/goat/syncformat.html
+ */
 public class SyncFile implements Iterable<SyncLine> {
 
     public static SyncFile load(File f) throws IOException, SeisFileException {
