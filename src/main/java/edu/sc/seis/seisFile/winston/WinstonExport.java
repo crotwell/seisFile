@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,17 +51,22 @@ public class WinstonExport {
     void doit() throws IOException, SeisFileException, URISyntaxException, SQLException, DataFormatException {
         WinstonUtil winstonUtil = new WinstonUtil(winstonConfig);
         HashMap<WinstonSCNL, List<Date>> syncMinMax = syncFileMinMax(new File(syncfile), winstonUtil.getPrefix());
-        SyncFile remoteSyncFile = new SyncFile(syncfile);
+        SyncFile remoteSyncFile =  SyncFile.load(new File(syncfile));
         HashMap<WinstonSCNL, SyncFile> remoteSFMap = splitByChannel(remoteSyncFile, winstonUtil.getPrefix());
         HashMap<WinstonSCNL, SyncFile> localSFMap = pullLocalSyncFile(syncMinMax.keySet(),
                                                                       params.getBegin(),
                                                                       params.getEnd(),
                                                                       winstonUtil);
         EarthwormExport exporter = setUpExport();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        
         for (WinstonSCNL scnl : syncMinMax.keySet()) {
             SyncFileCompare sfCompare = new SyncFileCompare(localSFMap.get(scnl), remoteSFMap.get(scnl));
             SyncFile hereNotThere = sfCompare.getInAnotB();
             for (SyncLine sl : hereNotThere) {
+                System.out.println("Try : "+sl.toString());
                 Date s = sl.getStartTime();
                 Date end = sl.getEndTime();
                 while (s.before(end)) {
@@ -70,6 +76,7 @@ public class WinstonExport {
                     }
                     Date lastEnd = e;
                     List<TraceBuf2> tbList = winstonUtil.extractData(scnl, s, e);
+                    System.out.println("    Extract "+tbList.size()+" from "+sdf.format(s)+" to "+sdf.format(e));
                     for (TraceBuf2 traceBuf2 : tbList) {
                         Date tbStart = traceBuf2.getStartDate();
                         Date tbEnd = traceBuf2.getEndDate();
