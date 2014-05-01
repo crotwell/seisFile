@@ -135,6 +135,7 @@ public class SyncLine implements Comparable<SyncLine> {
                                                  dateToString(endTime),
                                                  maxClockDrift == null ? "" : "" + maxClockDrift,
                                                  samplesPerSecond == null ? "" : "" + samplesPerSecond,
+                                                 numSamples == null ? "" : "" + numSamples,
                                                  channelFlag,
                                                  stationVolume,
                                                  dccTapeNumber,
@@ -338,6 +339,11 @@ public class SyncLine implements Comparable<SyncLine> {
 
     public Float getSamplesPerSecond() {
         return samplesPerSecond;
+    }
+
+    
+    public Integer getNumSamples() {
+        return numSamples;
     }
 
     public String getChannelFlag() {
