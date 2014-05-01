@@ -34,6 +34,20 @@ public class EarthwormExport {
         this.institution = institution;
         setHeartbeater(new EarthwormHeartbeater(outStream, 10, heartbeatMessage, institution, module));
     }
+    
+    public void exportWithRetry(TraceBuf2 traceBuf) throws IOException {
+        boolean notSent = true;
+        while (notSent) {
+            try {
+                export(traceBuf);
+                notSent = false;
+            } catch(IOException e) {
+                closeClient();
+                logger.warn("Caught exception, waiting for reconnect, will resend tracebuf", e);
+                waitForClient();
+            }
+        }
+    }
 
     public void export(TraceBuf2 traceBuf) throws IOException {
         if ( ! isConnected()) {
