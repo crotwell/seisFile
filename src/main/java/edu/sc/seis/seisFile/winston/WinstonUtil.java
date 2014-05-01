@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.winston;
 
+import java.net.URISyntaxException;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,10 +15,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
+import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.syncFile.SyncFile;
 import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
@@ -25,6 +28,25 @@ import edu.sc.seis.seisFile.syncFile.SyncLine;
 
 public class WinstonUtil {
 
+    public WinstonUtil(Properties winstonConfig) throws SeisFileException, URISyntaxException {
+        super();
+        if (winstonConfig.containsKey(KEY_DBURL)) {
+            this.databaseURL = winstonConfig.getProperty(KEY_DBURL);
+        }
+        this.username = getUrlQueryParam("user", databaseURL);
+        this.password = getUrlQueryParam("password", databaseURL);
+        if (winstonConfig.containsKey(KEY_DRIVER)) {
+            this.driver = winstonConfig.getProperty(KEY_DRIVER);
+        }
+        if (winstonConfig.containsKey(KEY_PREFIX)) {
+            this.prefix = winstonConfig.getProperty(KEY_PREFIX);
+        }
+    }
+
+    public WinstonUtil(String databaseURL, String username, String password) {
+        this(databaseURL, username, password, DEFAULT_PREFIX);
+    }
+    
     public WinstonUtil(String databaseURL, String username, String password, String prefix) {
         this(databaseURL, username, password, prefix, MYSQL_DRIVER);
     }
@@ -371,11 +393,21 @@ public class WinstonUtil {
         }
     }
 
+    static String getUrlQueryParam(String name, String url) throws SeisFileException, URISyntaxException {
+        String[] urlParts = url.split("\\?")[1].split("\\&");
+        for (int i = 0; i < urlParts.length; i++) {
+            if (urlParts[i].startsWith(name + "=")) {
+                return urlParts[i].substring((name + "=").length());
+            }
+        }
+        throw new SeisFileException("Unable to find '" + name + "' query param in database url: " + url);
+    }
+
     Class driverClass = null;
 
     Connection conn;
 
-    String databaseURL;
+    String databaseURL = DEFAULT_DBURL;
 
     String username;
 
@@ -387,9 +419,17 @@ public class WinstonUtil {
     
     static boolean verbose = false;
 
+    public static final String KEY_PREFIX = "winston.prefix";
+    
+    public static final String KEY_DRIVER = "winston.url";
+    
+    public static final String KEY_DBURL = "winston.driver";
+
     public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     
     public static final String DEFAULT_PREFIX = "W_";
+    
+    public static final String DEFAULT_DBURL = "jdbc:mysql://localhost/?user=wwsuser&password=";
 
     public static final long Y1970_TO_Y2000_SECONDS = 946728000l;
     

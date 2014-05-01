@@ -278,26 +278,7 @@ public class WinstonClient {
                 System.out.println("  prev: " + prev);
                 System.out.println("  curr: " + traceBuf2);
             }
-            boolean notSent = true;
-            while (notSent) {
-                try {
-                    exporter.export(traceBuf2);
-                    notSent = false;
-                } catch(IOException e) {
-                    exporter.closeClient();
-                    if (params.isVerbose()) {
-                        System.out.println("Caught exception, waiting for reconnect, will resend tracebuf" + e);
-                    }
-                    logger.warn("Caught exception, waiting for reconnect, will resend tracebuf", e);
-                    exporter.waitForClient();
-                    if (params.isVerbose()) {
-                        System.out.println("Resend Tracebuf: " + traceBuf2.getNetwork() + "." + traceBuf2.getStation()
-                                + "." + traceBuf2.getLocId() + "." + traceBuf2.getChannel() + " "
-                                + sdf.format(traceBuf2.getStartDate()) + " " + traceBuf2.getNumSamples() + " "
-                                + sdf.format(traceBuf2.getEndDate()));
-                    }
-                }
-            }
+            exporter.exportWithRetry(traceBuf2);
             if (lastSentEnd.before(traceBuf2.getPredictedNextStartDate())) {
                 lastSentEnd = traceBuf2.getPredictedNextStartDate();
                 sampRate = traceBuf2.getSampleRate();
@@ -357,21 +338,11 @@ public class WinstonClient {
     }
 
     String getUser() throws URISyntaxException, SeisFileException {
-        return getUrlQueryParam("user");
+        return WinstonUtil.getUrlQueryParam("user", getDbURL());
     }
 
     String getPassword() throws URISyntaxException, SeisFileException {
-        return getUrlQueryParam("password");
-    }
-
-    String getUrlQueryParam(String name) throws SeisFileException, URISyntaxException {
-        String[] urlParts = getDbURL().split("\\?")[1].split("\\&");
-        for (int i = 0; i < urlParts.length; i++) {
-            if (urlParts[i].startsWith(name + "=")) {
-                return urlParts[i].substring((name + "=").length());
-            }
-        }
-        throw new SeisFileException("Unable to find '" + name + "' query param in database url: " + getDbURL());
+        return WinstonUtil.getUrlQueryParam("password", getDbURL());
     }
 
     public String getHelp() {
