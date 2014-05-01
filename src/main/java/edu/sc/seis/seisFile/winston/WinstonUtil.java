@@ -421,9 +421,9 @@ public class WinstonUtil {
 
     public static final String KEY_PREFIX = "winston.prefix";
     
-    public static final String KEY_DRIVER = "winston.url";
+    public static final String KEY_DRIVER = "winston.driver";
     
-    public static final String KEY_DBURL = "winston.driver";
+    public static final String KEY_DBURL = "winston.url";
 
     public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     
