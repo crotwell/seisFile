@@ -21,13 +21,14 @@ public class SyncLine implements Comparable<SyncLine> {
                                         stringToDate(s[5]), // endTime
                                         stringToFloat(s[6]), // maxClockDrift
                                         stringToFloat(s[7]), // samplesPerSecond
-                                        s[8], // channelFlag
-                                        s[9], // stationVolume
-                                        s[10], // dccTapeNumber
-                                        s[11], // dmcTapeNumber
-                                        s[12], // comment
-                                        stringToDate(s[13]), // lineModByDMC
-                                        stringToDate(s[14])); // lineModByDCC
+                                        stringToInteger(s[8]), // num samples
+                                        s[9], // channelFlag
+                                        s[10], // stationVolume
+                                        s[11], // dccTapeNumber
+                                        s[12], // dmcTapeNumber
+                                        s[13], // comment
+                                        stringToDate(s[14]), // lineModByDMC
+                                        stringToDate(s[15])); // lineModByDCC
             if (out.getStartTime().after(out.getEndTime())) {
                 throw new SeisFileException("Start is after End: "+s[4]+" "+s[5]);
             }
@@ -52,6 +53,7 @@ public class SyncLine implements Comparable<SyncLine> {
              endTime,
              copy.maxClockDrift,
              copy.samplesPerSecond,
+             copy.numSamples,
              copy.channelFlag,
              copy.stationVolume,
              copy.dccTapeNumber,
@@ -69,7 +71,7 @@ public class SyncLine implements Comparable<SyncLine> {
                     Date endTime,
                     Float maxClockDrift,
                     Float samplesPerSecond) {
-        this(net, sta, loc, chan, startTime, endTime, maxClockDrift, samplesPerSecond, "", "", "", "", "", null, null);
+        this(net, sta, loc, chan, startTime, endTime, maxClockDrift, samplesPerSecond, null, "", "", "", "", "", null, null);
     }
 
     public SyncLine(String net, String sta, String loc, String chan) {
@@ -84,6 +86,7 @@ public class SyncLine implements Comparable<SyncLine> {
                     Date endTime,
                     Float maxClockDrift,
                     Float samplesPerSecond,
+                    Integer numSamples,
                     String channelFlag,
                     String stationVolume,
                     String dccTapeNumber,
@@ -100,6 +103,7 @@ public class SyncLine implements Comparable<SyncLine> {
         this.endTime = endTime;
         this.maxClockDrift = maxClockDrift;
         this.samplesPerSecond = samplesPerSecond;
+        this.numSamples = numSamples;
         this.channelFlag = channelFlag;
         this.stationVolume = stationVolume;
         this.dccTapeNumber = dccTapeNumber;
@@ -226,8 +230,22 @@ public class SyncLine implements Comparable<SyncLine> {
     }
 
     /**
-     * parse the date from a string, checking for null and empty. If empty, a
-     * null Date is returned.
+     * parse the integer from a string, checking for null and empty. If empty, a
+     * null Integer is returned.
+     * 
+     * @throws NumberFormatException
+     *             if string can not be parsed
+     */
+    public static Integer stringToInteger(String s) {
+        if (s == null || s.length() == 0) {
+            return null;
+        }
+        return Integer.parseInt(s);
+    }
+
+    /**
+     * parse the float from a string, checking for null and empty. If empty, a
+     * null Float is returned.
      * 
      * @throws NumberFormatException
      *             if string can not be parsed
@@ -365,7 +383,9 @@ public class SyncLine implements Comparable<SyncLine> {
     Float maxClockDrift;
 
     Float samplesPerSecond;
-
+    
+    Integer numSamples;
+    
     String channelFlag;
 
     String stationVolume;
