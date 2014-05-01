@@ -19,6 +19,8 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 
+import org.apache.log4j.BasicConfigurator;
+
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.EarthwormExport;
@@ -31,6 +33,7 @@ import edu.sc.seis.seisFile.syncFile.SyncLine;
 public class WinstonExport {
 
     public static void main(String[] args) {
+        BasicConfigurator.configure();
         try {
             WinstonExport wE = new WinstonExport(args);
             wE.doit();
