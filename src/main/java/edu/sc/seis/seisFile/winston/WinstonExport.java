@@ -61,8 +61,11 @@ public class WinstonExport {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        logger.info("Remote sync file "+remoteSFMap.keySet().size()+" channels.");
+        logger.info("Local winston matching channels "+localSFMap.keySet().size());
         
-        for (WinstonSCNL scnl : syncMinMax.keySet()) {
+        for (WinstonSCNL scnl : remoteSFMap.keySet()) {
             SyncFileCompare sfCompare = new SyncFileCompare(localSFMap.get(scnl), remoteSFMap.get(scnl));
             SyncFile hereNotThere = sfCompare.getInAnotB();
             for (SyncLine sl : hereNotThere) {
@@ -241,4 +244,6 @@ public class WinstonExport {
     QueryParams params;
 
     Properties winstonConfig = new Properties();
+    
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(WinstonExport.class);
 }
