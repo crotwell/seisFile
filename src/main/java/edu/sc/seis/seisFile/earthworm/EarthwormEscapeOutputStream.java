@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.earthworm;
 
+import java.io.Closeable;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,6 +47,16 @@ public class EarthwormEscapeOutputStream extends FilterOutputStream {
         write(s.charAt(0));
         write(s.charAt(1));
         write(s.charAt(2));
+    }
+
+    public static void closeIfNotNull(Closeable out) {
+        try {
+            if (out != null) {
+                out.close();
+            }
+        } catch(IOException e1) {
+            // oh well...
+        }
     }
 
     DecimalFormat numberFormat = new DecimalFormat("000");
