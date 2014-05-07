@@ -38,7 +38,9 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                         }
                         return quakeml;
                     } catch(XMLStreamException e) {
-                        throw new FDSNWSException("Unable to load xml from ", e, getConnectionUri());
+                        handleXmlStreamException(e);
+                        // can't get here as handleXmlStreamException throw FDSNWSException
+                        throw new RuntimeException("Should not happen");
                     }
                 } else {
                     // return iterator with nothing in it
