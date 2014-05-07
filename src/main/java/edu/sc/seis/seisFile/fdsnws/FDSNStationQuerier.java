@@ -62,8 +62,9 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
                         }
                         return stationxml;
                     } catch(XMLStreamException e) {
-                        throw new FDSNWSException("Unable to load xml", e, getConnectionUri());
-                    }
+                        handleXmlStreamException(e);
+                        // can't get here as handleXmlStreamException throw FDSNWSException
+                        throw new RuntimeException("Should not happen");          }
                 } else {
                     // return iterator with nothing in it
                     return FDSNStationXML.createEmpty();
