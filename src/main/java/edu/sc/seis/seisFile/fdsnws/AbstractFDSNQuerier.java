@@ -230,6 +230,22 @@ public abstract class AbstractFDSNQuerier {
         }
         return extractRootCause(t.getCause());
     }
+    
+    /** trys to grab any text after the error point that is already buffered to help see xml errors. 
+     * Wraps the XMLStreamException in a {@link FDSNWSException} and rethrows it.
+     * */
+    void handleXmlStreamException(XMLStreamException e) throws FDSNWSException {
+        String bufferedText = "";
+        try {
+            int avail = getInputStream().available();
+            if (avail > 0) {
+                byte[] b = new byte[avail];
+                int numRead = getInputStream().read(b);
+                bufferedText = new String(b, 0, numRead);
+            }
+        } catch (IOException ee) {}
+        throw new FDSNWSException("Unable to load xml, text past error='"+bufferedText+"'", e, getConnectionUri());
+    }
 
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
 
