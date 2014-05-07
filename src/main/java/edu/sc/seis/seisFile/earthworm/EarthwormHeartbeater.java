@@ -26,7 +26,7 @@ public class EarthwormHeartbeater extends TimerTask {
         this.outStream = outStream;
         this.heartbeatSeconds = heartbeatSeconds;
         this.heartbeatMessage = heartbeatMessage;
-        Timer heartbeater = new Timer(true);
+        Timer heartbeater = new Timer("HeartbeatTimer", true);
         heartbeater.schedule(this, 100, heartbeatSeconds * 1000);
     }
 
@@ -62,12 +62,12 @@ public class EarthwormHeartbeater extends TimerTask {
             heartbeat();
         } catch(IOException e) {
             logger.error("IOException with heartbeat, closing connection.", e);
-            try {
-                outStream.close();
-                outStream = null;
-            } catch(IOException e1) {
-                // oh well...
-            }
+            EarthwormEscapeOutputStream.closeIfNotNull(outStream);
+            outStream = null;
+        } catch(Throwable t) {
+            logger.warn("non-IOException sending heartbeat: ", t);
+            EarthwormEscapeOutputStream.closeIfNotNull(outStream);
+            outStream = null;
         }
     }
 
@@ -90,7 +90,7 @@ public class EarthwormHeartbeater extends TimerTask {
             System.out.println("Heartbeat sent: "+new Date()+" "+heartbeatMessage+"  "+heartbeatSeconds);
         }
     }
-
+    
     EarthwormEscapeOutputStream outStream;
 
     int heartbeatSeconds;

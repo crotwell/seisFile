@@ -41,7 +41,7 @@ public class EarthwormExport {
             try {
                 export(traceBuf);
                 notSent = false;
-            } catch(IOException e) {
+            } catch(Throwable e) {
                 closeClient();
                 logger.warn("Caught exception, waiting for reconnect, will resend tracebuf", e);
                 waitForClient();
@@ -92,7 +92,9 @@ public class EarthwormExport {
     }
     
     public boolean isConnected() {
-        return outStream != null;
+        // if the heartbeater had an error sending a heartbeat, it closes its
+        // outStream, so check heartbeater outstream is not null as well
+        return outStream != null && getHeartbeater().getOutStream() != null;
     }
     
     public synchronized void waitForClient() throws IOException {
@@ -132,42 +134,20 @@ public class EarthwormExport {
     public synchronized void closeClient() {
         logger.info("close client connection");
         if (outStream != null) {
-            synchronized(outStream) {
-                getHeartbeater().setOutStream(null);
-            }
+            getHeartbeater().setOutStream(null);
         }
-        if (inStream != null) {
-            try {
-                inStream.close();
-            } catch(IOException e) {
-            }
-        }
-        if (outStream != null) {
-            try {
-                outStream.close();
-            } catch(IOException e) {
-            }
-        }
-        if (clientSocket != null) {
-            try {
-                clientSocket.close();
-            } catch(IOException e) {
-            }
-        }
-        clientSocket = null;
-        inStream = null;
+        EarthwormEscapeOutputStream.closeIfNotNull(outStream);
         outStream = null;
+        EarthwormEscapeOutputStream.closeIfNotNull(inStream);
+        inStream = null;
+        EarthwormEscapeOutputStream.closeIfNotNull(clientSocket);
+        clientSocket = null;
     }
 
     public void closeSocket() {
         logger.info("close socket");
         closeClient();
-        try {
-            if (serverSocket != null) {
-                serverSocket.close();
-            }
-        } catch(IOException e) {
-        }
+        EarthwormEscapeOutputStream.closeIfNotNull(serverSocket);
         serverSocket = null;
     }
     
