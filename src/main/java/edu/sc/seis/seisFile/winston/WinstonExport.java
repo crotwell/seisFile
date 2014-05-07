@@ -50,42 +50,52 @@ public class WinstonExport {
 
     void doit() throws IOException, SeisFileException, URISyntaxException, SQLException, DataFormatException {
         WinstonUtil winstonUtil = new WinstonUtil(winstonConfig);
-        HashMap<WinstonSCNL, List<Date>> syncMinMax = syncFileMinMax(new File(syncfile), winstonUtil.getPrefix());
-        SyncFile remoteSyncFile =  SyncFile.load(new File(syncfile));
+        SyncFile remoteSyncFile = SyncFile.load(new File(syncfile));
         HashMap<WinstonSCNL, SyncFile> remoteSFMap = splitByChannel(remoteSyncFile, winstonUtil.getPrefix());
-        HashMap<WinstonSCNL, SyncFile> localSFMap = pullLocalSyncFile(syncMinMax.keySet(),
-                                                                      params.getBegin(),
-                                                                      params.getEnd(),
-                                                                      winstonUtil);
+        logger.info("Remote sync file (" + syncfile + ") " + remoteSFMap.keySet().size() + " channels.");
         EarthwormExport exporter = setUpExport();
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-        logger.info("Remote sync file "+remoteSFMap.keySet().size()+" channels.");
-        logger.info("Local winston matching channels "+localSFMap.keySet().size());
-        
         for (WinstonSCNL scnl : remoteSFMap.keySet()) {
-            SyncFileCompare sfCompare = new SyncFileCompare(localSFMap.get(scnl), remoteSFMap.get(scnl));
+            SyncFile localSF = pullLocalSyncFile(scnl,
+                                                 params.getBegin(),
+                                                 params.getEnd(),
+                                                 winstonUtil);
+            SyncFileCompare sfCompare = new SyncFileCompare(localSF, remoteSFMap.get(scnl));
+            localSF.saveToFile(scnl+"_local.sync");
             SyncFile hereNotThere = sfCompare.getInAnotB();
+            hereNotThere.saveToFile(scnl+"_InlocalNotRemote.sync");
+            logger.info(scnl + " here not there synclines=" + hereNotThere.size());
             for (SyncLine sl : hereNotThere) {
-                System.out.println("Try : "+sl.toString());
-                Date s = sl.getStartTime();
-                Date end = sl.getEndTime();
+                System.out.println("Try : " + sl.toString());
+                Date s = new Date(sl.getStartTime().getTime()+1); // 1 millisecond past sync start to avoid duplicates
+                Date end = new Date(sl.getEndTime().getTime()-1); // 1 millisecond before sync end to avoid duplicates
+                if (end.before(params.getBegin()) || s.after(params.getEnd()) || end.getTime()-s.getTime() < minGapMillis) {
+                    continue;
+                }
+                // stay within cmd line dates
+                if (s.before(params.getBegin())) {
+                    s = params.getBegin();
+                }
+                if (end.after(params.getEnd())) {
+                    end = params.getEnd();
+                }
                 while (s.before(end)) {
-                    Date e = new Date(s.getTime()+chunkSeconds*1000);
+                    Date e = new Date(s.getTime() + chunkSeconds * 1000);
                     if (e.after(end)) {
                         e = end;
                     }
                     Date lastEnd = e;
                     List<TraceBuf2> tbList = winstonUtil.extractData(scnl, s, e);
-                    System.out.println("    Extract "+tbList.size()+" from "+sdf.format(s)+" to "+sdf.format(e));
+                    System.out.println("    Extract " + tbList.size() + " from " + sdf.format(s) + " to "
+                            + sdf.format(e));
                     for (TraceBuf2 traceBuf2 : tbList) {
                         Date tbStart = traceBuf2.getStartDate();
                         Date tbEnd = traceBuf2.getEndDate();
-                        // check vs start and end to avoid sending data remote already has
+                        // check vs start and end to avoid sending data remote
+                        // already has
                         // check vs s to avoid sending same packet twice
-                        if ( ! (tbStart.before(s) || tbEnd.after(end))) {
+                        if (!(tbStart.before(s) || tbEnd.after(end))) {
                             exporter.exportWithRetry(traceBuf2);
                             if (tbEnd.after(lastEnd)) {
                                 lastEnd = tbEnd;
@@ -133,6 +143,8 @@ public class WinstonExport {
                     heartbeatText = it.next();
                 } else if (nextArg.equals("--sleepmillis")) {
                     sleepMillis = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--mingapmillis")) {
+                    minGapMillis = Integer.parseInt(it.next());
                 } else {
                     throw new IllegalArgumentException("Unknown argument: " + nextArg);
                 }
@@ -164,39 +176,32 @@ public class WinstonExport {
         return out;
     }
 
-    HashMap<WinstonSCNL, SyncFile> pullLocalSyncFile(Set<WinstonSCNL> scnlDateMap,
-                                                     Date begin,
-                                                     Date end,
-                                                     WinstonUtil winstonUtil) throws SQLException {
-        HashMap<WinstonSCNL, SyncFile> out = new HashMap<WinstonSCNL, SyncFile>();
-        for (WinstonSCNL scnl : scnlDateMap) {
-            Calendar cal = new GregorianCalendar();
-            cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-            cal.setTime(begin);
-            int startYear = cal.get(Calendar.YEAR);
-            int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
-                                                          // months zero based,
-                                                          // but days are one
-                                                          // based???
-            int startDay = cal.get(Calendar.DAY_OF_MONTH);
-            cal.setTime(end);
-            int endYear = cal.get(Calendar.YEAR);
-            int endMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
-                                                        // months zero based,
-                                                        // but days are one
-                                                        // based???
-            int endDay = cal.get(Calendar.DAY_OF_MONTH);
-            SyncFile sf = winstonUtil.calculateSyncBetweenDates(scnl,
-                                                                startYear,
-                                                                startMonth,
-                                                                startDay,
-                                                                endYear,
-                                                                endMonth,
-                                                                endDay,
-                                                                winstonUtil.getDatabaseURL());
-            out.put(scnl, sf);
-        }
-        return out;
+    SyncFile pullLocalSyncFile(WinstonSCNL scnl, Date begin, Date end, WinstonUtil winstonUtil) throws SQLException {
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTime(begin);
+        int startYear = cal.get(Calendar.YEAR);
+        int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
+                                                      // months zero based,
+                                                      // but days are one
+                                                      // based???
+        int startDay = cal.get(Calendar.DAY_OF_MONTH);
+        cal.setTime(end);
+        int endYear = cal.get(Calendar.YEAR);
+        int endMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
+                                                    // months zero based,
+                                                    // but days are one
+                                                    // based???
+        int endDay = cal.get(Calendar.DAY_OF_MONTH);
+        SyncFile sf = winstonUtil.calculateSyncBetweenDates(scnl,
+                                                            startYear,
+                                                            startMonth,
+                                                            startDay,
+                                                            endYear,
+                                                            endMonth,
+                                                            endDay,
+                                                            winstonUtil.getDatabaseURL());
+        return sf;
     }
 
     public HashMap<WinstonSCNL, SyncFile> splitByChannel(SyncFile syncFile, String winstonPrefix) {
@@ -225,6 +230,8 @@ public class WinstonExport {
         return exporter;
     }
 
+    int minGapMillis = 100;
+    
     boolean doExport = false;
 
     int exportPort = -1;
@@ -244,6 +251,6 @@ public class WinstonExport {
     QueryParams params;
 
     Properties winstonConfig = new Properties();
-    
+
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(WinstonExport.class);
 }
