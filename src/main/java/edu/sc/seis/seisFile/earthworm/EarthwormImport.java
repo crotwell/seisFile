@@ -61,6 +61,10 @@ public class EarthwormImport {
         int argPort = 19000;
         String argSyncfile = null;
         for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("--help")) {
+                System.out.println("Usage: java edu.sc.seis.seisFile.earthworm.EarthwormImport [-h host][-p port][--sync syncfile]");   
+                System.exit(0);
+            }
             if (i < args.length-1) {
                 if (args[i].equals("-h")) {
                     argHost = args[i+1];
