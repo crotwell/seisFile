@@ -32,7 +32,7 @@ public class FileBufferingEarthwormExport extends BufferingEarthwormExport {
                                         int sleepMillis,
                                         String bufferDirPath) throws UnknownHostException, IOException, SeisFileException {
         super(port, module, institution, heartbeatMessage, heartbeatSeconds, bufferSize, sleepMillis);
-        if (bufferDir != null) {
+        if (bufferDirPath != null) {
             this.bufferDir = new File(bufferDirPath);
             if ( ! this.bufferDir.exists()) {
                 if ( ! this.bufferDir.mkdirs()) {
