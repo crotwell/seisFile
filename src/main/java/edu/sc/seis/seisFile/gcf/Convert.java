@@ -23,6 +23,8 @@ public class Convert {
             scnl[1] = "EN"+h.getStreamId().charAt(4);
             scnl[2] = "XX";
             scnl[3] = "0"+h.getStreamId().charAt(5);
+            sysId_streamIdToSCNL.put(h.getSystemId()+"_"+h.getStreamId(), scnl); // put in map so only warn on first tb
+            logger.warn("Unknown stream id: "+h.getSystemId()+"_"+h.getStreamId());
         }
         Calendar startTime = convertTime(h.getDayNumber(), h.getSecondsInDay(), h.getStartOffsetNumerator()/h.getStartOffsetDenominator());
         TraceBuf2 out = new TraceBuf2(0,
@@ -76,4 +78,6 @@ public class Convert {
     Map<String, String[]> sysId_streamIdToSCNL;
     
     public static final TimeZone TZ_GMT = TimeZone.getTimeZone("GMT");
+    
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Convert.class);
 }
