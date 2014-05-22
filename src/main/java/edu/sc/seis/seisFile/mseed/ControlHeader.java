@@ -49,10 +49,10 @@ public class ControlHeader {
 		}
 			
 		if (typeCode == (byte)'D' || typeCode == (byte)'R' || typeCode == (byte)'Q' || typeCode == (byte)'M') {
-		    // Data Header
+		    // Data Header is D, R, Q or M
 		    return DataHeader.read(in, sequenceNum, (char)typeCode, continuationCode);
 		} else {
-		    // Control header
+		    // Control header is V, A, S, or T
 		    return new ControlHeader(sequenceNum, typeCode, continuationCode);
 		}
     }
