@@ -20,17 +20,16 @@ import edu.sc.seis.seisFile.SeisFileRuntimeException;
 /**
  * Represents an IRIS sync file.
  * 
- * Documentation here:
- * http://www.iris.edu/bud_stuff/goat/syncformat.html
+ * Documentation here: http://www.iris.edu/bud_stuff/goat/syncformat.html
  */
 public class SyncFile implements Iterable<SyncLine> {
 
     public static SyncFile load(File f) throws IOException, SeisFileException {
         try {
-        BufferedReader r = new BufferedReader(new FileReader(f));
-        return load(r);
-        } catch (IOException e) {
-            throw new IOException("Problem loading from file "+f, e);
+            BufferedReader r = new BufferedReader(new FileReader(f));
+            return load(r);
+        } catch(IOException e) {
+            throw new IOException("Problem loading from file " + f, e);
         }
     }
 
@@ -74,13 +73,13 @@ public class SyncFile implements Iterable<SyncLine> {
         this(dccName, dateModified, extraHeaders);
         syncLines = lines;
     }
-    
+
     public HashMap<String, SyncFile> splitByChannel() {
         HashMap<String, SyncFile> out = new HashMap<String, SyncFile>();
         for (SyncLine sline : this) {
-            String chan = sline.net+"."+sline.sta+"."+sline.loc+"."+sline.chan;
-            if ( ! out.containsKey(chan)) {
-                SyncFile sf = new SyncFile(getDccName()+" "+chan);
+            String chan = sline.net + "." + sline.sta + "." + sline.loc + "." + sline.chan;
+            if (!out.containsKey(chan)) {
+                SyncFile sf = new SyncFile(getDccName() + " " + chan);
                 out.put(chan, sf);
             }
             out.get(chan).addLine(sline);
@@ -104,6 +103,33 @@ public class SyncFile implements Iterable<SyncLine> {
             }
         }
         out.syncLines.addAll(otherLines);
+        return out;
+    }
+
+    public SyncFile consolidate() {
+        HashMap<String, SyncFile> byChan = splitByChannel();
+        SyncFile out = new SyncFile(getDccName() + " consolidated");
+        List<String> keys = new ArrayList<String>();
+        keys.addAll(byChan.keySet());
+        Collections.sort(keys);
+        for (String k : keys) {
+            SyncFile in = byChan.get(k);
+            in.sort();
+            SyncLine previous = null;
+            for (SyncLine line : in) {
+                if (previous == null) {
+                    previous = line;
+                } else if (previous.isContiguous(line, SyncFile.DEFAULT_TOLERENCE)) {
+                    previous = previous.concat(line);
+                } else {
+                    out.addLine(previous);
+                    previous = line;
+                }
+            }
+            if (previous != null) {
+                out.addLine(previous); // add last line
+            }
+        }
         return out;
     }
 
@@ -147,7 +173,7 @@ public class SyncFile implements Iterable<SyncLine> {
         }
         writer.flush();
     }
-    
+
     public String getHeaderLine() {
         String extras = "";
         for (int i = 0; i < extraHeaders.length; i++) {
@@ -183,7 +209,7 @@ public class SyncFile implements Iterable<SyncLine> {
     public List<SyncLine> getSyncLines() {
         return syncLines;
     }
-    
+
     public boolean isEmpty() {
         return getSyncLines().isEmpty();
     }
@@ -191,10 +217,13 @@ public class SyncFile implements Iterable<SyncLine> {
     public int size() {
         return getSyncLines().size();
     }
-    
-    /** calculates the earliest time in the syncfile. This assuemes that the
+
+    /**
+     * calculates the earliest time in the syncfile. This assuemes that the
      * SyncFile has been sorted either before loading or via the sort() method.
-     * @throws SeisFileRuntimeException if empty
+     * 
+     * @throws SeisFileRuntimeException
+     *             if empty
      * @return earliest time
      */
     public Date getEarliest() {
@@ -205,10 +234,13 @@ public class SyncFile implements Iterable<SyncLine> {
         }
         throw new SeisFileRuntimeException("SyncFile is empty");
     }
-    
-    /** calculates the latest time in the syncfile. This assuemes that the
+
+    /**
+     * calculates the latest time in the syncfile. This assuemes that the
      * SyncFile has been sorted either before loading or via the sort() method.
-     * @throws SeisFileRuntimeException if empty
+     * 
+     * @throws SeisFileRuntimeException
+     *             if empty
      * @return latest time
      */
     public Date getLatest() {
@@ -234,7 +266,7 @@ public class SyncFile implements Iterable<SyncLine> {
     List<SyncLine> syncLines = new ArrayList<SyncLine>();
 
     private float tolerence = DEFAULT_TOLERENCE;
-    
+
     public static final float DEFAULT_TOLERENCE = 0.01f;
 
     public static final String SEPARATOR = "|";
