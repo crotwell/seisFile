@@ -78,7 +78,7 @@ public class RefineSyncFile {
             }
             
             Date drS = drList.get(0).getHeader().getStartBtime().convertToCalendar().getTime();
-            Date drE = drList.get(drList.size()-1).getHeader().getLastSampleBtime().convertToCalendar().getTime();
+            Date drE = drList.get(drList.size()-1).getHeader().getPredictedNextStartBtime().convertToCalendar().getTime();
             if (Math.abs(s.getTime()-drS.getTime()) < 1000) {
                 s = drS;
             }
