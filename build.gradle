@@ -167,6 +167,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('waveserverclient', 'edu.sc.seis.seisFile.waveserver.WaveServerClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('syncfilecompare', 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('syncfile2gmt', 'edu.sc.seis.seisFile.syncFile.GMTSyncFile', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('refinesyncfile', 'edu.sc.seis.seisFile.syncFile.RefineSyncFile', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', task.project, dExtras:dExtras, bat:doBat)
     //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
