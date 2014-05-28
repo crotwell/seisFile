@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.syncFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +53,25 @@ public class RefineSyncFile {
         return windowList;
     }
 
+    public SyncLine refineTimes(SyncLine sl, int retries) throws SeisFileException {
+        int numRetry = 0;
+        SeisFileException last = null;
+        while(retries == 0 || numRetry < retries) {
+            try {
+                return refineTimes(sl);
+            } catch (SeisFileException e) {
+                numRetry++;
+                last = e;
+                if (e.getCause() instanceof SocketTimeoutException) {
+                    // try again
+                } else {
+                    throw e;
+                }
+            }
+        }
+        throw last;
+    }
+    
     public SyncLine refineTimes(SyncLine sl) throws SeisFileException {
         System.out.println("SyncLine: "+sl);
         FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
