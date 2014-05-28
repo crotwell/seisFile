@@ -64,6 +64,10 @@ public class RefineSyncFile {
                 last = e;
                 if (e.getCause() instanceof SocketTimeoutException) {
                     // try again
+                    try {
+                        Thread.sleep(1000);
+                    } catch(InterruptedException e1) {
+                    }
                 } else {
                     throw e;
                 }
