@@ -30,7 +30,6 @@ public class RefineSyncFile {
         String inFilename = syncfilename;
         SyncFile sf = SyncFile.load(new File(inFilename));
         System.out.println("SyncFile "+sf.size()+" lines");
-        sf = sf.consolidate();
         String fileBase = SyncFileCompare.trimDotSync(inFilename);
         SyncFileWriter outSF = new SyncFileWriter(sf.getDccName()+" refined", fileBase+"_refined.sync");
         for (SyncLine sl : sf) {
