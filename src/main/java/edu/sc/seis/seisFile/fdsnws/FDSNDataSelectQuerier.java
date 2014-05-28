@@ -61,6 +61,10 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                     return new DataRecordIterator(new DataInputStream(new ByteArrayInputStream(new byte[0])));
                 }
             } else {
+                logger.info("Error: "+getErrorMessage());
+                if (responseCode == 401 || responseCode == 403) {
+                    throw new FDSNWSAuthorizationException("Not Authorized for Restricted Data: " + getErrorMessage(), getConnectionUri(), responseCode);
+                }
                 throw new FDSNWSException("Error: " + getErrorMessage(), getConnectionUri(), responseCode);
             }
         } catch(URISyntaxException e) {
