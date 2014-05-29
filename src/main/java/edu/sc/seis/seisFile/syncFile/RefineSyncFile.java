@@ -34,7 +34,7 @@ public class RefineSyncFile {
         String fileBase = SyncFileCompare.trimDotSync(inFilename);
         SyncFileWriter outSF = new SyncFileWriter(sf.getDccName()+" refined", fileBase+"_refined.sync");
         for (SyncLine sl : sf) {
-            outSF.appendLine(refineTimes(sl));
+            outSF.appendLine(refineTimes(sl, 10));
         }
         outSF.close();
     }
@@ -65,7 +65,7 @@ public class RefineSyncFile {
                 if (e.getCause() instanceof SocketTimeoutException) {
                     // try again
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(10000);
                     } catch(InterruptedException e1) {
                     }
                 } else {
