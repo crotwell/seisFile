@@ -181,8 +181,7 @@ public class WinstonClient {
                     System.out.println(s);
                 }
             }
-        }
-        if (doSync) {
+        } else if (doSync) {
             PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
             SyncFileWriter syncOut = new SyncFileWriter("winston", out);
             for (WinstonSCNL scnl : allChannels) {
