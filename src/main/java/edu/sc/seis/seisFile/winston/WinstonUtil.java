@@ -88,7 +88,7 @@ public class WinstonUtil {
     public void useDatabase(WinstonSCNL channel) throws SQLException {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
-        stmt.execute("use " + channel.getDatabaseName());
+        stmt.execute("use `" + channel.getDatabaseName()+"`");
         stmt.close();
         conn.commit();
     }
