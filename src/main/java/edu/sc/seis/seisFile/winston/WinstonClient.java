@@ -14,6 +14,8 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -63,6 +65,8 @@ public class WinstonClient {
                 heartbeatverbose = true;
             } else if (nextArg.equals("--tbzip")) {
                 doTbZip = true;
+            } else if (nextArg.equals("--list")) {
+                doChannelList = true;
             } else if (it.hasNext()) {
                 // arg with value
                 if (nextArg.equals("-p")) {
@@ -107,6 +111,8 @@ public class WinstonClient {
     boolean doExport = false;
 
     boolean doTbZip = false;
+    
+    boolean doChannelList = false;
 
     boolean heartbeatverbose = false;
 
@@ -155,6 +161,27 @@ public class WinstonClient {
         Pattern chanPattern = Pattern.compile("*".equals(params.getChannel()) ? ".*" : params.getChannel());
         Pattern netPattern = Pattern.compile("*".equals(params.getNetwork()) ? ".*" : params.getNetwork());
         Pattern locPattern = Pattern.compile("*".equals(params.getLocation()) ? ".*" : params.getLocation());
+        if (doChannelList) {
+            for (WinstonSCNL scnl : allChannels) {
+                if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
+                        && netPattern.matcher(scnl.getNetwork()).matches()
+                        && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
+                    List<WinstonTable> dayTables = winston.listDayTables(scnl);
+                    Collections.sort(dayTables, new Comparator<WinstonTable>() {
+                        public int compare(WinstonTable c1, WinstonTable c2) {
+                            return c2.getYear()*10000+c2.getMonth()*100+c2.getDay() - c1.getYear()*10000+c1.getMonth()*100+c1.getDay();
+                        }
+                    });
+                    String s = scnl.getDatabaseName()+" ";
+                    if (dayTables.size() != 0) {
+                        WinstonTable first = dayTables.get(0);
+                        WinstonTable last = dayTables.get(dayTables.size()-1);
+                        s+= " "+first.getDateString()+" "+last.getDateString();
+                    }
+                    System.out.println(s);
+                }
+            }
+        }
         if (doSync) {
             PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
             SyncFileWriter syncOut = new SyncFileWriter("winston", out);
