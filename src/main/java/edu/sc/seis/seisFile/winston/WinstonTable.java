@@ -42,8 +42,8 @@ public class WinstonTable {
     public String getHeliTableName() {
         return internalGetTableName(true);
     }
-
-    protected String internalGetTableName(boolean isHeliTable) {
+    
+    public String getDateString() {
         String m = ""+getMonth();
         if (getMonth()<10) {
             m = "0"+m;
@@ -52,8 +52,12 @@ public class WinstonTable {
         if (getDay()<10) {
             d = "0"+d;
         }
+        return getYear()+"_"+m+"_"+d;
+    }
+
+    protected String internalGetTableName(boolean isHeliTable) {
         String heli = isHeliTable?"H":"";
-        return getDatabase().concatSCNL()+"$$"+heli+getYear()+"_"+m+"_"+d;
+        return getDatabase().concatSCNL()+"$$"+heli+getDateString();
     }
 
     public int getYear() {
