@@ -169,7 +169,7 @@ public class WinstonClient {
                     List<WinstonTable> dayTables = winston.listDayTables(scnl);
                     Collections.sort(dayTables, new Comparator<WinstonTable>() {
                         public int compare(WinstonTable c1, WinstonTable c2) {
-                            return c2.getYear()*10000+c2.getMonth()*100+c2.getDay() - c1.getYear()*10000+c1.getMonth()*100+c1.getDay();
+                            return c1.getYear()*10000+c1.getMonth()*100+c1.getDay() - c2.getYear()*10000+c2.getMonth()*100+c2.getDay();
                         }
                     });
                     String s = scnl.getDatabaseName()+" ";
