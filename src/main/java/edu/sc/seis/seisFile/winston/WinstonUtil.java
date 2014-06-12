@@ -79,7 +79,7 @@ public class WinstonUtil {
             if (s.startsWith(prefixTableName(getPrefix(), "")) && !s.equalsIgnoreCase(prefixTableName(getPrefix(), "ROOT"))) {
                 out.add(new WinstonSCNL(s, getPrefix()));
             } else {
-                logger.debug("Skipping, heli or root db: <"+s+">");
+                logger.debug("Skipping, non-prefixed or root db: <"+s+">");
             }
         }
         rs.close();
