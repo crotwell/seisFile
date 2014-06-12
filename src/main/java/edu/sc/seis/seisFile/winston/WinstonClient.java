@@ -133,6 +133,7 @@ public class WinstonClient {
      */
     public static void main(String[] args) throws Exception {
         BasicConfigurator.configure();
+        Logger.getRootLogger().setLevel(Level.INFO);
         WinstonClient client = new WinstonClient(args);
         client.readData();
     }
