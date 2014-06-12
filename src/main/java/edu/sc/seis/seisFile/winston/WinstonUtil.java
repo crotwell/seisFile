@@ -106,17 +106,17 @@ public class WinstonUtil {
             rs = stmt.executeQuery("SHOW TABLES");
             while (rs.next()) {
                 String s = rs.getString(1);
-                if (!s.contains("$$H")) { // skip heli channels as we know how
-                                          // to construct their names
+                if (!s.contains("$$H") && !s.contains("past2days")) { // skip heli channels as we know how
+                                          // to construct their names, and past2days as we don't use
                     try {
                         out.add(new WinstonTable(channel, s));
                     } catch(ParseException e) {
                         // came out of database, so shouldn't happen in a
                         // standard winston database
-                        throw new RuntimeException(e);
+                        logger.warn("Unable to parse table name: "+s+", skipping.", e);
                     }
                 } else {
-                    logger.debug("Skipping heli table: "+s);
+                    logger.debug("Skipping heli/other table: "+s);
                 }
             }
         } finally {
