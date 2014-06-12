@@ -14,6 +14,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public class QueryParams {
 
     public QueryParams(String[] args) throws SeisFileException {
@@ -68,7 +71,7 @@ public class QueryParams {
             if (args[i].equals("--append")) {
                 append = true;
             } else if (args[i].equals("--verbose")) {
-                verbose = true;
+                setVerbose(true);
             } else if (args[i].equals("--timed")) {
                 timed = true;
             } else if (args[i].equals("--version")) {
@@ -180,6 +183,11 @@ public class QueryParams {
 
     public boolean isVerbose() {
         return verbose;
+    }
+
+    public void setVerbose(boolean b) {
+        verbose = b;
+        Logger.getRootLogger().setLevel(Level.DEBUG);
     }
 
     public Float getDuration() {
