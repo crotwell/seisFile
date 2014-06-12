@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 
@@ -39,14 +38,11 @@ public class WinstonExport {
             WinstonExport wE = new WinstonExport(args);
             wE.doit();
         } catch(Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
     private int chunkSeconds = 86400;
-
-    private int sleepMillis = 10;
 
     void doit() throws IOException, SeisFileException, URISyntaxException, SQLException, DataFormatException {
         WinstonUtil winstonUtil = new WinstonUtil(winstonConfig);
@@ -67,7 +63,6 @@ public class WinstonExport {
             hereNotThere.saveToFile(scnl+"_InlocalNotRemote.sync");
             logger.info(scnl + " here not there synclines=" + hereNotThere.size());
             for (SyncLine sl : hereNotThere) {
-                System.out.println("Try : " + sl.toString());
                 Date s = new Date(sl.getStartTime().getTime()+1); // 1 millisecond past sync start to avoid duplicates
                 Date end = new Date(sl.getEndTime().getTime()-1); // 1 millisecond before sync end to avoid duplicates
                 if (end.before(params.getBegin()) || s.after(params.getEnd()) || end.getTime()-s.getTime() < minGapMillis) {
@@ -141,8 +136,6 @@ public class WinstonExport {
                     heartbeat = Integer.parseInt(it.next());
                 } else if (nextArg.equals("--heartbeatText")) {
                     heartbeatText = it.next();
-                } else if (nextArg.equals("--sleepmillis")) {
-                    sleepMillis = Integer.parseInt(it.next());
                 } else if (nextArg.equals("--mingapmillis")) {
                     minGapMillis = Integer.parseInt(it.next());
                 } else {
