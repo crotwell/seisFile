@@ -29,6 +29,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.BuildVersion;
@@ -156,6 +158,7 @@ public class WinstonClient {
                                               getUser(),
                                               getPassword(),
                                               winstonConfig.getProperty("winston.prefix"));
+        try {
         List<WinstonSCNL> allChannels = winston.listChannelDatabases();
         Pattern staPattern = Pattern.compile("*".equals(params.getStation()) ? ".*" : params.getStation());
         Pattern chanPattern = Pattern.compile("*".equals(params.getChannel()) ? ".*" : params.getChannel());
@@ -179,6 +182,8 @@ public class WinstonClient {
                         s+= " "+first.getDateString()+" "+last.getDateString();
                     }
                     System.out.println(s);
+                } else {
+                    logger.debug("Skipping, does not match patterns: "+scnl.getDatabaseName());
                 }
             }
         } else if (doSync) {
@@ -189,6 +194,8 @@ public class WinstonClient {
                         && netPattern.matcher(scnl.getNetwork()).matches()
                         && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
                     syncChannel(winston, scnl, syncOut);
+                } else {
+                    logger.debug("Skipping, does not match patterns: "+scnl.getDatabaseName());
                 }
             }
             syncOut.close();
@@ -230,6 +237,8 @@ public class WinstonClient {
                         && netPattern.matcher(scnl.getNetwork()).matches()
                         && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
                     lastSent.put(scnl, startTime);
+                } else {
+                    logger.debug("Skipping, does not match patterns: "+scnl.getDatabaseName());
                 }
             }
             while (startTime.before(params.getEnd())) {
@@ -259,7 +268,12 @@ public class WinstonClient {
             }
             params.getDataOutputStream().close();
         }
-        winston.close();
+        } finally {
+            if (winston != null) {
+                winston.close();
+            }
+        }
+        
     }
 
     void syncChannel(WinstonUtil winston, WinstonSCNL channel, SyncFileWriter syncOut) throws SeisFileException,

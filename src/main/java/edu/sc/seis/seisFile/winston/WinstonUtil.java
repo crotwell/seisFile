@@ -41,6 +41,7 @@ public class WinstonUtil {
         if (winstonConfig.containsKey(KEY_PREFIX)) {
             this.prefix = winstonConfig.getProperty(KEY_PREFIX);
         }
+        logger.debug("Using winston prefix: <"+this.prefix+">");
     }
 
     public WinstonUtil(String databaseURL, String username, String password) {
@@ -75,8 +76,10 @@ public class WinstonUtil {
         ResultSet rs = stmt.executeQuery("SHOW DATABASES");
         while (rs.next()) {
             String s = rs.getString(1);
-            if (s.startsWith(prefixTableName(getPrefix(), "")) && !s.equals(prefixTableName(getPrefix(), "ROOT"))) {
+            if (s.startsWith(prefixTableName(getPrefix(), "")) && !s.equalsIgnoreCase(prefixTableName(getPrefix(), "ROOT"))) {
                 out.add(new WinstonSCNL(s, getPrefix()));
+            } else {
+                logger.debug("Skipping, heli or root db: <"+s+">");
             }
         }
         rs.close();
@@ -104,15 +107,16 @@ public class WinstonUtil {
             while (rs.next()) {
                 String s = rs.getString(1);
                 if (!s.contains("$$H")) { // skip heli channels as we know how
-                                          // to
-                                          // construct their names
+                                          // to construct their names
                     try {
                         out.add(new WinstonTable(channel, s));
                     } catch(ParseException e) {
                         // came out of database, so shouldn't happen in a
-                        // standard
-                        // winston database, so ignore
+                        // standard winston database
+                        throw new RuntimeException(e);
                     }
+                } else {
+                    logger.debug("Skipping heli table: "+s);
                 }
             }
         } finally {
@@ -440,4 +444,6 @@ public class WinstonUtil {
     public static void setVerbose(boolean b) {
         verbose = b;
     }
+    
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(WinstonUtil.class);
 }
