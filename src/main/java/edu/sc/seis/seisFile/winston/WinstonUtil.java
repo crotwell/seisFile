@@ -106,9 +106,10 @@ public class WinstonUtil {
             rs = stmt.executeQuery("SHOW TABLES");
             while (rs.next()) {
                 String s = rs.getString(1);
-                if (s.contains("$$H") || s.contains("past2days")) {
+                if (s.contains("$$H") || s.contains("$$h") || s.contains("past2days")) {
                     // skip heli channels as we know how
                     // to construct their names, and past2days as we don't use
+                    // little h is for mysql on windows with lowercase table names
                 } else {
                     try {
                         out.add(new WinstonTable(channel, s));
