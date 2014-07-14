@@ -60,10 +60,13 @@ public class DataRecord extends SeedRecord implements Serializable {
                 blockettes.add(record.getBlockettes()[j]);
             }
         } catch(SeedFormatException e) {
-            throw new RuntimeException("Shouldn't happen as record was valid and we are copying it");
+            throw new RuntimeException("Shouldn't happen as record was valid and we are copying it", e);
         }
     }
 
+    /**
+     * Adds a blockette to the record. The number of blockettes in the header is incremented automatically.
+     */
     public void addBlockette(Blockette b) throws SeedFormatException {
         if(b == null) {
             throw new IllegalArgumentException("Blockette cannot be null");
@@ -79,7 +82,7 @@ public class DataRecord extends SeedRecord implements Serializable {
                     + b.getType());
         }
         if (b instanceof Blockette1000) {
-            RECORD_SIZE = ((Blockette1000)b).getLogicalRecordLength();
+            setRecordSize(((Blockette1000)b).getLogicalRecordLength());
         }
         recheckDataOffset();
     }
@@ -194,7 +197,17 @@ public class DataRecord extends SeedRecord implements Serializable {
         } // end of for ()
     }
 
+/**
+ * @deprecated Confusing method name, use printData(PrintWriter) for textual output and write(DataOutputStream) for binary output.
+ * 
+ * @param out
+ */
+    @Deprecated
     public void writeData(PrintWriter out) {
+        printData(out);
+    }
+    
+    public void printData(PrintWriter out) {
         byte[] d = getData();
         DecimalFormat byteFormat = new DecimalFormat("000");
         for (int i = 0; i < d.length; i++) {
