@@ -33,11 +33,6 @@ public class Event {
                     descriptionList.add(new EventDescription(reader));
                 } else if (elName.equals(QuakeMLTagNames.comment)) {
                     commentList.add(new Comment(reader));
-                    // } else if (elName.equals(QuakeMLTagNames.amplitude)) {
-                    // amplitudeList.add(new Amplitude(reader));
-                    // } else if
-                    // (elName.equals(QuakeMLTagNames.stationMagnitude)) {
-                    // stationMagnitudeList.add(new StationMagnitude(reader));
                 } else if (elName.equals(QuakeMLTagNames.type)) {
                     type = StaxUtil.pullText(reader, QuakeMLTagNames.type);
                 } else if (elName.equals(QuakeMLTagNames.origin)) {
