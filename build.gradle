@@ -10,13 +10,13 @@ apply plugin: 'application'
 dependencies {
     compile project(':seedCodec')
     compile "JSAP:JSAP:2.1"
-    compile "org.slf4j:slf4j-api:1.7.5"
-    compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.5"
+    compile "org.slf4j:slf4j-api:1.7.7"
+    compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.7"
 //
 //    compile 'org.rxtx:rxtx:2.2.pre2'  ...but not in maven
     compile 'org.rxtx:rxtx:2.1.7'
     runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.2.0"
-    runtime "mysql:mysql-connector-java:5.1.24"
+    runtime "mysql:mysql-connector-java:5.1.24+"
 }
 
 sourceSets {
@@ -77,7 +77,7 @@ def distFiles = copySpec {
 }
 
 
-task explodeBin(type: Sync, dependsOn: ['makeScript' ]) {
+task explodeBin(type: Sync, dependsOn: ['makeScript', 'exampleClasses' ]) {
     group = 'dist'
     with binDistFiles
     into file("$buildDir/explode")
@@ -105,7 +105,7 @@ task tarDist(type: Tar, dependsOn: ['explodeDist' ]) {
     }
 }
 
-task exampleJar(type: Jar) {
+task exampleJar(type: Jar, dependsOn: ['exampleClasses' ]) {
     from sourceSets.example.output
     baseName = 'seisFileExample'
 }
@@ -113,6 +113,49 @@ explodeBin.dependsOn(exampleJar)
 artifacts {
     exampleJar
 }
+
+task createAllStartScripts() << {
+    println "Creating all start scripts";
+}
+
+def binScripts = [     
+    'cwbclient': 'edu.sc.seis.seisFile.usgsCWB.Client',  
+    'earthwormExportTest': 'edu.sc.seis.seisFile.earthworm.EarthwormExport',  
+    'earthwormImportTest': 'edu.sc.seis.seisFile.earthworm.EarthwormImport',  
+    'fdsndataselect': 'edu.sc.seis.seisFile.fdsnws.DataSelectClient',  
+    'fdsnevent': 'edu.sc.seis.seisFile.fdsnws.EventClient',  
+    'fdsnstation': 'edu.sc.seis.seisFile.fdsnws.StationClient',  
+    'fdsnstationxml': 'edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML',
+    'gcfserialtoew': 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', 
+    'lissclient': 'edu.sc.seis.seisFile.liss.Client',  
+    'mseedlh': 'edu.sc.seis.seisFile.mseed.ListHeader', 
+    'refinesyncfile': 'edu.sc.seis.seisFile.syncFile.RefineSyncFile', 
+    'saclh': 'edu.sc.seis.seisFile.sac.ListHeader',  
+    'seedlinkclient': 'edu.sc.seis.seisFile.seedlink.Client', 
+    'syncfile2gmt': 'edu.sc.seis.seisFile.syncFile.GMTSyncFile', 
+    'syncfilecompare': 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', 
+    'waveserverclient': 'edu.sc.seis.seisFile.waveserver.WaveServerClient', 
+    'winstonclient': 'edu.sc.seis.seisFile.winston.WinstonClient',  
+    'winstonexport': 'edu.sc.seis.seisFile.winston.WinstonExport'
+    ];
+
+binScripts.each() { scriptName, className -> 
+    
+    def taskname = scriptName+'StartScript';
+    def t = tasks.create(name: taskname, type: CreateStartScripts) {
+        mainClassName = className
+        applicationName = scriptName
+        outputDir = new File(project.buildDir, 'scripts')
+        classpath = jar.outputs.files + project.configurations.runtime
+    }
+
+    applicationDistribution.into("bin") {
+            from(t)
+            fileMode = 0755
+    }
+    createAllStartScripts.dependsOn(t)
+}
+
 
 task runFdsnEvent(type: JavaExec, dependsOn: ['exampleJar', 'classes'])  {
     main = 'edu.sc.seis.seisFile.example.FDSNEvent'
