@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<q:quakeml xmlns:q="http://quakeml.org/xmlns/quakeml/1.2" xmlns="http://quakeml.org/xmlns/bed/1.2" xmlns:catalog="http://anss.org/xmlns/catalog/0.1" xmlns:tensor="http://anss.org/xmlns/tensor/0.1">
+
+  <eventParameters xmlns="http://quakeml.org/xmlns/bed/1.2" publicID="quakeml:us.anss.org/eventparameters/c000irgm/1379971709">
+    <comment>
+      <text>HYDRA - us</text>
+    </comment>
+    <event catalog:dataid="usc000irgm" catalog:datasource="us" catalog:eventid="c000irgm" catalog:eventsource="us" publicID="quakeml:us.anss.org/event/c000irgm">
+      <description>
+        <text>SOUTH SHETLAND ISLANDS</text>
+        <type>Flinn-Engdahl region</type>
+      </description>
+      <description>
+        <text>176 km (109 miles) N of Palmer Station, Antarctica (pop 46)
+972 km (604 miles) SSE of Ushuaia, Argentina (pop 58028)
+1197 km (743 miles) SSE of Punta Arenas, Chile (pop 117430)
+1331 km (827 miles) SSE of Rio Gallegos, Argentina (pop 85700)
+1325 km (823 miles) SSW of Stanley, Falkland Islands (pop 2213)
+</text>
+        <type>nearest cities</type>
+      </description>
+      <amplitude publicID="quakeml:us.anss.org/amp/ge_snaa_bhz_--/mb">
+        <genericAmplitude>
+          <value>8.55e-009</value>
+        </genericAmplitude>
+        <type>AMB</type>
+        <unit>m</unit>
+        <period>
+          <value>0.8000</value>
+        </period>
+        <timeWindow>
+          <begin>0.00</begin>
+          <end>40.00</end>
+          <reference>2013-07-23T00:28:05.82Z</reference>
+        </timeWindow>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="GE" stationCode="SNAA"/>
+        <scalingTime>
+          <value>2013-07-23T00:28:28.02Z</value>
+        </scalingTime>
+        <magnitudeHint>mb</magnitudeHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo/>
+      </amplitude>
+      <amplitude publicID="quakeml:us.anss.org/amp/iu_qspa_bhz_10/mb">
+        <genericAmplitude>
+          <value>2.8e-009</value>
+        </genericAmplitude>
+        <type>AMB</type>
+        <unit>m</unit>
+        <period>
+          <value>0.8000</value>
+        </period>
+        <timeWindow>
+          <begin>0.00</begin>
+          <end>40.00</end>
+          <reference>2013-07-23T00:28:35.63Z</reference>
+        </timeWindow>
+        <waveformID channelCode="BHZ" locationCode="10" networkCode="IU" stationCode="QSPA"/>
+        <scalingTime>
+          <value>2013-07-23T00:28:59.555Z</value>
+        </scalingTime>
+        <magnitudeHint>mb</magnitudeHint>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo/>
+      </amplitude>
+      <magnitude catalog:dataid="us_c000irgm_mb" catalog:datasource="us" publicID="quakeml:us.anss.org/magnitude/c000irgm/mb">
+        <stationMagnitudeContribution>
+          <stationMagnitudeID>quakeml:us.anss.org/stationmagnitude/ge_snaa_bhz_--/mb</stationMagnitudeID>
+          <weight>1.00</weight>
+        </stationMagnitudeContribution>
+        <stationMagnitudeContribution>
+          <stationMagnitudeID>quakeml:us.anss.org/stationmagnitude/iu_qspa_bhz_10/mb</stationMagnitudeID>
+          <weight>0.00</weight>
+        </stationMagnitudeContribution>
+        <mag>
+          <value>4.4</value>
+          <uncertainty>0.535</uncertainty>
+          <confidenceLevel>90</confidenceLevel>
+        </mag>
+        <type>mb</type>
+        <originID>quakeml:us.anss.org/origin/c000irgm</originID>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <creationTime>2013-09-05T22:50:33Z</creationTime>
+        </creationInfo>
+      </magnitude>
+      <stationMagnitude publicID="quakeml:us.anss.org/stationmagnitude/ge_snaa_bhz_--/mb">
+        <originID>quakeml:us.anss.org/origin/c000irgm</originID>
+        <mag>
+          <value>4.37</value>
+        </mag>
+        <type>mb</type>
+        <amplitudeID>quakeml:us.anss.org/amp/ge_snaa_bhz_--/mb</amplitudeID>
+        <creationInfo/>
+      </stationMagnitude>
+      <stationMagnitude publicID="quakeml:us.anss.org/stationmagnitude/iu_qspa_bhz_10/mb">
+        <originID>quakeml:us.anss.org/origin/c000irgm</originID>
+        <mag>
+          <value>4.00</value>
+        </mag>
+        <type>mb</type>
+        <amplitudeID>quakeml:us.anss.org/amp/iu_qspa_bhz_10/mb</amplitudeID>
+        <creationInfo/>
+      </stationMagnitude>
+      <origin catalog:dataid="usc000irgm" catalog:datasource="us" catalog:eventid="c000irgm" publicID="quakeml:us.anss.org/origin/c000irgm">
+        <originUncertainty>
+          <horizontalUncertainty>16300</horizontalUncertainty>
+          <maxHorizontalUncertainty>74700</maxHorizontalUncertainty>
+          <azimuthMaxHorizontalUncertainty>272</azimuthMaxHorizontalUncertainty>
+          <confidenceEllipsoid>
+            <semiMajorAxisLength>74700</semiMajorAxisLength>
+            <semiMinorAxisLength>3100</semiMinorAxisLength>
+            <semiIntermediateAxisLength>8900</semiIntermediateAxisLength>
+            <majorAxisPlunge>0</majorAxisPlunge>
+            <majorAxisAzimuth>272</majorAxisAzimuth>
+            <majorAxisRotation>155</majorAxisRotation>
+          </confidenceEllipsoid>
+          <preferredDescription>confidence ellipsoid</preferredDescription>
+        </originUncertainty>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_1464_25734009">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_1464_25734009</pickID>
+          <phase>Pn</phase>
+          <azimuth>186.614</azimuth>
+          <distance>1.58948</distance>
+          <takeoffAngle>
+            <value>45.9</value>
+          </takeoffAngle>
+          <timeResidual>0.90</timeResidual>
+          <timeWeight>0.3910</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-23T00:24:22Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_1464_25734327">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_1464_25734327</pickID>
+          <phase>Pdif</phase>
+          <azimuth>320.624</azimuth>
+          <distance>104.473</distance>
+          <takeoffAngle>
+            <value>13.4</value>
+          </takeoffAngle>
+          <timeResidual>0.20</timeResidual>
+          <timeWeight>0.0990</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <creationTime>2013-07-23T00:38:57Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_1461_25708131">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_1461_25708131</pickID>
+          <phase>PKPdf</phase>
+          <azimuth>88.4745</azimuth>
+          <distance>146.887</distance>
+          <takeoffAngle>
+            <value>5.0</value>
+          </takeoffAngle>
+          <timeResidual>-0.40</timeResidual>
+          <timeWeight>0.0440</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <creationTime>2013-07-23T00:43:19Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us.idc_2171_bpid-12003216210">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216210</pickID>
+          <phase>P</phase>
+          <azimuth>62.4167</azimuth>
+          <distance>90.9825</distance>
+          <takeoffAngle>
+            <value>14.0</value>
+          </takeoffAngle>
+          <timeResidual>0.60</timeResidual>
+          <timeWeight>0.1920</timeWeight>
+          <creationInfo>
+            <agencyID>us.idc</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-29T05:31:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us.idc_2171_bpid-11002628061">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-11002628061</pickID>
+          <phase>PKPdf</phase>
+          <azimuth>54.1809</azimuth>
+          <distance>127.12</distance>
+          <takeoffAngle>
+            <value>5.7</value>
+          </takeoffAngle>
+          <timeResidual>-0.40</timeResidual>
+          <timeWeight>0.0490</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <creationTime>2013-07-29T05:31:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us.idc_2171_bpid-12003216213">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216213</pickID>
+          <phase>PKPdf</phase>
+          <azimuth>331.248</azimuth>
+          <distance>131.071</distance>
+          <takeoffAngle>
+            <value>5.7</value>
+          </takeoffAngle>
+          <timeResidual>1.10</timeResidual>
+          <timeWeight>0.0000</timeWeight>
+          <creationInfo>
+            <agencyID>us.idc</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-29T05:31:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us.idc_2171_bpid-12003216215">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216215</pickID>
+          <phase>PKPdf</phase>
+          <azimuth>39.6651</azimuth>
+          <distance>146.305</distance>
+          <takeoffAngle>
+            <value>5.1</value>
+          </takeoffAngle>
+          <timeResidual>0.40</timeResidual>
+          <timeWeight>0.0410</timeWeight>
+          <creationInfo>
+            <agencyID>us.idc</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-29T05:31:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us.idc_2171_bpid-12003216212">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216212</pickID>
+          <phase>PKPdf</phase>
+          <azimuth>54.1809</azimuth>
+          <distance>127.12</distance>
+          <takeoffAngle>
+            <value>5.7</value>
+          </takeoffAngle>
+          <timeResidual>-0.40</timeResidual>
+          <timeWeight>0.0490</timeWeight>
+          <creationInfo>
+            <agencyID>us.idc</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-29T05:32:02Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_3439_bpid-12003221914">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221914</pickID>
+          <phase>P</phase>
+          <azimuth>136.652</azimuth>
+          <distance>23.7106</distance>
+          <takeoffAngle>
+            <value>28.5</value>
+          </takeoffAngle>
+          <timeResidual>-0.20</timeResidual>
+          <timeWeight>0.4480</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-23T00:28:37Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_3439_bpid-12003221920">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221920</pickID>
+          <phase>PKPbc</phase>
+          <azimuth>106.024</azimuth>
+          <distance>146.937</distance>
+          <takeoffAngle>
+            <value>8.5</value>
+          </takeoffAngle>
+          <timeResidual>-0.20</timeResidual>
+          <timeWeight>0.1240</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-23T00:43:18Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_3439_bpid-12003221913">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221913</pickID>
+          <phase>P</phase>
+          <azimuth>180.074</azimuth>
+          <distance>27.0158</distance>
+          <takeoffAngle>
+            <value>28.0</value>
+          </takeoffAngle>
+          <timeResidual>-0.50</timeResidual>
+          <timeWeight>0.0850</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-30T22:22:24Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_3439_bpid-12003221918">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221918</pickID>
+          <phase>PKPbc</phase>
+          <azimuth>106.024</azimuth>
+          <distance>146.937</distance>
+          <takeoffAngle>
+            <value>8.5</value>
+          </takeoffAngle>
+          <timeResidual>-0.20</timeResidual>
+          <timeWeight>0.1240</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-23T00:44:15Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_3439_bpid-12003221922">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221922</pickID>
+          <phase>Sn</phase>
+          <azimuth>186.614</azimuth>
+          <distance>1.58948</distance>
+          <takeoffAngle>
+            <value>50.3</value>
+          </takeoffAngle>
+          <timeResidual>0.30</timeResidual>
+          <timeWeight>0.5000</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-30T22:30:05Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_3439_bpid-12003221928">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221928</pickID>
+          <phase>PKPdf</phase>
+          <azimuth>106.024</azimuth>
+          <distance>146.937</distance>
+          <takeoffAngle>
+            <value>5.0</value>
+          </takeoffAngle>
+          <timeResidual>0.20</timeResidual>
+          <timeWeight>0.0420</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-23T00:44:15Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <arrival publicID="quakeml:us.anss.org/arrival/c000irgm/us_3439_bpid-12003221927">
+          <pickID>quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221927</pickID>
+          <phase>PKPdf</phase>
+          <azimuth>106.024</azimuth>
+          <distance>146.937</distance>
+          <takeoffAngle>
+            <value>5.0</value>
+          </takeoffAngle>
+          <timeResidual>0.20</timeResidual>
+          <timeWeight>0.0420</timeWeight>
+          <creationInfo>
+            <agencyID>us</agencyID>
+            <author>manual</author>
+            <creationTime>2013-07-30T22:29:10Z</creationTime>
+          </creationInfo>
+        </arrival>
+        <time>
+          <value>2013-07-23T00:23:14.26Z</value>
+          <uncertainty>0.93</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </time>
+        <longitude>
+          <value>-63.6217</value>
+          <uncertainty>0.0231</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </longitude>
+        <latitude>
+          <value>-63.2026</value>
+          <uncertainty>0.0513</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </latitude>
+        <depth>
+          <value>10000</value>
+          <uncertainty>3100</uncertainty>
+          <confidenceLevel>90.00</confidenceLevel>
+        </depth>
+        <depthType>from location</depthType>
+        <earthModelID>quakeml:us.anss.org/earthmodel/ak135</earthModelID>
+        <quality>
+          <associatedPhaseCount>15</associatedPhaseCount>
+          <usedPhaseCount>14</usedPhaseCount>
+          <standardError>0.46</standardError>
+          <azimuthalGap>134</azimuthalGap>
+          <secondaryAzimuthalGap>213</secondaryAzimuthalGap>
+          <minimumDistance>1.589</minimumDistance>
+        </quality>
+        <type>hypocenter</type>
+        <evaluationMode>manual</evaluationMode>
+        <evaluationStatus>reviewed</evaluationStatus>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-09-05T22:48:21Z</creationTime>
+          <version>0</version>
+        </creationInfo>
+      </origin>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_1464_25734009">
+        <time>
+          <value>2013-07-23T00:23:43.29Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="10" networkCode="IU" stationCode="PMSA"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-23T00:24:22Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_1464_25734327">
+        <time>
+          <value>2013-07-23T00:37:19.17Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="AE" stationCode="X16A"/>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-23T00:38:57Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_1461_25708131">
+        <time>
+          <value>2013-07-23T00:42:53.15Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="KZ" stationCode="ABKAR"/>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-23T00:43:19Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216210">
+        <time>
+          <value>2013-07-23T00:36:18.81Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="IM" stationCode="TOA1"/>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.idc</agencyID>
+          <creationTime>2013-07-29T05:31:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-11002628061">
+        <time>
+          <value>2013-07-23T00:42:17.1Z</value>
+        </time>
+        <waveformID channelCode="HHZ" locationCode="--" networkCode="IM" stationCode="GEC2A"/>
+        <evaluationMode>automatic</evaluationMode>
+        <creationInfo>
+          <agencyID>us.idc</agencyID>
+          <creationTime>2013-07-29T05:31:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216213">
+        <time>
+          <value>2013-07-23T00:42:25.55Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="FB" stationCode="YKR8"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.idc</agencyID>
+          <creationTime>2013-07-29T05:31:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216215">
+        <time>
+          <value>2013-07-23T00:42:52.35Z</value>
+        </time>
+        <waveformID channelCode="SHZ" locationCode="--" networkCode="IM" stationCode="ARA0"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.idc</agencyID>
+          <creationTime>2013-07-29T05:31:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us.idc_2171_bpid-12003216212">
+        <time>
+          <value>2013-07-23T00:42:17.1Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="GR" stationCode="GEC2"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us.idc</agencyID>
+          <creationTime>2013-07-29T05:32:02Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221914">
+        <time>
+          <value>2013-07-23T00:28:25.82Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="GE" stationCode="SNAA"/>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-23T00:28:37Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221920">
+        <time>
+          <value>2013-07-23T00:42:55.69Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="IM" stationCode="KK31"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-23T00:43:18Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221913">
+        <time>
+          <value>2013-07-23T00:28:55.63Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="10" networkCode="IU" stationCode="QSPA"/>
+        <phaseHint>P</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-30T22:22:24Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221918">
+        <time>
+          <value>2013-07-23T00:42:55.73Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="KZ" stationCode="KKAR"/>
+        <phaseHint>PKPbc</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-23T00:44:15Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221922">
+        <time>
+          <value>2013-07-23T00:24:03.21Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="10" networkCode="IU" stationCode="PMSA"/>
+        <phaseHint>Sn</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-30T22:30:05Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221928">
+        <time>
+          <value>2013-07-23T00:42:54.08Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="KZ" stationCode="KKAR"/>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-23T00:44:15Z</creationTime>
+        </creationInfo>
+      </pick>
+      <pick publicID="quakeml:us.anss.org/pick/c000irgm/us_3439_bpid-12003221927">
+        <time>
+          <value>2013-07-23T00:42:54.1Z</value>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="--" networkCode="IM" stationCode="KK31"/>
+        <phaseHint>PKPdf</phaseHint>
+        <evaluationMode>manual</evaluationMode>
+        <creationInfo>
+          <agencyID>us</agencyID>
+          <creationTime>2013-07-30T22:29:10Z</creationTime>
+        </creationInfo>
+      </pick>
+      <preferredOriginID>quakeml:us.anss.org/origin/c000irgm</preferredOriginID>
+      <preferredMagnitudeID>quakeml:us.anss.org/magnitude/c000irgm/mb</preferredMagnitudeID>
+      <type>earthquake</type>
+      <creationInfo>
+        <agencyID>us</agencyID>
+        <creationTime>2013-09-05T22:50:40Z</creationTime>
+      </creationInfo>
+    </event>
+    <creationInfo>
+      <agencyID>us</agencyID>
+      <creationTime>2013-09-23T21:27:21Z</creationTime>
+    </creationInfo>
+  </eventParameters>
+
+</q:quakeml>
