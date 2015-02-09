@@ -21,6 +21,17 @@ public class SyncLine implements Comparable<SyncLine> {
     public static SyncLine parse(String line) throws SeisFileException {
         try {
             String[] s = line.split("\\|", -1);
+            // only first 6 lines are important, so pad if split has fewer
+            if (s.length > 6 && s.length < 15) {
+                String[] padded = new String[16];
+                for (int i=0; i<s.length; i++) {
+                    padded[i] = s[i];
+                }
+                for(int i=s.length; i<padded.length; i++) {
+                    padded[i] = "";
+                }
+                s = padded;
+            }
             SyncLine out = new SyncLine(s[0], // net
                                         s[1], // sta
                                         s[2], // loc
