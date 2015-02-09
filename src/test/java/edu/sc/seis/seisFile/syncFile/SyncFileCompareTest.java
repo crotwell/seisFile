@@ -87,7 +87,7 @@ public class SyncFileCompareTest {
     
     @Test
     public void testProcessItem() throws SeisFileException {
-        SyncLine a = SyncLine.parse("CO|JSC|00|HHZ|2010,243,08:00:05|2010,244,03:27:34||100.0|||||||");
+        SyncLine a = SyncLine.parse("CO|JSC|00|HHZ|2010,243,08:00:05|2010,244,03:27:34||100.0||||||||");
         SyncLine b = new SyncLine(a, new Date(a.getStartTime().getTime() - 60 * 1000), a.getEndTime());
         SyncFile inAinB = new SyncFile("inAinB");
         SyncFile inAnotB = new SyncFile("inAnotB");

@@ -13,8 +13,8 @@ public class SyncLineTest {
 
     @Test
     public void testParse() throws SeisFileException {
-        SyncLine sl = SyncLine.parse("CO|JSC|00|HHZ|2012,001,00:00:01.000|2012,008,14:30:07.780||100.0|||||||");
-        assertEquals("toString output", "CO|JSC|00|HHZ|2012,001,00:00:01.000|2012,008,14:30:07.780||100.0|||||||", sl.toString());
+        SyncLine sl = SyncLine.parse("CO|JSC|00|HHZ|2012,001,00:00:01.000|2012,008,14:30:07.780||100.0||||||||");
+        assertEquals("toString output", "CO|JSC|00|HHZ|2012,001,00:00:01.000|2012,008,14:30:07.780||100.0||||||||", sl.toString());
     }
 
     @Test
