@@ -20,11 +20,11 @@ public class Channel extends BaseNodeType {
 
     public Channel(XMLEventReader reader, String networkCode, String stationCode) throws XMLStreamException,
             StationXMLException {
-        this.networkCode = networkCode;
-        this.stationCode = stationCode;
+        this.networkCode = networkCode.trim();
+        this.stationCode = stationCode.trim();
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.CHANNEL, reader);
         super.parseAttributes(startE);
-        locCode = StaxUtil.pullAttribute(startE, StationXMLTagNames.LOC_CODE);
+        locCode = Channel.fixLocCode(StaxUtil.pullAttribute(startE, StationXMLTagNames.LOC_CODE));
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();
             if (e.isStartElement()) {
@@ -193,4 +193,17 @@ public class Channel extends BaseNodeType {
     List<String> typeList = new ArrayList<String>();
 
     String storageFormat;
+    
+    public static String fixLocCode(String locCode) {
+        String out = locCode;
+        if (locCode == null ) { 
+            out = EMPTY_LOC_CODE; 
+        } else {
+            out = out.trim();
+            if (out.length() == 0 || out.equals("--")) { out = EMPTY_LOC_CODE; }
+        }
+        return out;
+    }
+    
+    public static final String EMPTY_LOC_CODE = "";
 }

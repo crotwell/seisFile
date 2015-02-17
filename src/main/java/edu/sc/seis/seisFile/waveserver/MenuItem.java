@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
+
 public class MenuItem {
 
     public MenuItem(String network,
@@ -18,10 +20,7 @@ public class MenuItem {
         this.station = station;
         this.network = network;
         this.channel = channel;
-        this.location = location;
-        if ("--".equals(location)) {
-            this.location = "  ";
-        }
+        this.location = Channel.fixLocCode(location);
         this.start = start;
         this.end = end;
         this.pin = pin;
