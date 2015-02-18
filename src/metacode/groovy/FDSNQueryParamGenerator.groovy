@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import groovy.text.SimpleTemplateEngine
 
 class FDSNQueryParamGenerator {
@@ -21,7 +22,7 @@ class FDSNQueryParamGenerator {
         String setter = 'set'
         if (key in addTypes) { setter = 'appendTo' }
         String locidSpaceCheck = ""
-        if (key in locIdTypes) {locidSpaceCheck = 'if ("  ".equals(value)) { value = "--";}\n        ' }
+        if (key in locIdTypes) {locidSpaceCheck = 'if (value == null || Channel.EMPTY_LOC_CODE.equals(value.trim())) { value = "--";}\n        ' }
         def binding = ['key':key, 'doc':doc, 'type':t, 'service':service, 'setter':setter, 'locidSpaceCheck':locidSpaceCheck]
         return engine.createTemplate(templateText).make(binding)
     }
