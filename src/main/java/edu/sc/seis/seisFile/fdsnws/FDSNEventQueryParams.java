@@ -11,11 +11,11 @@ import edu.sc.seis.seisFile.ChannelTimeWindow;
 public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneable {
 
     public FDSNEventQueryParams() {
-        this(DEFAULT_HOST);
+        this(USGS_HOST);
     }
     
     public FDSNEventQueryParams(String host) {
-        super(host==null ? DEFAULT_HOST : host);
+        super(host==null ? USGS_HOST : host);
     }
 
     public FDSNEventQueryParams clone() {
@@ -411,10 +411,6 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     
 
     public static final String USGS_HOST = "earthquake.usgs.gov";
-
-    static {
-        DEFAULT_HOST = USGS_HOST;
-    }
 
     public FDSNEventQueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
         return setMinLatitude(minLat).setMaxLatitude(maxLat).setMinLongitude(minLon).setMaxLongitude(maxLon);
