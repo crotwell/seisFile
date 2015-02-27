@@ -180,6 +180,6 @@ public abstract class AbstractQueryParams {
     
     public static final String IRIS_HOST = "service.iris.edu";
     
-    public static String DEFAULT_HOST = IRIS_HOST; // not final as event is usgs
-    
+    // actual used is per service, event is usgs, station and datacenter are iris
+    public static final String DEFAULT_HOST = IRIS_HOST; 
 }

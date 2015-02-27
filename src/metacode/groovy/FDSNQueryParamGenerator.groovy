@@ -50,11 +50,11 @@ import edu.sc.seis.seisFile.ChannelTimeWindow;
 public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams implements Cloneable {
 
     public FDSN${service}QueryParams() {
-        this(DEFAULT_HOST);
+        this(${service=='Event'?'USGS_HOST':'DEFAULT_HOST'});
     }
     
     public FDSN${service}QueryParams(String host) {
-        super(host==null ? DEFAULT_HOST : host);
+        super(host==null ? ${service=='Event'?'USGS_HOST':'DEFAULT_HOST'} : host);
     }
 
     public FDSN${service}QueryParams clone() {
@@ -203,10 +203,6 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         'Event':'''
 
     public static final String USGS_HOST = "earthquake.usgs.gov";
-
-    static {
-        DEFAULT_HOST = USGS_HOST;
-    }
 
     public FDSNEventQueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
         return setMinLatitude(minLat).setMaxLatitude(maxLat).setMinLongitude(minLon).setMaxLongitude(maxLon);
