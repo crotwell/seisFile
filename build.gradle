@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.6.5'
+version = '1.6.6-SNAPSHOT'
 
 apply plugin: 'maven'
 apply plugin: 'groovy'
@@ -136,7 +136,8 @@ def binScripts = [
     'syncfilecompare': 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', 
     'waveserverclient': 'edu.sc.seis.seisFile.waveserver.WaveServerClient', 
     'winstonclient': 'edu.sc.seis.seisFile.winston.WinstonClient',  
-    'winstonexport': 'edu.sc.seis.seisFile.winston.WinstonExport'
+    'winstonexport': 'edu.sc.seis.seisFile.winston.WinstonExport',  
+    'winstonpurge': 'edu.sc.seis.seisFile.winston.PurgeOldData'
     ];
 
 binScripts.each() { scriptName, className -> 
@@ -216,6 +217,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', task.project, dExtras:dExtras, bat:doBat)
     //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('winstonpurge', 'edu.sc.seis.seisFile.winston.PurgeOldData', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {
