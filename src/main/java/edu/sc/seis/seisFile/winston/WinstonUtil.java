@@ -137,6 +137,9 @@ public class WinstonUtil {
                                                      int endYear,
                                                      int endMonth,
                                                      int endDay) throws SQLException {
+        if (startMonth == 0 || endMonth == 0) {
+            throw new SQLException("Month cannot be zero, maybe you forgot months are zero based in Calendar?");
+        }
         List<WinstonTable> out = listDayTables(channel);
         Iterator<WinstonTable> it = out.iterator();
         while (it.hasNext()) {
@@ -178,7 +181,13 @@ public class WinstonUtil {
                                                               endYear,
                                                               endMonth,
                                                               endDay);
+        if (verbose) {
+            System.out.println("Work on tables "+tableList.size());
+        }
         for (WinstonTable wt : tableList) {
+            if (verbose) {
+                System.out.println("Sync for "+wt.getTableName());
+            }
             out = out.concatenate(calculateSyncForDay(wt));
         }
         return out;
@@ -199,6 +208,9 @@ public class WinstonUtil {
                                                               endYear,
                                                               endMonth,
                                                               endDay);
+        if (verbose) {
+            System.out.println("Work on tables "+tableList.size());
+        }
         for (WinstonTable wt : tableList) {
             if (verbose) {
                 System.out.println("Sync for "+wt.getTableName());
@@ -219,6 +231,7 @@ public class WinstonUtil {
                                                          java.sql.ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(Integer.MIN_VALUE);
         ResultSet rs = stmt.executeQuery("select st, et, sr from " + table.getTableName() + " order by st");
+        System.out.println("select st, et, sr from " + table.getTableName() + " order by st");
         while (rs.next()) {
             out.addLine(new SyncLine(defaultSyncLine,
                                      j2KSecondsToDate(rs.getDouble(1)),
@@ -398,7 +411,7 @@ public class WinstonUtil {
         }
     }
 
-    static String getUrlQueryParam(String name, String url) throws SeisFileException, URISyntaxException {
+    public static String getUrlQueryParam(String name, String url) throws SeisFileException, URISyntaxException {
         String[] urlParts = url.split("\\?")[1].split("\\&");
         for (int i = 0; i < urlParts.length; i++) {
             if (urlParts[i].startsWith(name + "=")) {
@@ -422,7 +435,7 @@ public class WinstonUtil {
 
     String driver = MYSQL_DRIVER;
     
-    static boolean verbose = false;
+    static boolean verbose = true;
 
     public static final String KEY_PREFIX = "winston.prefix";
     

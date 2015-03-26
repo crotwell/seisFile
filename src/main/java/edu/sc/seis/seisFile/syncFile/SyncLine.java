@@ -351,6 +351,10 @@ public class SyncLine implements Comparable<SyncLine> {
     public Date getEndTime() {
         return endTime;
     }
+    
+    public float getWidthSeconds() {
+        return (getEndTime().getTime()-getStartTime().getTime()) / 1000.0f;
+    }
 
     public Float getMaxClockDrift() {
         return maxClockDrift;

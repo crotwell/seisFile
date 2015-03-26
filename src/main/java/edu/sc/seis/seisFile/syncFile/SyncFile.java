@@ -119,7 +119,7 @@ public class SyncFile implements Iterable<SyncLine> {
             for (SyncLine line : in) {
                 if (previous == null) {
                     previous = line;
-                } else if (previous.isContiguous(line, SyncFile.DEFAULT_TOLERENCE)) {
+                } else if (previous.isContiguous(line, tolerence)) {
                     previous = previous.concat(line);
                 } else {
                     out.addLine(previous);
@@ -128,6 +128,16 @@ public class SyncFile implements Iterable<SyncLine> {
             }
             if (previous != null) {
                 out.addLine(previous); // add last line
+            }
+        }
+        return out;
+    }
+    
+    public SyncFile cleanSmallSegments(float tolerence) {
+        SyncFile out = new SyncFile(getDccName() + " cleanSmallSegments:"+tolerence);
+        for (SyncLine line : this) {
+            if (line.getWidthSeconds() > tolerence) {
+                out.addLine(line);
             }
         }
         return out;
