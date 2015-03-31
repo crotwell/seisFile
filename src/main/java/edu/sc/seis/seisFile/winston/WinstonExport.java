@@ -52,15 +52,16 @@ public class WinstonExport {
         EarthwormExport exporter = setUpExport();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        SyncFile sentSync = new SyncFile("winston sent to dmc", sdf.format(new Date()));
         for (WinstonSCNL scnl : remoteSFMap.keySet()) {
             SyncFile localSF = pullLocalSyncFile(scnl,
                                                  params.getBegin(),
                                                  params.getEnd(),
                                                  winstonUtil);
             SyncFileCompare sfCompare = new SyncFileCompare(localSF, remoteSFMap.get(scnl));
-            localSF.saveToFile(scnl+"_local.sync");
+            localSF.saveToFile(scnl.getNSLCWithDots()+"_local.sync");
             SyncFile hereNotThere = sfCompare.getInAnotB();
-            hereNotThere.saveToFile(scnl+"_InlocalNotRemote.sync");
+            hereNotThere.saveToFile(scnl.getNSLCWithDots()+"_InlocalNotRemote.sync");
             logger.info(scnl + " here not there synclines=" + hereNotThere.size());
             for (SyncLine sl : hereNotThere) {
                 Date s = new Date(sl.getStartTime().getTime()+1); // 1 millisecond past sync start to avoid duplicates
@@ -92,6 +93,7 @@ public class WinstonExport {
                         // check vs s to avoid sending same packet twice
                         if (!(tbStart.before(s) || tbEnd.after(end))) {
                             exporter.exportWithRetry(traceBuf2);
+                            sentSync.addLine(new SyncLine(sl, tbStart, tbEnd), true);
                             if (tbEnd.after(lastEnd)) {
                                 lastEnd = tbEnd;
                             }
@@ -101,6 +103,7 @@ public class WinstonExport {
                 }
             }
         }
+        sentSync.saveToFile(syncfile.replace(".sync", "")+"_sent.sync");
     }
 
     public WinstonExport(String[] args) throws FileNotFoundException, IOException, SeisFileException {
