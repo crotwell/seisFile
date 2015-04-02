@@ -1,18 +1,23 @@
 package edu.sc.seis.seisFile.syncFile;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.SeisFileRuntimeException;
@@ -26,7 +31,13 @@ public class SyncFile implements Iterable<SyncLine> {
 
     public static SyncFile load(File f) throws IOException, SeisFileException {
         try {
-            BufferedReader r = new BufferedReader(new FileReader(f));
+            Reader in;
+            if (f.getName().endsWith(".gz")) {
+                in = new InputStreamReader(new GZIPInputStream(new BufferedInputStream(new FileInputStream(f))));
+            } else {
+                in = new FileReader(f);
+            }
+            BufferedReader r = new BufferedReader(in);
             return load(r);
         } catch(IOException e) {
             throw new IOException("Problem loading from file " + f, e);
