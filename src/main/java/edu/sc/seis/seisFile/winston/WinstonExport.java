@@ -64,8 +64,8 @@ public class WinstonExport {
             hereNotThere.saveToFile(scnl.getNSLCWithDots()+"_InlocalNotRemote.sync");
             logger.info(scnl + " here not there synclines=" + hereNotThere.size());
             for (SyncLine sl : hereNotThere) {
-                Date s = new Date(sl.getStartTime().getTime()+1); // 1 millisecond past sync start to avoid duplicates
-                Date end = new Date(sl.getEndTime().getTime()-1); // 1 millisecond before sync end to avoid duplicates
+                Date s = new Date(sl.getStartTime().getTime()); 
+                Date end = new Date(sl.getEndTime().getTime()); 
                 if (end.before(params.getBegin()) || s.after(params.getEnd()) || end.getTime()-s.getTime() < minGapMillis) {
                     continue;
                 }
@@ -226,7 +226,7 @@ public class WinstonExport {
         return exporter;
     }
 
-    int minGapMillis = 100;
+    int minGapMillis = 0;
     
     boolean doExport = false;
 
