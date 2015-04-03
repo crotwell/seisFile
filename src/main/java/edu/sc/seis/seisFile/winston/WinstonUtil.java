@@ -230,8 +230,8 @@ public class WinstonUtil {
         Statement stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
                                                          java.sql.ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(Integer.MIN_VALUE);
-        ResultSet rs = stmt.executeQuery("select st, et, sr from " + table.getTableName() + " order by st");
-        System.out.println("select st, et, sr from " + table.getTableName() + " order by st");
+        ResultSet rs = stmt.executeQuery("select st, et, sr from '" + table.getTableName() + "' order by st");
+        System.out.println("select st, et, sr from '" + table.getTableName() + "' order by st");
         while (rs.next()) {
             out.addLine(new SyncLine(defaultSyncLine,
                                      j2KSecondsToDate(rs.getDouble(1)),
@@ -281,7 +281,7 @@ public class WinstonUtil {
         stmt.setFetchSize(10);
         double y2kStart = dateToJ2kSeconds(startTime);
         double y2kEnd = dateToJ2kSeconds(endTime);
-        String query = "select st, et, tracebuf from " + table.getTableName() + " where (" + y2kStart
+        String query = "select st, et, tracebuf from '" + table.getTableName() + "' where (" + y2kStart
                 + " <= st AND st <= " + y2kEnd + ") OR (" + y2kStart + " <=et AND et <= " + y2kEnd + ") order by st";
         if (verbose) {
             System.out.println("query: "+query);
