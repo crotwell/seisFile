@@ -28,6 +28,7 @@ import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.syncFile.SyncFile;
 import edu.sc.seis.seisFile.syncFile.SyncFileCompare;
 import edu.sc.seis.seisFile.syncFile.SyncFileReader;
+import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 import edu.sc.seis.seisFile.syncFile.SyncLine;
 
 public class WinstonExport {
@@ -52,7 +53,7 @@ public class WinstonExport {
         EarthwormExport exporter = setUpExport();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        SyncFile sentSync = new SyncFile("winston sent to dmc", sdf.format(new Date()));
+        SyncFileWriter sentSync = new SyncFileWriter("winston sent to dmc", syncfile.replace(".sync", "")+"_sent.sync");
         for (WinstonSCNL scnl : remoteSFMap.keySet()) {
             SyncFile localSF = pullLocalSyncFile(scnl,
                                                  params.getBegin(),
@@ -93,7 +94,7 @@ public class WinstonExport {
                         // check vs s to avoid sending same packet twice
                         if (!(tbStart.before(s) || tbEnd.after(end))) {
                             exporter.exportWithRetry(traceBuf2);
-                            sentSync.addLine(new SyncLine(sl, tbStart, tbEnd), true);
+                            sentSync.appendLine(new SyncLine(sl, tbStart, traceBuf2.getPredictedNextStartDate()), true);
                             if (tbEnd.after(lastEnd)) {
                                 lastEnd = tbEnd;
                             }
@@ -101,9 +102,10 @@ public class WinstonExport {
                     }
                     s = lastEnd;
                 }
+                sentSync.flush();
             }
         }
-        sentSync.saveToFile(syncfile.replace(".sync", "")+"_sent.sync");
+        sentSync.close();
     }
 
     public WinstonExport(String[] args) throws FileNotFoundException, IOException, SeisFileException {
