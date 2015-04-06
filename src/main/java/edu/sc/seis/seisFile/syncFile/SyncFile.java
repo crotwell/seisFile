@@ -59,7 +59,9 @@ public class SyncFile implements Iterable<SyncLine> {
         }
         SyncFile sync = new SyncFile(split[0], split[1], extras);
         while ((line = r.readLine()) != null) {
-            sync.addLine(SyncLine.parse(line));
+            if (line.trim().length() > 0) {
+                sync.addLine(SyncLine.parse(line));
+            } // ignore blank lines
         }
         r.close();
         return sync;
