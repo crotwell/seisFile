@@ -81,7 +81,7 @@ public final class StationXMLTagNames {
     public static final String CORRECTION = "Correction";
     public static final String COEFFICIENTS = "Coefficients";
     public static final String NUMERATOR = "Numerator";
-    public static final String DENOMINATOR = "Demoninator";
+    public static final String DENOMINATOR = "Denominator";
     public static final String STAGE = "stage";
     public static final String STAGEDESCRIPTION = "stage_description";
     public static final String RESPONSELIST = "ResponseList";
