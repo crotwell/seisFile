@@ -34,6 +34,10 @@ public class WinstonSCNL {
     public String concatSCNL() {
         return station+SEP+channel+SEP+network+((locId!=null && locId.trim().length()!=0)?SEP+locId:"");
     }
+    
+    public String getNSLCWithDots() {
+        return network+"."+station+"."+locId+"."+channel;
+    }
 
     public String getStation() {
         return station;

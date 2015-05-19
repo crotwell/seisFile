@@ -1,18 +1,23 @@
 package edu.sc.seis.seisFile.syncFile;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.SeisFileRuntimeException;
@@ -26,7 +31,13 @@ public class SyncFile implements Iterable<SyncLine> {
 
     public static SyncFile load(File f) throws IOException, SeisFileException {
         try {
-            BufferedReader r = new BufferedReader(new FileReader(f));
+            Reader in;
+            if (f.getName().endsWith(".gz")) {
+                in = new InputStreamReader(new GZIPInputStream(new BufferedInputStream(new FileInputStream(f))));
+            } else {
+                in = new FileReader(f);
+            }
+            BufferedReader r = new BufferedReader(in);
             return load(r);
         } catch(IOException e) {
             throw new IOException("Problem loading from file " + f, e);
@@ -48,7 +59,9 @@ public class SyncFile implements Iterable<SyncLine> {
         }
         SyncFile sync = new SyncFile(split[0], split[1], extras);
         while ((line = r.readLine()) != null) {
-            sync.addLine(SyncLine.parse(line));
+            if (line.trim().length() > 0) {
+                sync.addLine(SyncLine.parse(line));
+            } // ignore blank lines
         }
         r.close();
         return sync;
@@ -119,7 +132,7 @@ public class SyncFile implements Iterable<SyncLine> {
             for (SyncLine line : in) {
                 if (previous == null) {
                     previous = line;
-                } else if (previous.isContiguous(line, SyncFile.DEFAULT_TOLERENCE)) {
+                } else if (previous.isContiguous(line, tolerence)) {
                     previous = previous.concat(line);
                 } else {
                     out.addLine(previous);
@@ -128,6 +141,16 @@ public class SyncFile implements Iterable<SyncLine> {
             }
             if (previous != null) {
                 out.addLine(previous); // add last line
+            }
+        }
+        return out;
+    }
+    
+    public SyncFile cleanSmallSegments(float tolerence) {
+        SyncFile out = new SyncFile(getDccName() + " cleanSmallSegments:"+tolerence);
+        for (SyncLine line : this) {
+            if (line.getWidthSeconds() > tolerence) {
+                out.addLine(line);
             }
         }
         return out;

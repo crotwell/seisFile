@@ -92,6 +92,9 @@ public class WinstonClient {
                     heartbeatText = it.next();
                 } else if (nextArg.equals("--sleepmillis")) {
                     sleepMillis = Integer.parseInt(it.next());
+                } else if (nextArg.equals("--j2KSecondsToDate")) {
+                    System.out.println(WinstonUtil.j2KSecondsToDate(Double.parseDouble(it.next())));
+                    System.exit(0);
                 } else {
                     throw new IllegalArgumentException("Unknown argument: "+nextArg);
                 }

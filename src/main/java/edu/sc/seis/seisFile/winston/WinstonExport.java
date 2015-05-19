@@ -28,6 +28,7 @@ import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.syncFile.SyncFile;
 import edu.sc.seis.seisFile.syncFile.SyncFileCompare;
 import edu.sc.seis.seisFile.syncFile.SyncFileReader;
+import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 import edu.sc.seis.seisFile.syncFile.SyncLine;
 
 public class WinstonExport {
@@ -52,19 +53,20 @@ public class WinstonExport {
         EarthwormExport exporter = setUpExport();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        SyncFileWriter sentSync = new SyncFileWriter("winston sent to dmc", syncfile.replace(".sync", "")+"_sent.sync");
         for (WinstonSCNL scnl : remoteSFMap.keySet()) {
             SyncFile localSF = pullLocalSyncFile(scnl,
                                                  params.getBegin(),
                                                  params.getEnd(),
                                                  winstonUtil);
             SyncFileCompare sfCompare = new SyncFileCompare(localSF, remoteSFMap.get(scnl));
-            localSF.saveToFile(scnl+"_local.sync");
+            localSF.saveToFile(scnl.getNSLCWithDots()+"_local.sync");
             SyncFile hereNotThere = sfCompare.getInAnotB();
-            hereNotThere.saveToFile(scnl+"_InlocalNotRemote.sync");
+            hereNotThere.saveToFile(scnl.getNSLCWithDots()+"_InlocalNotRemote.sync");
             logger.info(scnl + " here not there synclines=" + hereNotThere.size());
             for (SyncLine sl : hereNotThere) {
-                Date s = new Date(sl.getStartTime().getTime()+1); // 1 millisecond past sync start to avoid duplicates
-                Date end = new Date(sl.getEndTime().getTime()-1); // 1 millisecond before sync end to avoid duplicates
+                Date s = new Date(sl.getStartTime().getTime()); 
+                Date end = new Date(sl.getEndTime().getTime()); 
                 if (end.before(params.getBegin()) || s.after(params.getEnd()) || end.getTime()-s.getTime() < minGapMillis) {
                     continue;
                 }
@@ -92,6 +94,7 @@ public class WinstonExport {
                         // check vs s to avoid sending same packet twice
                         if (!(tbStart.before(s) || tbEnd.after(end))) {
                             exporter.exportWithRetry(traceBuf2);
+                            sentSync.appendLine(new SyncLine(sl, tbStart, traceBuf2.getPredictedNextStartDate()), true);
                             if (tbEnd.after(lastEnd)) {
                                 lastEnd = tbEnd;
                             }
@@ -99,8 +102,10 @@ public class WinstonExport {
                     }
                     s = lastEnd;
                 }
+                sentSync.flush();
             }
         }
+        sentSync.close();
     }
 
     public WinstonExport(String[] args) throws FileNotFoundException, IOException, SeisFileException {
@@ -223,7 +228,7 @@ public class WinstonExport {
         return exporter;
     }
 
-    int minGapMillis = 100;
+    int minGapMillis = 0;
     
     boolean doExport = false;
 

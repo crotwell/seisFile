@@ -69,7 +69,7 @@ public class AbstractClient {
     public String getHelp() {
         String out = "";
         for (Parameter param : getParams()) {
-            out += param.getHelp()+"\n";
+            out += param.getSyntax()+" "+param.getHelp()+"\n";
         }
         return out;
     }

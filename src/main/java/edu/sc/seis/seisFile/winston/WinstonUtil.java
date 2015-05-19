@@ -137,6 +137,9 @@ public class WinstonUtil {
                                                      int endYear,
                                                      int endMonth,
                                                      int endDay) throws SQLException {
+        if (startMonth == 0 || endMonth == 0) {
+            throw new SQLException("Month cannot be zero, maybe you forgot months are zero based in Calendar?");
+        }
         List<WinstonTable> out = listDayTables(channel);
         Iterator<WinstonTable> it = out.iterator();
         while (it.hasNext()) {
@@ -178,7 +181,13 @@ public class WinstonUtil {
                                                               endYear,
                                                               endMonth,
                                                               endDay);
+        if (verbose) {
+            System.out.println("Work on tables "+tableList.size());
+        }
         for (WinstonTable wt : tableList) {
+            if (verbose) {
+                System.out.println("Sync for "+wt.getTableName());
+            }
             out = out.concatenate(calculateSyncForDay(wt));
         }
         return out;
@@ -199,6 +208,9 @@ public class WinstonUtil {
                                                               endYear,
                                                               endMonth,
                                                               endDay);
+        if (verbose) {
+            System.out.println("Work on tables "+tableList.size());
+        }
         for (WinstonTable wt : tableList) {
             if (verbose) {
                 System.out.println("Sync for "+wt.getTableName());
@@ -268,7 +280,7 @@ public class WinstonUtil {
         stmt.setFetchSize(10);
         double y2kStart = dateToJ2kSeconds(startTime);
         double y2kEnd = dateToJ2kSeconds(endTime);
-        String query = "select st, et, tracebuf from " + table.getTableName() + " where (" + y2kStart
+        String query = "select st, et, tracebuf from `" + table.getTableName() + "` where (" + y2kStart
                 + " <= st AND st <= " + y2kEnd + ") OR (" + y2kStart + " <=et AND et <= " + y2kEnd + ") order by st";
         if (verbose) {
             System.out.println("query: "+query);
@@ -398,7 +410,7 @@ public class WinstonUtil {
         }
     }
 
-    static String getUrlQueryParam(String name, String url) throws SeisFileException, URISyntaxException {
+    public static String getUrlQueryParam(String name, String url) throws SeisFileException, URISyntaxException {
         String[] urlParts = url.split("\\?")[1].split("\\&");
         for (int i = 0; i < urlParts.length; i++) {
             if (urlParts[i].startsWith(name + "=")) {
@@ -422,7 +434,7 @@ public class WinstonUtil {
 
     String driver = MYSQL_DRIVER;
     
-    static boolean verbose = false;
+    static boolean verbose = true;
 
     public static final String KEY_PREFIX = "winston.prefix";
     

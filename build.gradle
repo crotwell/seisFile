@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.6.5-SNAPSHOT'
+version = '1.6.6-SNAPSHOT'
 
 apply plugin: 'maven'
 apply plugin: 'groovy'
@@ -10,13 +10,13 @@ apply plugin: 'application'
 dependencies {
     compile project(':seedCodec')
     compile "JSAP:JSAP:2.1"
-    compile "org.slf4j:slf4j-api:1.7.7"
-    compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.7"
+    compile "org.slf4j:slf4j-api:1.7.10"
+    compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.10"
 //
 //    compile 'org.rxtx:rxtx:2.2.pre2'  ...but not in maven
     compile 'org.rxtx:rxtx:2.1.7'
     runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.2.0"
-    runtime "mysql:mysql-connector-java:5.1.24+"
+    runtime "mysql:mysql-connector-java:5.1.34+"
 }
 
 sourceSets {
@@ -136,7 +136,8 @@ def binScripts = [
     'syncfilecompare': 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', 
     'waveserverclient': 'edu.sc.seis.seisFile.waveserver.WaveServerClient', 
     'winstonclient': 'edu.sc.seis.seisFile.winston.WinstonClient',  
-    'winstonexport': 'edu.sc.seis.seisFile.winston.WinstonExport'
+    'winstonexport': 'edu.sc.seis.seisFile.winston.WinstonExport',  
+    'winstonpurge': 'edu.sc.seis.seisFile.winston.PurgeOldData'
     ];
 
 binScripts.each() { scriptName, className -> 
@@ -216,6 +217,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', task.project, dExtras:dExtras, bat:doBat)
     //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('winstonpurge', 'edu.sc.seis.seisFile.winston.PurgeOldData', task.project, dExtras:dExtras, bat:doBat)
 }
 
 def getDExtras() {

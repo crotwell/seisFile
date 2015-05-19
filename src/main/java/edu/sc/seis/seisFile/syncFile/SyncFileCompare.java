@@ -193,7 +193,7 @@ public class SyncFileCompare {
     boolean verbose = false;
 
     static void printUsage() {
-        System.err.println("Usage: syncFileCompare [--gmt] -a file1.sync -b file2.sync");
+        System.err.println("Usage: syncFileCompare [--gmt] -a file1.sync -b file2.sync [--tol seconds]");
     }
 
     static String trimDotSync(String filename) {
@@ -237,6 +237,7 @@ public class SyncFileCompare {
     public static void main(String[] args) throws IOException, SeisFileException {
         boolean doGMT = false;
         String file1Name = "", file2Name = "";
+        float tolerence = 0;
         for (int i = 0; i < args.length; i++) {
             if ("--help".equals(args[i])) {
                 printUsage();
@@ -248,6 +249,9 @@ public class SyncFileCompare {
                 i++;
             } else if ("-b".equals(args[i])) {
                 file2Name = args[i + 1];
+                i++;
+            } else if ("--tol".equals(args[i])) {
+                tolerence = Float.parseFloat(args[i + 1]);
                 i++;
             } else {
                 System.err.println("I don't understand '" + args[i] + "'");
@@ -294,9 +298,9 @@ public class SyncFileCompare {
             latest = latest(latest, b);
             SyncFileCompare sfc = new SyncFileCompare(a, b);
             compareMap.put(key, sfc);
-            sfc.getInAinB().saveToFile(chanPrefix + "in_" + file1Base + "_in_" + file2Base + ".sync");
-            sfc.getNotAinB().saveToFile(chanPrefix + "not_" + file1Base + "_in_" + file2Base + ".sync");
-            sfc.getInAnotB().saveToFile(chanPrefix + "in_" + file1Base + "_not_" + file2Base + ".sync");
+            sfc.getInAinB().cleanSmallSegments(tolerence).saveToFile(chanPrefix + "in_" + file1Base + "_in_" + file2Base + ".sync");
+            sfc.getNotAinB().cleanSmallSegments(tolerence).saveToFile(chanPrefix + "not_" + file1Base + "_in_" + file2Base + ".sync");
+            sfc.getInAnotB().cleanSmallSegments(tolerence).saveToFile(chanPrefix + "in_" + file1Base + "_not_" + file2Base + ".sync");
             if (sfc.isVerbose()) {
                 System.out.println("Done: " + chanPrefix + "A: " + a.getSyncLines().size() + " B: "
                         + b.getSyncLines().size() + " inAinB: " + sfc.getInAinB().getSyncLines().size() + " notAinB: "
