@@ -34,29 +34,22 @@ public class DataRecord extends SeedRecord implements Serializable {
                              record.getHeader().isContinuation()));
         RECORD_SIZE = record.RECORD_SIZE;
         getHeader().setActivityFlags(record.getHeader().getActivityFlags());
-        getHeader().setChannelIdentifier(record.getHeader()
-                .getChannelIdentifier());
-        getHeader().setDataBlocketteOffset((short)record.getHeader()
-                .getDataBlocketteOffset());
+        getHeader().setChannelIdentifier(record.getHeader().getChannelIdentifier());
+        getHeader().setDataBlocketteOffset((short)record.getHeader().getDataBlocketteOffset());
         getHeader().setDataOffset((short)record.getHeader().getDataOffset());
-        getHeader().setDataQualityFlags(record.getHeader()
-                .getDataQualityFlags());
+        getHeader().setDataQualityFlags(record.getHeader().getDataQualityFlags());
         getHeader().setIOClockFlags(record.getHeader().getIOClockFlags());
-        getHeader().setLocationIdentifier(record.getHeader()
-                .getLocationIdentifier());
+        getHeader().setLocationIdentifier(record.getHeader().getLocationIdentifier());
         getHeader().setNetworkCode(record.getHeader().getNetworkCode());
         getHeader().setNumSamples((short)record.getHeader().getNumSamples());
-        getHeader().setSampleRateFactor((short)record.getHeader()
-                .getSampleRateFactor());
-        getHeader().setSampleRateMultiplier((short)record.getHeader()
-                .getSampleRateMultiplier());
+        getHeader().setSampleRateFactor((short)record.getHeader().getSampleRateFactor());
+        getHeader().setSampleRateMultiplier((short)record.getHeader().getSampleRateMultiplier());
         getHeader().setStartBtime(record.getHeader().getStartBtime());
-        getHeader().setStationIdentifier(record.getHeader()
-                .getStationIdentifier());
+        getHeader().setStationIdentifier(record.getHeader().getStationIdentifier());
         getHeader().setTimeCorrection(record.getHeader().getTimeCorrection());
         try {
             setData(record.getData());
-            for(int j = 0; j < record.getBlockettes().length; j++) {
+            for (int j = 0; j < record.getBlockettes().length; j++) {
                 blockettes.add(record.getBlockettes()[j]);
             }
         } catch(SeedFormatException e) {
@@ -65,21 +58,21 @@ public class DataRecord extends SeedRecord implements Serializable {
     }
 
     /**
-     * Adds a blockette to the record. The number of blockettes in the header is incremented automatically.
+     * Adds a blockette to the record. The number of blockettes in the header is
+     * incremented automatically.
      */
     public void addBlockette(Blockette b) throws SeedFormatException {
-        if(b == null) {
+        if (b == null) {
             throw new IllegalArgumentException("Blockette cannot be null");
         }
         if (b instanceof BlocketteUnknown) {
             b = new DataBlocketteUnknown(((BlocketteUnknown)b).info, b.getType(), ((BlocketteUnknown)b).getSwapBytes());
         }
-        if(b instanceof DataBlockette) {
+        if (b instanceof DataBlockette) {
             super.addBlockette(b);
             getHeader().setNumBlockettes((byte)(getHeader().getNumBlockettes() + 1));
         } else {
-            throw new SeedFormatException("Cannot add non-data blockettes to a DataRecord "
-                    + b.getType());
+            throw new SeedFormatException("Cannot add non-data blockettes to a DataRecord " + b.getType());
         }
         if (b instanceof Blockette1000) {
             setRecordSize(((Blockette1000)b).getLogicalRecordLength());
@@ -90,19 +83,21 @@ public class DataRecord extends SeedRecord implements Serializable {
     protected void recheckDataOffset() throws SeedFormatException {
         int size = getHeader().getSize();
         Blockette[] blocks = getBlockettes();
-        for(int i = 0; i < blocks.length; i++) {
+        for (int i = 0; i < blocks.length; i++) {
             size += blocks[i].getSize();
         }
-        if(data != null) {
+        if (data != null) {
             size += data.length;
         }
-        if(size > RECORD_SIZE) {
+        if (size > RECORD_SIZE) {
             int headerSize = size;
-            if (data != null) { headerSize = size-data.length;}
-            throw new SeedFormatException("Can't fit blockettes and data in record "
-                    + headerSize+" + "+(data == null?0:data.length)+" > "+RECORD_SIZE);
+            if (data != null) {
+                headerSize = size - data.length;
+            }
+            throw new SeedFormatException("Can't fit blockettes and data in record " + headerSize + " + "
+                    + (data == null ? 0 : data.length) + " > " + RECORD_SIZE);
         }
-        if(data != null) {
+        if (data != null) {
             // shift the data to end of blockette so pad happens between
             // blockettes and data
             getHeader().setDataOffset((short)(RECORD_SIZE - data.length));
@@ -117,9 +112,11 @@ public class DataRecord extends SeedRecord implements Serializable {
     public byte[] getData() {
         return data;
     }
-    
-    /** 
-     * Decompress the data in this record according to the compression type in the header.
+
+    /**
+     * Decompress the data in this record according to the compression type in
+     * the header.
+     * 
      * @return
      * @throws SeedFormatException if no blockette 1000 present
      * @throws UnsupportedCompressionType
@@ -154,7 +151,7 @@ public class DataRecord extends SeedRecord implements Serializable {
     public DataHeader getHeader() {
         return (DataHeader)header;
     }
-    
+
     public byte[] toByteArray() {
         try {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -162,7 +159,7 @@ public class DataRecord extends SeedRecord implements Serializable {
             write(dos);
             dos.close();
             return byteStream.toByteArray();
-        } catch (IOException e) {
+        } catch(IOException e) {
             // shouldn't happen
             throw new RuntimeException("Caught IOException, should not happen.", e);
         }
@@ -171,47 +168,47 @@ public class DataRecord extends SeedRecord implements Serializable {
     public void write(DataOutputStream dos) throws IOException {
         Blockette[] blocks = getBlockettes();
         getHeader().setNumBlockettes((byte)blocks.length);
-        if(blocks.length != 0) {
+        if (blocks.length != 0) {
             getHeader().setDataBlocketteOffset((byte)48);
         }
         getHeader().write(dos);
         DataBlockette dataB;
         short blockettesSize = getHeader().getSize();
-        for(int i = 0; i < blocks.length; i++) {
+        for (int i = 0; i < blocks.length; i++) {
             dataB = (DataBlockette)blocks[i];
             blockettesSize += (short)dataB.getSize();
-            if(i != blocks.length - 1) {
+            if (i != blocks.length - 1) {
                 dos.write(dataB.toBytes(blockettesSize));
             } else {
                 dos.write(dataB.toBytes((short)0));
             }
         } // end of for ()
-        for(int i = blockettesSize; i < getHeader().getDataOffset(); i++) {
+        for (int i = blockettesSize; i < getHeader().getDataOffset(); i++) {
             dos.write(ZERO_BYTE);
         }
         dos.write(data);
-        int remainBytes = RECORD_SIZE - getHeader().getDataOffset()
-                - data.length;
-        for(int i = 0; i < remainBytes; i++) {
+        int remainBytes = RECORD_SIZE - getHeader().getDataOffset() - data.length;
+        for (int i = 0; i < remainBytes; i++) {
             dos.write(ZERO_BYTE);
         } // end of for ()
     }
 
-/**
- * @deprecated Confusing method name, use printData(PrintWriter) for textual output and write(DataOutputStream) for binary output.
- * 
- * @param out
- */
+    /**
+     * @deprecated Confusing method name, use printData(PrintWriter) for textual
+     *             output and write(DataOutputStream) for binary output.
+     * 
+     * @param out
+     */
     @Deprecated
     public void writeData(PrintWriter out) {
         printData(out);
     }
-    
+
     public void printData(PrintWriter out) {
         byte[] d = getData();
         DecimalFormat byteFormat = new DecimalFormat("000");
         for (int i = 0; i < d.length; i++) {
-            out.write(byteFormat.format(0xff & d[i])+" ");
+            out.write(byteFormat.format(0xff & d[i]) + " ");
             if (i % 4 == 3) {out.write("  ");}
             if (i % 16 == 15 && i != 0) {
                 out.write("\n");
@@ -219,108 +216,114 @@ public class DataRecord extends SeedRecord implements Serializable {
         }
     }
 
-    public static SeedRecord readDataRecord(DataInput inStream,
-                                               DataHeader header,
-                                               int defaultRecordSize)
+    public static SeedRecord readDataRecord(DataInput inStream, DataHeader header, int defaultRecordSize)
             throws IOException, SeedFormatException {
         try {
-        boolean swapBytes = header.flagByteSwap();
-        /*
-         * Assert.isTrue(header.getDataBlocketteOffset()>= header.getSize(),
-         * "Offset to first blockette must be larger than the header size");
-         */
-        DataRecord dataRec = new DataRecord(header);
-        // read garbage between header and blockettes
-        if(header.getDataBlocketteOffset() != 0) {
-            byte[] garbage = new byte[header.getDataBlocketteOffset()
-                    - header.getSize()];
-            if(garbage.length != 0) {
-                inStream.readFully(garbage);
+            boolean swapBytes = header.flagByteSwap();
+            /*
+             * Assert.isTrue(header.getDataBlocketteOffset()>= header.getSize(),
+             * "Offset to first blockette must be larger than the header size");
+             */
+            DataRecord dataRec = new DataRecord(header);
+            // read garbage between header and blockettes
+            if (header.getDataBlocketteOffset() != 0) {
+                byte[] garbage = new byte[header.getDataBlocketteOffset() - header.getSize()];
+                if (garbage.length != 0) {
+                    inStream.readFully(garbage);
+                }
             }
-        }
-        byte[] blocketteBytes;
-        int currOffset = header.getDataBlocketteOffset();
-        if(header.getDataBlocketteOffset() == 0) {
-            currOffset = header.getSize();
-        }
-        int type, nextOffset;
-        for(int i = 0; i < header.getNumBlockettes(); i++) {
-            // get blockette type (first 2 bytes)
-            byte hibyteType = inStream.readByte();
-            byte lowbyteType = inStream.readByte();
-            type = Utility.uBytesToInt(hibyteType, lowbyteType, swapBytes);
-            byte hibyteOffset = inStream.readByte();
-            byte lowbyteOffset = inStream.readByte();
-            nextOffset = Utility.uBytesToInt(hibyteOffset,
-                                             lowbyteOffset,
-                                             swapBytes);
-            // account for the 4 bytes above
-            currOffset += 4;
-            if(nextOffset != 0) {
-                blocketteBytes = new byte[nextOffset - currOffset];
-            } else if(header.getDataOffset() > currOffset) {
-                blocketteBytes = new byte[header.getDataOffset() - currOffset];
+            byte[] blocketteBytes;
+            int currOffset = header.getDataBlocketteOffset();
+            if (header.getDataBlocketteOffset() == 0) {
+                currOffset = header.getSize();
+            }
+            int type, nextOffset;
+            int recordSize = 0;
+            for (int i = 0; i < header.getNumBlockettes(); i++) {
+                // get blockette type (first 2 bytes)
+                byte hibyteType = inStream.readByte();
+                byte lowbyteType = inStream.readByte();
+                type = Utility.uBytesToInt(hibyteType, lowbyteType, swapBytes);
+                byte hibyteOffset = inStream.readByte();
+                byte lowbyteOffset = inStream.readByte();
+                nextOffset = Utility.uBytesToInt(hibyteOffset,
+                                                 lowbyteOffset,
+                                                 swapBytes);
+                // account for the 4 bytes above
+                currOffset += 4;
+                if (nextOffset != 0) {
+                    blocketteBytes = new byte[nextOffset - currOffset];
+                } else if (header.getNumSamples() !=0 && header.getDataOffset() > currOffset) {
+                    blocketteBytes = new byte[header.getDataOffset() - currOffset];
+                } else if (header.getNumSamples() == 0 && i == header.getNumBlockettes()-1 && recordSize > 0) {
+                    // weird case where no data, only blockettes and so try to load all bytes as the last
+                    // blockette and trim to fit after reading
+                    blocketteBytes = new byte[recordSize-currOffset];
+                } else {
+                    blocketteBytes = new byte[0];
+                }
+                inStream.readFully(blocketteBytes);
+                if (nextOffset != 0) {
+                    currOffset = nextOffset;
+                } else {
+                    currOffset += blocketteBytes.length;
+                }
+                // fix so blockette has full bytes
+                byte[] fullBlocketteBytes = new byte[blocketteBytes.length + 4];
+                System.arraycopy(blocketteBytes,
+                                 0,
+                                 fullBlocketteBytes,
+                                 4,
+                                 blocketteBytes.length);
+                fullBlocketteBytes[0] = hibyteType;
+                fullBlocketteBytes[1] = lowbyteType;
+                fullBlocketteBytes[2] = hibyteOffset;
+                fullBlocketteBytes[3] = lowbyteOffset;
+
+                Blockette b = SeedRecord.getBlocketteFactory().parseBlockette(type, fullBlocketteBytes, swapBytes);
+                if (b.getType() == 1000) {
+                    // might need this in the case of b2000 as its length is dynamic
+                    // and might be no data so data offset is not useful
+                    recordSize = ((Blockette1000)b).getDataRecordLength();
+                }
+                dataRec.blockettes.add(b);
+                if (nextOffset == 0) {
+                    break;
+                }
+            }
+            try {
+                recordSize = ((Blockette1000)dataRec.getUniqueBlockette(1000)).getDataRecordLength();
+            } catch(MissingBlockette1000 e) {
+                if (defaultRecordSize == 0) {
+                    // no default
+                    throw e;
+                }
+                // otherwise use default
+                recordSize = defaultRecordSize;
+            }
+            dataRec.RECORD_SIZE = recordSize;
+            // read garbage between blockettes and data
+            if (header.getDataOffset() != 0) {
+                byte[] garbage = new byte[header.getDataOffset() - currOffset];
+                if (garbage.length != 0) {
+                    inStream.readFully(garbage);
+                }
+            }
+            byte[] timeseries;
+            if (header.getDataOffset() == 0) {
+                // data record with no data, so gobble up the rest of the record
+                timeseries = new byte[recordSize - currOffset];
             } else {
-                blocketteBytes = new byte[0];
+                if (recordSize < header.getDataOffset()) {
+                    throw new SeedFormatException("recordSize < header.getDataOffset(): " + recordSize + " < "
+                            + header.getDataOffset());
+                }
+                timeseries = new byte[recordSize - header.getDataOffset()];
             }
-            inStream.readFully(blocketteBytes);
-            if(nextOffset != 0) {
-                currOffset = nextOffset;
-            } else {
-                currOffset += blocketteBytes.length;
-            }
-            // fix so blockette has full bytes
-            byte[] fullBlocketteBytes = new byte[blocketteBytes.length + 4];
-            System.arraycopy(blocketteBytes,
-                             0,
-                             fullBlocketteBytes,
-                             4,
-                             blocketteBytes.length);
-            fullBlocketteBytes[0] = hibyteType;
-            fullBlocketteBytes[1] = lowbyteType;
-            fullBlocketteBytes[2] = hibyteOffset;
-            fullBlocketteBytes[3] = lowbyteOffset;
-            Blockette b = SeedRecord.getBlocketteFactory().parseBlockette(type,
-                                                   fullBlocketteBytes,
-                                                   swapBytes);
-            dataRec.blockettes.add(b);
-            if(nextOffset == 0) {
-                break;
-            }
-        }
-        int recordSize = defaultRecordSize;
-        try {
-            recordSize = ((Blockette1000)dataRec.getUniqueBlockette(1000)).getDataRecordLength();
-        } catch(MissingBlockette1000 e) {
-            if(defaultRecordSize == 0) {
-                // no default
-                throw e;
-            }
-            // otherwise use default
-            recordSize = defaultRecordSize;
-        }
-        dataRec.RECORD_SIZE = recordSize;
-        // read garbage between blockettes and data
-        if(header.getDataOffset() != 0) {
-            byte[] garbage = new byte[header.getDataOffset() - currOffset];
-            if(garbage.length != 0) {
-                inStream.readFully(garbage);
-            }
-        }
-        byte[] timeseries;
-        if(header.getDataOffset() == 0) {
-            // data record with no data, so gobble up the rest of the record
-            timeseries = new byte[recordSize - currOffset];
-        } else {
-            if (recordSize < header.getDataOffset()) {
-                throw new SeedFormatException("recordSize < header.getDataOffset(): "+recordSize+" < "+header.getDataOffset());
-            }
-            timeseries = new byte[recordSize - header.getDataOffset()];
-        }
-        inStream.readFully(timeseries);
-        dataRec.setData(timeseries);
-        return dataRec;
-        } catch (SeedFormatException e) {
+            inStream.readFully(timeseries);
+            dataRec.setData(timeseries);
+            return dataRec;
+        } catch(SeedFormatException e) {
             e.setHeader(header);
             throw e;
         }
@@ -346,5 +349,4 @@ public class DataRecord extends SeedRecord implements Serializable {
     protected byte[] data;
 
     byte ZERO_BYTE = 0;
-    
 } // DataRecord
