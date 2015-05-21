@@ -37,8 +37,9 @@ public class Blockette2000 extends DataBlockette {
         return len;
     }
 
-    public Blockette2000(byte[] info, boolean swapBytes) {
+    public Blockette2000(byte[] info, boolean swapBytes) throws SeedFormatException {
         super(info, swapBytes);
+        checkMinimumSize(FIXED_HEADER_LENGTH);
     }
 
     public String getName() {
