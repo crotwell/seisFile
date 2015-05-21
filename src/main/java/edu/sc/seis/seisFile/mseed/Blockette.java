@@ -30,6 +30,7 @@ public abstract class Blockette {
         writeASCII(out);
     }
 
+    @Deprecated 
     public static Blockette parseBlockette(int type, byte[] bytes, boolean swapBytes)
             throws IOException, SeedFormatException {
         switch(type){
