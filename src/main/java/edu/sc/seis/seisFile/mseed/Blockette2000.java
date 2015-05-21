@@ -40,6 +40,10 @@ public class Blockette2000 extends DataBlockette {
     public Blockette2000(byte[] info, boolean swapBytes) throws SeedFormatException {
         super(info, swapBytes);
         checkMinimumSize(FIXED_HEADER_LENGTH);
+        int size = Utility.uBytesToInt(info[4],
+                                       info[5],
+                                       swapBytes);
+        trimToSize(size);
     }
 
     public String getName() {
