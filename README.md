@@ -1,4 +1,4 @@
-SeisFile is a library for reading and writing seismic file formats in java. See the [wiki](http://code.google.com/p/seisfile/wiki/Intro) for more information.
+SeisFile is a library for reading and writing seismic file formats in java. See the [wiki](https://github.com/crotwell/seisFile/wiki/Intro) for more information.
 
 **[Downloads](http://www.seis.sc.edu/downloads/seisFile/)** are now hosted at the University of South Carolina due to Google ending support for downloads.
 
