@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class Blockette2000Test extends TestCase {
 
-    public void testInternalConsistency() {
+    public void testInternalConsistency() throws SeedFormatException {
         String[] headerFields = new String[] {"one", "two", "three"};
         Blockette2000 b2000 = new Blockette2000(headerFields, new byte[] {1});
         assertEquals(b2000, new Blockette2000(b2000.info, false));
