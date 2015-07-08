@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -24,6 +25,9 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
         this.queryParams = queryParams;
     }
 
+    public URL getSchemaURL() {
+        return Quakeml.loadSchema();
+    }
     public Quakeml getQuakeML() throws FDSNWSException {
         try {
             connect();

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -21,6 +22,10 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
 
     public FDSNStationQuerier(FDSNStationQueryParams queryParams) {
         this.queryParams = queryParams;
+    }
+
+    public URL getSchemaURL() {
+        return FDSNStationXML.loadSchema();
     }
     
     public void validateFDSNStationXML() throws SeisFileException, URISyntaxException {

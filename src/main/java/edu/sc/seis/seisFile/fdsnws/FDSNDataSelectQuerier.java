@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -25,6 +26,11 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         this(queryParams, null);
     }
 
+    /** There is no schema for dataselect. Returns null */
+    public URL getSchemaURL() {
+        return null;
+    }
+    
     /**
      * This uses POST instead of GET, allowing many channel time windows.
      * 

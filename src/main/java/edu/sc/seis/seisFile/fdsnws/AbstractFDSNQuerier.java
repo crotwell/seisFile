@@ -26,6 +26,11 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.codehaus.stax2.XMLEventReader2;
+import org.codehaus.stax2.XMLInputFactory2;
+import org.codehaus.stax2.XMLStreamReader2;
+import org.codehaus.stax2.validation.XMLValidationSchema;
+import org.codehaus.stax2.validation.XMLValidationSchemaFactory;
 import org.xml.sax.SAXException;
 
 import edu.sc.seis.seisFile.client.AbstractClient;
@@ -36,6 +41,8 @@ public abstract class AbstractFDSNQuerier {
     }
     
     public abstract URI formURI() throws URISyntaxException;
+    
+    public abstract URL getSchemaURL();
     
     public void connect() throws URISyntaxException, FDSNWSException {
         connectionUri = formURI();
@@ -158,8 +165,20 @@ public abstract class AbstractFDSNQuerier {
 
     public XMLEventReader getReader() throws XMLStreamException, URISyntaxException {
         if (reader == null) {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-            reader = factory.createXMLEventReader(getConnectionUri().toString(), getInputStream());
+            XMLInputFactory2 factory = (XMLInputFactory2)XMLInputFactory.newInstance();
+            XMLStreamReader2 sr = (XMLStreamReader2)factory.createXMLStreamReader(getConnectionUri().toString(), getInputStream());
+            if (isValidate()) {
+                try {
+                    XMLValidationSchemaFactory sfactory = 
+                            XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
+                    XMLValidationSchema schema = null;
+                    schema = sfactory.createSchema(getSchemaURL());
+                    sr.validateAgainst(schema);
+                } catch(XMLStreamException e) {
+                    throw new RuntimeException("should not happen, can't load schema in jar: "+getSchemaURL(), e);
+                }
+            }
+            reader  =  (XMLEventReader2)factory.createXMLEventReader(sr);
         }
         return reader;
     }
@@ -247,6 +266,18 @@ public abstract class AbstractFDSNQuerier {
         throw new FDSNWSException("Unable to load xml, text past error='"+bufferedText+"'", e, getConnectionUri());
     }
 
+    
+    
+    public boolean isValidate() {
+        return validate;
+    }
+
+    
+    public void setValidate(boolean validate) {
+        this.validate = validate;
+    }
+
+
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
 
     int responseCode;
@@ -268,6 +299,8 @@ public abstract class AbstractFDSNQuerier {
     protected int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
 
     protected int readTimeout = DEFAULT_READ_TIMEOUT;
+    
+    protected boolean validate = false;
 
     public static int DEFAULT_CONNECT_TIMEOUT = 10 * 1000;
 

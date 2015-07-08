@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,12 @@ public class FDSNEventCatalogQuerier extends AbstractFDSNQuerier {
 
     public FDSNEventCatalogQuerier(FDSNEventQueryParams queryParams) {
         this.queryParams = queryParams;
+    }
+
+    /** no schema for catalog, return null */
+    @Override
+    public URL getSchemaURL() {
+        return null;
     }
 
     public List<String> getCatalogs() throws FDSNWSException {
