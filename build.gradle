@@ -1,7 +1,7 @@
 
 
 group = 'edu.sc.seis'
-version = '1.6.6'
+version = '1.6.7-SNAPSHOT'
 
 apply plugin: 'maven'
 apply plugin: 'groovy'
@@ -15,7 +15,9 @@ dependencies {
 //
 //    compile 'org.rxtx:rxtx:2.2.pre2'  ...but not in maven
     compile 'org.rxtx:rxtx:2.1.7'
-    runtime "org.codehaus.woodstox:woodstox-core-lgpl:4.2.0"
+    compile "org.codehaus.woodstox:woodstox-core-lgpl:4.2.0"
+    compile "net.java.dev.msv:msv-core:2013.6.1"
+//    compile "msv:msv:20050913"
     runtime "mysql:mysql-connector-java:5.1.34+"
 }
 
