@@ -15,6 +15,7 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 public class FDSNEvent {
 
     public void run() {
+        Quakeml quakeml = null;
         try {
             FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -26,7 +27,7 @@ public class FDSNEvent {
                     .setMinMagnitude(1)
                     .setOrderBy(FDSNEventQueryParams.ORDER_TIME_ASC);
             FDSNEventQuerier querier = new FDSNEventQuerier(queryParams); 
-            Quakeml quakeml = querier.getQuakeML();
+            quakeml = querier.getQuakeML();
             if (!quakeml.checkSchemaVersion()) {
                 System.out.println("");
                 System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
@@ -42,6 +43,12 @@ public class FDSNEvent {
             }
         } catch(Exception e) {
             System.err.println("Oops: " + e.getMessage());
+        } finally {
+            try {
+                if (quakeml != null) {quakeml.close();}
+            } catch(Exception e) {
+                // oh well
+            }
         }
     }
 

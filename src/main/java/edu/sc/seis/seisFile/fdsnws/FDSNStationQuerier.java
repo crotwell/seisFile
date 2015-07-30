@@ -25,10 +25,14 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
     }
 
     public URL getSchemaURL() {
-        return FDSNStationXML.loadSchema();
+        return FDSNStationXML.loadSchemaWithAvailability();
     }
-    
+
     public void validateFDSNStationXML() throws SeisFileException, URISyntaxException {
+        validateFDSNStationXML(FDSNStationXML.loadSchema());
+    }
+
+    public void validateFDSNStationXML(URL schemaURL) throws SeisFileException, URISyntaxException {
         try {
             connect();
             if (!isError()) {
@@ -36,7 +40,7 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
                     XMLInputFactory factory = XMLInputFactory.newInstance();
                     XMLStreamReader reader = factory.createXMLStreamReader(getConnectionUri().toString(),
                                                                            getInputStream());
-                    validate(reader, FDSNStationXML.loadSchema());
+                    validate(reader, schemaURL);
                 }
             }
         } catch(SAXException e) {
@@ -65,6 +69,8 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
                                     + " XmlSchema (code): "+ StationXMLTagNames.CURRENT_SCHEMA_VERSION
                                     + " XmlSchema (doc): " + stationxml.getSchemaVersion());
                         }
+                        stationxml.setQuerier(this); // test GC closing stream
+                        stationxml.setResponse(response); // so can be closed when done
                         return stationxml;
                     } catch(XMLStreamException e) {
                         handleXmlStreamException(e);

@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
+import java.io.IOException;
 import java.net.URL;
 
 import javax.xml.stream.XMLEventReader;
@@ -7,6 +8,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import org.apache.http.client.methods.CloseableHttpResponse;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
@@ -57,13 +60,31 @@ public class Quakeml {
         return QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION.equals(schemaVersion);
     }
 
-    public void close() throws XMLStreamException {
-        if (reader != null) {
-            reader.close();
-        }
-        reader = null;
+    public void setResponse(CloseableHttpResponse response) {
+        this.response = response;
     }
 
+    public void close() {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (Exception e) {
+                // oh well
+            }
+        }
+        reader = null;
+        if (response != null) {
+            try {
+                response.close();
+            } catch(IOException e) {
+                // oh well
+            }
+        }
+        response = null;
+    }
+
+    CloseableHttpResponse response;
+    
     public static Quakeml createEmptyQuakeML() {
         try {
             URL url = Quakeml.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/empty.quakeml");

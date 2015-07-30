@@ -40,6 +40,7 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
                                     + "XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION
                                     + "XmlSchema (doc): " + quakeml.getSchemaVersion());
                         }
+                        quakeml.setResponse(response); // so can be closed when done
                         return quakeml;
                     } catch(XMLStreamException e) {
                         handleXmlStreamException(e);

@@ -35,6 +35,7 @@ public class ResponseUnitChecker {
     }
 
     public void runNetwork(String net) {
+        FDSNStationXML xml = null;
         try {
             FDSNStationQueryParams queryParams = new FDSNStationQueryParams();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -42,7 +43,7 @@ public class ResponseUnitChecker {
             queryParams.appendToNetwork(net)
                     .setLevel(FDSNStationQueryParams.LEVEL_RESPONSE);
             FDSNStationQuerier querier = new FDSNStationQuerier(queryParams);
-            FDSNStationXML xml = querier.getFDSNStationXML();
+            xml = querier.getFDSNStationXML();
             if (!xml.checkSchemaVersion()) {
                 System.out.println("");
                 System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
@@ -89,6 +90,10 @@ public class ResponseUnitChecker {
         } catch(Exception e) {
             System.err.println("Oops: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            if (xml != null) {
+                xml.closeReader();
+            }
         }
     }
 

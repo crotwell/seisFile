@@ -12,9 +12,12 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+
 import com.martiansoftware.jsap.JSAPException;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
 import edu.sc.seis.seisFile.fdsnws.StationClient;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
@@ -116,11 +119,22 @@ public class FDSNStationXML {
     }
     
     public void closeReader() {
-        try {
-            reader.close();
-        } catch(XMLStreamException e) {
-            logger.warn("problem closing underlying XMLEventReader.", e);
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch(XMLStreamException e) {
+                logger.warn("problem closing underlying XMLEventReader.", e);
+            }
         }
+        reader = null;
+        if (response != null) {
+            try {
+                response.close();
+            } catch(IOException e) {
+                getLogger().warn("trouble closing HttpResponse", e);
+            }
+        }
+        response = null;
     }
     
     
@@ -163,6 +177,15 @@ public class FDSNStationXML {
         return true;
     }
     
+    public void setResponse(CloseableHttpResponse response) {
+        this.response = response;
+    }
+    
+    /**
+     * Where input stream came from, so can be closed at end
+     */
+    CloseableHttpResponse response;
+
     XMLEventReader reader;
 
     String source;
@@ -198,8 +221,10 @@ public class FDSNStationXML {
     public static URL loadSchema() {
         return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station-1.0.xsd");
     }
-    
 
+    public static URL loadSchemaWithAvailability() {
+        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station+availability-1.0.xsd");
+    }
     
     public static FDSNStationXML loadStationXML(String filename) throws XMLStreamException, IOException, SeisFileException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -230,5 +255,15 @@ public class FDSNStationXML {
             }
         };
         sc.run();
+    }
+
+    /** this is mainly so that the resources associated with the xml reader
+     * are no garbage collected. Was having trouble with connections being
+     * closed in the middle of reading xml, I believe due to finalize() and
+     * adding this seemed to fixe it.
+     */
+    FDSNStationQuerier fdsnStationQuerier;
+    public void setQuerier(FDSNStationQuerier fdsnStationQuerier) {
+        this.fdsnStationQuerier = fdsnStationQuerier;
     }
 }

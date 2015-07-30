@@ -127,6 +127,7 @@ public class StationClient extends AbstractFDSNClient {
                         System.out.println("XmlSchema (doc): " + stationXml.getSchemaVersion());
                     }
                     handleResults(stationXml);
+                    stationXml.closeReader();
                 }
             }
         } catch(Exception e) {

@@ -8,12 +8,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 
 import javax.xml.XMLConstants;
@@ -26,6 +25,13 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.stax2.XMLEventReader2;
 import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.XMLStreamReader2;
@@ -37,25 +43,27 @@ import edu.sc.seis.seisFile.client.AbstractClient;
 
 public abstract class AbstractFDSNQuerier {
 
-    public AbstractFDSNQuerier() {
-    }
-    
+    public AbstractFDSNQuerier() {}
+
     public abstract URI formURI() throws URISyntaxException;
-    
+
     public abstract URL getSchemaURL();
-    
+
     public void connect() throws URISyntaxException, FDSNWSException {
         connectionUri = formURI();
         try {
-            urlConn = connectionUri.toURL().openConnection();
-            urlConn.setConnectTimeout(getConnectTimeout());
-            urlConn.setReadTimeout(getReadTimeout());
-            if (urlConn instanceof HttpURLConnection) {
-                ((HttpURLConnection)urlConn).setRequestProperty("User-Agent", getUserAgent());
-                ((HttpURLConnection)urlConn).setRequestProperty("Accept", "application/xml");
-                ((HttpURLConnection)urlConn).setRequestProperty("Accept-Encoding", "gzip, deflate");
-            }
-            processConnection(urlConn);
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectTimeout(getConnectTimeout())
+                    .setConnectionRequestTimeout(getConnectTimeout())
+                    .setSocketTimeout(getReadTimeout())
+                    .build();
+            CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+            HttpGet request = new HttpGet(connectionUri);
+            request.setHeader("User-Agent", getUserAgent());
+            request.setHeader("Accept", "application/xml");
+            request.setHeader("Accept-Encoding", "gzip, deflate");
+            response = httpClient.execute(request);
+            processConnection(response);
         } catch(IOException e) {
             throw new FDSNWSException("Problem with connection", e, connectionUri);
         } catch(RuntimeException e) {
@@ -63,24 +71,26 @@ public abstract class AbstractFDSNQuerier {
         }
     }
 
-    protected void processConnection(URLConnection urlConn) throws IOException {
-        if (urlConn instanceof HttpURLConnection) {
-            HttpURLConnection conn = (HttpURLConnection)urlConn;
-            responseCode = conn.getResponseCode();
-            if (responseCode == 204) {
-                empty = true;
-                return;
-            } else if (responseCode != 200) {
-                error = true;
-                errorMessage = "Code: "+responseCode+" "+extractErrorMessage(conn);
-                return;
-            }
+    protected void processConnection(CloseableHttpResponse response) throws IOException {
+        responseCode = response.getStatusLine().getStatusCode();
+        if (responseCode == 204) {
+            empty = true;
+            response.close();
+            response = null;
+            return;
+        } else if (responseCode != 200) {
+            error = true;
+            errorMessage = "Code: " + responseCode + " " + extractErrorMessage(response);
+            response.close();
+            response = null;
+            return;
         }
+        HttpEntity entity = response.getEntity();
         // likely not an error in the http layer, so content is returned
-        if ("gzip".equals(urlConn.getContentEncoding())) {
-            inputStream = new GZIPInputStream(new BufferedInputStream(urlConn.getInputStream()));
+        if ("gzip".equals(entity.getContentEncoding())) {
+            inputStream = new GZIPInputStream(new BufferedInputStream(entity.getContent(), 64*1024));
         } else {
-            inputStream = new BufferedInputStream(urlConn.getInputStream());
+            inputStream = new BufferedInputStream(entity.getContent(), 64*1024);
         }
     }
 
@@ -93,11 +103,12 @@ public abstract class AbstractFDSNQuerier {
         validator.validate(new StAXSource(reader), null);
     }
 
-    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException, FDSNWSException {
+    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, URISyntaxException,
+            FDSNWSException {
         connect();
         outputRaw(getInputStream(), out);
     }
-    
+
     public void outputRaw(InputStream in, OutputStream out) throws IOException {
         BufferedInputStream bufIn = new BufferedInputStream(in);
         BufferedOutputStream bufOut = new BufferedOutputStream(out);
@@ -110,13 +121,13 @@ public abstract class AbstractFDSNQuerier {
         bufIn.close(); // close as we hit EOF
         bufOut.flush();// only flush in case outside wants to write more
     }
-    
+
     public String getRawXML() throws IOException {
         StringWriter out = new StringWriter();
         BufferedReader in = new BufferedReader(new InputStreamReader(getInputStream()));
         char[] buf = new char[1024];
         int numRead = in.read(buf);
-        while(numRead != -1) {
+        while (numRead != -1) {
             out.write(buf, 0, numRead);
         }
         in.close();
@@ -144,9 +155,11 @@ public abstract class AbstractFDSNQuerier {
         return inputStream;
     }
 
-    /** returns the URI that was used to open the connection.
-     * This may be null if connect() has not yet been called. formUri()
-     * can be used to get the URI without connecting.
+    /**
+     * returns the URI that was used to open the connection. This may be null if
+     * connect() has not yet been called. formUri() can be used to get the URI
+     * without connecting.
+     * 
      * @return
      */
     public URI getConnectionUri() {
@@ -154,49 +167,61 @@ public abstract class AbstractFDSNQuerier {
     }
 
     public boolean isConnectionInitiated() {
-        return urlConn != null;
+        return response != null;
     }
-    
+
     public void checkConnectionInitiated() {
-        if ( ! isConnectionInitiated()) {
+        if (!isConnectionInitiated()) {
             throw new RuntimeException("Not connected yet");
         }
     }
-
+    
     public XMLEventReader getReader() throws XMLStreamException, URISyntaxException {
         if (reader == null) {
             XMLInputFactory2 factory = (XMLInputFactory2)XMLInputFactory.newInstance();
-            XMLStreamReader2 sr = (XMLStreamReader2)factory.createXMLStreamReader(getConnectionUri().toString(), getInputStream());
+            XMLStreamReader2 sr = (XMLStreamReader2)factory.createXMLStreamReader(getConnectionUri().toString(),
+                                                                                  getInputStream());
             if (isValidate()) {
                 try {
-                    XMLValidationSchemaFactory sfactory = 
-                            XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
-                    XMLValidationSchema schema = null;
-                    schema = sfactory.createSchema(getSchemaURL());
+                    XMLValidationSchema schema = schemaCache.get(getSchemaURL());
+                    if (schema == null) {
+                        if (sfactory == null) {
+                            sfactory = XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
+                        }                   
+                        schema = sfactory.createSchema(getSchemaURL());
+                        schemaCache.put(getSchemaURL(), schema);
+                    }
                     sr.validateAgainst(schema);
                 } catch(XMLStreamException e) {
-                    throw new RuntimeException("should not happen, can't load schema in jar: "+getSchemaURL(), e);
+                    throw new RuntimeException("should not happen, can't load schema in jar: " + getSchemaURL(), e);
                 }
             }
-            reader  =  (XMLEventReader2)factory.createXMLEventReader(sr);
+            reader = (XMLEventReader2)factory.createXMLEventReader(sr);
         }
         return reader;
     }
 
-    public static String extractErrorMessage(HttpURLConnection conn) {
+    public static String extractErrorMessage(HttpResponse response) {
         String out = "";
         BufferedReader errReader = null;
         try {
-            InputStream inError = conn.getErrorStream();
+            HttpEntity entity = response.getEntity();
+            InputStream inError = entity.getContent();
             if (inError == null) {
                 out = "<Empty Error Message From Server>";
             } else {
-                if ("gzip".equals(conn.getContentEncoding())) {
+                if ("gzip".equals(entity.getContentEncoding())) {
                     inError = new GZIPInputStream(inError);
                 }
+                int maxLines = 1000;
+                int lineNum = 0;
                 errReader = new BufferedReader(new InputStreamReader(inError));
-                for (String line; (line = errReader.readLine()) != null;) {
+                for (String line; (line = errReader.readLine()) != null && lineNum < maxLines;) {
                     out += line + "\n";
+                    lineNum++;
+                }
+                if (lineNum == maxLines) {
+                    out += "...output truncated at " + maxLines + " lines.";
                 }
             }
         } catch(IOException e) {
@@ -205,7 +230,6 @@ public abstract class AbstractFDSNQuerier {
             if (errReader != null)
                 try {
                     errReader.close();
-                    conn.disconnect();
                 } catch(IOException e) {
                     // oh well
                 }
@@ -220,7 +244,7 @@ public abstract class AbstractFDSNQuerier {
     public String getUserAgent() {
         return userAgent;
     }
-    
+
     public int getResponseCode() {
         return responseCode;
     }
@@ -242,16 +266,18 @@ public abstract class AbstractFDSNQuerier {
     public int getReadTimeout() {
         return readTimeout;
     }
-    
+
     public static Throwable extractRootCause(Throwable t) {
         if (t.getCause() == null) {
             return t;
         }
         return extractRootCause(t.getCause());
     }
-    
-    /** trys to grab any text after the error point that is already buffered to help see xml errors. 
-     * Wraps the XMLStreamException in a {@link FDSNWSException} and rethrows it.
+
+    /**
+     * trys to grab any text after the error point that is already buffered to
+     * help see xml errors. Wraps the XMLStreamException in a
+     * {@link FDSNWSException} and rethrows it.
      * */
     void handleXmlStreamException(XMLStreamException e) throws FDSNWSException {
         String bufferedText = "";
@@ -262,26 +288,47 @@ public abstract class AbstractFDSNQuerier {
                 int numRead = getInputStream().read(b);
                 bufferedText = new String(b, 0, numRead);
             }
-        } catch (IOException ee) {}
-        throw new FDSNWSException("Unable to load xml, text past error='"+bufferedText+"'", e, getConnectionUri());
+        } catch(IOException ee) {}
+        throw new FDSNWSException("Unable to load xml, text past error='" + bufferedText + "'", e, getConnectionUri());
     }
 
-    
-    
     public boolean isValidate() {
         return validate;
     }
 
-    
     public void setValidate(boolean validate) {
         this.validate = validate;
     }
 
+    public void finalize() {
+        close();
+    }
+
+    public void close() {
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch(IOException e) {
+                logger.warn("can't close inputstream", e);
+            }
+        }
+        if (response != null) {
+            try {
+                response.close();
+            } catch(IOException e) {
+                logger.warn("can't close response", e);
+            }
+        }
+    }
+    
+    static XMLValidationSchemaFactory sfactory;
+    
+    static HashMap<URL, XMLValidationSchema> schemaCache = new HashMap<URL, XMLValidationSchema>();
 
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
 
     int responseCode;
-    
+
     boolean error;
 
     String errorMessage;
@@ -291,21 +338,21 @@ public abstract class AbstractFDSNQuerier {
     XMLEventReader reader;
 
     InputStream inputStream;
-    
-    URLConnection urlConn;
 
+    CloseableHttpResponse response;
+
+    // URLConnection urlConn;
     protected URI connectionUri;
 
     protected int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
 
     protected int readTimeout = DEFAULT_READ_TIMEOUT;
-    
+
     protected boolean validate = false;
 
     public static int DEFAULT_CONNECT_TIMEOUT = 10 * 1000;
 
     public static int DEFAULT_READ_TIMEOUT = 60 * 1000;
-    
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AbstractFDSNQuerier.class);
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AbstractFDSNQuerier.class);
 }

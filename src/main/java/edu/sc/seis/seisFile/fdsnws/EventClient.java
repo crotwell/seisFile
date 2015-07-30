@@ -90,6 +90,7 @@ public class EventClient extends AbstractFDSNClient {
             return;
         }
         FDSNEventQueryParams queryParams;
+        Quakeml quakeml =  null;
         try {
             queryParams = configureQuery(result);
             if (getResult().getBoolean(PRINTURL)) {
@@ -103,7 +104,7 @@ public class EventClient extends AbstractFDSNClient {
                 } else if (getResult().getBoolean(RAW)) {
                     querier.outputRaw(System.out);
                 } else {
-                    Quakeml quakeml = querier.getQuakeML();
+                    quakeml = querier.getQuakeML();
                     if (!quakeml.checkSchemaVersion()) {
                         System.out.println("");
                         System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
@@ -116,6 +117,10 @@ public class EventClient extends AbstractFDSNClient {
         } catch(Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            if (quakeml != null) {
+                quakeml.close();
+            }
         }
     }
 

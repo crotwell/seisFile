@@ -16,6 +16,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+
 import edu.sc.seis.seisFile.ChannelTimeWindow;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.mseed.DataRecordIterator;
@@ -30,7 +38,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     public URL getSchemaURL() {
         return null;
     }
-    
+
     /**
      * This uses POST instead of GET, allowing many channel time windows.
      * 
@@ -40,7 +48,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         this.queryParams = queryParams;
         this.request = request;
     }
-    
+
     public void enableRestrictedData(String username, String password) {
         this.username = username;
         this.password = password;
@@ -67,9 +75,11 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                     return new DataRecordIterator(new DataInputStream(new ByteArrayInputStream(new byte[0])));
                 }
             } else {
-                logger.info("Error: "+getErrorMessage());
+                logger.info("Error: " + getErrorMessage());
                 if (responseCode == 401 || responseCode == 403) {
-                    throw new FDSNWSAuthorizationException("Not Authorized for Restricted Data: " + getErrorMessage(), getConnectionUri(), responseCode);
+                    throw new FDSNWSAuthorizationException("Not Authorized for Restricted Data: " + getErrorMessage(),
+                                                           getConnectionUri(),
+                                                           responseCode);
                 }
                 throw new FDSNWSException("Error: " + getErrorMessage(), getConnectionUri(), responseCode);
             }
@@ -92,45 +102,42 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
      */
     void connectForPost() throws URISyntaxException, MalformedURLException, IOException {
         String postQuery = queryParams.formPostString(request);
-        connectionUri = new URI(queryParams.getScheme(), // don't form as all parameters in POST
+        connectionUri = new URI(queryParams.getScheme(), // don't form as all
+                                                         // parameters in POST
                                 queryParams.getUserInfo(),
                                 queryParams.getHost(),
                                 queryParams.getPort(),
                                 queryParams.getPath(),
                                 "",
                                 queryParams.getFragment());
-        logger.info("Post Query: "+connectionUri);
+        logger.info("Post Query: " + connectionUri);
         logger.info(postQuery);
-        HttpURLConnection conn = (HttpURLConnection)connectionUri.toURL().openConnection();
-        urlConn = conn; // for isConnected check
-        conn.setRequestMethod("POST");
-        conn.setConnectTimeout(getConnectTimeout());
-        conn.setReadTimeout(getReadTimeout());
-        conn.setRequestProperty("User-Agent", getUserAgent());
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        byte[] queryBytes = postQuery.getBytes();
-        conn.setRequestProperty("Content-Length", "" + Integer.toString(queryBytes.length));
-        conn.setUseCaches(false);
-        conn.setAllowUserInteraction(false);
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        conn.connect();
-        OutputStream outputStream = conn.getOutputStream();
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(outputStream));
-        out.write(postQuery);
-        out.close();
-        processConnection(conn);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(getConnectTimeout())
+                .setConnectionRequestTimeout(getConnectTimeout())
+                .setSocketTimeout(getReadTimeout())
+                .build();
+        CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+        HttpPost request = new HttpPost(connectionUri);
+        request.setHeader("User-Agent", getUserAgent());
+        request.setHeader("Accept", "application/xml");
+        request.setHeader("Accept-Encoding", "gzip, deflate");
+        HttpEntity entity = new StringEntity(postQuery);
+        request.setEntity(entity);
+        response = httpClient.execute(request);
+        processConnection(response);
     }
 
     String username;
-    
+
     String password;
-    
+
     List<ChannelTimeWindow> request;
 
     FDSNDataSelectQueryParams queryParams;
 
-    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, FDSNWSException, URISyntaxException {
+    public void outputRaw(OutputStream out) throws MalformedURLException, IOException, FDSNWSException,
+            URISyntaxException {
         if (request == null) {
             // normal GET request, so use super
             connect();
@@ -145,10 +152,9 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     public URI formURI() throws URISyntaxException {
         return queryParams.formURI();
     }
-    
+
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FDSNDataSelectQuerier.class);
 }
-
 
 class MyAuthenticator extends Authenticator {
 
