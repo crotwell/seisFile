@@ -118,6 +118,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                 .setSocketTimeout(getReadTimeout())
                 .build();
         CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+        TimeQueryLog.add(connectionUri);
         HttpPost request = new HttpPost(connectionUri);
         request.setHeader("User-Agent", getUserAgent());
         request.setHeader("Accept", "application/vnd.fdsn.mseed");

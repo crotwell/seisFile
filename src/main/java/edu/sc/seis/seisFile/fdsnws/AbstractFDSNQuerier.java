@@ -62,6 +62,7 @@ public abstract class AbstractFDSNQuerier {
             request.setHeader("User-Agent", getUserAgent());
             request.setHeader("Accept", "application/xml");
             request.setHeader("Accept-Encoding", "gzip, deflate");
+            TimeQueryLog.add(connectionUri);
             response = httpClient.execute(request);
             processConnection(response);
         } catch(IOException e) {
