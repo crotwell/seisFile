@@ -120,7 +120,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
         HttpPost request = new HttpPost(connectionUri);
         request.setHeader("User-Agent", getUserAgent());
-        request.setHeader("Accept", "application/xml");
+        request.setHeader("Accept", "application/vnd.fdsn.mseed");
         request.setHeader("Accept-Encoding", "gzip, deflate");
         HttpEntity entity = new StringEntity(postQuery);
         request.setEntity(entity);
