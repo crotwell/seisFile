@@ -42,7 +42,6 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     /**
      * This uses POST instead of GET, allowing many channel time windows.
      * 
-     * @throws SeisFileException
      */
     public FDSNDataSelectQuerier(FDSNDataSelectQueryParams queryParams, List<ChannelTimeWindow> request) {
         this.queryParams = queryParams;

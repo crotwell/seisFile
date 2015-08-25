@@ -63,10 +63,12 @@ public class SacTimeSeries {
 
     /** create a new SAC timeseries from the given header and data. The header values
      * related to the data are set correctly:
-     *  npts=data.length<br/>
-     *  e=b+(npts-1)*delta<br/>
-     *  iftype=ITIME
-     *  leven=TRUE<br/>
+     * <ul>
+     *  <li>npts=data.length</li>
+     *  <li>e=b+(npts-1)*delta</li>
+     *  <li>iftype=ITIME</li>
+     *  <li>leven=TRUE</li>
+     * </ul>
      *  Setting of all other headers is the responsibility of the caller.
      * @param header
      * @param data

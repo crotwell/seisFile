@@ -110,7 +110,6 @@ public class StaxUtil {
      * @param endElementName end element name to not go past, ie the parent element
      * @return true if there is another element, false otherwise
      * @throws XMLStreamException
-     * @throws SeisFileException 
      */
     public static boolean hasNext(XMLEventReader reader, String elementName, String endElementName) throws XMLStreamException {
         try {
