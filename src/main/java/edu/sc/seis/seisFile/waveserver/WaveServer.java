@@ -97,14 +97,7 @@ public class WaveServer extends StringMSeedQueryReader {
         PrintWriter socketOut = getOut();
         socketOut.println(cmd);
         socketOut.flush();
-        getIn().mark(64);
-        int nRead = 0;
         DataInputStream dataIn = getIn();
-        while (dataIn.available() > 0 && nRead < 64) {
-            System.out.print((char)dataIn.read());
-            nRead++;
-        }
-        in.reset();
         String all = dataIn.readLine(); // newline ends ascii part of reply
         if (isVerbose()) {
             System.out.println("response: " + all);
