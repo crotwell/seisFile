@@ -192,12 +192,24 @@ public class EventClient extends AbstractFDSNClient {
         EventIterator eIt = quakeml.getEventParameters().getEvents();
         while (eIt.hasNext()) {
             Event e = eIt.next();
-            Origin o = e.getOriginList().get(0);
-            Magnitude m = e.getMagnitudeList().get(0);
-            System.out.println(o.getLatitude() + "/" + o.getLongitude() + " " + m.getMag().getValue() + " "
-                    + m.getType() + " " + o.getTime().getValue());
+            String oString = NO_ORIGIN;
+            String timeString = "";
+            if (e.getOriginList().size() > 0) {
+                Origin o = e.getOriginList().get(0);
+                oString = o.getLatitude() + "/" + o.getLongitude() + " ";
+                timeString = o.getTime().getValue();
+            }
+            String magString = NO_MAGNITUDE;
+            if (e.getMagnitudeList().size() > 0) {
+                Magnitude m = e.getMagnitudeList().get(0);
+                magString = m.getMag().getValue() + " " + m.getType();
+            }
+            System.out.println(oString + " " + magString + " " + timeString);
         }
     }
+
+    public static final String NO_ORIGIN = "no origin";
+    public static final String NO_MAGNITUDE = "no magnitude";
 
     /**
      * @param args
