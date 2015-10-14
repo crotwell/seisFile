@@ -56,6 +56,7 @@ public abstract class AbstractFDSNQuerier {
                     .setConnectTimeout(getConnectTimeout())
                     .setConnectionRequestTimeout(getConnectTimeout())
                     .setSocketTimeout(getReadTimeout())
+                    .setRedirectsEnabled(true)
                     .build();
             CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
             HttpGet request = new HttpGet(connectionUri);
