@@ -17,7 +17,7 @@ public class AbstractFDSNClient extends AbstractClient {
         super.addParams();
         add(new Switch(PRINTURL, JSAP.NO_SHORTFLAG, PRINTURL, "Construct and print URL and exit"));
         add(new Switch(RAW, JSAP.NO_SHORTFLAG, RAW, "Output the raw data to stdout"));
-        add(new FlaggedOption(BASEURL, JSAP.STRING_PARSER, null, false, JSAP.NO_SHORTFLAG, BASEURL, "Base URL for queries, ie everything before the '?'"));
+        add(new FlaggedOption(BASEURL, JSAP.STRING_PARSER, null, false, JSAP.NO_SHORTFLAG, BASEURL, "Base URL for queries, ie everything before the '/<service>/<version>/<query>?'"));
         add(new FlaggedOption(HOST, JSAP.STRING_PARSER, null, false, JSAP.NO_SHORTFLAG, HOST, "Host for queries, such as service.iris.edu or www.ncedc.org."));
     }
 

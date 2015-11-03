@@ -109,6 +109,7 @@ public abstract class AbstractQueryParams {
     void internalSetBaseURI(URI baseURI) {
         setScheme(baseURI.getScheme());
         setPort(baseURI.getPort());
+        setFdsnwsPath(baseURI.getPath());
         this.host = baseURI.getHost();
     }
 
