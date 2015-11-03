@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.iris.dmc.seedcodec.CodecException;
+import edu.iris.dmc.seedcodec.DecompressedData;
+import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
 import edu.sc.seis.seisFile.BuildVersion;
 
 public class ListHeader {
@@ -83,13 +86,22 @@ public class ListHeader {
         if (filenameList.size() == 0) {
             return;
         }
-        
         for (String filename : filenameList) {
             long beforeNanos = System.nanoTime();
-            processFile(filename, network, station, location, channel, maxRecords, defaultRecordSize, verbose, dumpData, dos, out);
+            processFile(filename,
+                        network,
+                        station,
+                        location,
+                        channel,
+                        maxRecords,
+                        defaultRecordSize,
+                        verbose,
+                        dumpData,
+                        dos,
+                        out);
             long afterNanos = System.nanoTime();
             if (timed) {
-               out.println("Time: "+(afterNanos-beforeNanos)/1000000000.0+" sec for "+filename);
+                out.println("Time: " + (afterNanos - beforeNanos) / 1000000000.0 + " sec for " + filename);
             }
         }
         if (dos != null) {
@@ -97,7 +109,7 @@ public class ListHeader {
         }
         out.println("Finished: " + new Date());
     }
-    
+
     public static void processFile(String filename,
                                    String network,
                                    String station,
@@ -109,25 +121,31 @@ public class ListHeader {
                                    boolean dumpData,
                                    DataOutputStream dos,
                                    PrintWriter out) throws IOException, SeedFormatException {
-        File f = new File(filename);
         InputStream inStream;
-        if (f.exists() && f.isFile()) {
-            inStream = new FileInputStream(filename);
+        if (filename.equals("stdin")) {
+            inStream = System.in;
         } else {
-            // maybe a url?
-            try {
-                URL url = new URL(filename);
-                inStream = url.openStream();
-            } catch (MalformedURLException e) {
-                out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile=" + f.isFile()+" "+e.getMessage());
-                return;
-            } catch (FileNotFoundException e) {
-                out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile=" + f.isFile()+" "+e.getMessage());
-                return;
+            File f = new File(filename);
+            if (f.exists() && f.isFile()) {
+                inStream = new FileInputStream(filename);
+            } else {
+                // maybe a url?
+                try {
+                    URL url = new URL(filename);
+                    inStream = url.openStream();
+                } catch(MalformedURLException e) {
+                    out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile="
+                            + f.isFile() + " " + e.getMessage());
+                    return;
+                } catch(FileNotFoundException e) {
+                    out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile="
+                            + f.isFile() + " " + e.getMessage());
+                    return;
+                }
             }
         }
-        
-        // if you wish to customize the blockette creation, for example to add new types of Blockettes, 
+        // if you wish to customize the blockette creation, for example to add
+        // new types of Blockettes,
         // create an object that implements BlocketteFactory and then
         // SeedRecord.setBlocketteFactory(myBlocketteFactory);
         // see DefaultBlocketteFactory for an example
@@ -153,6 +171,22 @@ public class ListHeader {
                         }
                         if (dumpData) {
                             dr.writeData(out);
+                            try {
+                                DecompressedData dd = dr.decompress();
+                                int[] intData = dd.getAsInt();
+                                for (int j = 0; j < intData.length; j++) {
+                                    System.out.print(intData[j] + " ");
+                                    if (j % 10 == 9) {
+                                        System.out.println();
+                                    }
+                                }
+                            } catch(UnsupportedCompressionType e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch(CodecException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
                     }
                 } else {
@@ -170,6 +204,4 @@ public class ListHeader {
             }
         }
     }
-
-
 }
