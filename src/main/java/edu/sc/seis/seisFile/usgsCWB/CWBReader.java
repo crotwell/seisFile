@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
@@ -51,7 +52,7 @@ public class CWBReader extends StringMSeedQueryReader {
     public String createQuery(String network, String station, String location, String channel, Date begin, Date end)  {
         String query = "'-s' '"+createQuery(network, station, location, channel)+"' ";
         SimpleDateFormat longFormat = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");
-        longFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        longFormat.setTimeZone(QueryParams.UTC);
         query += "'-b' '" + longFormat.format(begin)+"' ";
         query += "'-d' '" + (int)Math.ceil((end.getTime()-begin.getTime())/1000f)+"' ";
         query += "'-t' 'ms'";

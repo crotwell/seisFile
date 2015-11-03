@@ -85,7 +85,7 @@ public class QueryParams {
         if (args.length == 0) {
             printHelp = true;
         }
-        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+        GregorianCalendar cal = new GregorianCalendar(UTC);
         cal.add(Calendar.SECOND, -1 * Math.round(duration));
         cal.add(Calendar.MILLISECOND, -1000 * Math.round(duration - Math.round(duration)));
         if (begin == null) {
@@ -252,7 +252,7 @@ public class QueryParams {
             // if (dateString.length() == 10)
             dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         }
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        dateFormat.setTimeZone(UTC);
         try {
             return dateFormat.parse(dateString);
         } catch(ParseException e) {
@@ -276,5 +276,6 @@ public class QueryParams {
         return unknownArgs;
     }
     
+    public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
     
 }

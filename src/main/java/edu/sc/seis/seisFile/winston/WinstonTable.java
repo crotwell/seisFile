@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.QueryParams;
+
 public class WinstonTable {
     
     protected WinstonTable(WinstonSCNL database, String tableName) throws ParseException {
@@ -75,7 +77,7 @@ public class WinstonTable {
     protected int[] parseDate(String ymd) throws ParseException {
         synchronized(ymdFormat) {
          Date d = ymdFormat.parse(ymd);   
-         Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("GMT"));
+         Calendar cal = GregorianCalendar.getInstance(QueryParams.UTC);
          cal.setTime(d);
          return new int[] {cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH)};
         }

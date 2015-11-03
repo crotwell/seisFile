@@ -13,6 +13,8 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
+import edu.sc.seis.seisFile.QueryParams;
+
 
 
 public class ISOTimeParser extends StringParser {
@@ -31,13 +33,13 @@ public class ISOTimeParser extends StringParser {
     
     public static String format(Date d) {
         DateFormat passcalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        passcalFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        passcalFormat.setTimeZone(QueryParams.UTC);
         return passcalFormat.format(d);
     }
     
     public static String formatForParsing(Date d) {
         DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        isoFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        isoFormat.setTimeZone(QueryParams.UTC);
         return isoFormat.format(d);
     }
     
@@ -75,7 +77,7 @@ public class ISOTimeParser extends StringParser {
                                           int minute,
                                           int second,
                                           boolean ceiling) {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(QueryParams.UTC);
         cal.set(Calendar.YEAR, year);
         fillInField(Calendar.MONTH, month - 1, ceiling, cal);
         fillInField(Calendar.DAY_OF_MONTH, day, ceiling, cal);
@@ -144,7 +146,7 @@ public class ISOTimeParser extends StringParser {
     private boolean ceiling;
 
     public Date yesterday() {
-        Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar cal = GregorianCalendar.getInstance(QueryParams.UTC);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);

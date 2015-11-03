@@ -20,6 +20,7 @@ import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
+import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.syncFile.SyncFile;
@@ -248,7 +249,7 @@ public class WinstonUtil {
             DataFormatException {
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
         Calendar cal = new GregorianCalendar();
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTimeZone(QueryParams.UTC);
         cal.setTime(startTime);
         int startYear = cal.get(Calendar.YEAR);
         int startMonth = cal.get(Calendar.MONTH)+1; // why are Calendar months zero based, but days are one based???
@@ -297,7 +298,7 @@ public class WinstonUtil {
                 Date stDate = j2KSecondsToDate(rs.getDouble("st"));
                 Date etDate = j2KSecondsToDate(rs.getDouble("et"));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                sdf.setTimeZone(QueryParams.UTC);
                 System.out.println("db row: "+sdf.format(stDate)+"  ("+dateToJ2kSeconds(stDate)+")  "+sdf.format(etDate)+"  ("+dateToJ2kSeconds(etDate)+")");
                 if (Math.abs(stDate.getTime()-tb.getStartDate().getTime()) > 2) {
                     System.out.println("WARNING, st differs from traceBuf start by more than 2 milliseconds: "+sdf.format(stDate)+"  "+sdf.format(tb.getStartDate()));

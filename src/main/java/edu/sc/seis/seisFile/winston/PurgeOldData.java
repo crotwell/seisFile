@@ -19,6 +19,7 @@ import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.stringparsers.FileStringParser;
 
+import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.client.AbstractClient;
 import edu.sc.seis.seisFile.syncFile.SyncFile;
@@ -77,9 +78,9 @@ public class PurgeOldData extends AbstractClient {
                                                          first.getChan(),
                                                          first.getNet(),
                                                          first.getLoc());
-            Calendar startCal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+            Calendar startCal = Calendar.getInstance(QueryParams.UTC);
             startCal.setTime(entry.getValue().getEarliest());
-            Calendar endCal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+            Calendar endCal = Calendar.getInstance(QueryParams.UTC);
             endCal.setTime(entry.getValue().getLatest());
             System.out.println(scnl+" Calc dates "+startCal.getTime()+"  "+endCal.getTime());
             SyncFile winstonSync = winston.calculateSyncBetweenDates(scnl,

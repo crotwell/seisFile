@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.QueryParams;
+
 public abstract class AbstractQueryParams {
 
     public AbstractQueryParams(String host) {
@@ -63,7 +65,7 @@ public abstract class AbstractQueryParams {
 
     public static SimpleDateFormat createDateFormat() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(QueryParams.UTC);
         return sdf;
     }
 

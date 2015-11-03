@@ -16,6 +16,7 @@ import java.util.zip.Deflater;
 import org.junit.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
+import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -98,7 +99,7 @@ public class TraceBuf2Test {
     public void testSteveSplitBeforeMicroOverlap() throws ParseException {
         int numSamples = 4016;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(QueryParams.UTC);
         Date start = sdf.parse("2012-07-23 18:21:53.840");
         TraceBuf2 tb = createTraceBuf(numSamples, start);
         System.out.println("Tracebuf: "+tb);
@@ -110,7 +111,7 @@ public class TraceBuf2Test {
     public void testSteveSplit() throws ParseException {
         int numSamples = 4875;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(QueryParams.UTC);
         Date start = sdf.parse("2012-07-23 18:22:33.990");
         TraceBuf2 tb = createTraceBuf(numSamples, start);
         List<TraceBuf2> splitList = tb.split(TraceBuf2.MAX_TRACEBUF_SIZE);

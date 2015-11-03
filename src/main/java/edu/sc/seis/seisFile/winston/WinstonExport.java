@@ -52,7 +52,7 @@ public class WinstonExport {
         logger.info("Remote sync file (" + syncfile + ") " + remoteSFMap.keySet().size() + " channels.");
         EarthwormExport exporter = setUpExport();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        sdf.setTimeZone(QueryParams.UTC);
         SyncFileWriter sentSync = new SyncFileWriter("winston sent to dmc", syncfile.replace(".sync", "")+"_sent.sync");
         for (WinstonSCNL scnl : remoteSFMap.keySet()) {
             SyncFile localSF = pullLocalSyncFile(scnl,
@@ -176,7 +176,7 @@ public class WinstonExport {
 
     SyncFile pullLocalSyncFile(WinstonSCNL scnl, Date begin, Date end, WinstonUtil winstonUtil) throws SQLException {
         Calendar cal = new GregorianCalendar();
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTimeZone(QueryParams.UTC);
         cal.setTime(begin);
         int startYear = cal.get(Calendar.YEAR);
         int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar

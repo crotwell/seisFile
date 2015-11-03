@@ -17,6 +17,7 @@ import edu.iris.dmc.seedcodec.Steim1;
 import edu.iris.dmc.seedcodec.Steim2;
 import edu.iris.dmc.seedcodec.SteimException;
 import edu.iris.dmc.seedcodec.SteimFrameBlock;
+import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.Btime;
 import edu.sc.seis.seisFile.mseed.DataHeader;
@@ -816,7 +817,7 @@ public class TraceBuf2 {
     
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        sdf.setTimeZone(QueryParams.UTC);
         return getPin()+" "+formatNSLCCodes()+" "+
                 sdf.format(getStartDate())+"("+getStartTime()+") to "+
                 sdf.format(getEndDate())+"("+getEndTime()+") sr="+getSampleRate()+"  npts="+numSamples+" datetype="+getDataType()+" ver="+getVersion();

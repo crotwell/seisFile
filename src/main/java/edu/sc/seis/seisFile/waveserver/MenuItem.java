@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 
 public class MenuItem {
@@ -38,7 +39,7 @@ public class MenuItem {
 
     public static String formatDate(Date d) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        sdf.setTimeZone(QueryParams.UTC);
         return sdf.format(d);
     }
 

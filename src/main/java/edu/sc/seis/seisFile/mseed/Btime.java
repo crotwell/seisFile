@@ -111,7 +111,7 @@ public class Btime {
     }
 
     public Calendar convertToCalendar() {
-        Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar cal = GregorianCalendar.getInstance(UTC);
         cal.set(Calendar.MILLISECOND, getTenthMilli()/10); // loose precision here
         cal.set(Calendar.SECOND, getSec());
         cal.set(Calendar.MINUTE, getMin());

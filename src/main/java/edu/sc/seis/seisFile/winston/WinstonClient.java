@@ -283,7 +283,7 @@ public class WinstonClient {
     void syncChannel(WinstonUtil winston, WinstonSCNL channel, SyncFileWriter syncOut) throws SeisFileException,
             SQLException, DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         Calendar cal = new GregorianCalendar();
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTimeZone(QueryParams.UTC);
         cal.setTime(params.getBegin());
         int startYear = cal.get(Calendar.YEAR);
         int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
@@ -305,7 +305,7 @@ public class WinstonClient {
             throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException,
             URISyntaxException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        sdf.setTimeZone(QueryParams.UTC);
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Date lastSentEnd = end;
         double sampRate = 1;
@@ -363,7 +363,7 @@ public class WinstonClient {
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(QueryParams.UTC);
         for (TraceBuf2 tb : tbList) {
             ZipEntry tbzip = new ZipEntry(dir+"/"+tb.getNetwork().trim()+"."
                                           +tb.getStation().trim()+"."
