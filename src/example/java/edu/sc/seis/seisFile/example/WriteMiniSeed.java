@@ -40,7 +40,6 @@ public class WriteMiniSeed {
         header.setChannelIdentifier("BHZ");
         header.setNetworkCode("XX");
         header.setLocationIdentifier("00");
-        header.setNumSamples((short)data.length);
         header.setSampleRate(.05f);
         Btime btime = new Btime(new Date());
         header.setStartBtime(btime);
@@ -48,19 +47,25 @@ public class WriteMiniSeed {
         DataRecord record = new DataRecord(header);
         Blockette1000 blockette1000 = new Blockette1000();
         blockette1000.setEncodingFormat((byte)B1000Types.STEIM2);
-        blockette1000.setWordOrder((byte)0);
+        blockette1000.setWordOrder((byte)1);
         blockette1000.setDataRecordLength(seed4096);
         record.addBlockette(blockette1000);
         SteimFrameBlock steimData = null;
         
         steimData = Steim2.encode(data, 63);
+        if (steimData.getNumSamples() < data.length) {
+            // real usage would loop, creating multiple data records, 
+            // but to keep this example simple we only create the first one
+            System.err.println("Can't fit all data into one record, "+steimData.getNumSamples()+" out of "+data.length);
+        }
         
         record.setData(steimData.getEncodedData());
+        header.setNumSamples((short)steimData.getNumSamples());
         
         DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFilename)));
         record.write(out);
         out.close();
-        System.out.println("Wrote miniseed to "+outFilename+", "+(data.length*4)+" compressed to "+steimData.numNonEmptyFrames()*64
+        System.out.println("Wrote miniseed to "+outFilename+", "+(steimData.getNumSamples()*4)+" compressed to "+steimData.numNonEmptyFrames()*64
                            +" record size="+record.getRecordSize());
     }
     
