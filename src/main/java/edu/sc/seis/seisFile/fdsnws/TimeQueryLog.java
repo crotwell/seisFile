@@ -31,11 +31,11 @@ public class TimeQueryLog {
                 }
             }
             byHost.add(current);
-        }
-        if (numLastSec >= 10) {
-            logger.warn("More than 10 queries in last second for "+uri.getHost()+"!!! " + numLastSec);
-            for (QueryTime timeQuery : byHost) {
-                logger.warn("  " + timeQuery.getWhen() + "  " + timeQuery.getURI());
+            if (numLastSec >= 10) {
+                logger.warn("More than 10 queries in last second for "+uri.getHost()+"!!! " + numLastSec);
+                for (QueryTime timeQuery : byHost) {
+                    logger.warn("  " + timeQuery.getWhen() + "  " + timeQuery.getURI());
+                }
             }
         }
     }
