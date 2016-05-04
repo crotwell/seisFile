@@ -16,6 +16,10 @@ import java.io.PrintWriter;
 public class Blockette1000 extends  DataBlockette implements RecordLengthBlockette {
 
     public static final int B1000_SIZE = 8;
+
+    public static final byte SEED_BIG_ENDIAN = 1;
+    
+    public static final byte SEED_LITTLE_ENDIAN = 0;
     
     public Blockette1000() {
         super(B1000_SIZE);
