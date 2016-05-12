@@ -150,11 +150,11 @@ public class DataHeader {
     protected void read(byte[] buf, int offset) {
         // flags needed early
         flags = buf[offset+FLAGS_OFFSET];
+        boolean byteSwapFlag = (flags & 0x1) == 0x0; // bit 0 ==1 means big endian, ==0 means little endian
+        
         recordIndicator = new String(buf, offset, 2);
         offset += 2;
         miniSeedVersion = buf[offset];
-        offset++;
-        boolean byteSwapFlag = (flags & 0x1) == 0x0; // bit 0 ==1 means big endian, ==0 means little endian
         offset++;
         networkCode = new String(buf, offset, NETWORK_CODE_LENGTH).trim();
         offset += NETWORK_CODE_LENGTH;
@@ -168,6 +168,22 @@ public class DataHeader {
         offset++;
         dataVersion = buf[offset];
         offset++;
+        recordLength = Utility.bytesToInt(buf[offset],
+                                          buf[offset + 1],
+                                          buf[offset + 2],
+                                          buf[offset + 3],
+                                          byteSwapFlag);
+        offset += 4;
+        startTime = Utility.bytesToLong(buf[offset],
+                                        buf[offset + 1],
+                                        buf[offset + 2],
+                                        buf[offset + 3],
+                                        buf[offset + 4],
+                                        buf[offset + 5],
+                                        buf[offset + 6],
+                                        buf[offset + 7],
+                                        byteSwapFlag);
+        offset += 8;
         numSamples = Utility.bytesToInt(buf[offset],    // careful if negative!!!
                                          buf[offset + 1],
                                          buf[offset + 2],
@@ -186,6 +202,7 @@ public class DataHeader {
         dataOffset = Utility.uBytesToInt(buf[offset + 36],
                                          buf[offset + 37],
                                          byteSwapFlag);
+        offset += 2;
         // flags
         offset++;
         sampleEncodingFormat = buf[offset];
@@ -204,13 +221,16 @@ public class DataHeader {
         dos.write(recordIndicator.getBytes("ASCII"));
         dos.write(miniSeedVersion);
         dos.write(Utility.pad(getNetworkCode().getBytes("ASCII"),
-                              6,
+                              NETWORK_CODE_LENGTH,
                               (byte)32));
         dos.write(Utility.pad(getStationCode().getBytes("ASCII"),
-                              5,
+                              STATION_CODE_LENGTH,
+                              (byte)32));
+        dos.write(Utility.pad(getLocationCode().getBytes("ASCII"),
+                              LOCATION_CODE_LENGTH,
                               (byte)32));
         dos.write(Utility.pad(getChannelCode().getBytes("ASCII"),
-                              8,
+                              CHANNEL_CODE_LENGTH,
                               (byte)32));
         dos.write(qualityIndicator);
         dos.write(dataVersion);
@@ -229,7 +249,7 @@ public class DataHeader {
     }
 
     public short getFixedSize() {
-        return 53;
+        return FIXED_HEADER_SIZE;
     }
     
     public int getSizeWithOpaque() {
@@ -503,15 +523,17 @@ public class DataHeader {
 
     public static final TimeZone TZ_UTC = TimeZone.getTimeZone("UTC");
     
-    public static final int NETWORK_CODE_LENGTH = 6;
+    public static final int NETWORK_CODE_LENGTH = 2;
     
     public static final int STATION_CODE_LENGTH = 5;
     
     public static final int LOCATION_CODE_LENGTH = 2;
     
-    public static final int CHANNEL_CODE_LENGTH = 8;
+    public static final int CHANNEL_CODE_LENGTH = 3;
     
-    public static final int FLAGS_OFFSET = 41;
+    public static final int FIXED_HEADER_SIZE = 30 + NETWORK_CODE_LENGTH+STATION_CODE_LENGTH+LOCATION_CODE_LENGTH+CHANNEL_CODE_LENGTH;
+    
+    public static final int FLAGS_OFFSET = 4;
 
     protected static final String DEFAULT_RECORD_INDICATOR = "MS";
     
