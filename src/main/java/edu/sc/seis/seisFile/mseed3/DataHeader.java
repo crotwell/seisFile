@@ -74,15 +74,16 @@ public class DataHeader {
         out.print(" numPTS=" + getNumSamples());
         out.print(" dataOffset=" + getDataOffset());
         
-        out.print(indent+"MS");
-        out.print(indent+"miniSEEDversion(3)");
+        out.print(indent+"RecordIndicator="+getRecordIndicator()+"='MS'");
+        out.print(indent+"miniSEEDversion="+getMiniSeedVersion()+"=3");
         out.print(indent+"Networkcode="+getNetworkCode().trim());
         out.print(indent+"Stationcode="+getStationCode().trim());
         out.print(indent+"Locationcodes="+getLocationCode().trim());
         out.print(indent+"Channelcodes="+getChannelCode().trim());
-        out.print(indent+"Dataversionindicator="+getDataVersion());
+        out.print(indent+"QualityIndicator="+getQualityIndicator());
+        out.print(indent+"DataVersionindicator="+getDataVersion());
         out.print(indent+"Recordlength="+getRecordLength());
-        out.print(indent+"Recordstarttime="+getStartTime());
+        out.print(indent+"Recordstarttime="+getStartTime()+" "+getStartTimeString());
         out.print(indent+"Numberofsamples="+getNumSamples());
         out.print(indent+"Samplerate="+getSampleRate());
         out.print(indent+"CRC­32ofdata="+getDataCRC());
@@ -91,13 +92,12 @@ public class DataHeader {
         out.print(indent+"sampleEncodingFormat="+getDataEncodingFormat());
         out.print(indent+"Numberofopaqueheadersthatfollow="+getNumOpaqueHeaders());
         for (int i = 0; i < getNumOpaqueHeaders(); i++) {
-            out.print(indent+getOpaqueData(i));
+            out.print(indent+getOpaqueHeader(i));
         }
     }
 
-    private String getOpaqueData(int i) {
-        // TODO Auto-generated method stub
-        throw new RuntimeException("not impl yet");
+    public String getOpaqueHeader(int i) {
+        return opaqueHeaders[i];
     }
 
     /**
@@ -326,8 +326,8 @@ public class DataHeader {
      */
     public String toString() {
         String s = super.toString() + " ";
-        s += " "+ getNetworkCode() + "." + getStationCode() + "." + getChannelCode() + "." 
-                + getStartTime() + "  " + getSampleRate()*getNumSamples() + " "
+        s += " "+ getNetworkCode() + "." + getStationCode() + "." + getLocationCode() + "." + getChannelCode() + "." 
+                + getStartTimeString() + "  " + getSampleRate()*getNumSamples() + " "
                 + " " + getDataOffset() ;
         return s;
     }
