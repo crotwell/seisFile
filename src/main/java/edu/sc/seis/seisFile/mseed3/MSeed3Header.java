@@ -11,7 +11,7 @@ import java.util.TimeZone;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.Utility;
 
-public class DataHeader {
+public class MSeed3Header {
 
     protected String recordIndicator = DEFAULT_RECORD_INDICATOR;
     
@@ -25,7 +25,7 @@ public class DataHeader {
 
     protected String channelCode;
 
-    protected byte qualityIndicator;
+    protected char qualityIndicator;
 
     protected byte dataVersion;
     
@@ -52,7 +52,7 @@ public class DataHeader {
     /**
      * creates a DataHeader object with nothing set (ie nulls and zeros)
      */
-    public DataHeader() {
+    public MSeed3Header() {
     }
 
     /**
@@ -113,11 +113,11 @@ public class DataHeader {
      * @throws IOException
      * @throws SeedFormatException
      */
-    public static DataHeader read(DataInput in) throws IOException,
+    public static MSeed3Header read(DataInput in) throws IOException,
             SeedFormatException {
         byte[] buf = new byte[53];
         in.readFully(buf);
-        DataHeader data = new DataHeader();
+        MSeed3Header data = new MSeed3Header();
         data.read(buf, 0);
         int endOpaque = data.getDataOffset();
         if (data.getDataOffset() == 0) {
@@ -164,7 +164,7 @@ public class DataHeader {
         offset += LOCATION_CODE_LENGTH;
         channelCode = new String(buf, offset, CHANNEL_CODE_LENGTH).trim();
         offset += CHANNEL_CODE_LENGTH;
-        qualityIndicator = buf[offset];
+        qualityIndicator = (char)buf[offset];
         offset++;
         dataVersion = buf[offset];
         offset++;
@@ -393,12 +393,12 @@ public class DataHeader {
     }
 
     
-    public byte getQualityIndicator() {
+    public char getQualityIndicator() {
         return qualityIndicator;
     }
 
     
-    public void setQualityIndicator(byte qualityIndicator) {
+    public void setQualityIndicator(char qualityIndicator) {
         this.qualityIndicator = qualityIndicator;
     }
 
