@@ -51,21 +51,20 @@ public class MSeed3Convert {
         }
         header.setSampleRate(sampleRate);
         header.setDataCRC(0); // should calc this...would need to decomp data
-        header.setFlags((byte)0x1); // should extract...
+        
+        int flag = 0x1; // bit 0, output will be big endian
+        if (dr.getHeader().getStartBtime().sec == 60) { flag += 2; } // bit 1, start is leap sec
+        flag += (dr.getHeader().getActivityFlags() & 24) >> 2; // move bit 4,5 of activity to bit 2,3
+        if ((dr.getHeader().getDataQualityFlags() & 128) == 128) { flag += 16; } // bit 4, time questionable from bit 7 dqflags
+        if ((dr.getHeader().getIOClockFlags() & 32) == 32) { flag += 32; } // bit 5, time questionable from bit 5 ioflags
+        header.setFlags((byte)flag); 
+        
         Blockette1000 b1000 = (Blockette1000)dr.getUniqueBlockette(1000);
         header.setDataEncodingFormat(b1000.getEncodingFormat());
         header.setNumOpaqueHeaders((byte)0);
         header.setOpaqueHeaders(new String[0]);
         MSeed3Record out = new MSeed3Record(header, dr.getData());
         
-        PrintWriter pw = new PrintWriter(new OutputStreamWriter(System.out));
-        try {
-            out.getHeader().writeASCII(pw, "  ");
-        } catch(IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        pw.flush();
         return out;
     }
 
@@ -82,7 +81,7 @@ public class MSeed3Convert {
             convert2to3 = true;
         } else if (args[0].equals("-3")) {
             convert3to2 = true;
-            System.err.println("Not imple yet");
+            System.err.println("Not impl yet");
         } else if (args[0].equals("--print3")) {
             print3 = true;
         } else if (args[0].equals("--print2")) {

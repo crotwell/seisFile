@@ -41,7 +41,7 @@ public class MSeed3Header {
 
     protected int dataOffset = FIXED_HEADER_SIZE;
 
-    protected byte flags;
+    protected byte flags = 1; // go ahead and say big endian
 
     protected byte sampleEncodingFormat;
 
@@ -91,7 +91,7 @@ public class MSeed3Header {
         out.println(indent + " sampleEncodingFormat = " + getDataEncodingFormat());
         out.println(indent + " Numberofopaqueheadersthatfollow = " + getNumOpaqueHeaders());
         for (int i = 0; i < getNumOpaqueHeaders(); i++) {
-            out.println(indent +"  "+ getOpaqueHeader(i));
+            out.println(indent + "  " + getOpaqueHeader(i));
         }
     }
 
@@ -252,27 +252,20 @@ public class MSeed3Header {
         return out;
     }
 
-    /**
-     * returns the predicted start time of the next record, ie begin +
-     * numSample*period
-     * 
-     */
-    public long getPredictedNextStartTime() {
-        return getStartTime() + getSamplePeriodAsMicros() * getNumSamples();
-    }
-
     public long[] getTimeRange() {
         return new long[] {getStartTime(), getLastSampleTime()};
     }
 
     /**
-     * return a Btime structure containing the derived last sample time for this
-     * record
+     * return a long containing the derived last sample time for this record
+     * adjusted for leap seconds.
      */
     public long getLastSampleTime() {
-        return getPredictedNextStartTime() - getSamplePeriodAsMicros();
+        return getStartTime() + getSamplePeriodAsMicros() * (getNumSamples() - 1)
+                - (isPosLeapSecInRecord() ? SEC_MICROS : 0);
     }
 
+    /** Start time as a Date. This does NOT adjust for possible leap secs. */
     public Date getStartTimeDate() {
         return new Date(getStartTime() / 1000);
     }
@@ -283,7 +276,7 @@ public class MSeed3Header {
      * @return Value of startTime.
      */
     public String getStartTimeString() {
-        return longToDateString(getStartTime());
+        return longToDateString(getStartTime(), isStartTimeInLeapSecond());
     }
 
     /**
@@ -293,20 +286,105 @@ public class MSeed3Header {
      * @return the value of end time
      */
     public String getLastSampleTimeString() {
-        return longToDateString(getLastSampleTime());
+        long time = getLastSampleTime();
+        boolean isLeapSec = false;
+        if (isEndTimeInLeapSecond()) {
+            long modDay = time % (DAY_MICROS);
+            if (modDay > LAST_SEC_MICROS) {
+                isLeapSec = true;
+                System.out.println("ModDay "+modDay);
+            }
+        }
+        System.out.println("LongTodateString "+time+"  "+isLeapSec);
+        return longToDateString(time, isLeapSec);
     }
 
-    public String getPredictedNextStartTimeString() {
-        return longToDateString(getPredictedNextStartTime());
-    }
-
+    /*
+     * public String getPredictedNextStartTimeString() { long time =
+     * getPredictedNextStartTime(); boolean isLeapSec = false; if
+     * (isPosLeapSecInRecord() && time % 86400 == 1) { isLeapSec = true; }
+     * return longToDateString(time, isLeapSec); }
+     */
     public long getSamplePeriodAsMicros() {
         if (getSampleRate() < 0) {
             // period in seconds
-            return Math.round(-1 * ((double)getSampleRate()) * 1000000d);
+            return Math.round(-1 * ((double)getSampleRate()) * SEC_MICROS);
         } else {
             // rate in hertz
-            return Math.round(1000000d / ((double)getSampleRate()));
+            return Math.round(SEC_MICROS / ((double)getSampleRate()));
+        }
+    }
+
+    public boolean isLittleEndian() {
+        boolean byteSwapFlag = (flags & 0x1) == 0x0; // bit 0 ==1 means big
+                                                     // endian, ==0 means little
+                                                     // endian
+        return byteSwapFlag;
+    }
+
+    public boolean isStartTimeInLeapSecond() {
+        return (getFlags() & 2) == 2;
+    }
+    
+    public boolean isEndTimeInLeapSecond() {
+        long durMicros = getSamplePeriodAsMicros() * (getNumSamples() - 1 );
+        return (isPosLeapSecInRecord() && ( (getStartTime() + durMicros) % DAY_MICROS < SEC_MICROS ))
+                || (isStartTimeInLeapSecond() && (durMicros < SEC_MICROS));
+    }
+
+    public void setStartTimeInLeapSecond(boolean b) {
+        if (b) {
+            flags = (byte)(flags | 2);
+        } else {
+            flags = (byte)(flags & (255 - 2));
+        }
+    }
+
+    public boolean isPosLeapSecInRecord() {
+        return (getFlags() & 4) == 4;
+    }
+
+    public void setPosLeapSecInRecord(boolean b) {
+        if (b) {
+            flags = (byte)(flags | 4);
+        } else {
+            flags = (byte)(flags & (255 - 4));
+        }
+    }
+
+    public boolean isNegLeapSecInRecord() {
+        return (getFlags() & 8) == 8;
+    }
+
+    public void setNegLeapSecInRecord(boolean b) {
+        if (b) {
+            flags = (byte)(flags | 8);
+        } else {
+            flags = (byte)(flags & (255 - 8));
+        }
+    }
+
+    public boolean isTimeTagQuestionable() {
+        return (getFlags() & 16) == 16;
+    }
+
+    public void setTimeTagQuestionable(boolean b) {
+        if (b) {
+            flags = (byte)(flags | 16);
+        } else {
+            flags = (byte)(flags & (255 - 16));
+        }
+    }
+
+    public boolean isClockLocked() {
+        return (getFlags() & 32) == 32;
+    }
+
+    public void setClockLocked(boolean b) {
+        if (b) {
+            flags = (byte)(flags | 32);
+        } else {
+            flags = (byte)(flags & (255 - 32));
         }
     }
 
@@ -468,19 +546,25 @@ public class MSeed3Header {
         return dataOffset;
     }
 
-    protected static String longToDateString(long longMicros) {
+    protected static String longToDateString(long longMicros, boolean isLeapSec) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss.SSS");
         sdf.setTimeZone(TZ_UTC);
-        String out = sdf.format(new Date(longMicros / 1000)); // micros to
-                                                              // millis
+        // micros to millis and back up 1 sec if a leap sec to keep min correct,
+        // will make 59 60 in string
+        Date d = new Date(longMicros / 1000 );
+        String out = sdf.format(d);
         int micros = (int)(longMicros % 1000);
         if (micros < 10) {
-            return out + "00" + micros;
+            out += "00" + micros;
         } else if (micros < 100) {
-            return out + "0" + micros;
+            out += "0" + micros;
         } else {
-            return out + micros;
+            out += micros;
         }
+        if (isLeapSec) {
+            out = out.substring(0, 13) + "60" + out.substring(15);
+        }
+        return out;
     }
 
     public static final TimeZone TZ_UTC = TimeZone.getTimeZone("UTC");
@@ -503,11 +587,11 @@ public class MSeed3Header {
     protected static final byte DEFAULT_MINISEED_VERSION = (byte)3;
 
     public static final String END_OPAQUE = "~";
-
-    public boolean isLittleEndian() {
-        boolean byteSwapFlag = (flags & 0x1) == 0x0; // bit 0 ==1 means big
-                                                     // endian, ==0 means little
-                                                     // endian
-        return byteSwapFlag;
-    }
+    
+    public static final long SEC_MICROS = 1000000l;
+    
+    public static final long DAY_MICROS = 86400 * SEC_MICROS;
+    
+    public static final long LAST_SEC_MICROS = DAY_MICROS - SEC_MICROS;
+    
 }
