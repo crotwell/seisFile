@@ -121,6 +121,7 @@ task createAllStartScripts() << {
 }
 
 def binScripts = [     
+    'mseed3': 'edu.sc.seis.seisFile.mseed3.MSeed3Convert',  
     'cwbclient': 'edu.sc.seis.seisFile.usgsCWB.Client',  
     'earthwormExportTest': 'edu.sc.seis.seisFile.earthworm.EarthwormExport',  
     'earthwormImportTest': 'edu.sc.seis.seisFile.earthworm.EarthwormImport',  
@@ -199,6 +200,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     group = 'build'
     def dExtras = getDExtras()
     def doBat = true
+    ScriptBuilder.create('mseed3', 'edu.sc.seis.seisFile.mseed3.MSeed3Convert', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('fdsnevent', 'edu.sc.seis.seisFile.fdsnws.EventClient', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('fdsnstationxml', 'edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('fdsnstation', 'edu.sc.seis.seisFile.fdsnws.StationClient', task.project, dExtras:dExtras, bat:doBat)
