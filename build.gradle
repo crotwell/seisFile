@@ -8,7 +8,8 @@ apply plugin: 'groovy'
 apply plugin: 'application'
 
 dependencies {
-    compile project(':seedCodec')
+//    compile project(':seedCodec')
+    compile 'edu.sc.seis:seedCodec:1.0.11'
     compile "JSAP:JSAP:2.1"
     compile "org.slf4j:slf4j-api:1.7.12+"
     compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.12+"
@@ -19,6 +20,18 @@ dependencies {
     compile "net.java.dev.msv:msv-core:2013.6.1"
     compile 'org.apache.httpcomponents:httpclient:4.5'
     runtime "mysql:mysql-connector-java:5.1.34+"
+}
+
+// use seedCodec as a project dependency if building as part of multiproject
+configurations.all {
+    resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
+        if (dependency.requested instanceof ModuleComponentSelector && dependency.requested.group == "edu.sc.seis") {
+            def targetProject = findProject(":${dependency.requested.module}")
+            if (targetProject != null) {
+                dependency.useTarget targetProject
+            }
+        }
+    }
 }
 
 sourceSets {
