@@ -4,6 +4,7 @@ group = 'edu.sc.seis'
 version = '1.7.0'
 
 apply plugin: 'maven'
+apply plugin: 'signing'
 apply plugin: 'groovy'
 apply plugin: 'application'
 
@@ -36,6 +37,56 @@ sourceSets {
       }
    }
 }
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'seisFile'
+        packaging 'jar'
+        // optionally artifactId can be defined here 
+        description 'A library for reading and writing seismic file formats in java.'
+        url 'http://www.seis.sc.edu/seisFile.html'
+
+        scm {
+          connection 'scm:git:https://github.com/crotwell/seisFile.git'
+          developerConnection 'scm:git:https://github.com/crotwell/seisFile.git'
+          url 'https://github.com/crotwell/seisFile'
+        }
+
+        licenses {
+          license {
+            name 'The GNU General Public License, Version 3'
+            url 'http://www.gnu.org/licenses/gpl-3.0.html'
+          }
+        }
+
+        developers {
+          developer {
+            id 'crotwell'
+            name 'Philip Crotwell'
+            email 'crotwell@seis.sc.edu'
+          }
+        }
+      }
+    }
+  }
+}
+
 
 def binDistFiles = copySpec {
     from('build/output') {
