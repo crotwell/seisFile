@@ -1,16 +1,15 @@
 
-
 group = 'edu.sc.seis'
-version = '1.7.0'
+version = '1.7.0.1'
 
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'groovy'
-apply plugin: 'application'
+//apply plugin: 'application'
 
 dependencies {
     compile project(':seedCodec')
-    compile "JSAP:JSAP:2.1"
+    compile "com.martiansoftware:jsap:2.1"
     compile "org.slf4j:slf4j-api:1.7.21"
     compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.21"
 //
@@ -278,6 +277,4 @@ def getDExtras() {
 }
 
 
-
-assemble.dependsOn(tarDist)
 
