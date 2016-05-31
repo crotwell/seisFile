@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.fdsnws.stationxml;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.NoSuchElementException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -119,6 +120,10 @@ public class FDSNStationXML {
     }
     
     public void closeReader() {
+        if (fdsnStationQuerier != null) {
+            fdsnStationQuerier.close();
+            fdsnStationQuerier = null;
+        }
         if (reader != null) {
             try {
                 reader.close();
