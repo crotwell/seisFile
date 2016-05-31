@@ -311,7 +311,7 @@ public abstract class AbstractFDSNQuerier {
             try {
                 inputStream.close();
             } catch(IOException e) {
-                logger.warn("can't close inputstream", e);
+                logger.warn("can't close inputstream: "+connectionUri, e);
             }
         }
         if (response != null) {
