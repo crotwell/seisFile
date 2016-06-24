@@ -69,7 +69,7 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
                                     + " XmlSchema (code): "+ StationXMLTagNames.CURRENT_SCHEMA_VERSION
                                     + " XmlSchema (doc): " + stationxml.getSchemaVersion());
                         }
-                        stationxml.setQuerier(this); // test GC closing stream
+                        stationxml.setQuerier(this); // GC closing stream if querier not held
                         stationxml.setResponse(response); // so can be closed when done
                         return stationxml;
                     } catch(XMLStreamException e) {

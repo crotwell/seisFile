@@ -68,7 +68,9 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                 if (!isEmpty()) {
                     BufferedInputStream bif = new BufferedInputStream(getInputStream());
                     final DataInputStream in = new DataInputStream(bif);
-                    return new DataRecordIterator(in);
+                    DataRecordIterator drIt = new DataRecordIterator(in);
+                    drIt.setQuerier(this);
+                    return drIt;
                 } else {
                     // return iterator with nothing in it
                     return new DataRecordIterator(new DataInputStream(new ByteArrayInputStream(new byte[0])));

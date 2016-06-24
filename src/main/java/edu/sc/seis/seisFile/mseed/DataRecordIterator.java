@@ -5,6 +5,8 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 
+import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
+
 
 public class DataRecordIterator {
 
@@ -66,4 +68,10 @@ public class DataRecordIterator {
     DataInput in;
     
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DataRecordIterator.class);
+    
+    /* this is to prevent the FdsnDataSelectQuerier from being garbage collected and closing the input stream. */
+    FDSNDataSelectQuerier querier;
+    public void setQuerier(FDSNDataSelectQuerier q) {
+        this.querier = q;
+    }
 }
