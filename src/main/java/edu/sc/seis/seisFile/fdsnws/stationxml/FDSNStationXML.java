@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.fdsnws.stationxml;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Reader;
 import java.net.URL;
 import java.util.NoSuchElementException;
 
@@ -230,7 +231,20 @@ public class FDSNStationXML {
     public static URL loadSchemaWithAvailability() {
         return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station+availability-1.0.xsd");
     }
-    
+
+    public static FDSNStationXML loadStationXML(Reader streamReader) throws XMLStreamException, IOException, SeisFileException {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        XMLEventReader r = factory.createXMLEventReader(streamReader);
+        XMLEvent e = r.peek();
+        while (!e.isStartElement()) {
+            r.nextEvent(); // eat this one
+            e = r.peek(); // peek at the next
+        }
+        System.out.println("StaMessage");
+        FDSNStationXML fdsnStationXML = new FDSNStationXML(r);
+        return fdsnStationXML;
+    }
+
     public static FDSNStationXML loadStationXML(String filename) throws XMLStreamException, IOException, SeisFileException {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         XMLEventReader r = factory.createXMLEventReader(filename, new FileInputStream(filename));
