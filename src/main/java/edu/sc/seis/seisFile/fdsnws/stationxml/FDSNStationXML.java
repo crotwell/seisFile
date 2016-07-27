@@ -2,6 +2,8 @@ package edu.sc.seis.seisFile.fdsnws.stationxml;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.util.NoSuchElementException;
@@ -245,17 +247,12 @@ public class FDSNStationXML {
         return fdsnStationXML;
     }
 
+    public static FDSNStationXML loadStationXML(InputStream stream) throws XMLStreamException, IOException, SeisFileException {
+        return loadStationXML(new InputStreamReader(stream));
+    }
+
     public static FDSNStationXML loadStationXML(String filename) throws XMLStreamException, IOException, SeisFileException {
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        XMLEventReader r = factory.createXMLEventReader(filename, new FileInputStream(filename));
-        XMLEvent e = r.peek();
-        while (!e.isStartElement()) {
-            e = r.nextEvent(); // eat this one
-            e = r.peek(); // peek at the next
-        }
-        System.out.println("StaMessage");
-        FDSNStationXML fdsnStationXML = new FDSNStationXML(r);
-        return fdsnStationXML;
+        return loadStationXML(new FileInputStream(filename));
     }
     
     public static void main(String[] args) throws XMLStreamException, IOException, SeisFileException, JSAPException {
