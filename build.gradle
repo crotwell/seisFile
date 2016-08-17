@@ -1,6 +1,6 @@
 
 group = 'edu.sc.seis'
-version = '1.7.2-SNAPSHOT'
+version = '1.7.2'
 
 apply plugin: 'maven'
 apply plugin: 'signing'
