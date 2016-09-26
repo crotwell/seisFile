@@ -110,25 +110,25 @@ public class ControlRecord extends SeedRecord {
             currOffset+= readBytes.length;
             byte[] fullBlocketteBytes = new byte[7+readBytes.length]; // less than length in case of continuation
             System.arraycopy(typeBytes,
-                    0,
-                    fullBlocketteBytes,
-                    0,
-                    3);
+                             0,
+                             fullBlocketteBytes,
+                             0,
+                             3);
             System.arraycopy(lengthBytes,
-                    0,
-                    fullBlocketteBytes,
-                    3,
-                    4);
+                             0,
+                             fullBlocketteBytes,
+                             3,
+                             4);
             System.arraycopy(readBytes,
-                    0,
-                    fullBlocketteBytes,
-                    7,
-                    readBytes.length);
+                             0,
+                             fullBlocketteBytes,
+                             7,
+                             readBytes.length);
             Blockette b;
             if (length == fullBlocketteBytes.length) {
                 b = SeedRecord.getBlocketteFactory().parseBlockette(type,
-                        fullBlocketteBytes,
-                        true);
+                                             fullBlocketteBytes,
+                                             true);
             } else {
                 //special case for partial blockette continued in next record
                 b = new PartialBlockette(type, fullBlocketteBytes, true, 0, length);
