@@ -76,16 +76,24 @@ public class ControlRecord extends SeedRecord {
             controlRec.addBlockette(b);
             
         }
-        String typeStr;
-        byte[] typeBytes = new byte[3];
-        if (recordSize == 0 || currOffset < recordSize-3) {
-            inStream.readFully(typeBytes);
-            typeStr = new String(typeBytes);
-            currOffset+= typeBytes.length;
-        } else {
-            typeStr = THREESPACE;
-        }
-        while ( ! typeStr.equals(THREESPACE) && (recordSize == 0 || currOffset <= recordSize-7)) {
+        
+        while (recordSize == 0 || currOffset <= recordSize-7) {
+            String typeStr;
+            byte[] typeBytes = new byte[3];
+            if (recordSize == 0 || currOffset < recordSize - 3) {
+                inStream.readFully(typeBytes);
+                typeStr = new String(typeBytes);
+                currOffset += typeBytes.length;
+            } else {
+                typeStr = THREESPACE;
+            }
+            // New blockette's type and length did not fit in this record. We assume the rest of the record is garbage
+            if (typeStr.equals(THREESPACE)) break;
+
+            if (recordSize != 0 && currOffset >= recordSize - 4) {
+                throw new SeedFormatException("Blockette’s type/length section is split across records");
+            }
+
             int type = Integer.parseInt(typeStr.trim());
             byte[] lengthBytes = new byte[4];
             inStream.readFully(lengthBytes);
@@ -102,25 +110,25 @@ public class ControlRecord extends SeedRecord {
             currOffset+= readBytes.length;
             byte[] fullBlocketteBytes = new byte[7+readBytes.length]; // less than length in case of continuation
             System.arraycopy(typeBytes,
-                             0,
-                             fullBlocketteBytes,
-                             0,
-                             3);
+                    0,
+                    fullBlocketteBytes,
+                    0,
+                    3);
             System.arraycopy(lengthBytes,
-                             0,
-                             fullBlocketteBytes,
-                             3,
-                             4);
+                    0,
+                    fullBlocketteBytes,
+                    3,
+                    4);
             System.arraycopy(readBytes,
-                             0,
-                             fullBlocketteBytes,
-                             7,
-                             readBytes.length);
+                    0,
+                    fullBlocketteBytes,
+                    7,
+                    readBytes.length);
             Blockette b;
             if (length == fullBlocketteBytes.length) {
                 b = SeedRecord.getBlocketteFactory().parseBlockette(type,
-                                             fullBlocketteBytes,
-                                             true);
+                        fullBlocketteBytes,
+                        true);
             } else {
                 //special case for partial blockette continued in next record
                 b = new PartialBlockette(type, fullBlocketteBytes, true, 0, length);
@@ -130,13 +138,6 @@ public class ControlRecord extends SeedRecord {
             }
 
             controlRec.addBlockette(b);
-            if (recordSize == 0 || currOffset < recordSize-3) {
-                inStream.readFully(typeBytes);
-                typeStr = new String(typeBytes);
-                currOffset+= typeBytes.length;
-            } else {
-                typeStr = THREESPACE;
-            }
         }
         if(recordSize == 0 ) {
             if (defaultRecordSize == 0) {
