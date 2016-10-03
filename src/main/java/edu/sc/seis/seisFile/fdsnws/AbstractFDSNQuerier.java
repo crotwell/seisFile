@@ -48,7 +48,7 @@ public abstract class AbstractFDSNQuerier {
     public abstract URI formURI() throws URISyntaxException;
 
     public abstract URL getSchemaURL();
-
+    
     public void connect() throws URISyntaxException, FDSNWSException {
         connectionUri = formURI();
         try {
@@ -61,7 +61,7 @@ public abstract class AbstractFDSNQuerier {
             CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
             HttpGet request = new HttpGet(connectionUri);
             request.setHeader("User-Agent", getUserAgent());
-            request.setHeader("Accept", "application/xml");
+            request.setHeader("Accept", getAcceptHeader());
             request.setHeader("Accept-Encoding", "gzip, deflate");
             TimeQueryLog.add(connectionUri);
             response = httpClient.execute(request);
@@ -239,6 +239,18 @@ public abstract class AbstractFDSNQuerier {
         return out;
     }
 
+    
+    public String getAcceptHeader() {
+        return acceptHeader;
+    }
+
+    /** set the Accept: html header, default is application/xml.
+     * 
+     */
+    public void setAcceptHeader(String acceptHeader) {
+        this.acceptHeader = acceptHeader;
+    }
+
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
@@ -328,6 +340,8 @@ public abstract class AbstractFDSNQuerier {
     static HashMap<URL, XMLValidationSchema> schemaCache = new HashMap<URL, XMLValidationSchema>();
 
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
+
+    String acceptHeader = "application/xml";
 
     int responseCode;
 

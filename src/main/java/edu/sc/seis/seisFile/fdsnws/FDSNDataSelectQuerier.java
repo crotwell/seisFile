@@ -46,6 +46,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     public FDSNDataSelectQuerier(FDSNDataSelectQueryParams queryParams, List<ChannelTimeWindow> request) {
         this.queryParams = queryParams;
         this.request = request;
+        setAcceptHeader("application/vnd.fdsn.mseed");
     }
 
     public void enableRestrictedData(String username, String password) {
@@ -122,7 +123,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         TimeQueryLog.add(connectionUri);
         HttpPost request = new HttpPost(connectionUri);
         request.setHeader("User-Agent", getUserAgent());
-        request.setHeader("Accept", "application/vnd.fdsn.mseed");
+        request.setHeader("Accept", getAcceptHeader());
         request.setHeader("Accept-Encoding", "gzip, deflate");
         HttpEntity entity = new StringEntity(postQuery);
         request.setEntity(entity);
