@@ -91,7 +91,7 @@ public class ControlRecord extends SeedRecord {
             if (typeStr.equals(THREESPACE)) break;
 
             if (recordSize != 0 && currOffset >= recordSize - 4) {
-                throw new SeedFormatException("Blockette’s type/length section is split across records");
+                throw new SeedFormatException("Blockette type/length section is split across records");
             }
 
             int type = Integer.parseInt(typeStr.trim());
