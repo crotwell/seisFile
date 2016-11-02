@@ -19,8 +19,9 @@ public class ContinuedControlRecordTest {
 
     @Test
     public void testReadDataInput() throws SeedFormatException, IOException {
-        SeedRecord dr = DataRecord.read(new DataInputStream(ContinuedControlRecordTest.class.getClassLoader()
-                                                            .getResourceAsStream("edu/sc/seis/seisFile/mseed/LGCD_signal001958.part.txt")));
+        DataInputStream in = new DataInputStream(ContinuedControlRecordTest.class.getClassLoader()
+                                                 .getResourceAsStream("edu/sc/seis/seisFile/mseed/LGCD_signal001958.part.txt"));
+        SeedRecord dr = DataRecord.read(in, 4096);
         assertNotNull(dr);
     }
 }
