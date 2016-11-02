@@ -8,20 +8,22 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 public class ContinuedControlRecordTest {
 
     @Before
-    public void setUp() throws Exception {
-        
-    }
+    public void setUp() throws Exception {}
 
     @Test
     public void testReadDataInput() throws SeedFormatException, IOException {
         DataInputStream in = new DataInputStream(ContinuedControlRecordTest.class.getClassLoader()
-                                                 .getResourceAsStream("edu/sc/seis/seisFile/mseed/LGCD_signal001958.part.txt"));
-        SeedRecord dr = DataRecord.read(in, 4096);
-        assertNotNull(dr);
+                .getResourceAsStream("edu/sc/seis/seisFile/mseed/LGCD_signal001958.part.txt"));
+        try {
+            SeedRecord dr = DataRecord.read(in, 4096);
+            assertNotNull(dr);
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+        }
     }
 }
