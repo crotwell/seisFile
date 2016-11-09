@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class TimeQueryLog {
 
@@ -33,8 +34,15 @@ public class TimeQueryLog {
             byHost.add(current);
             if (numLastSec >= 10) {
                 logger.warn("More than 10 queries in last second for "+uri.getHost()+"!!! " + numLastSec);
-                for (QueryTime timeQuery : byHost) {
+                List<QueryTime> toPrintList = byHost;
+                if (numLastSec > 10) {
+                    toPrintList = byHost.subList(0, 10);
+                }
+                for (QueryTime timeQuery : toPrintList) {
                     logger.warn("  " + timeQuery.getWhen() + "  " + timeQuery.getURI());
+                }
+                if (numLastSec > 10) {
+                    logger.warn("...plus "+(numLastSec-10)+" more.");
                 }
             }
         }
