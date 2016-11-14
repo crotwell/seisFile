@@ -41,6 +41,8 @@ public class Station extends BaseNodeType {
                     geology = StaxUtil.pullText(reader, StationXMLTagNames.GEOLOGY);
                 } else if (elName.equals(StationXMLTagNames.EQUIPMENT)) {
                     equipmentList.add(new Equipment(reader));
+                } else if (elName.equals(StationXMLTagNames.OPERATOR)) {
+                    operatorList.add(new Operator(reader));
                 } else if (elName.equals(StationXMLTagNames.CREATIONDATE)) {
                     creationDate = StaxUtil.pullText(reader, StationXMLTagNames.CREATIONDATE);
                 } else if (elName.equals(StationXMLTagNames.TERMINATIONDATE)) {
@@ -121,6 +123,10 @@ public class Station extends BaseNodeType {
         return equipmentList;
     }
 
+    public List<Operator> getOperatorList() {
+        return operatorList;
+    }
+
     public List<String> getExternalReferenceList() {
         return externalReferenceList;
     }
@@ -151,6 +157,8 @@ public class Station extends BaseNodeType {
     List<Channel> channelList = new ArrayList<Channel>();
 
     List<Equipment> equipmentList = new ArrayList<Equipment>();
+    
+    List<Operator> operatorList = new ArrayList<Operator>();
 
     List<String> externalReferenceList = new ArrayList<String>();
 }

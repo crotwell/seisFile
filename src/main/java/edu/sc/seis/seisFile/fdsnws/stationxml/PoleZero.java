@@ -38,6 +38,14 @@ public abstract class PoleZero extends Complex {
             }
         }
     }
+    
+    public FloatNoUnitType getRealWithError() {
+        return realWithError;
+    }
+    
+    public FloatNoUnitType getImaginaryWithError() {
+        return imaginaryWithError;
+    }
 
     FloatNoUnitType realWithError;
     FloatNoUnitType imaginaryWithError;

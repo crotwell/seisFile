@@ -42,6 +42,23 @@ public class Person {
         }
     }
     
+    
+    public String getName() {
+        return name;
+    }
+    
+    public List<String> getAgencyList() {
+        return agencyList;
+    }
+    
+    public List<String> getEmailList() {
+        return emailList;
+    }
+    
+    public List<String> getPhoneList() {
+        return phoneList;
+    }
+
     String name; // schema allows unbounded names, seems weird.
     List<String> agencyList = new ArrayList<String>();
     List<String> emailList = new ArrayList<String>();

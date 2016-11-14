@@ -41,6 +41,19 @@ public class Operator {
         }
     }
     
+    public List<String> getAgencyList() {
+        return agencyList;
+    }
+    
+    public List<Person> getContactList() {
+        return contactList;
+    }
+    
+    public String getWebsite() {
+        return website;
+    }
+
+
 
     List<String> agencyList = new ArrayList<String>();
     List<Person> contactList = new ArrayList<Person>();
