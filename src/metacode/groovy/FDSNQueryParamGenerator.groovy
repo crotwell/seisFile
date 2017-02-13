@@ -203,6 +203,8 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         'Event':'''
 
     public static final String USGS_HOST = "earthquake.usgs.gov";
+    public static final String ISC_HOST = "www.isc.ac.uk";
+    public static final String ISC_MIRROR_HOST = "isc-mirror.iris.washington.edu";
 
     public FDSNEventQueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
         return setMinLatitude(minLat).setMaxLatitude(maxLat).setMinLongitude(minLon).setMaxLongitude(maxLon);
