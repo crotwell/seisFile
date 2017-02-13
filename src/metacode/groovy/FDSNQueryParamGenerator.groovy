@@ -1,4 +1,8 @@
-
+/*
+  Run with 
+  groovy FDSNQueryParamGenerator 
+  from within the src/metacode/groovy directory.
+*/
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
