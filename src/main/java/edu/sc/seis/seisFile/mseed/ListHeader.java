@@ -170,14 +170,16 @@ public class ListHeader {
                             out.flush();
                         }
                         if (dumpData) {
-                            dr.writeData(out);
+                            out.println("# compressed");
+                            dr.printData(out);
+                            out.println("# decompressed");
                             try {
                                 DecompressedData dd = dr.decompress();
                                 int[] intData = dd.getAsInt();
                                 for (int j = 0; j < intData.length; j++) {
-                                    System.out.print(intData[j] + " ");
+                                    out.print(intData[j] + " ");
                                     if (j % 10 == 9) {
-                                        System.out.println();
+                                        out.println();
                                     }
                                 }
                             } catch(UnsupportedCompressionType e) {

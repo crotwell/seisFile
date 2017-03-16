@@ -207,12 +207,16 @@ public class DataRecord extends SeedRecord implements Serializable {
     public void printData(PrintWriter out) {
         byte[] d = getData();
         DecimalFormat byteFormat = new DecimalFormat("000");
-        for (int i = 0; i < d.length; i++) {
+        int i;
+        for (i = 0; i < d.length; i++) {
             out.write(byteFormat.format(0xff & d[i]) + " ");
             if (i % 4 == 3) {out.write("  ");}
             if (i % 16 == 15 && i != 0) {
                 out.write("\n");
             }
+        }
+        if (i % 16 != 15 && i != 0) {
+            out.write("\n");
         }
     }
 
