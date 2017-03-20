@@ -1,14 +1,11 @@
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.Authenticator;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URI;
@@ -17,10 +14,18 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.DigestScheme;
+import org.apache.http.impl.client.BasicAuthCache;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -52,7 +57,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     public void enableRestrictedData(String username, String password) {
         this.username = username;
         this.password = password;
-        Authenticator.setDefault(new MyAuthenticator(username, password));
+        //Authenticator.setDefault(new MyAuthenticator(username, password));
         queryParams.setFdsnQueryStyle("queryauth");
     }
 
@@ -77,7 +82,6 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                     return new DataRecordIterator(new DataInputStream(new ByteArrayInputStream(new byte[0])));
                 }
             } else {
-                logger.info("Error: " + getErrorMessage());
                 if (responseCode == 401 || responseCode == 403) {
                     throw new FDSNWSAuthorizationException("Not Authorized for Restricted Data: " + getErrorMessage(),
                                                            getConnectionUri(),
@@ -101,8 +105,9 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
      * @throws URISyntaxException
      * @throws IOException
      * @throws MalformedURLException
+     * @throws FDSNWSException 
      */
-    void connectForPost() throws URISyntaxException, MalformedURLException, IOException {
+    void connectForPost() throws URISyntaxException, MalformedURLException, IOException, FDSNWSException {
         String postQuery = queryParams.formPostString(request);
         connectionUri = new URI(queryParams.getScheme(), // don't form as all
                                                          // parameters in POST
@@ -122,12 +127,25 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
         TimeQueryLog.add(connectionUri);
         HttpPost request = new HttpPost(connectionUri);
+        HttpClientContext context = HttpClientContext.create();
+        if (username != null && username.length()!= 0 && password != null && password.length() != 0) {
+            logger.info("Adding user/pass cred to query");
+            UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password);
+                CredentialsProvider credsProvider = new BasicCredentialsProvider();
+                credsProvider.setCredentials(new AuthScope(queryParams.getHost(), queryParams.getPort(), AuthScope.ANY_REALM), creds);
+                AuthCache authCache = new BasicAuthCache();
+                DigestScheme digestScheme = new DigestScheme();
+                authCache.put(new HttpHost(queryParams.getHost(), queryParams.getPort(), queryParams.getScheme()), digestScheme);
+
+                context.setCredentialsProvider(credsProvider);
+                context.setAuthCache(authCache);
+        }
         request.setHeader("User-Agent", getUserAgent());
         request.setHeader("Accept", getAcceptHeader());
         request.setHeader("Accept-Encoding", "gzip, deflate");
         HttpEntity entity = new StringEntity(postQuery);
         request.setEntity(entity);
-        response = httpClient.execute(request);
+        response = httpClient.execute(request, context);
         processConnection(response);
     }
 
