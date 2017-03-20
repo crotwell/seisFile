@@ -73,7 +73,7 @@ public abstract class AbstractFDSNQuerier {
         }
     }
 
-    protected void processConnection(CloseableHttpResponse response) throws IOException {
+    protected void processConnection(CloseableHttpResponse response) throws IOException, FDSNWSException {
         responseCode = response.getStatusLine().getStatusCode();
         if (responseCode == 204) {
             empty = true;
@@ -85,7 +85,7 @@ public abstract class AbstractFDSNQuerier {
             errorMessage = "Code: " + responseCode + " " + extractErrorMessage(response);
             response.close();
             response = null;
-            return;
+            throw new FDSNWSException(errorMessage, connectionUri, responseCode);
         }
         HttpEntity entity = response.getEntity();
         // likely not an error in the http layer, so content is returned
