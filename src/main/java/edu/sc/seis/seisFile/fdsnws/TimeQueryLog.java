@@ -9,7 +9,8 @@ import java.util.List;
 
 public class TimeQueryLog {
 
-    public static void add(URI uri) {
+    /** @returns number of queries to host in last second. */
+    public static int add(URI uri) {
         totalQueries++;
         QueryTime current = new QueryTime(uri);
         LinkedList<QueryTime> byHost = null;
@@ -44,7 +45,16 @@ public class TimeQueryLog {
                 if (numLastSec > 10) {
                     logger.warn("...plus "+(numLastSec-10)+" more.");
                 }
+                logger.warn("Taking a little break to give the service time to catch its breath.");
+                try {
+                    synchronized(recentQueries) {
+                        Thread.sleep(1000);
+                    }
+                } catch(InterruptedException e) {
+                    // oh well....
+                }
             }
+            return numLastSec;
         }
     }
 
