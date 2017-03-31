@@ -55,9 +55,13 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     }
 
     public void enableRestrictedData(String username, String password) {
+        enableRestrictedData( username,  password, null); // empty realm
+    }
+    
+    public void enableRestrictedData(String username, String password, String realm) {
         this.username = username;
         this.password = password;
-        //Authenticator.setDefault(new MyAuthenticator(username, password));
+        this.realm = realm;
         queryParams.setFdsnQueryStyle("queryauth");
     }
 
@@ -124,22 +128,19 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                 .setConnectionRequestTimeout(getConnectTimeout())
                 .setSocketTimeout(getReadTimeout())
                 .build();
-        CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
-        TimeQueryLog.add(connectionUri);
-        HttpPost request = new HttpPost(connectionUri);
-        HttpClientContext context = HttpClientContext.create();
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
+                .setDefaultRequestConfig(requestConfig);
         if (username != null && username.length()!= 0 && password != null && password.length() != 0) {
             logger.info("Adding user/pass cred to query");
             UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password);
-                CredentialsProvider credsProvider = new BasicCredentialsProvider();
-                credsProvider.setCredentials(new AuthScope(queryParams.getHost(), queryParams.getPort(), AuthScope.ANY_REALM), creds);
-                AuthCache authCache = new BasicAuthCache();
-                DigestScheme digestScheme = new DigestScheme();
-                authCache.put(new HttpHost(queryParams.getHost(), queryParams.getPort(), queryParams.getScheme()), digestScheme);
-
-                context.setCredentialsProvider(credsProvider);
-                context.setAuthCache(authCache);
+            CredentialsProvider credsProvider = new BasicCredentialsProvider();
+            credsProvider.setCredentials(new AuthScope(queryParams.getHost(), queryParams.getPort(), realm), creds);
+            httpClientBuilder.setDefaultCredentialsProvider(credsProvider);
         }
+        CloseableHttpClient httpClient = httpClientBuilder.build();
+        TimeQueryLog.add(connectionUri);
+        HttpPost request = new HttpPost(connectionUri);
+        HttpClientContext context = HttpClientContext.create();
         request.setHeader("User-Agent", getUserAgent());
         request.setHeader("Accept", getAcceptHeader());
         request.setHeader("Accept-Encoding", "gzip, deflate");
@@ -152,6 +153,8 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     String username;
 
     String password;
+    
+    String realm = AuthScope.ANY_REALM;
 
     List<ChannelTimeWindow> request;
 
@@ -177,18 +180,3 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FDSNDataSelectQuerier.class);
 }
 
-class MyAuthenticator extends Authenticator {
-
-    String user;
-
-    String password;
-
-    public MyAuthenticator(String user, String password) {
-        this.user = user;
-        this.password = password;
-    }
-
-    public PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(user, password.toCharArray());
-    }
-}
