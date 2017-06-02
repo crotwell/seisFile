@@ -147,6 +147,123 @@ public class DataRecord extends SeedRecord implements Serializable {
     public int getDataSize() {
         return data.length;
     }
+    
+
+    public float getSampleRate() {
+        float sampleRate;
+        Blockette[] blocketts = getBlockettes(100);
+        if (blocketts.length != 0) {
+            Blockette100 b100 = (Blockette100)blocketts[0];
+            sampleRate = b100.getActualSampleRate();
+        } else {
+            sampleRate = getHeader().calcSampleRateFromMultipilerFactor();
+        }
+        return sampleRate;
+    }
+
+    /**
+     * return a Btime structure containing the derived end time for this record
+     * Note this is not the time of the last sample, but rather the predicted
+     * begin time of the next record, ie begin + numSample*period instead of
+     * begin + (numSample-1)*period.
+     * 
+     * Note that this will use the more accurate sample rate in a blockette100 if it exists.
+     */
+    private Btime getEndBtime() {
+        Btime startBtime = getHeader().getStartBtime();
+        // get the number of ten thousandths of seconds of data
+        double numTenThousandths = (((double)getHeader().getNumSamples() / getSampleRate()) * 10000.0);
+        // return the time structure projected by the number of ten thousandths
+        // of seconds
+        return getHeader().projectTime(startBtime, numTenThousandths);
+    }
+
+    /** returns the predicted start time of the next record, ie begin + numSample*period
+     * 
+     * Note that this will use the more accurate sample rate in a blockette100 if it exists.
+     */
+    public Btime getPredictedNextStartBtime() {
+        return getEndBtime();
+    }
+    
+    public BtimeRange getBtimeRange() {
+        return new BtimeRange(getHeader().getStartBtime(), getLastSampleBtime());
+    }
+    
+    /**
+     * return a Btime structure containing the derived last sample time for this
+     * record.
+     * 
+     * Note that this will use the more accurate sample rate in a blockette100 if it exists.
+     */
+    public Btime getLastSampleBtime() {
+        Btime startBtime = getStartBtime();
+        // get the number of ten thousandths of seconds of data
+        double numTenThousandths = (((double)(getHeader().getNumSamples() - 1) / getSampleRate()) * 10000.0);
+        // return the time structure projected by the number of ten thousandths
+        // of seconds
+        return DataHeader.projectTime(startBtime, numTenThousandths);
+    }
+
+    /** Gets start Btime from header, convenience method. */
+    public Btime getStartBtime() {
+        return getHeader().getStartBtime();
+    }
+
+    /** Gets start time from header, convenience method. */
+    public String getStartTime() {
+        return getHeader().getStartTime();
+    }
+
+
+    /**
+     * get the value of end time. derived from Start time, sample rate, and
+     * number of samples. Note this is not the time of the last sample, but
+     * rather the predicted begin time of the next record.
+     * 
+     * Note that this will use the more accurate sample rate in a blockette100 if it exists.
+     * 
+     * @return the value of end time
+     */
+    public String getEndTime() {
+        // get time structure
+        Btime endStruct = getEndBtime();
+        // zero padding format of output numbers
+        DecimalFormat twoZero = new DecimalFormat("00");
+        DecimalFormat threeZero = new DecimalFormat("000");
+        DecimalFormat fourZero = new DecimalFormat("0000");
+        // return string in standard jday format
+        return new String(fourZero.format(endStruct.year) + ","
+                + threeZero.format(endStruct.jday) + ","
+                + twoZero.format(endStruct.hour) + ":"
+                + twoZero.format(endStruct.min) + ":"
+                + twoZero.format(endStruct.sec) + "."
+                + fourZero.format(endStruct.tenthMilli));
+    }
+
+    /**
+     * get the value of end time. derived from Start time, sample rate, and
+     * number of samples.
+     * 
+     * Note that this will use the more accurate sample rate in a blockette100 if it exists.
+     * 
+     * @return the value of end time
+     */
+    public String getLastSampleTime() {
+        // get time structure
+        Btime endStruct = getLastSampleBtime();
+        // zero padding format of output numbers
+        DecimalFormat twoZero = new DecimalFormat("00");
+        DecimalFormat threeZero = new DecimalFormat("000");
+        DecimalFormat fourZero = new DecimalFormat("0000");
+        // return string in standard jday format
+        return new String(fourZero.format(endStruct.year) + ","
+                + threeZero.format(endStruct.jday) + ","
+                + twoZero.format(endStruct.hour) + ":"
+                + twoZero.format(endStruct.min) + ":"
+                + twoZero.format(endStruct.sec) + "."
+                + fourZero.format(endStruct.tenthMilli));
+    }
 
     public DataHeader getHeader() {
         return (DataHeader)header;

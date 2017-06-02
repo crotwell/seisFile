@@ -383,25 +383,20 @@ public class DataHeader extends ControlHeader {
 
     /**
      * get the sample rate. derived from sample rate factor and the sample rate
-     * multiplier
+     * multiplier. Note this may not be the true sample rate if the record contains
+     * a blockette 100.
      * 
      * @return sample rate
+     * @deprecated Use DataRecord.getSampleRate() as it also checks for a possible blockette100 value. 
      */
+    @Deprecated
     public float getSampleRate() {
-        double factor = (double)getSampleRateFactor();
-        double multiplier = (double)getSampleRateMultiplier();
-        float sampleRate = (float)10000.0; // default (impossible) value;
-        if((factor * multiplier) != 0.0) { // in the case of log records
-            sampleRate = (float)(java.lang.Math.pow(java.lang.Math.abs(factor),
-                                                    (factor / java.lang.Math.abs(factor))) * java.lang.Math.pow(java.lang.Math.abs(multiplier),
-                                                                                                                (multiplier / java.lang.Math.abs(multiplier))));
-        }
-        return sampleRate;
+        return calcSampleRateFromMultipilerFactor();
     }
 
     // convert contents of Btime structure to the number of
     // ten thousandths of seconds it represents within that year
-    private double ttConvert(Btime bTime) {
+    private static double ttConvert(Btime bTime) {
         double tenThousandths = bTime.jday * 864000000.0;
         tenThousandths += bTime.hour * 36000000.0;
         tenThousandths += bTime.min * 600000.0;
@@ -412,7 +407,7 @@ public class DataHeader extends ControlHeader {
 
     // take the Btime structure and forward-project a new time that is
     // the specified number of ten thousandths of seconds ahead
-    private Btime projectTime(Btime bTime, double tenThousandths) {
+    static Btime projectTime(Btime bTime, double tenThousandths) {
         int offset = 0; // leap year offset
         // check to see if this is a leap year we are starting on
         boolean is_leap = bTime.year % 4 == 0 && bTime.year % 100 != 0
@@ -450,7 +445,12 @@ public class DataHeader extends ControlHeader {
      * Note this is not the time of the last sample, but rather the predicted
      * begin time of the next record, ie begin + numSample*period instead of
      * begin + (numSample-1)*period.
+     * 
+     * Note that this may not be correct if the record also contains a more accurate
+     * sample rate in a blockette100.
+     * @deprecated Use DataRecord.getEndBtime() as it also checks for a possible blockette100 value. 
      */
+    @Deprecated
     private Btime getEndBtime() {
         Btime startBtime = getStartBtime();
         // get the number of ten thousandths of seconds of data
@@ -462,19 +462,33 @@ public class DataHeader extends ControlHeader {
 
     /** returns the predicted start time of the next record, ie begin + numSample*period
      * 
+     * Note that this may not be correct if the record also contains a more accurate
+     * sample rate in a blockette100.
+     * 
+     * @deprecated Use DataRecord.getPredictedNextStartBtime() as it also checks for a possible blockette100 value. 
      */
+    @Deprecated
     public Btime getPredictedNextStartBtime() {
         return getEndBtime();
     }
     
+    /**
+     * @deprecated Use DataRecord.getBtimeRange() as it also checks for a possible blockette100 value. 
+     */
+    @Deprecated
     public BtimeRange getBtimeRange() {
         return new BtimeRange(getStartBtime(), getLastSampleBtime());
     }
     
     /**
      * return a Btime structure containing the derived last sample time for this
-     * record
+     * record.
+     * 
+     * Note that this may not be correct if the record also contains a more accurate
+     * sample rate in a blockette100.
+     * @deprecated Use DataRecord.getLastSampleBtime() as it also checks for a possible blockette100 value. 
      */
+    @Deprecated
     public Btime getLastSampleBtime() {
         Btime startBtime = getStartBtime();
         // get the number of ten thousandths of seconds of data
@@ -510,8 +524,13 @@ public class DataHeader extends ControlHeader {
      * number of samples. Note this is not the time of the last sample, but
      * rather the predicted begin time of the next record.
      * 
+     * Note that this may not be correct if the record also contains a more accurate
+     * sample rate in a blockette100.
+     * 
      * @return the value of end time
+     * @deprecated Use DataRecord.getEndTime() as it also checks for a possible blockette100 value. 
      */
+    @Deprecated
     public String getEndTime() {
         // get time structure
         Btime endStruct = getEndBtime();
@@ -532,8 +551,13 @@ public class DataHeader extends ControlHeader {
      * get the value of end time. derived from Start time, sample rate, and
      * number of samples.
      * 
+     * Note that this may not be correct if the record also contains a more accurate
+     * sample rate in a blockette100.
+     * 
      * @return the value of end time
+     * @deprecated Use DataRecord.getLastSampleTime() as it also checks for a possible blockette100 value. 
      */
+    @Deprecated
     public String getLastSampleTime() {
         // get time structure
         Btime endStruct = getLastSampleBtime();
@@ -611,6 +635,29 @@ public class DataHeader extends ControlHeader {
         short[] tmp = calcSeedMultipilerFactor(samplePerSecond);
         setSampleRateFactor(tmp[0]);
         setSampleRateMultiplier(tmp[1]);
+    }
+
+    /**
+     * get the sample rate. derived from sample rate factor and the sample rate
+     * multiplier. Note this may not be the true sample rate if the record contains
+     * a blockette 100.
+     * 
+     * Returns zero if either of the multiplier or factor are zero, usually in the case of log/ascii/opaque data.
+     * @return sample rate
+     */
+    public float calcSampleRateFromMultipilerFactor() {
+        double factor = (double)getSampleRateFactor();
+        double multiplier = (double)getSampleRateMultiplier();
+        float sampleRate; 
+        if((factor * multiplier) != 0.0) { // in the case of log records
+            sampleRate = (float)(java.lang.Math.pow(java.lang.Math.abs(factor),
+                                                    (factor / java.lang.Math.abs(factor))) * java.lang.Math.pow(java.lang.Math.abs(multiplier),
+                                                                                                                (multiplier / java.lang.Math.abs(multiplier))));
+        } else {
+            // log/ascii/opaque data
+            sampleRate = 0;
+        }
+        return sampleRate;
     }
 
     public static short[] calcSeedMultipilerFactor(double sps) {
