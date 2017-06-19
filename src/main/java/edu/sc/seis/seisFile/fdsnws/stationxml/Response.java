@@ -104,6 +104,9 @@ public class Response {
         resp.instrumentSensitivity.frequency = stageFreq;
     }
 
+    public ResponseStage getFirstStage() {
+        return getResponseStageList().get(0);
+    }
 
     public List<ResponseStage> getResponseStageList() {
         return responseStageList;
