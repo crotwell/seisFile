@@ -233,7 +233,7 @@ public class Utility {
     }
     
     public static boolean areContiguous(DataRecord first, DataRecord second) {
-        Btime fEnd = first.getHeader().getPredictedNextStartBtime();
+        Btime fEnd = first.getPredictedNextStartBtime();
         Btime sBegin = second.getHeader().getStartBtime();
         return fEnd.tenthMilli == sBegin.tenthMilli &&
             fEnd.sec == sBegin.sec &&
@@ -298,7 +298,7 @@ public class Utility {
             if (prev != null && prev.getHeader().getStartBtime().equals(dataRecord.getHeader().getStartBtime())) {
                 //  a duplicate
                 itFromFileList.remove();
-            } else if (prev != null && prev.getHeader().getLastSampleBtime().afterOrEquals(dataRecord.getHeader().getStartBtime())) {
+            } else if (prev != null && prev.getLastSampleBtime().afterOrEquals(dataRecord.getHeader().getStartBtime())) {
                 //  a overlap
                 itFromFileList.remove();
             } else {
