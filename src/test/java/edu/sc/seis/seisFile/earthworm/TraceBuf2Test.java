@@ -128,7 +128,6 @@ public class TraceBuf2Test {
                 .convertToCalendar()
                 .getTime());
         assertEquals("end", tb.getEndDate(), mseedList.get(mseedList.size() - 1)
-                .getHeader()
                 .getLastSampleBtime()
                 .convertToCalendar()
                 .getTime());
@@ -144,9 +143,9 @@ public class TraceBuf2Test {
             Date drStart = dr.getHeader().getStartBtime().convertToCalendar().getTime();
             assertEquals("previous dr date", nextSampleTime, drStart);
             assertTrue("start before end",
-                       drStart.before(dr.getHeader().getLastSampleBtime().convertToCalendar().getTime()));
+                       drStart.before(dr.getLastSampleBtime().convertToCalendar().getTime()));
             numPts += dr.getHeader().getNumSamples();
-            nextSampleTime = dr.getHeader().getPredictedNextStartBtime().convertToCalendar().getTime();
+            nextSampleTime = dr.getPredictedNextStartBtime().convertToCalendar().getTime();
         }
         assertTrue("nextSample after end", nextSampleTime.after(tb.getEndDate()));
         assertEquals("npts", tb.getNumSamples(), numPts);
