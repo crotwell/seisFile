@@ -12,12 +12,17 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 /** a float value with optional unit and errors. */
 public class FloatType extends FloatNoUnitType {
 
+    
+    public FloatType(float value, String unit, Float plusError, Float minusError) {
+        super(value, plusError, minusError);
+        this.unit = unit;
+    }
+
     public FloatType(XMLEventReader reader, String tagName) throws StationXMLException, XMLStreamException {
         this(reader, tagName, null);
     }
 
     public FloatType(XMLEventReader reader, String tagName, String fixedUnit) throws StationXMLException, XMLStreamException {
-        super(tagName);
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         super.parseAttributes(startE);
         super.parseValue(reader);

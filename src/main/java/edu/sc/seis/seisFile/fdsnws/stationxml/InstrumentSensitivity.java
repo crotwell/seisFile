@@ -12,9 +12,26 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class InstrumentSensitivity extends GainSensitivity {
 
+    public InstrumentSensitivity(float value,
+                                 float frequency,
+                                 Unit inputUnits,
+                                 Unit outputUnits,
+                                 float frequencyStart,
+                                 float frequencyEnd,
+                                 float frequencyDbVariation) {
+        super(value, frequency);
+        this.inputUnits = inputUnits;
+        this.outputUnits = outputUnits;
+        this.frequencyStart = frequencyStart;
+        this.frequencyEnd = frequencyEnd;
+        this.frequencyDbVariation = frequencyDbVariation;
+    }
+
+
     public InstrumentSensitivity(float value, float frequency) {
         super(value, frequency);
     }
+    
 
     public InstrumentSensitivity(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.INSTRUMENT_SENSITIVITY, reader);

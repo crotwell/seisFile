@@ -15,6 +15,21 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Coefficients extends BaseFilterType {
 
+    
+    public Coefficients(String resourceId,
+                        String name,
+                        String description,
+                        Unit inputUnits,
+                        Unit outputUnits,
+                        String cfTransferType,
+                        List<FloatType> numeratorList,
+                        List<FloatType> denominatorList) {
+        super(resourceId, name, description, inputUnits, outputUnits);
+        this.cfTransferType = cfTransferType;
+        this.numeratorList = numeratorList;
+        this.denominatorList = denominatorList;
+    }
+
     public Coefficients(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.COEFFICIENTS, reader);
         super.parseAttributes(startE);

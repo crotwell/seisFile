@@ -13,6 +13,13 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 public class ResponseListElement {
 
     
+    public ResponseListElement(FloatType frequency, FloatType amplitude, FloatType phase) {
+        this.frequency = frequency;
+        this.amplitude = amplitude;
+        this.phase = phase;
+    }
+
+
     public ResponseListElement(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.RESPONSELISTELEMENT, reader);
         while(reader.hasNext()) {
@@ -53,6 +60,6 @@ public class ResponseListElement {
     }
 
     FloatType frequency;
-    private FloatType phase;
     FloatType amplitude;
+    FloatType phase;
 }

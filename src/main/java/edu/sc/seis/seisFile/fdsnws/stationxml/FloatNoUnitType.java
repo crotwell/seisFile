@@ -11,13 +11,11 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class FloatNoUnitType {
 
-    /** for subclasses */
-    FloatNoUnitType(String tagName) throws XMLStreamException, StationXMLException {
-        this.tagName = tagName;
+    /** for subclasses when parsing */
+    FloatNoUnitType()  {
     }
 
     public FloatNoUnitType(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
-        this(tagName);
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);
         parseAttributes(startE);
         parseValue(reader);
@@ -38,16 +36,12 @@ public class FloatNoUnitType {
         value = Float.parseFloat(StaxUtil.pullContiguousText(reader));
     }
 
-    public FloatNoUnitType(float coefficient, Float plusError, Float minusError, String tagName) throws StationXMLException, XMLStreamException {
-        this(tagName);
-        this.value = coefficient;
+    public FloatNoUnitType(float value, Float plusError, Float minusError) {
+        this.value = value;
         this.plusError = plusError;
         this.minusError = minusError;
     }
 
-    public String getTagName() {
-        return tagName;
-    }
 
     public float getValue() {
         return value;
@@ -69,7 +63,6 @@ public class FloatNoUnitType {
         return minusError != null;
     }
 
-    String tagName;
 
     float value;
 

@@ -10,6 +10,18 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public abstract class BaseFilterType {
 
+    /* for subclasses during xml parsing */
+    BaseFilterType() {}
+    
+    BaseFilterType(String resourceId, String name, String description, Unit inputUnits, Unit outputUnits) {
+        super();
+        this.resourceId = resourceId;
+        this.name = name;
+        this.description = description;
+        this.inputUnits = inputUnits;
+        this.outputUnits = outputUnits;
+    }
+
     void parseAttributes(StartElement startE) throws StationXMLException {
         resourceId = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.RESOURCEID);
         name = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.NAME);

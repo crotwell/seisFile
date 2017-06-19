@@ -16,6 +16,11 @@ public class Unit {
     public static final String METER = "METER";
     public static final String HERTZ = "HERTZ";
     
+    public Unit(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+    
     public Unit(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         this(reader, StationXMLTagNames.UNIT);
     }

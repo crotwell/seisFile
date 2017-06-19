@@ -26,6 +26,20 @@ public class ResponseStage {
     private Decimation decimation;
     private GainSensitivity stageGain;
 
+    public ResponseStage(Integer number,
+                         String resourceId,
+                         BaseFilterType responseItem,
+                         Decimation decimation,
+                         GainSensitivity stageGain) {
+        super();
+        this.number = number;
+        this.resourceId = resourceId;
+        this.responseItem = responseItem;
+        this.decimation = decimation;
+        this.stageGain = stageGain;
+    }
+
+
     public ResponseStage(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.RESPONSESTAGE, reader);
         number = StaxUtil.pullIntAttribute(startE, StationXMLTagNames.NUMBER);

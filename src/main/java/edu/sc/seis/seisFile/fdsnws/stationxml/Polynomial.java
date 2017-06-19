@@ -15,6 +15,28 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Polynomial extends BaseFilterType {
 
+    public Polynomial(String resourceId,
+                      String name,
+                      String description,
+                      Unit inputUnits,
+                      Unit outputUnits,
+                      String approximationType,
+                      FloatType freqLowerBound,
+                      FloatType freqUpperBound,
+                      float approxLowerBound,
+                      float approxUpperBound,
+                      float maxError,
+                      List<FloatNoUnitType> coefficientList) {
+        super(resourceId, name, description, inputUnits, outputUnits);
+        this.approximationType = approximationType;
+        this.freqLowerBound = freqLowerBound;
+        this.freqUpperBound = freqUpperBound;
+        this.approxLowerBound = approxLowerBound;
+        this.approxUpperBound = approxUpperBound;
+        this.maxError = maxError;
+        this.coefficientList = coefficientList;
+    }
+
     public Polynomial(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         this(reader, StationXMLTagNames.POLYNOMIAL);
     }
@@ -31,9 +53,9 @@ public class Polynomial extends BaseFilterType {
                 } else if (elName.equals(StationXMLTagNames.APPROXIMATIONTYPE)) {
                     approximationType = StaxUtil.pullText(reader, StationXMLTagNames.APPROXIMATIONTYPE);
                 } else if (elName.equals(StationXMLTagNames.FREQLOWERBOUND)) {
-                    freqLowerBound = StaxUtil.pullFloat(reader, StationXMLTagNames.FREQLOWERBOUND);
+                    freqLowerBound = new FloatType(reader, StationXMLTagNames.FREQLOWERBOUND, "HERTZ");
                 } else if (elName.equals(StationXMLTagNames.FREQUPPERBOUND)) {
-                    freqUpperBound = StaxUtil.pullFloat(reader, StationXMLTagNames.FREQUPPERBOUND);
+                    freqUpperBound = new FloatType(reader, StationXMLTagNames.FREQUPPERBOUND, "HERTZ");
                 } else if (elName.equals(StationXMLTagNames.APPROXLOWERBOUND)) {
                     approxLowerBound = StaxUtil.pullFloat(reader, StationXMLTagNames.APPROXLOWERBOUND);
                 } else if (elName.equals(StationXMLTagNames.APPROXUPPERBOUND)) {
@@ -59,11 +81,11 @@ public class Polynomial extends BaseFilterType {
         return approximationType;
     }
     
-    public Float getFreqLowerBound() {
+    public FloatType getFreqLowerBound() {
         return freqLowerBound;
     }
     
-    public float getFreqUpperBound() {
+    public FloatType getFreqUpperBound() {
         return freqUpperBound;
     }
     
@@ -84,8 +106,8 @@ public class Polynomial extends BaseFilterType {
     }
 
     private String approximationType;
-    private Float freqLowerBound;
-    private float freqUpperBound;
+    private FloatType freqLowerBound;
+    private FloatType freqUpperBound;
     private float approxLowerBound;
     private float approxUpperBound;
     private float maxError;

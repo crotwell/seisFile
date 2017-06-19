@@ -18,6 +18,16 @@ public class Decimation {
     private FloatType delay;
     private FloatType correction;
 
+    public Decimation(float inputSampleRate, int factor, int offset, FloatType delay, FloatType correction) {
+        super();
+        this.inputSampleRate = inputSampleRate;
+        this.factor = factor;
+        this.offset = offset;
+        this.delay = delay;
+        this.correction = correction;
+    }
+
+
     public Decimation(XMLEventReader reader) throws XMLStreamException, StationXMLException {
             StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.DECIMATION, reader);
             while(reader.hasNext()) {

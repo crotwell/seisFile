@@ -17,12 +17,33 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.Zero;
 
 public class PolesZeros extends BaseFilterType {
 
-    private String comment;
     private String pzTransferType;
     private float normalizationFactor;
     private float normalizationFreq;
     private List<Pole> poleList = new ArrayList<Pole>();
     private List<Zero> zeroList = new ArrayList<Zero>();
+    public static final String DIGITAL = "DIGITAL (Z-TRANSFORM)";
+    public static final String LAPLACE_HERTZ = "LAPLACE (HERTZ)";
+    public static final String LAPLACE_RAD_PER_SEC = "LAPLACE (RADIANS/SECOND)";
+
+    
+    public PolesZeros(String resourceId,
+                      String name,
+                      String description,
+                      Unit inputUnits,
+                      Unit outputUnits,
+                      String pzTransferType,
+                      float normalizationFactor,
+                      float normalizationFreq,
+                      List<Zero> zeroList,
+                      List<Pole> poleList) {
+        super(resourceId, name, description, inputUnits, outputUnits);
+        this.pzTransferType = pzTransferType;
+        this.normalizationFactor = normalizationFactor;
+        this.normalizationFreq = normalizationFreq;
+        this.zeroList = zeroList;
+        this.poleList = poleList;
+    }
 
     public PolesZeros(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.POLESZEROS, reader);
@@ -53,10 +74,6 @@ public class PolesZeros extends BaseFilterType {
                 e = reader.nextEvent();
             }
         }
-    }
-
-    public String getComment() {
-        return comment;
     }
     
     public String getPzTransferType() {

@@ -15,7 +15,18 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class FIR extends BaseFilterType {
 
-    
+    public FIR(String resourceId,
+               String name,
+               String description,
+               Unit inputUnits,
+               Unit outputUnits, 
+               String symmetry,
+               List<Float> numeratorCoefficientList) {
+        super(resourceId, name, description, inputUnits, outputUnits);
+        this.symmetry = symmetry;
+        this.numeratorCoefficientList = numeratorCoefficientList;
+    }
+
     public FIR(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.FIR, reader);
         super.parseAttributes(startE);
@@ -40,10 +51,6 @@ public class FIR extends BaseFilterType {
             }
         }
     }
-
-    public String getResponseName() {
-        return responseName;
-    }
     
     public String getSymmetry() {
         return symmetry;
@@ -53,6 +60,6 @@ public class FIR extends BaseFilterType {
         return numeratorCoefficientList;
     }
     
-    String responseName, symmetry;
+    String symmetry;
     List<Float> numeratorCoefficientList = new ArrayList<Float>();
 }

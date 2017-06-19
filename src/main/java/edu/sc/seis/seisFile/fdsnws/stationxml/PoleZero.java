@@ -14,6 +14,12 @@ import edu.sc.seis.seisFile.sac.Complex;
 public abstract class PoleZero extends Complex {
     
 
+    public PoleZero(FloatNoUnitType realWithError, FloatNoUnitType imaginaryWithError) {
+        super(realWithError.value, imaginaryWithError.value);
+        this.realWithError = realWithError;
+        this.imaginaryWithError = imaginaryWithError;
+    }
+
     public PoleZero(XMLEventReader reader, String elementName) throws XMLStreamException, StationXMLException {
         super(0,0); // dummy values
         StartElement startE = StaxUtil.expectStartElement(elementName, reader);

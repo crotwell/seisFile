@@ -16,6 +16,17 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class ResponseList extends BaseFilterType {
     
+    public ResponseList(String resourceId,
+                        String name,
+                        String description,
+                        Unit inputUnits,
+                        Unit outputUnits,
+                        List<ResponseListElement> responseElements) {
+        super(resourceId, name, description, inputUnits, outputUnits);
+        this.responseElements = responseElements;
+    }
+
+
     public ResponseList(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.RESPONSELIST, reader);
         super.parseAttributes(startE);
