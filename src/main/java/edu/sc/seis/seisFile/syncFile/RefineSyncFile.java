@@ -97,11 +97,11 @@ public class RefineSyncFile {
             DataRecord prev = null;
             boolean gapFound = false;
             for (DataRecord dr : drList) {
-                System.out.println(dr.getHeader().getStartTime()+"  "+dr.getHeader().getEndTime()+" "+dr.getHeader().getPredictedNextStartBtime());
+                System.out.println(dr.getHeader().getStartTime()+"  "+dr.getEndTime()+" "+dr.getPredictedNextStartBtime());
             }
             
             Date drS = drList.get(0).getHeader().getStartBtime().convertToCalendar().getTime();
-            Date drE = drList.get(drList.size()-1).getHeader().getPredictedNextStartBtime().convertToCalendar().getTime();
+            Date drE = drList.get(drList.size()-1).getPredictedNextStartBtime().convertToCalendar().getTime();
             if (Math.abs(s.getTime()-drS.getTime()) < 1000) {
                 s = drS;
             }
