@@ -19,6 +19,7 @@ dependencies {
     compile "org.codehaus.woodstox:woodstox-core-lgpl:4.4.1"
     compile "net.java.dev.msv:msv-core:2013.6.1"
     compile 'org.apache.httpcomponents:httpclient:4.5'
+    compile 'org.json:json:20170516'
     runtime "mysql:mysql-connector-java:5.1.34+"
 }
 
