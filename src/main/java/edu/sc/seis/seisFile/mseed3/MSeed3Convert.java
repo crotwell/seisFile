@@ -13,59 +13,106 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import org.json.JSONObject;
+
+import edu.sc.seis.seisFile.mseed.Blockette;
+import edu.sc.seis.seisFile.mseed.Blockette100;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.Blockette1001;
+import edu.sc.seis.seisFile.mseed.DataHeader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.MissingBlockette1000;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 public class MSeed3Convert {
 
     public MSeed3Convert() {
-        // TODO Auto-generated constructor stub
     }
 
     public static MSeed3Record convert2to3(DataRecord dr) throws SeedFormatException {
-        MSeed3Header header = new MSeed3Header();
-        header.setNetworkCode(dr.getHeader().getNetworkCode());
-        header.setStationCode(dr.getHeader().getStationIdentifier());
-        header.setLocationCode(dr.getHeader().getLocationIdentifier());
-        header.setChannelCode(dr.getHeader().getChannelIdentifier());
-        header.setQualityIndicator(dr.getHeader().getQualityIndicator());
-        header.setDataVersion((byte)0);
-        header.setRecordLength(dr.getRecordSize());
-        long millis = dr.getHeader().getStartBtime().convertToCalendar().getTimeInMillis();
-        int micros = 0;
-        Blockette1001 b1001;
-        try {
-            b1001 = (Blockette1001)dr.getUniqueBlockette(1001);
-            micros = b1001.getMicrosecond();
-        } catch(SeedFormatException e) {
-            // oh well, no b1001 so no micros
-        }
-        header.setStartTime(millis * 1000 + micros);
-        header.setNumSamples(dr.getHeader().getNumSamples());
-        float sampleRate = dr.getHeader().getSampleRate();
-        if (sampleRate < 1) {
-            sampleRate = -1 / sampleRate; // means really period in sec
-        }
-        header.setSampleRate(sampleRate);
-        header.setDataCRC(0); // should calc this...would need to decomp data
+        MSeed3Record ms3Header = new MSeed3Record();
         
-        int flag = 0x1; // bit 0, output will be big endian
-        if (dr.getHeader().getStartBtime().sec == 60) { flag += 2; } // bit 1, start is leap sec
-        flag += (dr.getHeader().getActivityFlags() & 24) >> 2; // move bit 4,5 of activity to bit 2,3
-        if ((dr.getHeader().getDataQualityFlags() & 128) == 128) { flag += 16; } // bit 4, time questionable from bit 7 dqflags
-        if ((dr.getHeader().getIOClockFlags() & 32) == 32) { flag += 32; } // bit 5, time questionable from bit 5 ioflags
-        header.setFlags((byte)flag); 
+        DataHeader ms2H = dr.getHeader();
+        ms3Header.flags = (byte)((ms2H.getActivityFlags() & 1) *2
+           + (ms2H.getIOClockFlags() & 64 ) * 4
+           + (ms2H.getDataQualityFlags() & 16) * 8);
+        ms3Header.setPublicationVersion((byte)0);
+
+        ms3Header.year = ms2H.getStartBtime().year;
+        ms3Header.dayOfYear = ms2H.getStartBtime().jday;
+        ms3Header.hour = ms2H.getStartBtime().hour;
+        ms3Header.minute = ms2H.getStartBtime().min;
+        ms3Header.second = ms2H.getStartBtime().sec;
+        ms3Header.nanosecond = ms2H.getStartBtime().tenthMilli*100000;
+      // maybe can do better from factor and multiplier?
+        ms3Header.sampleRatePeriod = ms2H.getSampleRate() >= 1 ? ms2H.getSampleRate() : (-1.0 / ms2H.getSampleRate());  
         
         Blockette1000 b1000 = (Blockette1000)dr.getUniqueBlockette(1000);
-        header.setDataEncodingFormat(b1000.getEncodingFormat());
-        header.setNumOpaqueHeaders((byte)0);
-        header.setOpaqueHeaders(new String[0]);
-        MSeed3Record out = new MSeed3Record(header, dr.getData());
+        if (b1000 == null) {
+            throw new MissingBlockette1000(dr.getHeader());
+        }
+        ms3Header.timeseriesEncodingFormat = b1000.getEncodingFormat();
+        ms3Header.publicationVersion = MSeed3Record.UNKNOWN_DATA_VERSION;
+        ms3Header.dataByteLength = dr.getData().length;
+        String locCodeStr = dr.getHeader().getLocationIdentifier().trim();
+        if (locCodeStr.length() > 0) { locCodeStr = locCodeStr +":"; }
+        ms3Header.setChannelId("FDSN:"+dr.getHeader().getNetworkCode().trim()
+                               +"."+dr.getHeader().getStationIdentifier().trim()
+                               +"."+locCodeStr+dr.getHeader().getChannelIdentifier().trim());
+
+        ms3Header.numSamples = ms2H.getNumSamples();
+        ms3Header.recordCRC = 0;
+        JSONObject ms3Extras = new JSONObject();
+        if (ms2H.getTypeCode() != 0 && ms2H.getTypeCode() != 'D') {
+          ms3Extras.put("QI", ms2H.getTypeCode());
+        }
+        int nanos = 0;
+        Blockette[] blockettes = dr.getBlockettes(100);
+        if (blockettes.length != 0) {
+            Blockette100 b100 = (Blockette100)blockettes[0];
+            ms3Header.setSampleRate(b100.getActualSampleRate());
+        }
+        blockettes = dr.getBlockettes(100);
+        if (blockettes.length != 0) {
+            Blockette1001 b1001 = (Blockette1001)blockettes[0];
+            nanos = 1000 * b1001.getMicrosecond();
+            ms3Extras.put("TQ", (int)b1001.getTimingQuality());
+        }
         
-        return out;
+        if (dr.getHeader().getStartBtime().sec == 60) {
+            ms3Extras.put(MSeed3Record.TIME_LEAP_SECOND, 1);
+        }
+        ms3Header.setNanosecond(ms3Header.getNanosecond() + nanos);
+        
+        if (ms3Header.nanosecond < 0) {
+          ms3Header.second -= 1;
+          ms3Header.nanosecond += 1000000000;
+          if (ms3Header.second < 0) {
+      // might be wrong for leap seconds
+            ms3Header.second += 60;
+            ms3Header.minute -= 1;
+            if (ms3Header.minute < 0) {
+              ms3Header.minute += 60;
+              ms3Header.hour -= 1;
+              if (ms3Header.hour < 0) {
+                ms3Header.hour += 24;
+                ms3Header.dayOfYear =- 1;
+                if (ms3Header.dayOfYear < 0) {
+      // wrong for leap years
+                  ms3Header.dayOfYear += 365;
+                  ms3Header.year -= 1;
+                }
+              }
+            }
+          }
+        }
+        ms3Header.setExtraHeaders(ms3Extras.toString());
+        // need to convert if not steim1 or 2
+        ms3Header.timeseriesBytes = dr.getData();
+        
+        
+        return ms3Header;
     }
 
     public static void main(String[] args) throws SeedFormatException, IOException {
@@ -118,12 +165,13 @@ public class MSeed3Convert {
                 int fileBytes = (int)f.length();
                 while (bytesRead < fileBytes && (dr3 = MSeed3Record.read(dis)) != null) {
                     pw.println("--------- read record "+drNum++);
-                    dr3.getHeader().writeASCII(pw, "  ");
-                    bytesRead += dr3.getHeader().getRecordLength();
+                    dr3.printASCII(pw, "  ");
+                    bytesRead += dr3.getSize();
                 }
                 pw.println("Read "+bytesRead+" file size="+fileBytes);
             } catch(EOFException e) {
-                System.err.println("EOF");
+                System.err.println(e);
+                e.printStackTrace();
                 // done...
             } finally {
                 if (pw != null) {
