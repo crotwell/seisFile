@@ -62,7 +62,7 @@ public class Channel extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.DATALOGGER)) {
                     dataLogger = new DataLogger(reader);
                 } else if (elName.equals(StationXMLTagNames.EQUIPMENT)) {
-                    equipment = new Equipment(reader);
+                    equipmentList.add(new Equipment(reader));
                 } else if (elName.equals(StationXMLTagNames.RESPONSE)) {
                     response = new Response(reader);
                 } else {
@@ -109,8 +109,8 @@ public class Channel extends BaseNodeType {
         return dataLogger;
     }
 
-    public Equipment getEquipment() {
-        return equipment;
+    public List<Equipment> getEquipment() {
+        return equipmentList;
     }
 
     public Response getResponse() {
@@ -182,7 +182,7 @@ public class Channel extends BaseNodeType {
 
     private DataLogger dataLogger;
 
-    private Equipment equipment;
+    private List<Equipment> equipmentList = new ArrayList<Equipment>();
 
     private Response response;
 
