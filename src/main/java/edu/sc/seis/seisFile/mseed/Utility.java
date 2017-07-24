@@ -170,6 +170,13 @@ public class Utility {
         return Float.intBitsToFloat(Utility.bytesToInt(info, start, swapBytes));
     }
 
+    public static byte[] shortToByteArray(int a) {
+        byte[] returnByteArray = new byte[2];// short is 2 bytes
+        returnByteArray[2] = (byte)((a >>  8) & 0xff);
+        returnByteArray[3] = (byte)((a      ) & 0xff);
+        return returnByteArray;
+    }
+
     public static byte[] intToByteArray(int a) {
         byte[] returnByteArray = new byte[4];// int is 4 bytes
         returnByteArray[0] = (byte)((a >> 24) & 0xff);
@@ -199,6 +206,44 @@ public class Utility {
     
     public static byte[] doubleToByteArray(double d) {
         return longToByteArray(Double.doubleToLongBits(d));
+    }
+
+    public static byte[] shortToLittleEndianByteArray(int a) {
+        byte[] returnByteArray = new byte[2];// short is 2 bytes
+        returnByteArray[1] = (byte)((a >>  8) & 0xff);
+        returnByteArray[0] = (byte)((a      ) & 0xff);
+        return returnByteArray;
+    }
+
+    public static byte[] intToLittleEndianByteArray(int a) {
+        byte[] returnByteArray = new byte[4];// int is 4 bytes
+        returnByteArray[3] = (byte)((a >> 24) & 0xff);
+        returnByteArray[2] = (byte)((a >> 16) & 0xff);
+        returnByteArray[1] = (byte)((a >>  8) & 0xff);
+        returnByteArray[0] = (byte)((a      ) & 0xff);
+        return returnByteArray;
+    }
+
+    public static byte[] floatToLittleEndianByteArray(float a) {
+        return intToLittleEndianByteArray(Float.floatToIntBits(a));
+    }
+
+
+    public static byte[] longToLittleEndianByteArray(long a) {
+        byte[] returnByteArray = new byte[8];// long is 8 bytes
+        returnByteArray[7] = (byte)((a >>> 56) & 0xffl);
+        returnByteArray[6] = (byte)((a >>> 48) & 0xffl);
+        returnByteArray[5] = (byte)((a >>> 40) & 0xffl);
+        returnByteArray[4] = (byte)((a >>> 32) & 0xffl);
+        returnByteArray[3] = (byte)((a >>> 24) & 0xffl);
+        returnByteArray[2] = (byte)((a >>> 16) & 0xffl);
+        returnByteArray[1] = (byte)((a >>>  8) & 0xffl);
+        returnByteArray[0] = (byte)((a       ) & 0xffl);
+        return returnByteArray;
+    }
+    
+    public static byte[] doubleToLittleEndianByteArray(double d) {
+        return longToLittleEndianByteArray(Double.doubleToLongBits(d));
     }
     
     /**
