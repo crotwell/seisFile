@@ -260,7 +260,7 @@ public class MSeed3Record {
     public ZonedDateTime getLastSampleTime() {
         long nanoDuration = getSamplePeriodAsNanos() * (getNumSamples() - 1)
                 - (getLeapSecInRecord() * SEC_NANOS);
-        return getStartTimeDate().plus( Duration.ofNanos(nanoDuration));
+        return getStartDateTime().plus( Duration.ofNanos(nanoDuration));
     }
 
     public int getLeapSecInRecord() {
@@ -269,9 +269,23 @@ public class MSeed3Record {
         }
         return 0;
     }
+    
+    public void setLeapSecInRecord(int value) {
+        JSONObject eh = getExtraHeadersJSON();
+        eh.put(TIME_LEAP_SECOND, value);
+    }
+    
+    public void setStartDateTime(ZonedDateTime start) {
+        setYear(start.getYear());
+        setDayOfYear(start.getDayOfYear());
+        setHour(start.getHour());
+        setMinute(start.getMinute());
+        setSecond(start.getSecond());
+        setNanosecond(start.getNano());
+    }
 
     /** Start time as a Date. This does NOT adjust for possible leap secs. */
-    public ZonedDateTime getStartTimeDate() {
+    public ZonedDateTime getStartDateTime() {
         return ZonedDateTime.of(getYear(), 0, getDayOfYear(), getHour(), getMinute(), getSecond(), getNanosecond(), ZoneId.of("UTC"));
     }
 
@@ -326,7 +340,7 @@ public class MSeed3Record {
     }
     
     public boolean isEndTimeInLeapSecond() {
-        ZonedDateTime start = getStartTimeDate();
+        ZonedDateTime start = getStartDateTime();
         long durNanos = getSamplePeriodAsNanos() * (getNumSamples() - 1 );
         ZonedDateTime predLastSampleTime = start.plus(Duration.ofNanos(durNanos));
         // check if there are leap seconds, the prediected last sample time (without leaps) is
