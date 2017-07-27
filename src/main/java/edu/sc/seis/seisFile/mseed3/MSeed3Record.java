@@ -8,8 +8,11 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -230,7 +233,7 @@ public class MSeed3Record {
         dos.write(Utility.intToLittleEndianByteArray(recordCRC));
         byte[] channelIdBytes = channelId.getBytes();
         dos.write((byte)(channelIdBytes.length));
-        byte[] extraHeadersBytes = extraHeaders.getBytes();
+        byte[] extraHeadersBytes = getExtraHeaders().getBytes();
         extraHeadersByteLength = extraHeadersBytes.length;
         dos.write(Utility.shortToLittleEndianByteArray(extraHeadersBytes.length));
         dos.write(Utility.shortToLittleEndianByteArray(timeseriesBytes.length));
@@ -253,19 +256,9 @@ public class MSeed3Record {
         }
     }
 
-    /**
-     * the derived last sample time for this record
-     * adjusted for leap seconds.
-     */
-    public ZonedDateTime getLastSampleTime() {
-        long nanoDuration = getSamplePeriodAsNanos() * (getNumSamples() - 1)
-                - (getLeapSecInRecord() * SEC_NANOS);
-        return getStartDateTime().plus( Duration.ofNanos(nanoDuration));
-    }
-
     public int getLeapSecInRecord() {
         if (getExtraHeadersJSON().has(TIME_LEAP_SECOND)) {
-                return getExtraHeadersJSON().getInt(TIME_LEAP_SECOND);
+            return getExtraHeadersJSON().getInt(TIME_LEAP_SECOND);
         }
         return 0;
     }
@@ -284,9 +277,41 @@ public class MSeed3Record {
         setNanosecond(start.getNano());
     }
 
-    /** Start time as a Date. This does NOT adjust for possible leap secs. */
+    /** Start time as a Date. This adjusts for possible leap seconds, but will be wrong during a leap second.
+     *  In particular, the returned value is the same if the seconds field is 59 or 60, as if the 59th
+     *  second repeats.*/
     public ZonedDateTime getStartDateTime() {
-        return ZonedDateTime.of(getYear(), 0, getDayOfYear(), getHour(), getMinute(), getSecond(), getNanosecond(), ZoneId.of("UTC"));
+        int sec = getSecond();
+        int leaps = 0;
+        if (sec > 59) {
+            leaps = sec-59;
+            sec = 59;
+        }
+        ZonedDateTime out = ZonedDateTime.of(getYear(), 1, 1, getHour(), getMinute(), sec, getNanosecond(), TZ_UTC);
+        out = out.plusDays(getDayOfYear()-1);
+        return out;
+    }
+    
+    /**
+     * Checks if the record covers a time range that might contain a leap second,
+     * effectively if it crosses midnight on Dec 31 or June 30. This does not imply that
+     * the date actually has a leap second, just that it could. 
+     * @return
+     */
+    public boolean possibleLeapSecond() {
+        // first check for start on June 30 or Dec 31, allowing for leap years
+        boolean leapYear = (getYear() % 4 == 0 && (getYear() % 100 != 0 || getYear() % 400 == 0));
+        if (       (  leapYear && ( getDayOfYear() == 182 || getDayOfYear() == 366))
+                || (! leapYear && ( getDayOfYear() == 181 || getDayOfYear() == 365))) {
+            // date is June 30 or Dec 31
+            ZonedDateTime start = getStartDateTime();
+            ZonedDateTime end = getLastSampleTime();
+            ZonedDateTime midnight = ZonedDateTime.of(start.getYear(), start.getMonthValue(), start.getDayOfMonth(), 23, 59, 59, 0, TZ_UTC);  
+            if (end.isAfter(midnight)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -297,7 +322,7 @@ public class MSeed3Record {
     public String getStartTimeString() {
         return padToLength(getYear(), 4)+padToLength(getDayOfYear(),3)+'T'
                 +padToLength(getHour(),2)+padToLength(getMinute(),2)+padToLength(getSecond(),2)
-                +'.'+padToLength(getNanosecond(), 9);
+                +'.'+padToLength(getNanosecond(), 9)+ZULU;
     }
     
     private String padToLength(int val, int length) {
@@ -309,22 +334,52 @@ public class MSeed3Record {
     }
 
     /**
-     * get the value of end time. derived from Start time, sample rate, and
-     * number of samples.
+     * the derived last sample time for this record
+     * adjusted for leap seconds. In the case of a leap second in a record,
+     * getLastSampleTime() minus getStartDateTime() is NOT equal to
+     * (numSamples-1) * samplePeriod. Also, in case of a record ending in a leap
+     * second, the seconds field in the date will be 59, ie it is as if the 59th second repeats.
+     */
+    public ZonedDateTime getLastSampleTime() {
+        long nanoDuration = getSamplePeriodAsNanos() * (getNumSamples() - 1);
+        if (getSecond() < 60 ) {
+            nanoDuration -= (getLeapSecInRecord() * SEC_NANOS);
+        }
+        return getStartDateTime().plusNanos(nanoDuration);
+    }
+
+
+    /**
+     * the predicted start time for the record following this one
+     * adjusted for leap seconds. In the case of a leap second in a record,
+     * getPredictedNextRecordStartTime() minus getStartDateTime() is NOT equal to
+     * (numSamples) * samplePeriod. Also, in case of a record starting in a leap
+     * second, the seconds field in the date will be 59, ie it is as if the 59th second repeats.
+     */
+    public ZonedDateTime getPredictedNextRecordStartTime() {
+        long nanoDuration = getSamplePeriodAsNanos() * (getNumSamples() );
+        if (getSecond() < 60 ) {
+            nanoDuration -= (getLeapSecInRecord() * SEC_NANOS);
+        }
+        return getStartDateTime().plusNanos(nanoDuration);
+    }
+    
+    /**
+     * get the time of the last sample of the record, derived from Start time, sample rate, and
+     * number of samples -1. 
      * 
      * @return the value of end time
      */
     public String getLastSampleTimeString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyDDD'T'HHmmss.SSSZ");
-        return sdf.format(getLastSampleTime());
+        if (isEndTimeInLeapSecond() ) {
+            // leap second
+            ZonedDateTime lst = getLastSampleTime();
+            return DateTimeFormatter.ofPattern("yyyyDDD'T'HHmm").format(lst)
+                    +padToLength(lst.getSecond()+getLeapSecInRecord(), 2)+"."+padToLength(lst.getNano()/1000, 6)+ZULU;
+        }
+        return DateTimeFormatter.ofPattern("yyyyDDD'T'HHmmss.SSSSSS").format(getLastSampleTime())+ZULU;
     }
-
-    /*
-     * public String getPredictedNextStartTimeString() { long time =
-     * getPredictedNextStartTime(); boolean isLeapSec = false; if
-     * (isPosLeapSecInRecord() && time % 86400 == 1) { isLeapSec = true; }
-     * return longToDateString(time, isLeapSec); }
-     */
+    
     public long getSamplePeriodAsNanos() {
         if (getSampleRate() < 0) {
             // period in seconds
@@ -348,10 +403,11 @@ public class MSeed3Record {
         // or the starttime is in the leap second and the duraction is less than
         // that second
         return (getLeapSecInRecord() != 0 && (
-                (start.getDayOfYear() != predLastSampleTime.getDayOfYear() 
-                && predLastSampleTime.getMinute() == 0 && predLastSampleTime.getHour() == 0
-                ) || (
-                        isStartTimeInLeapSecond() && (start.getNano() + predLastSampleTime.getNano() < SEC_NANOS))));  
+                ( ! isStartTimeInLeapSecond() && start.getDayOfYear() != predLastSampleTime.getDayOfYear() 
+                        && predLastSampleTime.getSecond() == 0 
+                        && predLastSampleTime.getMinute() == 0 
+                        && predLastSampleTime.getHour() == 0
+                ) || ( isStartTimeInLeapSecond() && (start.getNano() + durNanos < SEC_NANOS))));  
     }
 
     public boolean isTimeTagQuestionable() {
@@ -391,10 +447,12 @@ public class MSeed3Record {
 
     public JSONObject getExtraHeadersJSON() {
         if (extraHeadersJSON == null) {
-            if (getExtraHeaders().length() < 2) {
+            if (getExtraHeaders() == null || getExtraHeaders().length() < 2) {
                 extraHeadersJSON = new JSONObject("{}");
+                extraHeaders = null;
             } else {
                 extraHeadersJSON = new JSONObject(getExtraHeaders());
+                extraHeaders = null;
             }
         }
         return extraHeadersJSON;
@@ -553,12 +611,20 @@ public class MSeed3Record {
 
     
     public String getExtraHeaders() {
+        if (extraHeaders == null) {
+            if (extraHeadersJSON != null) {
+                extraHeaders = extraHeadersJSON.toString();
+            } else {
+                extraHeaders = "";
+            }
+        }
         return extraHeaders;
     }
 
     
     public void setExtraHeaders(String extraHeaders) {
         this.extraHeaders = extraHeaders;
+        this.extraHeadersJSON = null;
     }
 
     
@@ -617,6 +683,9 @@ public class MSeed3Record {
         return channelIdByteLength;
     }
 
+    public int calcExtraHeadersByteLength() {
+        return getExtraHeaders().getBytes().length;
+    }
     
     public int getExtraHeadersByteLength() {
         return extraHeadersByteLength;
@@ -664,7 +733,9 @@ public class MSeed3Record {
         return FIXED_HEADER_SIZE+getChannelIdByteLength()+getExtraHeadersByteLength()+getDataByteLength();
     }
 
-    public static final TimeZone TZ_UTC = TimeZone.getTimeZone("UTC");
+    public static final ZoneId TZ_UTC = ZoneId.of("UTC");
+    
+    public static final String ZULU = "Z";
 
     public static final String FDSN_PREFIX = "FDSN:";
     
