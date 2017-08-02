@@ -8,14 +8,13 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.stationxml.ListStationIterator;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationIterator;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Network extends BaseNodeType {
 
+    public Network() {
+        
+    }
+    
     public Network(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.NETWORK, reader);
         super.parseAttributes(startE);
@@ -56,6 +55,21 @@ public class Network extends BaseNodeType {
         return selectedNumStations;
     }
 
+    
+    public void setTotalNumStations(int totalNumStations) {
+        this.totalNumStations = totalNumStations;
+    }
+
+    
+    public void setSelectedNumStations(int selectedNumStations) {
+        this.selectedNumStations = selectedNumStations;
+    }
+
+    
+    public void setStations(StationIterator stations) {
+        this.stations = stations;
+    }
+
     @Override
     public String toString() {
         return getCode();
@@ -65,4 +79,5 @@ public class Network extends BaseNodeType {
     int totalNumStations, selectedNumStations;
     
     StationIterator stations = new ListStationIterator(new ArrayList<Station>()); // init to empty
+    
 }

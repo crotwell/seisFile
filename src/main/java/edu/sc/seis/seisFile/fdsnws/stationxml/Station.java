@@ -9,14 +9,11 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Equipment;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Site;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Station extends BaseNodeType {
 
+    public Station() {}
+    
     public Station(XMLEventReader reader, String networkCode) throws XMLStreamException, StationXMLException {
         this.networkCode = networkCode;
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STATION, reader);
@@ -28,9 +25,9 @@ public class Station extends BaseNodeType {
                 if (super.parseSubElement(elName, reader)) {
                     // super handled it
                 } else if (elName.equals(StationXMLTagNames.LAT)) {
-                    lat = new FloatType(reader, StationXMLTagNames.LAT, Unit.DEGREE);
+                    latitude = new FloatType(reader, StationXMLTagNames.LAT, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.LON)) {
-                    lon = new FloatType(reader, StationXMLTagNames.LON, Unit.DEGREE);
+                    longitude = new FloatType(reader, StationXMLTagNames.LON, Unit.DEGREE);
                 } else if (elName.equals(StationXMLTagNames.ELEVATION)) {
                     elevation = new FloatType(reader, StationXMLTagNames.ELEVATION, Unit.METER);
                 } else if (elName.equals(StationXMLTagNames.SITE)) {
@@ -72,11 +69,11 @@ public class Station extends BaseNodeType {
     }
 
     public FloatType getLatitude() {
-        return lat;
+        return latitude;
     }
 
     public FloatType getLongitude() {
-        return lon;
+        return longitude;
     }
 
     public FloatType getElevation() {
@@ -136,9 +133,89 @@ public class Station extends BaseNodeType {
         return getNetworkCode()+"."+getCode();
     }
 
+    
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    
+    public void setTerminationDate(String terminationDate) {
+        this.terminationDate = terminationDate;
+    }
+
+    
+    public void setLatitude(FloatType latitude) {
+        this.latitude = latitude;
+    }
+
+    
+    public void setLongitude(FloatType longitude) {
+        this.longitude = longitude;
+    }
+
+    
+    public void setElevation(FloatType elevation) {
+        this.elevation = elevation;
+    }
+
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
+    public void setVault(String vault) {
+        this.vault = vault;
+    }
+
+    
+    public void setGeology(String geology) {
+        this.geology = geology;
+    }
+
+    
+    public void setSite(Site site) {
+        this.site = site;
+    }
+
+    
+    public void setTotalNumChannels(int totalNumChannels) {
+        this.totalNumChannels = totalNumChannels;
+    }
+
+    
+    public void setSelectedNumChannels(int selectedNumChannels) {
+        this.selectedNumChannels = selectedNumChannels;
+    }
+
+    
+    public void setNetworkCode(String networkCode) {
+        this.networkCode = networkCode;
+    }
+
+    
+    public void setChannelList(List<Channel> channelList) {
+        this.channelList = channelList;
+    }
+
+    
+    public void setEquipmentList(List<Equipment> equipmentList) {
+        this.equipmentList = equipmentList;
+    }
+
+    
+    public void setOperatorList(List<Operator> operatorList) {
+        this.operatorList = operatorList;
+    }
+
+    
+    public void setExternalReferenceList(List<String> externalReferenceList) {
+        this.externalReferenceList = externalReferenceList;
+    }
+
     String creationDate, terminationDate;
 
-    FloatType lat, lon, elevation;
+    FloatType latitude, longitude, elevation;
 
     String name;
 

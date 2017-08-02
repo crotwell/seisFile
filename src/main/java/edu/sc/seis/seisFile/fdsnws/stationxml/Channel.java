@@ -9,15 +9,11 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.stationxml.DataLogger;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Equipment;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Response;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Sensor;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Channel extends BaseNodeType {
 
+    public Channel() {}
+    
     public Channel(XMLEventReader reader, String networkCode, String stationCode) throws XMLStreamException,
             StationXMLException {
         this.networkCode = networkCode.trim();
@@ -166,6 +162,123 @@ public class Channel extends BaseNodeType {
         return getNetworkCode()+"."+getStationCode()+"."+getLocCode()+"."+getCode();
     }
 
+    
+    
+    public List<Equipment> getEquipmentList() {
+        return equipmentList;
+    }
+
+    
+    public void setEquipmentList(List<Equipment> equipmentList) {
+        this.equipmentList = equipmentList;
+    }
+
+    
+    public FloatType getLongitude() {
+        return longitude;
+    }
+
+    
+    public void setLongitude(FloatType longitude) {
+        this.longitude = longitude;
+    }
+
+    
+    public void setSampleRateRatio(SampleRateRatio sampleRateRatio) {
+        this.sampleRateRatio = sampleRateRatio;
+    }
+
+    
+    public void setSampleRate(FloatType sampleRate) {
+        this.sampleRate = sampleRate;
+    }
+
+    
+    public void setClockDrift(FloatType clockDrift) {
+        this.clockDrift = clockDrift;
+    }
+
+    
+    public void setClockDriftUnit(String clockDriftUnit) {
+        this.clockDriftUnit = clockDriftUnit;
+    }
+
+    
+    public void setCalibrationUnits(Unit calibrationUnits) {
+        this.calibrationUnits = calibrationUnits;
+    }
+
+    
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+
+    
+    public void setPreAmplifier(PreAmplifier preAmplifier) {
+        this.preAmplifier = preAmplifier;
+    }
+
+    
+    public void setDataLogger(DataLogger dataLogger) {
+        this.dataLogger = dataLogger;
+    }
+
+    
+    public void setResponse(Response response) {
+        this.response = response;
+    }
+
+    
+    public void setLocCode(String locCode) {
+        this.locCode = locCode;
+    }
+
+    
+    public void setStationCode(String stationCode) {
+        this.stationCode = stationCode;
+    }
+
+    
+    public void setNetworkCode(String networkCode) {
+        this.networkCode = networkCode;
+    }
+
+    
+    public void setLatitude(FloatType latitude) {
+        this.latitude = latitude;
+    }
+
+    
+    public void setElevation(FloatType elevation) {
+        this.elevation = elevation;
+    }
+
+    
+    public void setDepth(FloatType depth) {
+        this.depth = depth;
+    }
+
+    
+    public void setAzimuth(FloatType azimuth) {
+        this.azimuth = azimuth;
+    }
+
+    
+    public void setDip(FloatType dip) {
+        this.dip = dip;
+    }
+
+    
+    public void setTypeList(List<String> typeList) {
+        this.typeList = typeList;
+    }
+
+    
+    public void setStorageFormat(String storageFormat) {
+        this.storageFormat = storageFormat;
+    }
+
+
     private SampleRateRatio sampleRateRatio;
 
     private FloatType sampleRate;
@@ -206,4 +319,5 @@ public class Channel extends BaseNodeType {
     }
     
     public static final String EMPTY_LOC_CODE = "";
+
 }

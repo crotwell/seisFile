@@ -1,19 +1,23 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
-public class BaseNodeType {
+public abstract class BaseNodeType {
 
+    public BaseNodeType() {}
+    
     void parseAttributes(StartElement startE) throws StationXMLException {
         code = StaxUtil.pullAttribute(startE, StationXMLTagNames.CODE);
         startDate = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.STARTDATE);
@@ -43,11 +47,21 @@ public class BaseNodeType {
     }
 
     public String getStartDate() {
+        if (startDate == null && startDateTime != null) {
+            startDate = getDateTimeFormatter().format(getStartDateTime())+ZULU;
+        }
         return startDate;
     }
 
     public String getEndDate() {
+        if (endDate == null && endDateTime != null) {
+            endDate = getDateTimeFormatter().format(getEndDateTime())+ZULU;
+        }
         return endDate;
+    }
+    
+    public DateTimeFormatter getDateTimeFormatter() {
+        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSSSSSX").withZone(TZ_UTC);
     }
 
     public String getHistoricalCode() {
@@ -74,11 +88,90 @@ public class BaseNodeType {
         return dataAvailability;
     }
 
+    
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+        this.startDateTime = null;
+    }
+
+    
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+        this.endDateTime = null;
+    }
+
+    
+    public void setHistoricalCode(String historicalCode) {
+        this.historicalCode = historicalCode;
+    }
+
+    
+    public void setAlternateCode(String alternateCode) {
+        this.alternateCode = alternateCode;
+    }
+
+    
+    public void setRestrictedStatus(String restrictedStatus) {
+        this.restrictedStatus = restrictedStatus;
+    }
+
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    
+    public void setDataAvailability(DataAvailability dataAvailability) {
+        this.dataAvailability = dataAvailability;
+    }
+
+    
+    public ZonedDateTime getStartDateTime() {
+        if (startDateTime == null && startDate != null) {
+            startDateTime = ZonedDateTime.parse(getStartDate(), getDateTimeFormatter());
+        }
+        return startDateTime;
+    }
+
+    
+    public void setStartDateTime(ZonedDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+        this.startDate = null;
+    }
+
+    
+    public ZonedDateTime getEndDateTime() {
+        if (endDateTime == null && endDate != null) {
+            endDateTime = ZonedDateTime.parse(getEndDate(), getDateTimeFormatter());
+        }
+        return endDateTime;
+    }
+
+    
+    public void setEndDateTime(ZonedDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+        this.endDate = null;
+    }
+
     String code;
 
     String startDate;
 
     String endDate;
+    
+    ZonedDateTime startDateTime;
+
+    ZonedDateTime endDateTime;
 
     String historicalCode;
 
@@ -91,4 +184,23 @@ public class BaseNodeType {
     List<Comment> commentList = new ArrayList<Comment>();
 
     DataAvailability dataAvailability;
+    
+    public Integer getDbid() {
+        return dbid;
+    }
+    
+    void setDbid(Integer i) {
+        this.dbid = i;
+    }
+    
+    public static final String ZULU = "Z";
+    
+    public static final ZoneId TZ_UTC = ZoneId.of("UTC");
+
+    /** For Hibernate/JPA
+     * 
+     */
+    @Id
+    @GeneratedValue
+    private Integer dbid;
 }
