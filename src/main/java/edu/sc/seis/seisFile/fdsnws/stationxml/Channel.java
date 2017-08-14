@@ -12,12 +12,24 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Channel extends BaseNodeType {
 
-    public Channel() {}
+    /** for hibernate, etc */
+    Channel() {}
     
-    public Channel(XMLEventReader reader, String networkCode, String stationCode) throws XMLStreamException,
+    Channel(Station station) {
+        this.station = station;
+        this.networkCode = station.getNetworkCode();
+        this.stationCode = station.getStationCode();
+    }
+
+    public Channel(Station station, String locCode, String chanCode) {
+        this(station);
+        this.locCode = locCode;
+        this.code = chanCode;
+    }
+    
+    public Channel(XMLEventReader reader, Station station) throws XMLStreamException,
             StationXMLException {
-        this.networkCode = networkCode.trim();
-        this.stationCode = stationCode.trim();
+        this(station);
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.CHANNEL, reader);
         super.parseAttributes(startE);
         locCode = Channel.fixLocCode(StaxUtil.pullAttribute(startE, StationXMLTagNames.LOC_CODE));
@@ -112,6 +124,10 @@ public class Channel extends BaseNodeType {
     public Response getResponse() {
         return response;
     }
+    
+    public String getChannelCode() {
+        return getCode();
+    }
 
     public String getLocCode() {
         return locCode;
@@ -121,8 +137,13 @@ public class Channel extends BaseNodeType {
         return stationCode;
     }
 
+    @Deprecated
     public String getNetworkCode() {
         return networkCode;
+    }
+
+    public String getNetworkId() {
+        return getNetwork().getNetworkId();
     }
 
     public FloatType getLatitude() {
@@ -177,7 +198,22 @@ public class Channel extends BaseNodeType {
     public FloatType getLongitude() {
         return longitude;
     }
+    
+    public Station getStation() {
+        return station;
+    }
+    
+    public Network getNetwork() {
+        try {
+            return getStation().getNetwork();
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
 
+    public void setStation(Station station) {
+        this.station = station;
+    }
     
     public void setLongitude(FloatType longitude) {
         this.longitude = longitude;
@@ -278,6 +314,7 @@ public class Channel extends BaseNodeType {
         this.storageFormat = storageFormat;
     }
 
+    private Station station;
 
     private SampleRateRatio sampleRateRatio;
 

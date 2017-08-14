@@ -12,9 +12,9 @@ public class StationIterator {
 
     protected StationIterator() {}
     
-    public StationIterator(XMLEventReader reader, String networkCode) {
+    public StationIterator(XMLEventReader reader, Network network) {
         this.reader = reader;
-        this.networkCode = networkCode;
+        this.network = network;
     }
 
     public boolean hasNext() throws XMLStreamException {
@@ -22,10 +22,10 @@ public class StationIterator {
     }
 
     public Station next() throws XMLStreamException, StationXMLException {
-        return new Station(reader, networkCode);
+        return new Station(reader, network);
     }
 
     XMLEventReader reader;
     
-    String networkCode;
+    Network network;
 }

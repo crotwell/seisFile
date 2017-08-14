@@ -14,8 +14,10 @@ public class Station extends BaseNodeType {
 
     public Station() {}
     
-    public Station(XMLEventReader reader, String networkCode) throws XMLStreamException, StationXMLException {
-        this.networkCode = networkCode;
+    public Station(XMLEventReader reader, Network network) throws XMLStreamException, StationXMLException {
+        this.network = network;
+        this.networkCode = network.getNetworkCode();
+        this.networkId = network.getNetworkId();
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STATION, reader);
         super.parseAttributes(startE);
         while (reader.hasNext()) {
@@ -51,7 +53,7 @@ public class Station extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.EXTERNALREFERENCE)) {
                     externalReferenceList.add(StaxUtil.pullText(reader, StationXMLTagNames.EXTERNALREFERENCE));
                 } else if (elName.equals(StationXMLTagNames.CHANNEL)) {
-                    channelList.add(new Channel(reader, networkCode, getCode()));
+                    channelList.add(new Channel(reader, this));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -62,6 +64,10 @@ public class Station extends BaseNodeType {
                 e = reader.nextEvent();
             }
         }
+    }
+    
+    public Network getNetwork() {
+        return network;
     }
 
     public String getCreationDate() {
@@ -112,8 +118,17 @@ public class Station extends BaseNodeType {
         return geology;
     }
 
+    @Deprecated
     public String getNetworkCode() {
         return networkCode;
+    }
+
+    public String getNetworkId() {
+        return networkId;
+    }
+    
+    public String getStationCode() {
+        return getCode();
     }
 
     public List<Equipment> getEquipmentList() {
@@ -133,6 +148,9 @@ public class Station extends BaseNodeType {
         return getNetworkCode()+"."+getCode();
     }
 
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
     
     public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
@@ -212,6 +230,8 @@ public class Station extends BaseNodeType {
     public void setExternalReferenceList(List<String> externalReferenceList) {
         this.externalReferenceList = externalReferenceList;
     }
+    
+    Network network;
 
     String creationDate, terminationDate;
 
@@ -230,6 +250,8 @@ public class Station extends BaseNodeType {
     int selectedNumChannels;
 
     String networkCode;
+    
+    String networkId;
 
     List<Channel> channelList = new ArrayList<Channel>();
 

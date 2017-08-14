@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
@@ -29,7 +30,7 @@ public class Network extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.SELECTEDNUMSTATIONS)) {
                     selectedNumStations = StaxUtil.pullInt(reader, StationXMLTagNames.SELECTEDNUMSTATIONS);
                 } else if (elName.equals(StationXMLTagNames.STATION)) {
-                    stations = new StationIterator(reader, getCode());
+                    stations = new StationIterator(reader, this);
                     break;
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
@@ -43,6 +44,23 @@ public class Network extends BaseNodeType {
         }
     }
 
+    /** Same as getNetworkCode() for permanent networks, but the start year
+     * is appended for temporary networks to make the code unique. 
+     * For example for the CO network this returns CO, 
+     * but for the XC network that started in 1991 it returns XC1991. 
+     * @return
+     */
+    public String getNetworkId() {
+        if (isTemporary()) {
+            return getNetworkCode()+getStartDateTime().getYear();
+        }
+        return getNetworkCode();
+    }
+    
+    public String getNetworkCode() {
+        return getCode();
+    }
+    
     public StationIterator getStations() {
         return stations;
     }
@@ -74,6 +92,12 @@ public class Network extends BaseNodeType {
     public String toString() {
         return getCode();
     }
+    
+    public boolean isTemporary() {
+        return tempNetPattern.matcher(getCode()).matches();
+    }
+
+    private static Pattern tempNetPattern = Pattern.compile("[1-9XYZ].?");
 
 
     int totalNumStations, selectedNumStations;
