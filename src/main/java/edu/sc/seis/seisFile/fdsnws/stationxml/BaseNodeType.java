@@ -48,22 +48,18 @@ public abstract class BaseNodeType {
 
     public String getStartDate() {
         if (startDate == null && startDateTime != null) {
-            startDate = getDateTimeFormatter().format(getStartDateTime())+ZULU;
+            startDate = toISOString(getStartDateTime());
         }
         return startDate;
     }
 
     public String getEndDate() {
         if (endDate == null && endDateTime != null) {
-            endDate = getDateTimeFormatter().format(getEndDateTime())+ZULU;
+            endDate = toISOString(getEndDateTime());
         }
         return endDate;
     }
     
-    public DateTimeFormatter getDateTimeFormatter() {
-        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSSSSSX").withZone(TZ_UTC);
-    }
-
     public String getHistoricalCode() {
         return historicalCode;
     }
@@ -138,7 +134,7 @@ public abstract class BaseNodeType {
     
     public ZonedDateTime getStartDateTime() {
         if (startDateTime == null && startDate != null) {
-            startDateTime = ZonedDateTime.parse(getStartDate(), getDateTimeFormatter());
+            startDateTime = parseISOString(getStartDate());
         }
         return startDateTime;
     }
@@ -152,7 +148,7 @@ public abstract class BaseNodeType {
     
     public ZonedDateTime getEndDateTime() {
         if (endDateTime == null && endDate != null) {
-            endDateTime = ZonedDateTime.parse(getEndDate(), getDateTimeFormatter());
+            endDateTime = parseISOString(getEndDate());
         }
         return endDateTime;
     }
@@ -191,6 +187,18 @@ public abstract class BaseNodeType {
     
     void setDbid(Integer i) {
         this.dbid = i;
+    }
+    
+    public static DateTimeFormatter getDateTimeFormatter() {
+        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSSSSSX").withZone(TZ_UTC);
+    }
+
+    public static ZonedDateTime parseISOString(String time) {
+        return ZonedDateTime.parse(time, getDateTimeFormatter());
+    }
+    
+    public static String toISOString(ZonedDateTime time) {
+        return getDateTimeFormatter().format(time);
     }
     
     public static final String ZULU = "Z";
