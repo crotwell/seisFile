@@ -179,7 +179,7 @@ public abstract class AbstractFDSNQuerier {
     }
     
     public XMLEventReader getReader() throws XMLStreamException, URISyntaxException {
-        if (reader == null) {
+        if (reader == null && inputStream != null) {
             XMLInputFactory2 factory = (XMLInputFactory2)XMLInputFactory.newInstance();
             XMLStreamReader2 sr = (XMLStreamReader2)factory.createXMLStreamReader(getConnectionUri().toString(),
                                                                                   getInputStream());
@@ -319,21 +319,29 @@ public abstract class AbstractFDSNQuerier {
     }
 
     public void close() {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch(XMLStreamException e) {
+                logger.warn("can't close reader", e);
+            }
+            reader = null;
+        }
         if (inputStream != null) {
             try {
                 inputStream.close();
-                inputStream = null;
             } catch(IOException e) {
                 logger.warn("can't close inputstream: "+connectionUri, e);
             }
+            inputStream = null;
         }
         if (response != null) {
             try {
                 response.close();
-                response = null;
             } catch(IOException e) {
                 logger.warn("can't close response", e);
             }
+            response = null;
         }
     }
     
