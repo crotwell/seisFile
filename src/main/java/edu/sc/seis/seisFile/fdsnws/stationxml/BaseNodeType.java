@@ -6,8 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -206,9 +204,6 @@ public abstract class BaseNodeType {
     public static final ZoneId TZ_UTC = ZoneId.of("UTC");
 
     /** For Hibernate/JPA
-     * 
      */
-    @Id
-    @GeneratedValue
     private Integer dbid;
 }
