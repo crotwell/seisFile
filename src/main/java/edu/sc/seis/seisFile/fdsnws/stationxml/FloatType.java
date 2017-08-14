@@ -18,6 +18,10 @@ public class FloatType extends FloatNoUnitType {
         this.unit = unit;
     }
 
+    public FloatType(float value, String unit) {
+    	    this(value, unit, null, null);
+    }
+    
     public FloatType(XMLEventReader reader, String tagName) throws StationXMLException, XMLStreamException {
         this(reader, tagName, null);
     }
