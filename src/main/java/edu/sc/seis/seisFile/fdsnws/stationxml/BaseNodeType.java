@@ -190,8 +190,23 @@ public abstract class BaseNodeType {
     public static DateTimeFormatter getDateTimeFormatter() {
         return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSSSSSX").withZone(TZ_UTC);
     }
+    
+    public static DateTimeFormatter getFracSecondsDateTimeFormatter() {
+        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmssX").withZone(TZ_UTC);
+    }
+    
+    public static DateTimeFormatter getMillisDateTimeFormatter() {
+        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSSX").withZone(TZ_UTC);
+    }
 
     public static ZonedDateTime parseISOString(String time) {
+        if (time.length() == 15 || (time.length() == 16 && time.endsWith(ZULU))) {
+            // no factional seconds
+            return ZonedDateTime.parse(time, getFracSecondsDateTimeFormatter());
+        } else if (time.length() == 20) {
+            // only milliseconds
+            return ZonedDateTime.parse(time, getMillisDateTimeFormatter());
+        }
         return ZonedDateTime.parse(time, getDateTimeFormatter());
     }
     
