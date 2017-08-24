@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,20 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 
 public class Origin {
 
+	public Origin() {
+		
+	}
+	
+	public Origin(ZonedDateTime originTime, float lat, float lon) {
+		datetime = originTime;
+		latitude = new RealQuantity(lat);
+		longitude = new RealQuantity(lon);
+	}
+	
     public static final String ELEMENT_NAME = QuakeMLTagNames.origin;
 
     public Origin(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
@@ -92,6 +104,10 @@ public class Origin {
 
     public Time getTime() {
         return time;
+    }
+    
+    public ZonedDateTime getDateTime() {
+    	 	return BaseNodeType.parseISOString(getTime().value);
     }
 
     public RealQuantity getLatitude() {
@@ -182,7 +198,110 @@ public class Origin {
         return region;
     }
 
-    Time time;
+    
+    public Integer getDbid() {
+		return dbid;
+	}
+
+	public void setDbid(Integer dbid) {
+		this.dbid = dbid;
+	}
+
+	public void setTime(Time time) {
+		this.time = time;
+	}
+
+	public void setLatitude(RealQuantity latitude) {
+		this.latitude = latitude;
+	}
+
+	public void setLongitude(RealQuantity longitude) {
+		this.longitude = longitude;
+	}
+
+	public void setDepth(RealQuantity depth) {
+		this.depth = depth;
+	}
+
+	public void setDepthType(String depthType) {
+		this.depthType = depthType;
+	}
+
+	public void setTimeFixed(boolean timeFixed) {
+		this.timeFixed = timeFixed;
+	}
+
+	public void setEpicenterFixed(boolean epicenterFixed) {
+		this.epicenterFixed = epicenterFixed;
+	}
+
+	public void setEarthModelID(String earthModelID) {
+		this.earthModelID = earthModelID;
+	}
+
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
+	}
+
+	public void setArrivalList(List<Arrival> arrivalList) {
+		this.arrivalList = arrivalList;
+	}
+
+	public void setWaveformID(String waveformID) {
+		this.waveformID = waveformID;
+	}
+
+	public void setQuality(OriginQuality quality) {
+		this.quality = quality;
+	}
+
+	public void setOriginUncertainty(OriginUncertainty originUncertainty) {
+		this.originUncertainty = originUncertainty;
+	}
+
+	public void setEvaluationMode(String evaluationMode) {
+		this.evaluationMode = evaluationMode;
+	}
+
+	public void setEvaluationStatus(String evaluationStatus) {
+		this.evaluationStatus = evaluationStatus;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setCreationInfo(CreationInfo creationInfo) {
+		this.creationInfo = creationInfo;
+	}
+
+	public void setMethodID(String methodID) {
+		this.methodID = methodID;
+	}
+
+	public void setReferenceSystemID(String referenceSystemID) {
+		this.referenceSystemID = referenceSystemID;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public void setPublicId(String publicId) {
+		this.publicId = publicId;
+	}
+
+	public void setIrisContributor(String irisContributor) {
+		this.irisContributor = irisContributor;
+	}
+
+	public void setIrisCatalog(String irisCatalog) {
+		this.irisCatalog = irisCatalog;
+	}
+
+	ZonedDateTime datetime = null;
+
+	Time time;
 
     RealQuantity latitude;
 
@@ -228,4 +347,8 @@ public class Origin {
     String irisContributor = "";
 
     String irisCatalog = "";
+    
+    /** For Hibernate/JPA
+     */
+    private Integer dbid;
 }

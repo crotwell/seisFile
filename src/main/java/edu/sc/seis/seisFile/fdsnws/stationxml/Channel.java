@@ -214,6 +214,10 @@ public class Channel extends BaseNodeType {
     public void setStation(Station station) {
         this.station = station;
     }
+
+    public void setLongitude(float longitude) {
+    		setLongitude(new FloatType(longitude, Unit.DEGREE));
+    }
     
     public void setLongitude(FloatType longitude) {
         this.longitude = longitude;
@@ -224,7 +228,10 @@ public class Channel extends BaseNodeType {
         this.sampleRateRatio = sampleRateRatio;
     }
 
-    
+    public void setSampleRate(float sampleRate) {
+    	    setSampleRate(new FloatType(sampleRate, Unit.HERTZ));
+    }
+
     public void setSampleRate(FloatType sampleRate) {
         this.sampleRate = sampleRate;
     }
@@ -279,26 +286,42 @@ public class Channel extends BaseNodeType {
         this.networkCode = networkCode;
     }
 
+
+    public void setLatitude(float latitude) {
+    		setLatitude(new FloatType(latitude, Unit.DEGREE));
+    }
     
     public void setLatitude(FloatType latitude) {
         this.latitude = latitude;
     }
 
+    public void setElevation(float elevation) {
+      	setElevation(new FloatType(elevation, Unit.METER));
+    }
     
     public void setElevation(FloatType elevation) {
         this.elevation = elevation;
     }
 
+    public void setDepth(float depth) {
+    		setDepth(new FloatType(depth, Unit.METER));
+    }
     
     public void setDepth(FloatType depth) {
         this.depth = depth;
     }
 
+    public void setAzimuth(float azimuth) {
+    	    setAzimuth(new FloatType(azimuth, Unit.DEGREE));
+    }
     
     public void setAzimuth(FloatType azimuth) {
         this.azimuth = azimuth;
     }
 
+    public void setDip(float dip) {
+    	    setDip(new FloatType(dip, Unit.DEGREE));
+    }
     
     public void setDip(FloatType dip) {
         this.dip = dip;

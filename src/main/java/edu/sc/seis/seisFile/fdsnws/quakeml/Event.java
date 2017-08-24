@@ -21,6 +21,10 @@ public class Event {
 
     public static final String ELEMENT_NAME = QuakeMLTagNames.event;
 
+    public Event(Origin origin) {
+    	    this.originList.add(origin);
+    }
+    
     public Event(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
@@ -141,7 +145,76 @@ public class Event {
         return amplitudeList;
     }
     
-    private String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
+    public Integer getDbid() {
+		return dbid;
+	}
+
+	public void setDbid(Integer dbid) {
+		this.dbid = dbid;
+	}
+
+	public void setPreferredOriginID(String preferredOriginID) {
+		this.preferredOriginID = preferredOriginID;
+	}
+
+	public void setPreferredMagnitudeID(String preferredMagnitudeID) {
+		this.preferredMagnitudeID = preferredMagnitudeID;
+	}
+
+	public void setPreferredFocalMechanismID(String preferredFocalMechanismID) {
+		this.preferredFocalMechanismID = preferredFocalMechanismID;
+	}
+
+	public void setPublicId(String publicId) {
+		this.publicId = publicId;
+	}
+
+	public void setDescriptionList(List<EventDescription> descriptionList) {
+		this.descriptionList = descriptionList;
+	}
+
+	public void setMagnitudeList(List<Magnitude> magnitudeList) {
+		this.magnitudeList = magnitudeList;
+	}
+
+	public void setStationMagnitudeList(List<StationMagnitude> stationMagnitudeList) {
+		this.stationMagnitudeList = stationMagnitudeList;
+	}
+
+	public void setAmplitudeList(List<Amplitude> amplitudeList) {
+		this.amplitudeList = amplitudeList;
+	}
+
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
+	}
+
+	public void setPickList(List<Pick> pickList) {
+		this.pickList = pickList;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setIrisFECode(int irisFECode) {
+		this.irisFECode = irisFECode;
+	}
+
+	public void setOriginList(List<Origin> originList) {
+		this.originList = originList;
+	}
+
+	public void setFocalMechanismList(List<FocalMechanism> focalMechanismList) {
+		this.focalMechanismList = focalMechanismList;
+	}
+
+	public void setCreationInfo(CreationInfo creationInfo) {
+		this.creationInfo = creationInfo;
+	}
+
+
+	private String preferredOriginID, preferredMagnitudeID, preferredFocalMechanismID;
 
     private String publicId;
 
@@ -170,4 +243,8 @@ public class Event {
     private List<FocalMechanism> focalMechanismList = new ArrayList<FocalMechanism>();
 
     private CreationInfo creationInfo;
+
+    /** For Hibernate/JPA
+     */
+    private Integer dbid;
 }

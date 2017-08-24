@@ -15,6 +15,10 @@ public class Network extends BaseNodeType {
     public Network() {
         
     }
+
+    public Network(String code) {
+        this.code = code;
+    }
     
     public Network(final XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.NETWORK, reader);

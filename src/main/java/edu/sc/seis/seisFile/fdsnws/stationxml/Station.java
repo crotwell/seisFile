@@ -14,6 +14,13 @@ public class Station extends BaseNodeType {
 
     public Station() {}
     
+    public Station(Network network, String code) {
+    		this.network = network;
+        this.networkCode = network.getNetworkCode();
+        this.networkId = network.getNetworkId();
+        this.code = code;
+    }
+    
     public Station(XMLEventReader reader, Network network) throws XMLStreamException, StationXMLException {
         this.network = network;
         this.networkCode = network.getNetworkCode();
@@ -161,16 +168,26 @@ public class Station extends BaseNodeType {
         this.terminationDate = terminationDate;
     }
 
+    public void setLatitude(float latitude) {
+    		setLatitude(new FloatType(latitude, Unit.DEGREE));
+    }
     
     public void setLatitude(FloatType latitude) {
         this.latitude = latitude;
     }
 
+    public void setLongitude(float longitude) {
+    	    setLongitude(new FloatType(longitude, Unit.DEGREE));
+    }
     
     public void setLongitude(FloatType longitude) {
         this.longitude = longitude;
     }
 
+    /** set elevation in METERS. */
+    public void setElevation(float elevation) {
+        setElevation(new FloatType(elevation, Unit.METER));
+    }
     
     public void setElevation(FloatType elevation) {
         this.elevation = elevation;
