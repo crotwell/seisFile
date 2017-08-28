@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import edu.iris.dmc.seedcodec.B1000Types;
+import edu.sc.seis.seisFile.ChannelTimeWindow;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
@@ -77,6 +78,15 @@ public class WaveServer extends StringMSeedQueryReader {
             result.add(item);
         }
         return result;
+    }
+
+    public List<TraceBuf2> getTraceBuf(ChannelTimeWindow window) throws IOException {
+        return getTraceBuf(window.getNetwork(),
+                           window.getStation(),
+                           window.getLocation(),
+                           window.getChannel(),
+                           window.getBeginTime(),
+                           window.getEndTime());
     }
 
     public List<TraceBuf2> getTraceBuf(String network,
