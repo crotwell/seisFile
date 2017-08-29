@@ -17,8 +17,12 @@ public class Channel extends BaseNodeType {
     
     Channel(Station station) {
         this.station = station;
-        this.networkCode = station.getNetworkCode();
+        this.networkCode = station.getNetworkId();
         this.stationCode = station.getStationCode();
+        setLatitude(station.getLatitude());
+        setLongitude(station.getLongitude());
+        setElevation(station.getElevation());
+        setDepth(0);
     }
 
     public Channel(Station station, String locCode, String chanCode) {

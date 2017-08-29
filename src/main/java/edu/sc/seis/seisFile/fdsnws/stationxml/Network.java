@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -56,7 +57,7 @@ public class Network extends BaseNodeType {
      */
     public String getNetworkId() {
         if (isTemporary()) {
-            return getNetworkCode()+getStartDateTime().getYear();
+            return getNetworkCode()+getStartDateTime().get(ChronoField.YEAR);
         }
         return getNetworkCode();
     }

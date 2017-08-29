@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +130,7 @@ public abstract class BaseNodeType {
     }
 
     
-    public ZonedDateTime getStartDateTime() {
+    public Instant getStartDateTime() {
         if (startDateTime == null && startDate != null) {
             startDateTime = parseISOString(getStartDate());
         }
@@ -138,13 +138,13 @@ public abstract class BaseNodeType {
     }
 
     
-    public void setStartDateTime(ZonedDateTime startDateTime) {
+    public void setStartDateTime(Instant startDateTime) {
         this.startDateTime = startDateTime;
         this.startDate = null;
     }
 
     
-    public ZonedDateTime getEndDateTime() {
+    public Instant getEndDateTime() {
         if (endDateTime == null && endDate != null) {
             endDateTime = parseISOString(getEndDate());
         }
@@ -152,7 +152,7 @@ public abstract class BaseNodeType {
     }
 
     
-    public void setEndDateTime(ZonedDateTime endDateTime) {
+    public void setEndDateTime(Instant endDateTime) {
         this.endDateTime = endDateTime;
         this.endDate = null;
     }
@@ -163,9 +163,9 @@ public abstract class BaseNodeType {
 
     String endDate;
     
-    ZonedDateTime startDateTime;
+    Instant startDateTime;
 
-    ZonedDateTime endDateTime;
+    Instant endDateTime;
 
     String historicalCode;
 
@@ -188,29 +188,14 @@ public abstract class BaseNodeType {
     }
     
     public static DateTimeFormatter getDateTimeFormatter() {
-        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSSSSSX").withZone(TZ_UTC);
-    }
-    
-    public static DateTimeFormatter getFracSecondsDateTimeFormatter() {
-        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmssX").withZone(TZ_UTC);
-    }
-    
-    public static DateTimeFormatter getMillisDateTimeFormatter() {
-        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss.SSSX").withZone(TZ_UTC);
+        return DateTimeFormatter.ISO_INSTANT;
     }
 
-    public static ZonedDateTime parseISOString(String time) {
-        if (time.length() == 15 || (time.length() == 16 && time.endsWith(ZULU))) {
-            // no factional seconds
-            return ZonedDateTime.parse(time, getFracSecondsDateTimeFormatter());
-        } else if (time.length() == 20) {
-            // only milliseconds
-            return ZonedDateTime.parse(time, getMillisDateTimeFormatter());
-        }
-        return ZonedDateTime.parse(time, getDateTimeFormatter());
+    public static Instant parseISOString(String time) {
+        return Instant.parse(time);
     }
     
-    public static String toISOString(ZonedDateTime time) {
+    public static String toISOString(Instant time) {
         return getDateTimeFormatter().format(time);
     }
     

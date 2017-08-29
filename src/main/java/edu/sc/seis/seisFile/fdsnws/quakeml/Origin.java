@@ -1,6 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class Origin {
 		
 	}
 	
-	public Origin(ZonedDateTime originTime, float lat, float lon) {
+	public Origin(Instant originTime, float lat, float lon) {
 		datetime = originTime;
 		latitude = new RealQuantity(lat);
 		longitude = new RealQuantity(lon);
@@ -106,7 +106,7 @@ public class Origin {
         return time;
     }
     
-    public ZonedDateTime getDateTime() {
+    public Instant getDateTime() {
     	 	return BaseNodeType.parseISOString(getTime().value);
     }
 
@@ -299,7 +299,7 @@ public class Origin {
 		this.irisCatalog = irisCatalog;
 	}
 
-	ZonedDateTime datetime = null;
+	Instant datetime = null;
 
 	Time time;
 
