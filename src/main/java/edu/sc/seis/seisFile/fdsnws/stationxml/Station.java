@@ -73,6 +73,10 @@ public class Station extends BaseNodeType {
         }
     }
     
+    @Deprecated
+    public Network getNetworkAttr() {
+        return getNetwork();
+    }
     public Network getNetwork() {
         return network;
     }
@@ -93,6 +97,7 @@ public class Station extends BaseNodeType {
         return elevation;
     }
 
+    @Deprecated
     public String getName() {
         return name;
     }
@@ -193,7 +198,7 @@ public class Station extends BaseNodeType {
         this.elevation = elevation;
     }
 
-    
+    @Deprecated
     public void setName(String name) {
         this.name = name;
     }
@@ -238,9 +243,13 @@ public class Station extends BaseNodeType {
         this.equipmentList = equipmentList;
     }
 
-    
+
     public void setOperatorList(List<Operator> operatorList) {
         this.operatorList = operatorList;
+    }
+    
+    public void addOperator(Operator operator) {
+        this.operatorList.add(operator);
     }
 
     
