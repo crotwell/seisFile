@@ -21,7 +21,6 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Magnitude;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
 
 
 public class QuakeMLTest {
@@ -65,7 +64,7 @@ public class QuakeMLTest {
 
 
     static BufferedReader loadResource(String filename) throws IOException, SeisFileException {
-        return new BufferedReader(new InputStreamReader(SyncFileCompareTest.class.getClassLoader()
+        return new BufferedReader(new InputStreamReader(QuakeMLTest.class.getClassLoader()
                 .getResourceAsStream("edu/sc/seis/seisFile/quakeml/" + filename)));
     }
     static URL loadResourceURL(String filename) throws IOException, SeisFileException {

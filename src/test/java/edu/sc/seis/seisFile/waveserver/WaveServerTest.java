@@ -16,7 +16,6 @@ import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
-import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
 import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 
@@ -77,7 +76,7 @@ public class WaveServerTest extends TestCase {
 
 
     static BufferedInputStream loadResource(String filename) throws IOException, SeisFileException {
-        return new BufferedInputStream(SyncFileCompareTest.class.getClassLoader()
+        return new BufferedInputStream(WaveServerTest.class.getClassLoader()
                 .getResourceAsStream("edu/sc/seis/seisFile/waveserver/" + filename));
     }
 }

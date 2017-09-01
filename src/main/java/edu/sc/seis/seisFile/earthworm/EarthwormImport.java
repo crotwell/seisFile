@@ -10,9 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
-import edu.sc.seis.seisFile.syncFile.SyncLine;
-
 
 public class EarthwormImport {
     
@@ -74,10 +71,6 @@ public class EarthwormImport {
                     argPort = Integer.parseInt(args[i+1]);
                     i++;
                     continue;
-                } else if (args[i].equals("--sync")) {
-                    argSyncfile = args[i+1];
-                    i++;
-                    continue;
                 }
             }
             unknownArgs.add(args[i]);
@@ -88,7 +81,7 @@ public class EarthwormImport {
                 System.out.println(s+" ");
             }
             System.out.println();
-            System.out.println("Usage: earthwormImpor [--sync syncfile][-h host][-p port]");
+            System.out.println("Usage: earthwormImport [-h host][-p port]");
             return;
         }
         final String host = argHost;
@@ -109,10 +102,6 @@ public class EarthwormImport {
             heartbeater.setOutStream(outStream);
             heartbeater.heartbeat();
             
-            SyncFileWriter syncWriter = null;
-            if (syncfile != null) {
-                syncWriter = new SyncFileWriter("ewimport", syncfile);
-            }
             
             EarthwormImport ewImport = new EarthwormImport(in);
             while(true) {
@@ -125,16 +114,7 @@ public class EarthwormImport {
                         if (lastEndTimeMap.containsKey(key)) {
                             if (Math.abs(traceBuf2.getStartTime() - lastEndTimeMap.get(key)) > 1/traceBuf2.getSampleRate()) {
                                 System.out.println("GAP: "+(traceBuf2.getStartTime() - lastEndTimeMap.get(key)));
-                                if (syncWriter != null) {
-                                    syncWriter.appendLine(new SyncLine(traceBuf2.getNetwork(), 
-                                                                       traceBuf2.getStation(),
-                                                                       traceBuf2.getLocId(),
-                                                                       traceBuf2.getChannel(),
-                                                                       new Date(Math.round(1000*lastStartTimeMap.get(key))),
-                                                                       new Date(Math.round(1000*lastEndTimeMap.get(key))),
-                                                                       0f, 0f));
-                                    lastStartTimeMap.put(key, traceBuf2.getStartTime());
-                                }
+                                
                             }
                         } else {
                             lastStartTimeMap.put(key, traceBuf2.getStartTime());
@@ -152,19 +132,6 @@ public class EarthwormImport {
                     outStream.close();
                     break;
                 }
-            }
-            if (syncWriter != null) {
-                for (String key : lastStartTimeMap.keySet()) {
-                    String[] chanCodes = key.split("\\.");
-                    syncWriter.appendLine(new SyncLine(chanCodes[0], 
-                                                       chanCodes[1],
-                                                       chanCodes[2],
-                                                       chanCodes[3],
-                                                       new Date(Math.round(1000*lastStartTimeMap.get(key))),
-                                                       new Date(Math.round(1000*lastEndTimeMap.get(key))),
-                                                       0f, 0f));
-                }
-                syncWriter.close();
             }
             
         } catch (IOException e) {

@@ -16,16 +16,12 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
-import edu.sc.seis.seisFile.syncFile.SyncFile;
-import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
-import edu.sc.seis.seisFile.syncFile.SyncLine;
 
 public class WinstonUtil {
 
@@ -163,85 +159,6 @@ public class WinstonUtil {
                 }
             }
         }
-        return out;
-    }
-
-    public SyncFile calculateSyncBetweenDates(WinstonSCNL channel,
-                                              int startYear,
-                                              int startMonth,
-                                              int startDay,
-                                              int endYear,
-                                              int endMonth,
-                                              int endDay,
-                                              String dataCenterName) throws SQLException {
-        SyncFile out = new SyncFile(dataCenterName);
-        List<WinstonTable> tableList = listTablesBetweenDates(channel,
-                                                              startYear,
-                                                              startMonth,
-                                                              startDay,
-                                                              endYear,
-                                                              endMonth,
-                                                              endDay);
-        if (verbose) {
-            System.out.println("Work on tables "+tableList.size());
-        }
-        for (WinstonTable wt : tableList) {
-            if (verbose) {
-                System.out.println("Sync for "+wt.getTableName());
-            }
-            out = out.concatenate(calculateSyncForDay(wt));
-        }
-        return out;
-    }
-
-    public void writeSyncBetweenDates(WinstonSCNL channel,
-                                      int startYear,
-                                      int startMonth,
-                                      int startDay,
-                                      int endYear,
-                                      int endMonth,
-                                      int endDay,
-                                      SyncFileWriter writer) throws SQLException {
-        List<WinstonTable> tableList = listTablesBetweenDates(channel,
-                                                              startYear,
-                                                              startMonth,
-                                                              startDay,
-                                                              endYear,
-                                                              endMonth,
-                                                              endDay);
-        if (verbose) {
-            System.out.println("Work on tables "+tableList.size());
-        }
-        for (WinstonTable wt : tableList) {
-            if (verbose) {
-                System.out.println("Sync for "+wt.getTableName());
-            }
-            writer.appendAll(calculateSyncForDay(wt), true);
-        }
-    }
-
-    public SyncFile calculateSyncForDay(WinstonTable table) throws SQLException {
-        SyncFile out = new SyncFile("Winston " + table.getTableName());
-        useDatabase(table.getDatabase());
-        SyncLine defaultSyncLine = new SyncLine(table.getDatabase().getNetwork(),
-                                                table.getDatabase().getStation(),
-                                                table.getDatabase().getLocId(),
-                                                table.getDatabase().getChannel());
-        Connection conn = getConnection();
-        Statement stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
-                                                         java.sql.ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(Integer.MIN_VALUE);
-        ResultSet rs = stmt.executeQuery("select st, et, sr from " + table.getTableName() + " order by st");
-        while (rs.next()) {
-            out.addLine(new SyncLine(defaultSyncLine,
-                                     j2KSecondsToDate(rs.getDouble(1)),
-                                     j2KSecondsToDate(rs.getDouble(2)),
-                                     rs.getFloat(3)),
-                        true);
-        }
-        rs.close();
-        stmt.close();
-        conn.commit();
         return out;
     }
 

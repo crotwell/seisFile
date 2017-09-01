@@ -2,27 +2,21 @@ package edu.sc.seis.seisFile.winston;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.ZipEntry;
@@ -39,7 +33,6 @@ import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.EarthwormExport;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
-import edu.sc.seis.seisFile.syncFile.SyncFileWriter;
 
 public class WinstonClient {
 
@@ -190,19 +183,6 @@ public class WinstonClient {
                     logger.debug("Skipping, does not match patterns: "+scnl.getDatabaseName());
                 }
             }
-        } else if (doSync) {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(params.getDataOutputStream())));
-            SyncFileWriter syncOut = new SyncFileWriter("winston", out);
-            for (WinstonSCNL scnl : allChannels) {
-                if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
-                        && netPattern.matcher(scnl.getNetwork()).matches()
-                        && locPattern.matcher(scnl.getLocId() == null ? "" : scnl.getLocId()).matches()) {
-                    syncChannel(winston, scnl, syncOut);
-                } else {
-                    logger.debug("Skipping, does not match patterns: "+scnl.getDatabaseName());
-                }
-            }
-            syncOut.close();
         } else if (doTbZip) {
             File f = new File(params.getOutFile());
             String dirName = f.getName();
@@ -278,27 +258,6 @@ public class WinstonClient {
             }
         }
         
-    }
-
-    void syncChannel(WinstonUtil winston, WinstonSCNL channel, SyncFileWriter syncOut) throws SeisFileException,
-            SQLException, DataFormatException, FileNotFoundException, IOException, URISyntaxException {
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeZone(QueryParams.UTC);
-        cal.setTime(params.getBegin());
-        int startYear = cal.get(Calendar.YEAR);
-        int startMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
-                                                      // months zero based,
-                                                      // but days are one
-                                                      // based???
-        int startDay = cal.get(Calendar.DAY_OF_MONTH);
-        cal.setTime(params.getEnd());
-        int endYear = cal.get(Calendar.YEAR);
-        int endMonth = cal.get(Calendar.MONTH) + 1; // why are Calendar
-                                                    // months zero based,
-                                                    // but days are one
-                                                    // based???
-        int endDay = cal.get(Calendar.DAY_OF_MONTH);
-        winston.writeSyncBetweenDates(channel, startYear, startMonth, startDay, endYear, endMonth, endDay, syncOut);
     }
 
     Date exportChannel(WinstonUtil winston, WinstonSCNL channel, Date begin, Date end, EarthwormExport exporter)
@@ -394,7 +353,7 @@ public class WinstonClient {
                 + WinstonClient.class.getName()
                 + " "
                 + QueryParams.getStandardHelpOptions()
-                + "[-p <winston.config file>][-u databaseURL][--sync][--steim1][--recLen len(8-12)][[--export port][--chunk sec][--module modNum][--inst institutionNum][--heartbeat sec][--heartbeatverbose]]";
+                + "[-p <winston.config file>][-u databaseURL][--steim1][--recLen len(8-12)][[--export port][--chunk sec][--module modNum][--inst institutionNum][--heartbeat sec][--heartbeatverbose]]";
     }
 
     int heartbeat = DEFAULT_HEARTBEAT;

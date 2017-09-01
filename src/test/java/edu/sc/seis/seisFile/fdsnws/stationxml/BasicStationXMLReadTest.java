@@ -1,11 +1,9 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 
 import javax.xml.stream.XMLEventReader;
@@ -16,14 +14,6 @@ import javax.xml.stream.events.XMLEvent;
 import org.junit.Test;
 
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
-import edu.sc.seis.seisFile.fdsnws.stationxml.NetworkIterator;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationIterator;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
-import edu.sc.seis.seisFile.syncFile.SyncFile;
-import edu.sc.seis.seisFile.syncFile.SyncFileCompareTest;
 
 
 public class BasicStationXMLReadTest {
