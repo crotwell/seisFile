@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Iterator;
 
 import com.martiansoftware.jsap.FlaggedOption;
@@ -130,10 +130,10 @@ public class DataSelectClient extends AbstractFDSNClient {
     public FDSNDataSelectQueryParams configureQuery(JSAPResult result) throws SeisFileException {
         FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
         if (result.contains(BEGIN)) {
-            queryParams.setStartTime((Date)result.getObject(BEGIN));
+            queryParams.setStartTime((Instant)result.getObject(BEGIN));
         }
         if (result.contains(END)) {
-            queryParams.setEndTime((Date)result.getObject(END));
+            queryParams.setEndTime((Instant)result.getObject(END));
         }
         if (result.contains(FDSNStationQueryParams.NETWORK)) {
             String[] vals = result.getStringArray(FDSNStationQueryParams.NETWORK);

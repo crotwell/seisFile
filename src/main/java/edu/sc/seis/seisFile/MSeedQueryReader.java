@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -13,8 +13,8 @@ public interface MSeedQueryReader {
                                           String station,
                                           String location,
                                           String channel,
-                                          Date begin,
-                                          Date end) throws IOException, SeisFileException,
+                                          Instant begin,
+                                          Instant end) throws IOException, SeisFileException,
             SeedFormatException;
     
     public void setVerbose(boolean verbose);

@@ -2,8 +2,8 @@ package edu.sc.seis.seisFile.client;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -31,21 +31,21 @@ public class ISOTimeParser extends StringParser {
         return format(getDate(arg));
     }
     
-    public static String format(Date d) {
+    public static String format(Instant d) {
         DateFormat passcalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         passcalFormat.setTimeZone(QueryParams.UTC);
         return passcalFormat.format(d);
     }
     
-    public static String formatForParsing(Date d) {
+    public static String formatForParsing(Instant d) {
         DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         isoFormat.setTimeZone(QueryParams.UTC);
         return isoFormat.format(d);
     }
     
-    public Date getDate(String arg) throws ParseException {
+    public Instant getDate(String arg) throws ParseException {
         if (arg.equals("now")) {
-            return new Date();
+            return Instant.now();
         }
         if (arg.equals(YESTERDAY)) {
             return yesterday();
@@ -145,7 +145,7 @@ public class ISOTimeParser extends StringParser {
 
     private boolean ceiling;
 
-    public Date yesterday() {
+    public Instant yesterday() {
         Calendar cal = GregorianCalendar.getInstance(QueryParams.UTC);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);

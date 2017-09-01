@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import edu.iris.dmc.seedcodec.CodecException;
@@ -107,7 +107,7 @@ public class ListHeader {
         if (dos != null) {
             dos.close();
         }
-        out.println("Finished: " + new Date());
+        out.println("Finished: " + Instant.now());
     }
 
     public static void processFile(String filename,

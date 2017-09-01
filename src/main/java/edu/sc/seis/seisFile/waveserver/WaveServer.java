@@ -10,7 +10,6 @@ import java.net.Socket;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -93,8 +92,8 @@ public class WaveServer extends StringMSeedQueryReader {
                                        String station,
                                        String location,
                                        String channel,
-                                       Date start,
-                                       Date end) throws IOException {
+                                       Instant start,
+                                       Instant end) throws IOException {
         String cmd = createQuery(network, station, location, channel, start, end);
         return getTraceBuf(cmd);
     }
@@ -197,7 +196,7 @@ public class WaveServer extends StringMSeedQueryReader {
     }
 
     @Override
-    public String createQuery(String network, String station, String location, String channel, Date begin, Date end) {
+    public String createQuery(String network, String station, String location, String channel, Instant begin, Instant end) {
         String nextReqId = getNextRequestId();
         DecimalFormat df = new DecimalFormat("0.0###", new DecimalFormatSymbols(Locale.US));
         String cmd = "GETSCNLRAW: " + nextReqId + " " + station + " " + channel + " " + network + " "

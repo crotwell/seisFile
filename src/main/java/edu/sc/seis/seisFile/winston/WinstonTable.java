@@ -2,8 +2,8 @@ package edu.sc.seis.seisFile.winston;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -76,7 +76,7 @@ public class WinstonTable {
 
     protected int[] parseDate(String ymd) throws ParseException {
         synchronized(ymdFormat) {
-         Date d = ymdFormat.parse(ymd);   
+         Instant d = ymdFormat.parse(ymd);   
          Calendar cal = GregorianCalendar.getInstance(QueryParams.UTC);
          cal.setTime(d);
          return new int[] {cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH)};

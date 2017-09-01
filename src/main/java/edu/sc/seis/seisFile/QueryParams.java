@@ -7,9 +7,9 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -107,9 +107,9 @@ public class QueryParams {
 
     protected String channel;
 
-    protected Date begin;
+    protected Instant begin;
 
-    protected Date end;
+    protected Instant end;
 
     protected Float duration = 600f;
 
@@ -165,11 +165,11 @@ public class QueryParams {
         return channel;
     }
 
-    public Date getBegin() {
+    public Instant getBegin() {
         return begin;
     }
 
-    public Date getEnd() {
+    public Instant getEnd() {
         return end;
     }
     
@@ -229,7 +229,7 @@ public class QueryParams {
         return dos;
     }
 
-    Date extractDate(String dateString) throws SeisFileException {
+    Instant extractDate(String dateString) throws SeisFileException {
         dateString = dateString.trim();
         int zoneIndex = dateString.indexOf('Z');
         if (zoneIndex == -1) {

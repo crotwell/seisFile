@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile;
 
 import java.text.DateFormat;
-import java.util.Date;
+import java.time.Instant;
 
 import edu.sc.seis.seisFile.fdsnws.AbstractQueryParams;
 
@@ -11,8 +11,8 @@ public class ChannelTimeWindow {
                              String station,
                              String location,
                              String channel,
-                             Date beginTime,
-                             Date endTime) {
+                             Instant beginTime,
+                             Instant endTime) {
         super();
         this.network = network;
         this.station = station;
@@ -26,9 +26,9 @@ public class ChannelTimeWindow {
                              String station,
                              String location,
                              String channel,
-                             Date beginTime,
+                             Instant beginTime,
                              int durationSeconds) {
-        this(network, station, location, channel, beginTime, new Date(beginTime.getTime() + 1000*durationSeconds));
+        this(network, station, location, channel, beginTime, beginTime.plusSeconds(durationSeconds));
     }
 
     public String getNetwork() {
@@ -47,11 +47,11 @@ public class ChannelTimeWindow {
         return channel;
     }
 
-    public Date getBeginTime() {
+    public Instant getBeginTime() {
         return beginTime;
     }
 
-    public Date getEndTime() {
+    public Instant getEndTime() {
         return endTime;
     }
 
@@ -76,7 +76,7 @@ public class ChannelTimeWindow {
 
     String channel;
 
-    Date beginTime;
+    Instant beginTime;
 
-    Date endTime;
+    Instant endTime;
 }

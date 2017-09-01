@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,7 @@ import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.earthworm.EarthwormExport;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -213,9 +215,9 @@ public class WinstonClient {
                 System.out.println("Waiting for client connect, port: " + exportPort);
             }
             exporter.waitForClient();
-            Date startTime = params.getBegin();
-            Date chunkBegin, chunkEnd;
-            HashMap<WinstonSCNL, Date> lastSent = new HashMap<WinstonSCNL, Date>();
+            Instant startTime = params.getBegin();
+            Instant chunkBegin, chunkEnd;
+            HashMap<WinstonSCNL, Instant> lastSent = new HashMap<WinstonSCNL, Instant>();
             for (WinstonSCNL scnl : allChannels) {
                 if (staPattern.matcher(scnl.getStation()).matches() && chanPattern.matcher(scnl.getChannel()).matches()
                         && netPattern.matcher(scnl.getNetwork()).matches()
@@ -225,17 +227,17 @@ public class WinstonClient {
                     logger.debug("Skipping, does not match patterns: "+scnl.getDatabaseName());
                 }
             }
-            while (startTime.before(params.getEnd())) {
-                chunkEnd = new Date(startTime.getTime() + chunkSeconds * 1000);
+            while (startTime.isBefore(params.getEnd())) {
+                chunkEnd = startTime.plus(Duration.ofSeconds( chunkSeconds));
                 for (WinstonSCNL scnl : lastSent.keySet()) {
                     chunkBegin = lastSent.get(scnl);
-                    if (chunkBegin.before(chunkEnd)) {
-                        Date sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
+                    if (chunkBegin.isBefore(chunkEnd)) {
+                        Instant sentEnd = exportChannel(winston, scnl, chunkBegin, chunkEnd, exporter);
                         // sendEnd is expected time of next sample, ie 1 samp period after end time of last tb
-                        lastSent.put(scnl, new Date(sentEnd.getTime()+1));
+                        lastSent.put(scnl, sentEnd.plus(TimeUtils.ONE_MILLISECOND));
                     }
                 }
-                startTime = new Date(chunkEnd.getTime() + 1);
+                startTime = chunkEnd.plus(Duration.ofMillis(1));
             }
             exporter.closeSocket();
             if (params.isVerbose()) {
@@ -260,13 +262,13 @@ public class WinstonClient {
         
     }
 
-    Date exportChannel(WinstonUtil winston, WinstonSCNL channel, Date begin, Date end, EarthwormExport exporter)
+    Instant exportChannel(WinstonUtil winston, WinstonSCNL channel, Instant begin, Instant end, EarthwormExport exporter)
             throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException,
             URISyntaxException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         sdf.setTimeZone(QueryParams.UTC);
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
-        Date lastSentEnd = end;
+        Instant lastSentEnd = end;
         double sampRate = 1;
         TraceBuf2 prev = null;
         for (TraceBuf2 traceBuf2 : tbList) {
@@ -276,24 +278,24 @@ public class WinstonClient {
                         + sdf.format(traceBuf2.getStartDate()) + " " + traceBuf2.getNumSamples() + " "
                         + sdf.format(traceBuf2.getEndDate()));
             }
-            if (prev != null && prev.getEndDate().after(traceBuf2.getStartDate())) {
+            if (prev != null && prev.getEndDate().isAfter(traceBuf2.getStartDate())) {
                 System.out.println("WARNING: current tracebuf overlaps previous: ");
                 System.out.println("  prev: " + prev);
                 System.out.println("  curr: " + traceBuf2);
             }
             exporter.exportWithRetry(traceBuf2);
-            if (lastSentEnd.before(traceBuf2.getPredictedNextStartDate())) {
+            if (lastSentEnd.isBefore(traceBuf2.getPredictedNextStartDate())) {
                 lastSentEnd = traceBuf2.getPredictedNextStartDate();
                 sampRate = traceBuf2.getSampleRate();
             }
             if (params.isVerbose()) {
-                System.out.print("sleep: " + sleepMillis + " milliseconds " + sdf.format(new Date()) + " ...");
+                System.out.print("sleep: " + sleepMillis + " milliseconds " + sdf.format(Instant.now()) + " ...");
             }
             try {
                 Thread.sleep(sleepMillis);
             } catch(InterruptedException e) {}
             if (params.isVerbose()) {
-                System.out.println("...back to work at " + sdf.format(new Date()) + ".");
+                System.out.println("...back to work at " + sdf.format(Instant.now()) + ".");
             }
         }
         return lastSentEnd;

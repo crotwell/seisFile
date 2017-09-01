@@ -12,8 +12,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 
 public class Origin {
 
@@ -107,7 +107,7 @@ public class Origin {
     }
     
     public Instant getDateTime() {
-    	 	return BaseNodeType.parseISOString(getTime().value);
+    	 	return TimeUtils.parseISOString(getTime().value);
     }
 
     public RealQuantity getLatitude() {

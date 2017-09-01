@@ -2,7 +2,7 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -153,13 +153,13 @@ public class StationClient extends AbstractFDSNClient {
                               Float.parseFloat(donut.get("max")));
         }
         if (result.contains(FDSNStationQueryParams.UPDATEDAFTER)) {
-            queryParams.setUpdatedAfter((Date)result.getObject(FDSNStationQueryParams.UPDATEDAFTER));
+            queryParams.setUpdatedAfter((Instant)result.getObject(FDSNStationQueryParams.UPDATEDAFTER));
         }
         if (result.contains(BEGIN)) {
-            queryParams.setEndAfter((Date)result.getObject(BEGIN));
+            queryParams.setEndAfter((Instant)result.getObject(BEGIN));
         }
         if (result.contains(END)) {
-            queryParams.setStartBefore((Date)result.getObject(END));
+            queryParams.setStartBefore((Instant)result.getObject(END));
         }
         if (result.contains(FDSNStationQueryParams.NETWORK)) {
             String[] vals = result.getStringArray(FDSNStationQueryParams.NETWORK);

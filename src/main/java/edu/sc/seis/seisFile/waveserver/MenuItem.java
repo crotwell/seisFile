@@ -1,10 +1,10 @@
 package edu.sc.seis.seisFile.waveserver;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.Instant;
 
 import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 
 public class MenuItem {
@@ -33,11 +33,12 @@ public class MenuItem {
                 + formatDate(toDate(end));
     }
 
-    public static Date toDate(double val) {
-        return new Date(Math.round(1000 * val));
+    @Deprecated
+    public static Instant toDate(double val) {
+        return TimeUtils.instantFromEpochSeconds(val);
     }
 
-    public static String formatDate(Date d) {
+    public static String formatDate(Instant d) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         sdf.setTimeZone(QueryParams.UTC);
         return sdf.format(d);
@@ -67,11 +68,11 @@ public class MenuItem {
         return end;
     }
 
-    public Date getStartDate() {
+    public Instant getStartDate() {
         return toDate(start);
     }
 
-    public Date getEndDate() {
+    public Instant getEndDate() {
         return toDate(end);
     }
 

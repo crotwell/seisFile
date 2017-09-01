@@ -3,12 +3,11 @@ package edu.sc.seis.seisFile.seedlink;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
-import java.util.Date;
+import java.time.Instant;
 
 import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -155,6 +154,6 @@ public class Client {
             dos.close();
         }
         reader.close();
-        out.println("Finished: " + new Date());
+        out.println("Finished: " + Instant.now());
     }
 }

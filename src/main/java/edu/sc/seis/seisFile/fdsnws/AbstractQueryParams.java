@@ -3,9 +3,9 @@ package edu.sc.seis.seisFile.fdsnws;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
@@ -50,7 +50,7 @@ public abstract class AbstractQueryParams {
         params.put(key, value);
     }
 
-    protected void setParam(String key, Date value) {
+    protected void setParam(String key, Instant value) {
         SimpleDateFormat sdf = createDateFormat();
         setParam(key, sdf.format(value));
     }

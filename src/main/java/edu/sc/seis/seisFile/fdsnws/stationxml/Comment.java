@@ -8,6 +8,10 @@ import javax.xml.stream.events.XMLEvent;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Comment {
+    
+    public Comment(String value) {
+        this.value = value;
+    }
 
     public Comment(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);

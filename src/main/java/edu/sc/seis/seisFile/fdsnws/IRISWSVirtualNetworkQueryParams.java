@@ -1,6 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.util.Date;
+import java.time.Instant;
 
 public class IRISWSVirtualNetworkQueryParams extends AbstractQueryParams  {
 
@@ -65,7 +65,7 @@ public class IRISWSVirtualNetworkQueryParams extends AbstractQueryParams  {
 
     /** Limit to events on or after the specified start time.
      */
-    public IRISWSVirtualNetworkQueryParams setStartTime(Date value) {
+    public IRISWSVirtualNetworkQueryParams setStartTime(Instant value) {
         setParam(STARTTIME, value);
         return this;
     }
@@ -80,7 +80,7 @@ public class IRISWSVirtualNetworkQueryParams extends AbstractQueryParams  {
 
     /** Limit to events on or before the specified end time.
      */
-    public IRISWSVirtualNetworkQueryParams setEndTime(Date value) {
+    public IRISWSVirtualNetworkQueryParams setEndTime(Instant value) {
         setParam(ENDTIME, value);
         return this;
     }

@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -10,7 +10,7 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 public abstract class StringMSeedQueryReader implements MSeedQueryReader {
 
     @Override
-    public List<DataRecord> read(String network, String station, String location, String channel, Date begin, Date end)
+    public List<DataRecord> read(String network, String station, String location, String channel, Instant begin, Instant end)
             throws IOException, SeisFileException, SeedFormatException {
         String query = createQuery(network, station, location, channel, begin, end);
         logger.info("Request: " + query);
@@ -31,8 +31,8 @@ public abstract class StringMSeedQueryReader implements MSeedQueryReader {
                                        String station,
                                        String location,
                                        String channel,
-                                       Date begin,
-                                       Date end);
+                                       Instant begin,
+                                       Instant end);
 
     public abstract List<DataRecord> read(String query) throws IOException, SeisFileException, SeedFormatException;
 

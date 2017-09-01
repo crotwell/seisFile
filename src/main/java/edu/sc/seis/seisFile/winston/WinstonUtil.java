@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.zip.Inflater;
 
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 
 public class WinstonUtil {
@@ -162,7 +163,7 @@ public class WinstonUtil {
         return out;
     }
 
-    public List<TraceBuf2> extractData(WinstonSCNL channel, Date startTime, Date endTime) throws SQLException,
+    public List<TraceBuf2> extractData(WinstonSCNL channel, Instant startTime, Instant endTime) throws SQLException,
             DataFormatException {
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
         Calendar cal = new GregorianCalendar();
@@ -188,7 +189,7 @@ public class WinstonUtil {
         return out;
     }
 
-    public List<TraceBuf2> extractData(WinstonTable table, Date startTime, Date endTime) throws SQLException,
+    public List<TraceBuf2> extractData(WinstonTable table, Instant startTime, Instant endTime) throws SQLException,
             DataFormatException {
         useDatabase(table.getDatabase());
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
@@ -212,8 +213,8 @@ public class WinstonUtil {
             TraceBuf2 tb = extractFromBlob(tbBytes);
             out.add(tb);
             if (verbose) {
-                Date stDate = j2KSecondsToDate(rs.getDouble("st"));
-                Date etDate = j2KSecondsToDate(rs.getDouble("et"));
+                Instant stDate = j2KSecondsToDate(rs.getDouble("st"));
+                Instant etDate = j2KSecondsToDate(rs.getDouble("et"));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 sdf.setTimeZone(QueryParams.UTC);
                 System.out.println("db row: "+sdf.format(stDate)+"  ("+dateToJ2kSeconds(stDate)+")  "+sdf.format(etDate)+"  ("+dateToJ2kSeconds(etDate)+")");
@@ -271,12 +272,12 @@ public class WinstonUtil {
         return new TraceBuf2(finalResult);
     }
 
-    public static Date j2KSecondsToDate(double j2kSeconds) {
-        return new java.util.Date((long)(1000 * (j2kSeconds + Y1970_TO_Y2000_SECONDS)));
+    public static Instant j2KSecondsToDate(double j2kSeconds) {
+        return TimeUtils.instantFromEpochSeconds(j2kSeconds + Y1970_TO_Y2000_SECONDS);
     }
 
-    public static double dateToJ2kSeconds(Date date) {
-        return date.getTime() / 1000.0 - Y1970_TO_Y2000_SECONDS;
+    public static double dateToJ2kSeconds(Instant date) {
+        return (double)date.getEpochSecond() - Y1970_TO_Y2000_SECONDS + date.getNano()/TimeUtils.NANOS_IN_SEC;
     }
 
     public String getDatabaseURL() {

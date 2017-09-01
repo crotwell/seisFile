@@ -1,11 +1,13 @@
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.net.URI;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import edu.sc.seis.seisFile.TimeUtils;
 
 public class TimeQueryLog {
 
@@ -22,11 +24,11 @@ public class TimeQueryLog {
             }
         }
         int numLastSec = 1; // start at one to include current query
-        long secondAgo = new Date().getTime() - 1000;
+        Instant secondAgo = Instant.now().minus(TimeUtils.ONE_SECOND);
         synchronized(byHost) {
             for (Iterator<QueryTime> iterator = byHost.iterator(); iterator.hasNext();) {
                 QueryTime timeQuery = iterator.next();
-                if (timeQuery.getWhen().getTime() > secondAgo) {
+                if (timeQuery.getWhen().isAfter(secondAgo)) {
                     numLastSec++;
                 } else {
                     iterator.remove();

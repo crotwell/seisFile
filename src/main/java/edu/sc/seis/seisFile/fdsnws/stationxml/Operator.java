@@ -17,6 +17,10 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Operator {
     
+    public Operator(String operName) {
+        this.agencyList.add(operName);
+    }
+    
     public Operator(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.OPERATOR, reader);
         while (reader.hasNext()) {

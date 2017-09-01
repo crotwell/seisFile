@@ -2,7 +2,7 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Iterator;
 
 import javax.xml.stream.Location;
@@ -13,7 +13,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 
 public class StaxUtil {
@@ -184,16 +184,17 @@ public class StaxUtil {
         return Float.parseFloat(pullAttribute(start, name));
     }
 
-    public static Date pullDate(XMLEventReader reader, String name) throws StationXMLException, XMLStreamException {
+    public static Instant pullDate(XMLEventReader reader, String name) throws StationXMLException, XMLStreamException {
         return parseDate(pullText(reader, name));
     }
     
-    /** extracts a Date from the named attribute. Null if the attribute is not found. */
-    public static Date pullDateAttributeIfExists(StartElement start, String name) throws StationXMLException {
+    /** extracts a Instant from the named attribute. Null if the attribute is not found. */
+    public static Instant pullDateAttributeIfExists(StartElement start, String name) throws StationXMLException {
         return parseDate(pullAttributeIfExists(start, name));
     }
     
-    public static Date parseDate(String text) throws StationXMLException {
+    public static Instant parseDate(String text) throws StationXMLException {
+        return TimeUtils.parseISOString(text);
         SimpleDateFormat sdf = new SimpleDateFormat(SHORT_DATE_FORMAT);
         try {
             return sdf.parse(text);

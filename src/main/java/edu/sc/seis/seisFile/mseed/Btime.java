@@ -6,7 +6,6 @@
 package edu.sc.seis.seisFile.mseed;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -14,7 +13,7 @@ public class Btime {
     
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
-    public Btime(Date date) {
+    public Btime(Instant date) {
         Calendar cal = Calendar.getInstance(UTC);
         cal.setTime(date);
         setFieldsFromCalendar(cal);

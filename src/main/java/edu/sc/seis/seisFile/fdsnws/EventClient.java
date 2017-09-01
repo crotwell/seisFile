@@ -2,7 +2,7 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -141,10 +141,10 @@ public class EventClient extends AbstractFDSNClient {
                               Float.parseFloat(donut.get("max")));
         }
         if (result.contains(BEGIN)) {
-            queryParams.setStartTime((Date)result.getObject(BEGIN));
+            queryParams.setStartTime((Instant)result.getObject(BEGIN));
         }
         if (result.contains(END)) {
-            queryParams.setEndTime((Date)result.getObject(END));
+            queryParams.setEndTime((Instant)result.getObject(END));
         }
         if (result.contains(DEPTH)) {
             HashMap<String, String> depthRange = (HashMap<String, String>)result.getObject(DEPTH);

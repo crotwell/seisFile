@@ -2,7 +2,7 @@ package edu.sc.seis.seisFile;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.apache.log4j.BasicConfigurator;
@@ -65,7 +65,7 @@ public abstract class MSeedQueryClient {
             params.getDataOutputStream().flush();
         }
         if (params.isVerbose()) {
-            out.println("Finished: " + new Date());
+            out.println("Finished: " + Instant.now());
         }
     }
 

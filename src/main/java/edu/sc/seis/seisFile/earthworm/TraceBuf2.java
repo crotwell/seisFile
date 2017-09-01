@@ -5,11 +5,10 @@ import java.io.DataInput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.iris.dmc.seedcodec.Codec;
@@ -18,6 +17,7 @@ import edu.iris.dmc.seedcodec.Steim2;
 import edu.iris.dmc.seedcodec.SteimException;
 import edu.iris.dmc.seedcodec.SteimFrameBlock;
 import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.Btime;
 import edu.sc.seis.seisFile.mseed.DataHeader;
@@ -463,16 +463,16 @@ public class TraceBuf2 {
     }
     
     /** Predicted start of the next tracebuf. */
-    public Date getPredictedNextStartDate() {
-        return new Date(Math.round(1000*getPredictedNextStartTime()));
+    public Instant getPredictedNextStartDate() {
+        return TimeUtils.instantFromEpochSeconds(getPredictedNextStartTime());
     }
 
-    public Date getStartDate() {
-        return new Date(Math.round(getStartTime()*1000)); // convert from seconds to milliseconds
+    public Instant getStartDate() {
+        return TimeUtils.instantFromEpochSeconds(getStartTime()); 
     }
 
-    public Date getEndDate() {
-        return new Date(Math.round(getEndTime()*1000)); // convert from seconds to milliseconds
+    public Instant getEndDate() {
+        return TimeUtils.instantFromEpochSeconds(getEndTime()); 
     }
 
     public double getSampleRate() {

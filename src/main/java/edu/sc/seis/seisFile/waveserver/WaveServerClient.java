@@ -1,8 +1,8 @@
 package edu.sc.seis.seisFile.waveserver;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -73,9 +73,9 @@ public class WaveServerClient extends MSeedQueryClient {
         }
         if (doMenu) {
             List<MenuItem> ans = ((WaveServer)reader).getMenu();
-            Date now = new Date();
+            Instant now = Instant.now();
             for (MenuItem item : ans) {
-                long latency = (now.getTime() - item.getEndDate().getTime()) / 1000;
+                float latency = (now.toEpochMilli() - item.getEndDate().toEpochMilli()) / 1000f;
                 System.out.println(item + "  " + latency + " sec");
             }
         } else {

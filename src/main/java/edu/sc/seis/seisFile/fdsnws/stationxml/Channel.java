@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,14 @@ public class Channel extends BaseNodeType {
         this(station);
         this.locCode = locCode;
         this.code = chanCode;
+    }
+
+    public Channel(Station station, String locCode, String chanCode, Instant startTime, Instant endTime) {
+        this(station);
+        this.locCode = locCode;
+        this.code = chanCode;
+        this.startDateTime = startTime;
+        this.endDateTime = endTime;
     }
     
     public Channel(XMLEventReader reader, Station station) throws XMLStreamException,

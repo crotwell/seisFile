@@ -1,8 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
-import java.time.ZoneId;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +8,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public abstract class BaseNodeType {
@@ -46,14 +45,14 @@ public abstract class BaseNodeType {
 
     public String getStartDate() {
         if (startDate == null && startDateTime != null) {
-            startDate = toISOString(getStartDateTime());
+            startDate = TimeUtils.toISOString(getStartDateTime());
         }
         return startDate;
     }
 
     public String getEndDate() {
         if (endDate == null && endDateTime != null) {
-            endDate = toISOString(getEndDateTime());
+            endDate = TimeUtils.toISOString(getEndDateTime());
         }
         return endDate;
     }
@@ -124,6 +123,10 @@ public abstract class BaseNodeType {
         this.commentList = commentList;
     }
 
+    public void addComment(Comment comment) {
+        commentList.add(comment);
+    }
+
     
     public void setDataAvailability(DataAvailability dataAvailability) {
         this.dataAvailability = dataAvailability;
@@ -132,7 +135,7 @@ public abstract class BaseNodeType {
     
     public Instant getStartDateTime() {
         if (startDateTime == null && startDate != null) {
-            startDateTime = parseISOString(getStartDate());
+            startDateTime = TimeUtils.parseISOString(getStartDate());
         }
         return startDateTime;
     }
@@ -146,7 +149,7 @@ public abstract class BaseNodeType {
     
     public Instant getEndDateTime() {
         if (endDateTime == null && endDate != null) {
-            endDateTime = parseISOString(getEndDate());
+            endDateTime = TimeUtils.parseISOString(getEndDate());
         }
         return endDateTime;
     }
@@ -187,22 +190,6 @@ public abstract class BaseNodeType {
         this.dbid = i;
     }
     
-    public static DateTimeFormatter getDateTimeFormatter() {
-        return DateTimeFormatter.ISO_INSTANT;
-    }
-
-    public static Instant parseISOString(String time) {
-        return Instant.parse(time);
-    }
-    
-    public static String toISOString(Instant time) {
-        return getDateTimeFormatter().format(time);
-    }
-    
-    public static final String ZULU = "Z";
-    
-    public static final ZoneId TZ_UTC = ZoneId.of("UTC");
-
     /** For Hibernate/JPA
      */
     private Integer dbid;

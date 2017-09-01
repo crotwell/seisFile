@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile.earthworm;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -87,7 +87,7 @@ public class EarthwormHeartbeater extends TimerTask {
             outStreamTmp.flush();
         }
         if (verbose) {
-            System.out.println("Heartbeat sent: "+new Date()+" "+heartbeatMessage+"  "+heartbeatSeconds);
+            System.out.println("Heartbeat sent: "+Instant.now()+" "+heartbeatMessage+"  "+heartbeatSeconds);
         }
     }
     
