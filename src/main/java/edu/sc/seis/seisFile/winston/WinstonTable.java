@@ -1,13 +1,10 @@
 package edu.sc.seis.seisFile.winston;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
-import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.TimeUtils;
 
 public class WinstonTable {
     
@@ -20,7 +17,7 @@ public class WinstonTable {
         }
         int[] dates = parseDate(s[1]);
         year = dates[0];
-        month = dates[1]+1; // why do months start at 0 and days start at 1???
+        month = dates[1];
         day = dates[2];
         
     }
@@ -75,13 +72,10 @@ public class WinstonTable {
     }
 
     protected int[] parseDate(String ymd) throws ParseException {
-        synchronized(ymdFormat) {
-         Instant d = ymdFormat.parse(ymd);   
-         Calendar cal = GregorianCalendar.getInstance(QueryParams.UTC);
-         cal.setTime(d);
-         return new int[] {cal.get(cal.YEAR), cal.get(cal.MONTH), cal.get(cal.DAY_OF_MONTH)};
-        }
+        ZonedDateTime d = ZonedDateTime.parse(ymd, ymdFormat);
+        return new int[] {d.getYear(), d.getMonthValue(), d.getDayOfMonth()};
     }
+    
     WinstonSCNL database;
 
     int year;
@@ -90,5 +84,5 @@ public class WinstonTable {
 
     int day;
     
-    private static final SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy_MM_dd");
+    private static final DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd").withZone(TimeUtils.TZ_UTC);
 }

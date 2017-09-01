@@ -7,7 +7,10 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.zip.DataFormatException;
@@ -17,6 +20,8 @@ import org.junit.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.TimeUtils;
+import edu.sc.seis.seisFile.TimeUtilsTest;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -98,9 +103,7 @@ public class TraceBuf2Test {
     @Test
     public void testSteveSplitBeforeMicroOverlap() throws ParseException {
         int numSamples = 4016;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-        sdf.setTimeZone(QueryParams.UTC);
-        Date start = sdf.parse("2012-07-23 18:21:53.840");
+        Instant start = TimeUtils.parseISOString("2012-07-23T18:21:53.840Z");
         TraceBuf2 tb = createTraceBuf(numSamples, start);
         System.out.println("Tracebuf: "+tb);
         List<TraceBuf2> splitList = tb.split(TraceBuf2.MAX_TRACEBUF_SIZE);
@@ -110,9 +113,7 @@ public class TraceBuf2Test {
     @Test
     public void testSteveSplit() throws ParseException {
         int numSamples = 4875;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-        sdf.setTimeZone(QueryParams.UTC);
-        Date start = sdf.parse("2012-07-23 18:22:33.990");
+        Instant start = TimeUtils.parseISOString("2012-07-23T18:22:33.990Z");
         TraceBuf2 tb = createTraceBuf(numSamples, start);
         List<TraceBuf2> splitList = tb.split(TraceBuf2.MAX_TRACEBUF_SIZE);
         checkSplit(numSamples, tb, splitList);
@@ -120,18 +121,14 @@ public class TraceBuf2Test {
 
     @Test
     public void testToMiniSeed() throws SeedFormatException {
+        Duration TWO_TENTH_MILLI = TimeUtils.TENTH_MILLI.multipliedBy(2);
         TraceBuf2 tb = createTraceBuf(4000);
         List<DataRecord> mseedList = tb.toMiniSeed(9, B1000Types.STEIM1);
-        assertEquals("start", tb.getStartDate(), mseedList.get(0)
-                .getHeader()
-                .getStartBtime()
-                .convertToCalendar()
-                .getTime());
-        assertEquals("end", tb.getEndDate(), mseedList.get(mseedList.size() - 1)
-                .getLastSampleBtime()
-                .convertToCalendar()
-                .getTime());
-        Date nextSampleTime = tb.getStartDate();
+        TimeUtilsTest.assertEquals("start ", tb.getStartDate(),
+                     mseedList.get(0).getHeader().getStartBtime().toInstant(), TWO_TENTH_MILLI);
+        TimeUtilsTest.assertEquals("end", tb.getEndDate(), mseedList.get(mseedList.size() - 1)
+                .getLastSampleBtime().toInstant(), TWO_TENTH_MILLI);
+        Instant nextSampleTime = tb.getStartDate();
         int numPts = 0;
         for (DataRecord dr : mseedList) {
             Blockette1000 b1000 = (Blockette1000)dr.getUniqueBlockette(1000);
@@ -140,29 +137,29 @@ public class TraceBuf2Test {
             assertEquals("sta", tb.getStation(), dr.getHeader().getStationIdentifier());
             assertEquals("loc", tb.getLocId(), dr.getHeader().getLocationIdentifier());
             assertEquals("chan", tb.getChannel(), dr.getHeader().getChannelIdentifier());
-            Date drStart = dr.getHeader().getStartBtime().convertToCalendar().getTime();
-            assertEquals("previous dr date", nextSampleTime, drStart);
+            Instant drStart = dr.getHeader().getStartBtime().toInstant();
+            TimeUtilsTest.assertEquals("previous dr date", nextSampleTime, drStart, TWO_TENTH_MILLI);
             assertTrue("start before end",
-                       drStart.before(dr.getLastSampleBtime().convertToCalendar().getTime()));
+                       drStart.isBefore(dr.getLastSampleBtime().toInstant()));
             numPts += dr.getHeader().getNumSamples();
-            nextSampleTime = dr.getPredictedNextStartBtime().convertToCalendar().getTime();
+            nextSampleTime = dr.getPredictedNextStartBtime().toInstant();
         }
-        assertTrue("nextSample after end", nextSampleTime.after(tb.getEndDate()));
+        assertTrue("nextSample after end", nextSampleTime.isAfter(tb.getEndDate()));
         assertEquals("npts", tb.getNumSamples(), numPts);
     }
 
     TraceBuf2 createTraceBuf(int numSamples) {
-        return createTraceBuf(numSamples, new Date());
+        return createTraceBuf(numSamples, Instant.now());
     }
 
-    TraceBuf2 createTraceBuf(int numSamples, Date start) {
+    TraceBuf2 createTraceBuf(int numSamples, Instant start) {
         int[] data = new int[numSamples];
         for (int i = 0; i < data.length; i++) {
             data[i] = (i % 256) - 128;
         }
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
-                                     start.getTime()/1000.0,
+                                     TimeUtils.instantToEpochSeconds(start),
                                      100,
                                      "JSC",
                                      "CO",

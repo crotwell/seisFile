@@ -5,31 +5,33 @@
  */
 package edu.sc.seis.seisFile.mseed;
 
+import java.time.Duration;
 import java.time.Instant;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.Month;
+import java.time.ZonedDateTime;
 import java.util.TimeZone;
+
+import edu.sc.seis.seisFile.TimeUtils;
 
 public class Btime {
     
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     public Btime(Instant date) {
-        Calendar cal = Calendar.getInstance(UTC);
-        cal.setTime(date);
-        setFieldsFromCalendar(cal);
+        ZonedDateTime zdt = date.atZone(TimeUtils.TZ_UTC);
+        setFieldsFromZonedDateTime(zdt);
     }
 
-    private void setFieldsFromCalendar(Calendar cal) {
-        if (! cal.getTimeZone().equals(UTC)) {
-            throw new IllegalArgumentException("Calendar time zone is not UTC: "+cal.getTimeZone());
+    private void setFieldsFromZonedDateTime(ZonedDateTime zdt) {
+        if (zdt.getOffset().getTotalSeconds() != 0) {
+            throw new IllegalArgumentException("Calendar time zone is not UTC: "+zdt.getZone());
         }
-        tenthMilli = (int)(cal.get(Calendar.MILLISECOND) * 10);
-        year = cal.get(Calendar.YEAR);
-        jday = cal.get(Calendar.DAY_OF_YEAR);
-        hour = cal.get(Calendar.HOUR_OF_DAY);
-        min = cal.get(Calendar.MINUTE);
-        sec = cal.get(Calendar.SECOND);
+        tenthMilli = zdt.getNano()/TimeUtils.NANOS_IN_TENTH_MILLI;
+        year = zdt.getYear();
+        jday = zdt.getDayOfYear();
+        hour = zdt.getHour();
+        min = zdt.getMinute();
+        sec = zdt.getSecond();
     }
     
     public Btime() {}
@@ -66,11 +68,7 @@ public class Btime {
 
     /** Create with seconds since epoch (1970) */
     public Btime(double d) {
-        long millis = Math.round(Math.floor(d*1000)); // milliseconds
-        Calendar cal = Calendar.getInstance(UTC);
-        cal.setTimeInMillis(millis);
-        setFieldsFromCalendar(cal);
-        tenthMilli = (int)(Math.round(d * 10000) % 10000);
+        this(TimeUtils.instantFromEpochSeconds(d));
     }
 
     public int hashCode() {
@@ -110,15 +108,17 @@ public class Btime {
         return comparator.compare(this, other) >= 0;
     }
 
-    public Calendar convertToCalendar() {
-        Calendar cal = GregorianCalendar.getInstance(UTC);
-        cal.set(Calendar.MILLISECOND, getTenthMilli()/10); // loose precision here
-        cal.set(Calendar.SECOND, getSec());
-        cal.set(Calendar.MINUTE, getMin());
-        cal.set(Calendar.HOUR_OF_DAY, getHour());
-        cal.set(Calendar.DAY_OF_YEAR, getDayOfYear());
-        cal.set(Calendar.YEAR, getYear());
-        return cal;
+    public Instant toInstant() {
+        return ZonedDateTime.of(getYear(),
+                                Month.JANUARY.getValue(),
+                                1,
+                                getHour(),
+                                getMin(),
+                                getSec(),
+                                getTenthMilli()*TimeUtils.NANOS_IN_TENTH_MILLI,
+                                TimeUtils.TZ_UTC)
+                .plus(Duration.ofDays(getDayOfYear()-1))
+                .toInstant();
     }
 
     public String toString() {

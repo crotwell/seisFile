@@ -223,28 +223,20 @@ public class QueryParams {
 
     Instant extractDate(String dateString) throws SeisFileException {
         dateString = dateString.trim();
-        int zoneIndex = dateString.indexOf('Z');
-        if (zoneIndex == -1) {
-            if (dateString.length() > 10 && dateString.matches(".+\\d")) {
-                // assume GMT time???
-                dateString += "GMT";
-                // for local time...
-                //out += TimeZone.getDefault().getID();
+        if (dateString.endsWith("Z")) {
+            // assume ok
+        } else if (dateString.matches(".+\\d")) {
+            if (dateString.length() == 10) {
+                // assume yyyy-mm-dd and UTC time, append Z
+                dateString += "T00:00:00"+TimeUtils.ZULU;
+            } else {
+                dateString += TimeUtils.ZULU;
             }
-        } else if(dateString.charAt(zoneIndex) == 'Z') {
-            // assume GMT
-            dateString = dateString.substring(0, zoneIndex)+"GMT";
+        } else if(dateString.endsWith("GMT")) {
+            dateString = dateString.replace("GMT", TimeUtils.ZULU);
+        } else if(dateString.endsWith("UTC")) {
+            dateString = dateString.replace("UTC", TimeUtils.ZULU);
         }
-        SimpleDateFormat dateFormat;
-        if (dateString.length() > 22) {
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
-        } else if (dateString.length() > 18) {
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
-        } else {
-            // if (dateString.length() == 10)
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        }
-        dateFormat.setTimeZone(UTC);
         return TimeUtils.parseISOString(dateString);
     }
 

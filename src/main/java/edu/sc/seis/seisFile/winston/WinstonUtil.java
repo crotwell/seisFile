@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -166,16 +166,14 @@ public class WinstonUtil {
     public List<TraceBuf2> extractData(WinstonSCNL channel, Instant startTime, Instant endTime) throws SQLException,
             DataFormatException {
         List<TraceBuf2> out = new ArrayList<TraceBuf2>();
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeZone(QueryParams.UTC);
-        cal.setTime(startTime);
-        int startYear = cal.get(Calendar.YEAR);
-        int startMonth = cal.get(Calendar.MONTH)+1; // why are Calendar months zero based, but days are one based???
-        int startDay = cal.get(Calendar.DAY_OF_MONTH);
-        cal.setTime(endTime);
-        int endYear = cal.get(Calendar.YEAR);
-        int endMonth = cal.get(Calendar.MONTH)+1; // why are Calendar months zero based, but days are one based???
-        int endDay = cal.get(Calendar.DAY_OF_MONTH);
+        ZonedDateTime startzdt = ZonedDateTime.ofInstant(startTime, TimeUtils.TZ_UTC);
+        int startYear = startzdt.getYear();
+        int startMonth = startzdt.getMonthValue();
+        int startDay = startzdt.getDayOfMonth();
+        ZonedDateTime endzdt = ZonedDateTime.ofInstant(endTime, TimeUtils.TZ_UTC);
+        int endYear = endzdt.getYear();
+        int endMonth = endzdt.getMonthValue();
+        int endDay = endzdt.getMonthValue();
         List<WinstonTable> tableList = listTablesBetweenDates(channel,
                                                               startYear,
                                                               startMonth,
@@ -218,10 +216,10 @@ public class WinstonUtil {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 sdf.setTimeZone(QueryParams.UTC);
                 System.out.println("db row: "+sdf.format(stDate)+"  ("+dateToJ2kSeconds(stDate)+")  "+sdf.format(etDate)+"  ("+dateToJ2kSeconds(etDate)+")");
-                if (Math.abs(stDate.getTime()-tb.getStartDate().getTime()) > 2) {
+                if (Duration.between(stDate, tb.getStartDate()).abs().compareTo(TWO_SECONDS) > 0) {
                     System.out.println("WARNING, st differs from traceBuf start by more than 2 milliseconds: "+sdf.format(stDate)+"  "+sdf.format(tb.getStartDate()));
                 }
-                if (Math.abs(etDate.getTime()-tb.getPredictedNextStartDate().getTime()) > 2) {
+                if (Duration.between(etDate, tb.getEndDate()).abs().compareTo(TWO_SECONDS) > 0) {
                     System.out.println("WARNING, et differs from traceBuf end by more than 2 milliseconds: "+sdf.format(etDate)+"  "+sdf.format(tb.getPredictedNextStartDate())); ;
                 }
             }
@@ -355,6 +353,8 @@ public class WinstonUtil {
     
     static boolean verbose = true;
 
+    public static final Duration TWO_SECONDS = Duration.ofSeconds(2);
+    
     public static final String KEY_PREFIX = "winston.prefix";
     
     public static final String KEY_DRIVER = "winston.driver";

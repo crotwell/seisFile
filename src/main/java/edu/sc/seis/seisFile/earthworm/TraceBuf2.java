@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -815,12 +816,11 @@ public class TraceBuf2 {
         return HEADER_SIZE+ getNumSamples()*getSampleSize(getDataType());
     }
     
+    
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(QueryParams.UTC);
         return getPin()+" "+formatNSLCCodes()+" "+
-                sdf.format(getStartDate())+"("+getStartTime()+") to "+
-                sdf.format(getEndDate())+"("+getEndTime()+") sr="+getSampleRate()+"  npts="+numSamples+" datetype="+getDataType()+" ver="+getVersion();
+                getStartDate()+"("+getStartTime()+") to "+
+                getEndDate()+"("+getEndTime()+") sr="+getSampleRate()+"  npts="+numSamples+" datetype="+getDataType()+" ver="+getVersion();
     }
     
     public String toStringWithData() {

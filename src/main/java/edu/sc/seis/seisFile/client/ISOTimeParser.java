@@ -3,9 +3,9 @@ package edu.sc.seis.seisFile.client;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.YearMonth;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +14,7 @@ import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
 import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.TimeUtils;
 
 
 
@@ -55,14 +56,16 @@ public class ISOTimeParser extends StringParser {
             throw new ParseException("A time must be formatted as YYYY[[[[[-MM]-DD]Thh]:mm]:ss] like 2006-11-19 or 2006-11-19T06:34:21, not '"
                     + arg + "'");
         }
-        Calendar cal = createCalendar(Integer.parseInt(m.group(1)),
-                                              extract(m, 2),
-                                              extract(m, 3), // 4 is the T
-                                              extract(m, 5),
-                                              extract(m, 6),
-                                              extract(m, 7),
-                                              ceiling);
-        return cal.getTime();
+        int year = extract(m, 1, 1970);
+        int month = extract(m, 2, ceiling ? 12 : 1);
+        YearMonth ym = YearMonth.of(year, month); 
+        int dayOfMonth = extract(m, 2, ceiling ? ym.lengthOfMonth() : 1);
+        int hour = extract(m, 2, ceiling ? 23 : 0);
+        int minute = extract(m, 2, ceiling ? 59 : 0);
+        int second = extract(m, 2, ceiling ? 59 : 0);
+        int nanoOfSecond = extract(m, 2, ceiling ? ((int)TimeUtils.NANOS_IN_SEC) - 1 : 0);
+        return ZonedDateTime.of(year, month, dayOfMonth, hour, minute, second, nanoOfSecond, TimeUtils.TZ_UTC)
+                .toInstant();
     }
     /**
      * Creates a calendar in the given year. Year must be specified, but all
@@ -98,9 +101,9 @@ public class ISOTimeParser extends StringParser {
         }
     }
     
-    private static int extract(Matcher m, int i) {
+    private static int extract(Matcher m, int i, int defaultValue) {
         if(m.group(i) == null) {
-            return -1;
+            return defaultValue;
         }
         return Integer.parseInt(m.group(i));
     }
@@ -146,13 +149,10 @@ public class ISOTimeParser extends StringParser {
     private boolean ceiling;
 
     public Instant yesterday() {
-        Calendar cal = GregorianCalendar.getInstance(QueryParams.UTC);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.add(Calendar.DAY_OF_YEAR, -1);
-        return cal.getTime();
+        ZonedDateTime now = Instant.now().atZone(TimeUtils.TZ_UTC);
+        return ZonedDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 0, 0, 0, 0, TimeUtils.TZ_UTC)
+                .minus(TimeUtils.ONE_DAY)
+                .toInstant();
     }
 
     public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?(T)?(\\d{2})?:?(\\d{2})?:?(\\d{2})?";

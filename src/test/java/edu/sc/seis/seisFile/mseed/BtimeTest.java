@@ -1,10 +1,13 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
+import java.time.Instant;
 
 import org.junit.Test;
+
+import edu.sc.seis.seisFile.TimeUtils;
 
 
 
@@ -31,17 +34,15 @@ public class BtimeTest {
     @Test
     public void testCalendarInAfternoon() {
         Btime s1 = new Btime(2011, 59, 17, 13, 3, 1750); // tenth milles are lost in calendar conversion
-        Calendar cal = s1.convertToCalendar();
-        Btime out = new Btime(cal.getTime());
+        Instant cal = s1.toInstant();
+        Btime out = new Btime(cal);
         assertEquals(s1, out);
     }
     
     @Test
     public void testBtimeFromDouble() {
         Btime s1 = new Btime(2011, 59, 17, 11, 3, 1751);
-        long millis = s1.convertToCalendar().getTimeInMillis();
-        double d = millis/1000.0; // double seconds
-        d += (s1.getTenthMilli() % 10) / 10000.0;
+        double d = TimeUtils.instantToEpochSeconds(s1.toInstant());
         Btime out = new Btime(d);
         assertEquals(s1, out);
     }
