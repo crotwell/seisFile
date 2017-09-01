@@ -4,7 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
+import java.time.Instant;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.iris.dmc.seedcodec.Steim2;
@@ -41,7 +41,7 @@ public class WriteMiniSeed {
         header.setNetworkCode("XX");
         header.setLocationIdentifier("00");
         header.setSampleRate(.05f);
-        Btime btime = new Btime(new Date());
+        Btime btime = new Btime(Instant.now());
         header.setStartBtime(btime);
         
         DataRecord record = new DataRecord(header);

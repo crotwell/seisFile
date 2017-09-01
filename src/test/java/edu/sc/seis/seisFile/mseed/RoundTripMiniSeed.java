@@ -1,9 +1,10 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.Instant;
 
 import org.junit.Test;
 
@@ -12,7 +13,6 @@ import edu.iris.dmc.seedcodec.Codec;
 import edu.iris.dmc.seedcodec.CodecException;
 import edu.iris.dmc.seedcodec.DecompressedData;
 import edu.iris.dmc.seedcodec.Steim2;
-import edu.iris.dmc.seedcodec.SteimException;
 import edu.iris.dmc.seedcodec.SteimFrameBlock;
 import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
 
@@ -33,7 +33,7 @@ public class RoundTripMiniSeed {
         header.setLocationIdentifier("00");
         header.setNumSamples((short)data.length);
         header.setSampleRate(.05f);
-        Btime btime = new Btime(new Date());
+        Btime btime = new Btime( Instant.now());
         header.setStartBtime(btime);
         
         DataRecord record = new DataRecord(header);

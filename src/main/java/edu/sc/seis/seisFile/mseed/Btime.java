@@ -5,6 +5,7 @@
  */
 package edu.sc.seis.seisFile.mseed;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;

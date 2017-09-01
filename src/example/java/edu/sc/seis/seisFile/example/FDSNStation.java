@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQueryParams;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
@@ -23,8 +24,8 @@ public class FDSNStation {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.area(30, 35, -83, -79)
-                    .setStartTime(sdf.parse("2010-03-15"))
-                    .setEndTime(sdf.parse("2013-03-21"))
+                    .setStartTime(TimeUtils.parseISOString("2010-03-15"))
+                    .setEndTime(TimeUtils.parseISOString("2013-03-21"))
                     .appendToNetwork("CO")
                     .appendToChannel("?HZ")
                     .setLevel(FDSNStationQueryParams.LEVEL_CHANNEL);

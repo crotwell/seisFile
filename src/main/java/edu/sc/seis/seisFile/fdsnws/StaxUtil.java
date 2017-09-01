@@ -1,7 +1,5 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Iterator;
 
@@ -195,17 +193,6 @@ public class StaxUtil {
     
     public static Instant parseDate(String text) throws StationXMLException {
         return TimeUtils.parseISOString(text);
-        SimpleDateFormat sdf = new SimpleDateFormat(SHORT_DATE_FORMAT);
-        try {
-            return sdf.parse(text);
-        } catch(ParseException e) {
-            sdf = new SimpleDateFormat(DATE_FORMAT);
-            try {
-                return sdf.parse(text);
-            } catch(ParseException e1) {
-                throw new StationXMLException(e);
-            }
-        }
     }
     
     static String parent = "";

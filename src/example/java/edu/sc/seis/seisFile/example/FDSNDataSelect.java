@@ -2,12 +2,13 @@ package edu.sc.seis.seisFile.example;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.ChannelTimeWindow;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -27,8 +28,8 @@ public class FDSNDataSelect {
             FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-            queryParams.setStartTime(sdf.parse("2013-03-15T12:34:21"))
-                    .setEndTime(sdf.parse("2013-03-15T12:35:21"))
+            queryParams.setStartTime(TimeUtils.parseISOString("2013-03-15T12:34:21"))
+                    .setEndTime(TimeUtils.parseISOString("2013-03-15T12:35:21"))
                     .appendToNetwork("CO")
                     .appendToStation("BIRD")
                     .appendToStation("JSC")
@@ -53,7 +54,7 @@ public class FDSNDataSelect {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             List<ChannelTimeWindow> request = new ArrayList<ChannelTimeWindow>();
-            Date start = sdf.parse("2013-03-15T12:34:21");
+            Instant start = TimeUtils.parseISOString("2013-03-15T12:34:21");
             int durationSecs = 60;
             String[] staCodes = new String[] {"BIRD", "JSC", "CASEE"};
             String[] chanCodes = new String[] {"HHZ", "HHN", "HHE"};

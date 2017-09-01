@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.example;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.FDSNEventQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
@@ -21,8 +22,8 @@ public class FDSNEvent {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.area(30, 35, -83, -79)
-                    .setStartTime(sdf.parse("2010-03-15"))
-                    .setEndTime(sdf.parse("2013-03-21"))
+                    .setStartTime(TimeUtils.parseISOString("2010-03-15"))
+                    .setEndTime(TimeUtils.parseISOString("2013-03-21"))
                     .setMaxDepth(100)
                     .setMinMagnitude(1)
                     .setOrderBy(FDSNEventQueryParams.ORDER_TIME_ASC);

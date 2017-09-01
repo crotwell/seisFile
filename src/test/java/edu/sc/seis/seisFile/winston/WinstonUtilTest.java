@@ -1,11 +1,13 @@
 package edu.sc.seis.seisFile.winston;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 import java.util.TimeZone;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -19,10 +21,10 @@ public class WinstonUtilTest {
 
     @Test
     public void testSimpleJ2K() {
-        Date d = WinstonUtil.j2KSecondsToDate(-1*WinstonUtil.Y1970_TO_Y2000_SECONDS);
-        assertEquals(0, d.getTime());
+        Instant d = WinstonUtil.j2KSecondsToDate(-1*WinstonUtil.Y1970_TO_Y2000_SECONDS);
+        assertEquals(0, d.getEpochSecond());
         
-        Date d1970 = new Date(0);
+        Instant d1970 = Instant.ofEpochSecond(0);
         assertEquals(-1* WinstonUtil.Y1970_TO_Y2000_SECONDS, WinstonUtil.dateToJ2kSeconds(d1970), 0.001);
         
         DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss");

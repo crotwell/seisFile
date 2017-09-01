@@ -4,13 +4,10 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -85,17 +82,12 @@ public class QueryParams {
         if (args.length == 0) {
             printHelp = true;
         }
-        GregorianCalendar cal = new GregorianCalendar(UTC);
-        cal.add(Calendar.SECOND, -1 * Math.round(duration));
-        cal.add(Calendar.MILLISECOND, -1000 * Math.round(duration - Math.round(duration)));
+        Duration dur = TimeUtils.durationFromSeconds(duration);
         if (begin == null) {
-            begin = cal.getTime();
+            begin = Instant.now().minus(dur);
         }
         if (end == null) {
-            cal.setTime(begin);
-            cal.add(Calendar.SECOND, Math.round(duration));
-            cal.add(Calendar.MILLISECOND, 1000 * Math.round(duration - Math.round(duration)));
-            end = cal.getTime();
+            end = begin.plus(dur);
         }
     }
 
@@ -253,12 +245,7 @@ public class QueryParams {
             dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         }
         dateFormat.setTimeZone(UTC);
-        try {
-            return dateFormat.parse(dateString);
-        } catch(ParseException e) {
-            throw new SeisFileException("Illegal date format, should be: yyyy-MM-dd or yyyy-MM-dd'T'HH:mm:ss or yyyy-MM-dd'T'HH:mm:ss.SSS",
-                                        e);
-        }
+        return TimeUtils.parseISOString(dateString);
     }
 
     
