@@ -30,6 +30,7 @@ public class TimeUtils {
     public static final Duration ZERO_DURATION = Duration.ofNanos(0);
     public static final int NANOS_IN_SEC_INT = 1000000000;
     public static final double NANOS_IN_SEC = NANOS_IN_SEC_INT;
+    public static final int NANOS_IN_MILLI = 1000000;
     public static final int NANOS_IN_TENTH_MILLI = 100000;
     public static final Duration TENTH_MILLI = Duration.ofNanos(NANOS_IN_TENTH_MILLI);
     public static final Instant wayPast = parseISOString("1099-01-01T00:00:00.000000Z");

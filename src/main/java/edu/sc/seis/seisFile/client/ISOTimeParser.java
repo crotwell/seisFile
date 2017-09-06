@@ -1,11 +1,14 @@
 package edu.sc.seis.seisFile.client;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,39 +70,6 @@ public class ISOTimeParser extends StringParser {
         return ZonedDateTime.of(year, month, dayOfMonth, hour, minute, second, nanoOfSecond, TimeUtils.TZ_UTC)
                 .toInstant();
     }
-    /**
-     * Creates a calendar in the given year. Year must be specified, but all
-     * other fields can be -1 if unknown. If -1, they're either the greatest of
-     * least value of the calendar's current state depending on the value of
-     * ceiling.
-     */
-    public static Calendar createCalendar(int year,
-                                          int month,
-                                          int day,
-                                          int hour,
-                                          int minute,
-                                          int second,
-                                          boolean ceiling) {
-        Calendar cal = Calendar.getInstance(QueryParams.UTC);
-        cal.set(Calendar.YEAR, year);
-        fillInField(Calendar.MONTH, month - 1, ceiling, cal);
-        fillInField(Calendar.DAY_OF_MONTH, day, ceiling, cal);
-        fillInField(Calendar.HOUR_OF_DAY, hour, ceiling, cal);
-        fillInField(Calendar.MINUTE, minute, ceiling, cal);
-        fillInField(Calendar.SECOND, second, ceiling, cal);
-        fillInField(Calendar.MILLISECOND, -1, ceiling, cal);
-        return cal;
-    }
-
-    public static void fillInField(int field, int value, boolean ceiling, Calendar cal) {
-        if(value >= 0) {
-            cal.set(field, value);
-        } else if(ceiling) {
-            cal.set(field, cal.getActualMaximum(field));
-        } else {
-            cal.set(field, cal.getActualMinimum(field));
-        }
-    }
     
     private static int extract(Matcher m, int i, int defaultValue) {
         if(m.group(i) == null) {
@@ -148,11 +118,28 @@ public class ISOTimeParser extends StringParser {
 
     private boolean ceiling;
 
+    public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
+
     public Instant yesterday() {
         ZonedDateTime now = Instant.now().atZone(TimeUtils.TZ_UTC);
         return ZonedDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 0, 0, 0, 0, TimeUtils.TZ_UTC)
                 .minus(TimeUtils.ONE_DAY)
                 .toInstant();
+    }
+
+    @Deprecated
+    public static String getISOString(int year,
+                                      int jday,
+                                      int hour,
+                                      int minute,
+                                      float second) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat xxFormat = new DecimalFormat("00", symbols);
+        DecimalFormat xxxFormat = new DecimalFormat("000", symbols);
+        DecimalFormat floatFormat = new DecimalFormat("00.000#", symbols);
+        return xxxFormat.format(year) + xxxFormat.format(jday) + "J"
+                + xxFormat.format(hour) + xxFormat.format(minute)
+                + floatFormat.format(second) + "Z";
     }
 
     public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?(T)?(\\d{2})?:?(\\d{2})?:?(\\d{2})?";
