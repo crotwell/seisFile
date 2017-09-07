@@ -33,6 +33,8 @@ public class TimeUtils {
     public static final int NANOS_IN_MILLI = 1000000;
     public static final int NANOS_IN_TENTH_MILLI = 100000;
     public static final Duration TENTH_MILLI = Duration.ofNanos(NANOS_IN_TENTH_MILLI);
+    public static final int SECS_IN_DAY = 86400;
+    
     public static final Instant wayPast = parseISOString("1099-01-01T00:00:00.000000Z");
     public static final Instant future =parseISOString("2499-01-01T00:00:00.000000Z");
     /** future plus one day so that is is after(future)
@@ -40,6 +42,14 @@ public class TimeUtils {
     public static final Instant futurePlusOne = parseISOString("2499-01-02T00:00:00.000000Z");
     public static Duration durationFromSeconds(double seconds) {
         return Duration.ofNanos(Math.round(NANOS_IN_SEC*seconds));
+    }
+    
+    public static double durationToDoubleSeconds(Duration d) {
+        return d.toNanos()/NANOS_IN_SEC;
+    }
+    
+    public static float durationToFloatDays(Duration d) {
+        return (float)(d.toNanos()/NANOS_IN_SEC/SECS_IN_DAY);
     }
     
     public static Instant instantFromEpochSeconds(double epochSec) {
@@ -51,4 +61,13 @@ public class TimeUtils {
         return instant.getEpochSecond() + instant.getNano() / NANOS_IN_SEC;
     }
 
+    public static Duration multiply(Duration dur, double value) {
+        return Duration.ofNanos(Math.round(dur.toNanos() * value));
+    }
+
+    public static Duration divide(Duration dur, double value) {
+        return Duration.ofNanos(Math.round(dur.toNanos() / value));
+    }
+    
+    
 }
