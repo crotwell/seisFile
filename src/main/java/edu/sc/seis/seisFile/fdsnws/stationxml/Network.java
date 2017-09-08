@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Network extends BaseNodeType {
@@ -95,7 +96,19 @@ public class Network extends BaseNodeType {
 
     @Override
     public String toString() {
-        return getCode();
+        String out = getCode();
+        if (isTemporary()) {
+            out += getStartYear();
+        }
+        return out;
+    }
+    
+    public int getStartYear() {
+        return getStartDateTime().atZone(TimeUtils.TZ_UTC).getYear();
+    }
+    
+    public String getStartYearString() {
+        return ""+getStartYear();
     }
     
     public boolean isTemporary() {
