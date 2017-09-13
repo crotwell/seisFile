@@ -83,6 +83,10 @@ public class InstrumentSensitivity extends GainSensitivity {
         return frequencyDbVariation;
     }
 
+    public static boolean isValid(InstrumentSensitivity sens) {
+        return sens != null && sens.getFrequency() >= 0 && sens.getSensitivityValue() != -1;
+    }
+
     Unit inputUnits, outputUnits;
 
     float frequencyStart, frequencyEnd, frequencyDbVariation;

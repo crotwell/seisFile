@@ -256,6 +256,10 @@ public class Station extends BaseNodeType {
     public void setExternalReferenceList(List<String> externalReferenceList) {
         this.externalReferenceList = externalReferenceList;
     }
+
+    public void associateInDb(Station sta) {
+        setDbid(sta.getDbid());
+    }
     
     Network network;
 

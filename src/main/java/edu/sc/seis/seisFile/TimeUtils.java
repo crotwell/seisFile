@@ -7,12 +7,17 @@ import java.time.format.DateTimeFormatter;
 
 public class TimeUtils {
 
+    public static final String DASH = "-";
     public static final ZoneId TZ_UTC = ZoneId.of("UTC");
     public static final String ZULU = "Z";
     public static DateTimeFormatter getDateTimeFormatter() {
         return DateTimeFormatter.ISO_INSTANT;
     }
     public static Instant parseISOString(String time) {
+        if (time.charAt(8) == 'T') {
+            // need dashes, yyyymmdd to yyyy-mm-dd
+            time = time.substring(0, 4)+DASH+time.substring(4, 6)+DASH+time.substring(6);
+        }
         return Instant.parse(time);
     }
     public static String toISOString(Instant time) {

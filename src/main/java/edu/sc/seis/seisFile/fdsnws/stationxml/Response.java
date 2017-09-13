@@ -48,12 +48,15 @@ public class Response {
         }
     }
     
+    /**
+     * @deprecated Use {@link InstrumentSensitivity#isValid(InstrumentSensitivity)} instead
+     */
     public static boolean isValid(InstrumentSensitivity sens) {
-        return sens != null && sens.frequency >= 0 && sens.sensitivityValue != -1;
+        return InstrumentSensitivity.isValid(sens);
     }
     
     public static boolean isValid(Response resp) {
-        return resp != null && resp.responseStageList.size() != 0 && isValid(resp.instrumentSensitivity);
+        return resp != null && resp.responseStageList.size() != 0 && InstrumentSensitivity.isValid(resp.instrumentSensitivity);
     }
     
     public static void checkResponse(Response resp) throws InvalidResponse {

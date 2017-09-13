@@ -9,6 +9,11 @@ import org.junit.Test;
 
 
 public class TimeUtilsTest {
+    
+    @Test
+    public void testParse() {
+        TimeUtils.parseISOString("20170913T15:43:08.0000Z");
+    }
 
     @Test
     public void testDurationFromSeconds() {
@@ -20,7 +25,10 @@ public class TimeUtilsTest {
 
     @Test
     public void testInstantFromEpochSeconds() {
-        Assert.fail("Not yet implemented");
+        Instant a = TimeUtils.parseISOString("2017-09-13T15:43:08.123Z");
+        Instant b = TimeUtils.instantFromEpochSeconds(TimeUtils.instantToEpochSeconds(a));
+        Assert.assertEquals(a.getEpochSecond(),b.getEpochSecond());
+        Assert.assertEquals(a.getNano()/TimeUtils.NANOS_IN_SEC, b.getNano()/TimeUtils.NANOS_IN_SEC, 0.0001);
     }
     
     @Test

@@ -393,4 +393,8 @@ public class Channel extends BaseNodeType {
     
     public static final String EMPTY_LOC_CODE = "";
 
+    public void associateInDb(Channel indb) {
+        setDbid(indb.getDbid());
+    }
+
 }
