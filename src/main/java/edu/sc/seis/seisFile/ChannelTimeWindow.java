@@ -1,7 +1,7 @@
 package edu.sc.seis.seisFile;
 
-import java.text.DateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
 import edu.sc.seis.seisFile.fdsnws.AbstractQueryParams;
 
@@ -59,7 +59,7 @@ public class ChannelTimeWindow {
         return formString(" ", AbstractQueryParams.createDateFormat(), false);
     }
     
-    public String formString(String seperator, DateFormat df, boolean dashifyLocId) {
+    public String formString(String seperator, DateTimeFormatter df, boolean dashifyLocId) {
         String locId = location;
         if (dashifyLocId && ( "".equals(locId) || "  ".equals(locId))) {
             locId = "--";

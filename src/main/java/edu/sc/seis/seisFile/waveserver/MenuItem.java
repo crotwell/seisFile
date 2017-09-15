@@ -1,9 +1,8 @@
 package edu.sc.seis.seisFile.waveserver;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
-import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 
@@ -39,8 +38,7 @@ public class MenuItem {
     }
 
     public static String formatDate(Instant d) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        sdf.setTimeZone(QueryParams.UTC);
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return sdf.format(d);
     }
 

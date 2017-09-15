@@ -9,9 +9,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -265,8 +265,7 @@ public class WinstonClient {
     Instant exportChannel(WinstonUtil winston, WinstonSCNL channel, Instant begin, Instant end, EarthwormExport exporter)
             throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException,
             URISyntaxException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(QueryParams.UTC);
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Instant lastSentEnd = end;
         double sampRate = 1;
@@ -323,8 +322,7 @@ public class WinstonClient {
     void outputRawTraceBuf2s(WinstonUtil winston, WinstonSCNL channel, ZipOutputStream zip, String dir) throws SeisFileException, SQLException,
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss.SSS");
-        sdf.setTimeZone(QueryParams.UTC);
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss.SSS");
         for (TraceBuf2 tb : tbList) {
             ZipEntry tbzip = new ZipEntry(dir+"/"+tb.getNetwork().trim()+"."
                                           +tb.getStation().trim()+"."

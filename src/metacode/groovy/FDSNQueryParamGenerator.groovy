@@ -6,7 +6,7 @@
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +44,7 @@ class FDSNQueryParamGenerator {
     def preTemplate = '''
 package edu.sc.seis.seisFile.fdsnws;
 
-import java.util.Date;
+import java.time.Instant;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -249,7 +249,7 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         String[] staSplit = getParam(STATION).split(",");
         String[] locSplit = getParam(LOCATION).split(",");
         String[] chanSplit = getParam(CHANNEL).split(",");
-        java.text.SimpleDateFormat sdf = createDateFormat();
+        DateTimeFormatter sdf = createDateFormat();
         try {
             Date beginDate = sdf.parse(getParam(STARTTIME));
             Date endDate = sdf.parse(getParam(ENDTIME));

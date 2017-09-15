@@ -1,11 +1,9 @@
 package edu.sc.seis.seisFile.example;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.ChannelTimeWindow;
 import edu.sc.seis.seisFile.TimeUtils;
@@ -26,8 +24,6 @@ public class FDSNDataSelect {
         try {
             // A simple one time window request using GET
             FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.setStartTime(TimeUtils.parseISOString("2013-03-15T12:34:21"))
                     .setEndTime(TimeUtils.parseISOString("2013-03-15T12:35:21"))
                     .appendToNetwork("CO")
@@ -51,8 +47,6 @@ public class FDSNDataSelect {
         try {
             // A simple request using POST
             FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             List<ChannelTimeWindow> request = new ArrayList<ChannelTimeWindow>();
             Instant start = TimeUtils.parseISOString("2013-03-15T12:34:21");
             int durationSecs = 60;

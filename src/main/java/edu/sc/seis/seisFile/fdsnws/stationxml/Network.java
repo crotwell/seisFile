@@ -68,6 +68,10 @@ public class Network extends BaseNodeType {
         return getCode();
     }
     
+    public void setNetworkCode(String code) {
+        setCode(code);
+    }
+    
     public StationIterator getStations() {
         return stations;
     }

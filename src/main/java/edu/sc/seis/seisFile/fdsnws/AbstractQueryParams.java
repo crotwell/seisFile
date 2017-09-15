@@ -2,15 +2,12 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
-
-import edu.sc.seis.seisFile.QueryParams;
 
 public abstract class AbstractQueryParams {
 
@@ -51,8 +48,7 @@ public abstract class AbstractQueryParams {
     }
 
     protected void setParam(String key, Instant value) {
-        SimpleDateFormat sdf = createDateFormat();
-        setParam(key, sdf.format(value));
+        setParam(key, value.toString());
     }
 
     protected void clearParam(String key) {
@@ -63,10 +59,8 @@ public abstract class AbstractQueryParams {
         params.clear();
     }
 
-    public static SimpleDateFormat createDateFormat() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        sdf.setTimeZone(QueryParams.UTC);
-        return sdf;
+    public static DateTimeFormatter createDateFormat() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
     }
 
     public URI formURI() throws URISyntaxException {

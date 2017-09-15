@@ -6,23 +6,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
 
 import org.junit.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
-import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.TimeUtilsTest;
-import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;

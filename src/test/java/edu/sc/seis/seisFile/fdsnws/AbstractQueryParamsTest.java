@@ -4,8 +4,11 @@ import static org.junit.Assert.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 
 import org.junit.Test;
+
+import edu.sc.seis.seisFile.TimeUtils;
 
 
 public class AbstractQueryParamsTest {
@@ -56,5 +59,21 @@ public class AbstractQueryParamsTest {
         assertEquals("repeat first", expected, aqp.getParam(T));
         aqp.appendToParam(T, third);
         assertEquals("repeat first", expected, aqp.getParam(T));
+    }
+
+    
+    @Test
+    public void testInstantSetParam() throws URISyntaxException {
+        String T = "TEST";
+        AbstractQueryParams aqp = new AbstractQueryParams("test.seis.sc.edu") {
+            @Override
+            public String getServiceName() {
+                return "event";
+            }
+        };
+        Instant time = TimeUtils.parseISOString("2013-03-15T12:35:21Z");
+        aqp.setParam(T, time);
+        System.out.println("Q: "+aqp.formURI());
+        assertEquals("time", time.toString(), aqp.getParam(T));
     }
 }

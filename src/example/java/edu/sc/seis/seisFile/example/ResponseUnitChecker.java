@@ -4,9 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
 
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQueryParams;
@@ -38,8 +36,6 @@ public class ResponseUnitChecker {
         FDSNStationXML xml = null;
         try {
             FDSNStationQueryParams queryParams = new FDSNStationQueryParams();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.appendToNetwork(net)
                     .setLevel(FDSNStationQueryParams.LEVEL_RESPONSE);
             FDSNStationQuerier querier = new FDSNStationQuerier(queryParams);

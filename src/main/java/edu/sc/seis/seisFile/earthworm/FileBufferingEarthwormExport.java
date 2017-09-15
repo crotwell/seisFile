@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -147,7 +147,7 @@ public class FileBufferingEarthwormExport extends BufferingEarthwormExport {
     
     List<TraceBuf2> popBuffer;
     
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss.SSS");
+    DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH:mm:ss.SSS");
     
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FileBufferingEarthwormExport.class);
 }

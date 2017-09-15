@@ -5,10 +5,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.TimeZone;
+import java.time.format.DateTimeFormatter;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 
@@ -27,8 +25,7 @@ public class WinstonUtilTest {
         Instant d1970 = Instant.ofEpochSecond(0);
         assertEquals(-1* WinstonUtil.Y1970_TO_Y2000_SECONDS, WinstonUtil.dateToJ2kSeconds(d1970), 0.001);
         
-        DateFormat dateFormat = new SimpleDateFormat("yyyy,DDD,HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy,DDD,HH:mm:ss");
         assertEquals("1970,001,00:00:00", dateFormat.format(d1970));
         assertEquals("1970,001,00:00:00", dateFormat.format(d));
     }

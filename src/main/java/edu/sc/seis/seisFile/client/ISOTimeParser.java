@@ -1,12 +1,11 @@
 package edu.sc.seis.seisFile.client;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -16,7 +15,6 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
-import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.TimeUtils;
 
 
@@ -36,14 +34,12 @@ public class ISOTimeParser extends StringParser {
     }
     
     public static String format(Instant d) {
-        DateFormat passcalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        passcalFormat.setTimeZone(QueryParams.UTC);
+        DateTimeFormatter passcalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return passcalFormat.format(d);
     }
     
     public static String formatForParsing(Instant d) {
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        isoFormat.setTimeZone(QueryParams.UTC);
+        DateTimeFormatter isoFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         return isoFormat.format(d);
     }
     

@@ -1,20 +1,22 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.time.Month;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import org.junit.Test;
 
-import edu.sc.seis.seisFile.winston.WinstonUtil;
+import edu.sc.seis.seisFile.TimeUtils;
 
 
 public class UtilityTest {
@@ -52,7 +54,7 @@ public class UtilityTest {
     
     @Test
     public void testSwappedExampleFromWinston() throws Exception {
-        // date approx Jan 1, 2012 01:59:56
+        // date approx Jan 1, 2012 00:00:01?
         byte[] b = new byte[] {(byte)65, (byte)211, (byte)191, (byte)232, (byte)128, (byte)64, (byte)0, (byte)0};
         long l = Utility.bytesToLong(b, 0, false);
         
@@ -65,20 +67,19 @@ public class UtilityTest {
         assertArrayEquals("from DOS", b, bFromDOS);
         
         double d = Double.longBitsToDouble(l);
+        System.out.println(d+ " double sec time: "+TimeUtils.instantFromEpochSeconds(d));
         
         ByteArrayInputStream bis = new ByteArrayInputStream(b);
         DataInputStream is = new DataInputStream(bis);
         double dFromDIS = is.readDouble();
         assertEquals(dFromDIS, d, 0.01);
         
-        Calendar cal = new GregorianCalendar(2012, Calendar.JANUARY, 1, 0, 0, 0);
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        ZonedDateTime zdt = ZonedDateTime.of(2012, Month.JANUARY.getValue(), 1, 0, 0, 1, 0, TimeUtils.TZ_UTC);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         
-        double jan1_2012 = cal.getTime().getTime()/1000;
-        assertEquals("on 2012 jan 1 "+sdf.format(cal.getTime())+" err="+(jan1_2012-d), jan1_2012, d, 10);
+        double jan1_2012 = TimeUtils.instantToEpochSeconds(zdt.toInstant());
+        assertEquals("on 2012 jan 1 "+zdt+" err="+(jan1_2012-d), jan1_2012, d, 0.0001);
         
     }
     

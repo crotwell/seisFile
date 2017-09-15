@@ -18,6 +18,9 @@ public class TimeUtils {
             // need dashes, yyyymmdd to yyyy-mm-dd
             time = time.substring(0, 4)+DASH+time.substring(4, 6)+DASH+time.substring(6);
         }
+        if ( ! time.endsWith(ZULU)) {
+            time = time+ZULU;
+        }
         return Instant.parse(time);
     }
     public static String toISOString(Instant time) {

@@ -1,8 +1,5 @@
 package edu.sc.seis.seisFile.example;
 
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.FDSNEventQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
@@ -19,8 +16,6 @@ public class FDSNEvent {
         Quakeml quakeml = null;
         try {
             FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
             queryParams.area(30, 35, -83, -79)
                     .setStartTime(TimeUtils.parseISOString("2010-03-15"))
                     .setEndTime(TimeUtils.parseISOString("2013-03-21"))

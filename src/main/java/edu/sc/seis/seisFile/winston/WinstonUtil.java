@@ -8,10 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -213,8 +213,7 @@ public class WinstonUtil {
             if (verbose) {
                 Instant stDate = j2KSecondsToDate(rs.getDouble("st"));
                 Instant etDate = j2KSecondsToDate(rs.getDouble("et"));
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                sdf.setTimeZone(QueryParams.UTC);
+                DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
                 System.out.println("db row: "+sdf.format(stDate)+"  ("+dateToJ2kSeconds(stDate)+")  "+sdf.format(etDate)+"  ("+dateToJ2kSeconds(etDate)+")");
                 if (Duration.between(stDate, tb.getStartDate()).abs().compareTo(TWO_SECONDS) > 0) {
                     System.out.println("WARNING, st differs from traceBuf start by more than 2 milliseconds: "+sdf.format(stDate)+"  "+sdf.format(tb.getStartDate()));

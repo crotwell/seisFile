@@ -2,6 +2,7 @@
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -178,7 +179,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
         String[] staSplit = getParam(STATION).split(",");
         String[] locSplit = getParam(LOCATION).split(",");
         String[] chanSplit = getParam(CHANNEL).split(",");
-        java.text.SimpleDateFormat sdf = createDateFormat();
+        DateTimeFormatter sdf = createDateFormat();
             Instant beginDate = TimeUtils.parseISOString(getParam(STARTTIME));
             Instant endDate = TimeUtils.parseISOString(getParam(ENDTIME));
             for (int n = 0; n < netSplit.length; n++) {
