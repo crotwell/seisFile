@@ -265,7 +265,7 @@ public class WinstonClient {
     Instant exportChannel(WinstonUtil winston, WinstonSCNL channel, Instant begin, Instant end, EarthwormExport exporter)
             throws SeisFileException, SQLException, DataFormatException, FileNotFoundException, IOException,
             URISyntaxException {
-        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        DateTimeFormatter sdf = TimeUtils.createFormatter("yyyy-MM-dd HH:mm:ss.SSS");
         List<TraceBuf2> tbList = winston.extractData(channel, begin, end);
         Instant lastSentEnd = end;
         double sampRate = 1;
@@ -322,7 +322,7 @@ public class WinstonClient {
     void outputRawTraceBuf2s(WinstonUtil winston, WinstonSCNL channel, ZipOutputStream zip, String dir) throws SeisFileException, SQLException,
             DataFormatException, FileNotFoundException, IOException, URISyntaxException {
         List<TraceBuf2> tbList = winston.extractData(channel, params.getBegin(), params.getEnd());
-        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss.SSS");
+        DateTimeFormatter sdf = TimeUtils.createFormatter("yyyy-MM-dd_HH_mm_ss.SSS");
         for (TraceBuf2 tb : tbList) {
             ZipEntry tbzip = new ZipEntry(dir+"/"+tb.getNetwork().trim()+"."
                                           +tb.getStation().trim()+"."

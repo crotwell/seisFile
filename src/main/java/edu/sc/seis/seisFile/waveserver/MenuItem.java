@@ -38,7 +38,7 @@ public class MenuItem {
     }
 
     public static String formatDate(Instant d) {
-        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        DateTimeFormatter sdf = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return sdf.format(d);
     }
 

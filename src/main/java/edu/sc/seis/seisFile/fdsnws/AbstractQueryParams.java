@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.sc.seis.seisFile.TimeUtils;
+
 public abstract class AbstractQueryParams {
 
     public AbstractQueryParams(String host) {
@@ -60,7 +62,7 @@ public abstract class AbstractQueryParams {
     }
 
     public static DateTimeFormatter createDateFormat() {
-        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        return TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
     }
 
     public URI formURI() throws URISyntaxException {

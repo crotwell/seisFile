@@ -91,5 +91,4 @@ public class WinstonTable {
     int day;
 
     private static final Pattern ymdPattern = Pattern.compile("(\\d{4})_(\\d{2})_(\\d{2})");
-    private static final DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd").withZone(TimeUtils.TZ_UTC);
 }

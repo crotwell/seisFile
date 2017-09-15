@@ -34,12 +34,12 @@ public class ISOTimeParser extends StringParser {
     }
     
     public static String format(Instant d) {
-        DateTimeFormatter passcalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        DateTimeFormatter passcalFormat = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return passcalFormat.format(d);
     }
     
     public static String formatForParsing(Instant d) {
-        DateTimeFormatter isoFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter isoFormat = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss");
         return isoFormat.format(d);
     }
     

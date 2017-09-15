@@ -213,7 +213,7 @@ public class WinstonUtil {
             if (verbose) {
                 Instant stDate = j2KSecondsToDate(rs.getDouble("st"));
                 Instant etDate = j2KSecondsToDate(rs.getDouble("et"));
-                DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+                DateTimeFormatter sdf = TimeUtils.createFormatter("yyyy-MM-dd HH:mm:ss.SSS");
                 System.out.println("db row: "+sdf.format(stDate)+"  ("+dateToJ2kSeconds(stDate)+")  "+sdf.format(etDate)+"  ("+dateToJ2kSeconds(etDate)+")");
                 if (Duration.between(stDate, tb.getStartDate()).abs().compareTo(TWO_SECONDS) > 0) {
                     System.out.println("WARNING, st differs from traceBuf start by more than 2 milliseconds: "+sdf.format(stDate)+"  "+sdf.format(tb.getStartDate()));

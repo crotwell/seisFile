@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.TimeUtils;
 
 
 public class FileBufferingEarthwormExport extends BufferingEarthwormExport {
@@ -147,7 +148,7 @@ public class FileBufferingEarthwormExport extends BufferingEarthwormExport {
     
     List<TraceBuf2> popBuffer;
     
-    DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH:mm:ss.SSS");
+    DateTimeFormatter sdf = TimeUtils.createFormatter("yyyy_MM_dd_HH:mm:ss.SSS");
     
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FileBufferingEarthwormExport.class);
 }

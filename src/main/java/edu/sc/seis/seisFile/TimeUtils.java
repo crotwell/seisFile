@@ -77,5 +77,7 @@ public class TimeUtils {
         return Duration.ofNanos(Math.round(dur.toNanos() / value));
     }
     
-    
+    public static DateTimeFormatter createFormatter(String pattern) {
+        return DateTimeFormatter.ofPattern(pattern).withZone(TZ_UTC);
+    }
 }

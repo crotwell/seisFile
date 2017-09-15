@@ -76,7 +76,6 @@ public class UtilityTest {
         
         ZonedDateTime zdt = ZonedDateTime.of(2012, Month.JANUARY.getValue(), 1, 0, 0, 1, 0, TimeUtils.TZ_UTC);
 
-        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         
         double jan1_2012 = TimeUtils.instantToEpochSeconds(zdt.toInstant());
         assertEquals("on 2012 jan 1 "+zdt+" err="+(jan1_2012-d), jan1_2012, d, 0.0001);
