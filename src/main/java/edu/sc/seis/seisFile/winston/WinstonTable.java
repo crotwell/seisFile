@@ -3,6 +3,8 @@ package edu.sc.seis.seisFile.winston;
 import java.text.ParseException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.sc.seis.seisFile.TimeUtils;
 
@@ -72,8 +74,12 @@ public class WinstonTable {
     }
 
     protected int[] parseDate(String ymd) throws ParseException {
-        ZonedDateTime d = ZonedDateTime.parse(ymd, ymdFormat);
-        return new int[] {d.getYear(), d.getMonthValue(), d.getDayOfMonth()};
+        Matcher m = ymdPattern.matcher(ymd);
+        if (m.matches()) {
+        return new int[] {Integer.parseInt(m.group(1)),Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))};
+        } else {
+            throw new IllegalArgumentException("Cannot parse '"+ymd+"' as yyyy_MM_dd");
+        }
     }
     
     WinstonSCNL database;
@@ -83,6 +89,7 @@ public class WinstonTable {
     int month;
 
     int day;
-    
+
+    private static final Pattern ymdPattern = Pattern.compile("(\\d{4})_(\\d{2})_(\\d{2})");
     private static final DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy_MM_dd").withZone(TimeUtils.TZ_UTC);
 }
