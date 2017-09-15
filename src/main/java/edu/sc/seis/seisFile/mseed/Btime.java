@@ -109,6 +109,10 @@ public class Btime {
     }
 
     public Instant toInstant() {
+        // leap seconds????
+        if (getSec() == 60) {
+            throw new RuntimeException("Leap seconds not yet implemented???");
+        }
         return ZonedDateTime.of(getYear(),
                                 Month.JANUARY.getValue(),
                                 1,
