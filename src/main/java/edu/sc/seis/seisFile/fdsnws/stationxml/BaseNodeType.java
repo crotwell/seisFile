@@ -182,15 +182,15 @@ public abstract class BaseNodeType {
 
     DataAvailability dataAvailability;
     
-    public Integer getDbid() {
+    public int getDbid() {
         return dbid;
     }
     
-    void setDbid(Integer i) {
+    void setDbid(int i) {
         this.dbid = i;
     }
     
     /** For Hibernate/JPA
      */
-    private Integer dbid;
+    private int dbid;
 }
