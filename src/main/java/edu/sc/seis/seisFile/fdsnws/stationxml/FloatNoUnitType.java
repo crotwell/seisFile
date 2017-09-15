@@ -63,6 +63,9 @@ public class FloatNoUnitType {
         return minusError != null;
     }
 
+    void setValue(float v) {
+        this.value = v;
+    }
 
     float value;
 

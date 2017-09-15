@@ -12,9 +12,20 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Unit {
 
-    public static final String DEGREE = "DEGREES";
-    public static final String METER = "METER";
-    public static final String HERTZ = "HERTZ";
+    public static final String SECOND = "second";
+    public static final String DEGREE = "degree";
+    public static final String METER = "meter";
+    public static final String HERTZ = "hertz";
+    
+
+    public static final Unit SECOND_UNIT = new Unit(SECOND);
+    public static final Unit DEGREE_UNIT = new Unit(DEGREE);
+    public static final Unit METER_UNIT = new Unit(METER);
+    public static final Unit HERTZ_UNIT = new Unit(HERTZ);
+
+    public Unit(String name) {
+        this(name, null);
+    }
     
     public Unit(String name, String description) {
         this.name = name;

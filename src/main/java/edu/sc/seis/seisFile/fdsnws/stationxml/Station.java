@@ -34,11 +34,11 @@ public class Station extends BaseNodeType {
                 if (super.parseSubElement(elName, reader)) {
                     // super handled it
                 } else if (elName.equals(StationXMLTagNames.LAT)) {
-                    latitude = new FloatType(reader, StationXMLTagNames.LAT, Unit.DEGREE);
+                    latitude = new DegreeFloatType(reader, StationXMLTagNames.LAT);
                 } else if (elName.equals(StationXMLTagNames.LON)) {
-                    longitude = new FloatType(reader, StationXMLTagNames.LON, Unit.DEGREE);
+                    longitude = new DegreeFloatType(reader, StationXMLTagNames.LON);
                 } else if (elName.equals(StationXMLTagNames.ELEVATION)) {
-                    elevation = new FloatType(reader, StationXMLTagNames.ELEVATION, Unit.METER);
+                    elevation = new MeterFloatType(reader, StationXMLTagNames.ELEVATION);
                 } else if (elName.equals(StationXMLTagNames.SITE)) {
                     site = new Site(reader);
                 } else if (elName.equals(StationXMLTagNames.VAULT)) {
@@ -85,16 +85,28 @@ public class Station extends BaseNodeType {
         return creationDate;
     }
 
-    public FloatType getLatitude() {
+    public DegreeFloatType getLatitude() {
         return latitude;
     }
 
-    public FloatType getLongitude() {
+    public DegreeFloatType getLongitude() {
         return longitude;
     }
 
     public FloatType getElevation() {
         return elevation;
+    }
+    
+    public float getLatitudeFloat() {
+        return getLatitude().getValue();
+    }
+
+    public float getLongitudeFloat() {
+        return getLongitude().getValue();
+    }
+
+    public float getElevationFloat() {
+        return getElevation().getValue();
     }
 
     @Deprecated
@@ -142,6 +154,10 @@ public class Station extends BaseNodeType {
     public String getStationCode() {
         return getCode();
     }
+    
+    public void setStationCode(String code) {
+        setCode(code);
+    }
 
     public List<Equipment> getEquipmentList() {
         return equipmentList;
@@ -174,18 +190,18 @@ public class Station extends BaseNodeType {
     }
 
     public void setLatitude(float latitude) {
-    		setLatitude(new FloatType(latitude, Unit.DEGREE));
+    		setLatitude(new DegreeFloatType(latitude));
     }
     
-    public void setLatitude(FloatType latitude) {
+    public void setLatitude(DegreeFloatType latitude) {
         this.latitude = latitude;
     }
 
     public void setLongitude(float longitude) {
-    	    setLongitude(new FloatType(longitude, Unit.DEGREE));
+    	    setLongitude(new DegreeFloatType(longitude));
     }
     
-    public void setLongitude(FloatType longitude) {
+    public void setLongitude(DegreeFloatType longitude) {
         this.longitude = longitude;
     }
 
@@ -265,7 +281,9 @@ public class Station extends BaseNodeType {
 
     String creationDate, terminationDate;
 
-    FloatType latitude, longitude, elevation;
+    DegreeFloatType latitude, longitude;
+    
+    FloatType elevation;
 
     String name;
 

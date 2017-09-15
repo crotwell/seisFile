@@ -53,17 +53,17 @@ public class Channel extends BaseNodeType {
                 if (super.parseSubElement(elName, reader)) {
                     // super handled it
                 } else if (elName.equals(StationXMLTagNames.LAT)) {
-                    latitude = new FloatType(reader, StationXMLTagNames.LAT, Unit.DEGREE);
+                    latitude = new DegreeFloatType(reader, StationXMLTagNames.LAT);
                 } else if (elName.equals(StationXMLTagNames.LON)) {
-                    longitude = new FloatType(reader, StationXMLTagNames.LON, Unit.DEGREE);
+                    longitude = new DegreeFloatType(reader, StationXMLTagNames.LON);
                 } else if (elName.equals(StationXMLTagNames.ELEVATION)) {
-                    elevation = new FloatType(reader, StationXMLTagNames.ELEVATION, Unit.METER);
+                    elevation = new MeterFloatType(reader, StationXMLTagNames.ELEVATION);
                 } else if (elName.equals(StationXMLTagNames.DEPTH)) {
-                    depth = new FloatType(reader, StationXMLTagNames.DEPTH, Unit.METER);
+                    depth = new MeterFloatType(reader, StationXMLTagNames.DEPTH);
                 } else if (elName.equals(StationXMLTagNames.AZIMUTH)) {
-                    azimuth = new FloatType(reader, StationXMLTagNames.AZIMUTH, Unit.DEGREE);
+                    azimuth = new DegreeFloatType(reader, StationXMLTagNames.AZIMUTH);
                 } else if (elName.equals(StationXMLTagNames.DIP)) {
-                    dip = new FloatType(reader, StationXMLTagNames.DIP, Unit.DEGREE);
+                    dip = new DegreeFloatType(reader, StationXMLTagNames.DIP);
                 } else if (elName.equals(StationXMLTagNames.TYPE)) {
                     typeList.add(StaxUtil.pullText(reader, StationXMLTagNames.TYPE));
                 } else if (elName.equals(StationXMLTagNames.SAMPLE_RATE)) {
@@ -141,6 +141,10 @@ public class Channel extends BaseNodeType {
     public String getChannelCode() {
         return getCode();
     }
+    
+    public void setChannelCode(String code) {
+        setCode(code);
+    }
 
     public String getLocCode() {
         return locCode;
@@ -159,11 +163,11 @@ public class Channel extends BaseNodeType {
         return getNetwork().getNetworkId();
     }
 
-    public FloatType getLatitude() {
+    public DegreeFloatType getLatitude() {
         return latitude;
     }
 
-    public FloatType getLon() {
+    public DegreeFloatType getLongitude() {
         return longitude;
     }
 
@@ -174,12 +178,28 @@ public class Channel extends BaseNodeType {
     public FloatType getDepth() {
         return depth;
     }
+    
+    public float getLatitudeFloat() {
+        return getLatitude().getValue();
+    }
 
-    public FloatType getAzimuth() {
+    public float getLongitudeFloat() {
+        return getLongitude().getValue();
+    }
+
+    public float getElevationFloat() {
+        return getElevation().getValue();
+    }
+    
+    public float getDepthFloat() {
+        return getDepth().getValue();
+    }
+
+    public DegreeFloatType getAzimuth() {
         return azimuth;
     }
 
-    public FloatType getDip() {
+    public DegreeFloatType getDip() {
         return dip;
     }
 
@@ -208,10 +228,6 @@ public class Channel extends BaseNodeType {
     }
 
     
-    public FloatType getLongitude() {
-        return longitude;
-    }
-    
     public Station getStation() {
         return station;
     }
@@ -229,10 +245,10 @@ public class Channel extends BaseNodeType {
     }
 
     public void setLongitude(float longitude) {
-    		setLongitude(new FloatType(longitude, Unit.DEGREE));
+    		setLongitude(new DegreeFloatType(longitude));
     }
     
-    public void setLongitude(FloatType longitude) {
+    public void setLongitude(DegreeFloatType longitude) {
         this.longitude = longitude;
     }
 
@@ -301,10 +317,10 @@ public class Channel extends BaseNodeType {
 
 
     public void setLatitude(float latitude) {
-    		setLatitude(new FloatType(latitude, Unit.DEGREE));
+    		setLatitude(new DegreeFloatType(latitude));
     }
     
-    public void setLatitude(FloatType latitude) {
+    public void setLatitude(DegreeFloatType latitude) {
         this.latitude = latitude;
     }
 
@@ -325,18 +341,18 @@ public class Channel extends BaseNodeType {
     }
 
     public void setAzimuth(float azimuth) {
-    	    setAzimuth(new FloatType(azimuth, Unit.DEGREE));
+    	    setAzimuth(new DegreeFloatType(azimuth));
     }
     
-    public void setAzimuth(FloatType azimuth) {
+    public void setAzimuth(DegreeFloatType azimuth) {
         this.azimuth = azimuth;
     }
 
     public void setDip(float dip) {
-    	    setDip(new FloatType(dip, Unit.DEGREE));
+    	    setDip(new DegreeFloatType(dip));
     }
     
-    public void setDip(FloatType dip) {
+    public void setDip(DegreeFloatType dip) {
         this.dip = dip;
     }
 
@@ -374,7 +390,9 @@ public class Channel extends BaseNodeType {
 
     private String locCode, stationCode, networkCode;
 
-    private FloatType latitude, longitude, elevation, depth, azimuth, dip;
+    private DegreeFloatType latitude, longitude, azimuth, dip;
+    
+    private FloatType elevation, depth;
 
     List<String> typeList = new ArrayList<String>();
 

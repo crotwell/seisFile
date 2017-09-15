@@ -12,6 +12,10 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 /** a float value with optional unit and errors. */
 public class FloatType extends FloatNoUnitType {
 
+    // for hibernate
+    FloatType() {
+        
+    }
     
     public FloatType(float value, String unit, Float plusError, Float minusError) {
         super(value, plusError, minusError);
@@ -65,5 +69,9 @@ public class FloatType extends FloatNoUnitType {
         return unit;
     }
 
+    void setUnit(String u) {
+        this.unit = u;
+    }
+    
     String unit;
 }
