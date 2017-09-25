@@ -23,6 +23,8 @@ public class Unit {
     public static final Unit METER_UNIT = new Unit(METER);
     public static final Unit HERTZ_UNIT = new Unit(HERTZ);
 
+    Unit() {}
+    
     public Unit(String name) {
         this(name, null);
     }
@@ -67,6 +69,14 @@ public class Unit {
         return description;
     }
     
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String toString() {
         return name;
     }

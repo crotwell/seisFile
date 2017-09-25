@@ -12,6 +12,10 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class InstrumentSensitivity extends GainSensitivity {
 
+    public InstrumentSensitivity() {
+        // hibernate
+    }
+    
     public InstrumentSensitivity(float value,
                                  float frequency,
                                  Unit inputUnits,
@@ -81,6 +85,26 @@ public class InstrumentSensitivity extends GainSensitivity {
 
     public float getFrequencyDbVariation() {
         return frequencyDbVariation;
+    }
+
+    public void setInputUnits(Unit inputUnits) {
+        this.inputUnits = inputUnits;
+    }
+
+    public void setOutputUnits(Unit outputUnits) {
+        this.outputUnits = outputUnits;
+    }
+
+    public void setFrequencyStart(float frequencyStart) {
+        this.frequencyStart = frequencyStart;
+    }
+
+    public void setFrequencyEnd(float frequencyEnd) {
+        this.frequencyEnd = frequencyEnd;
+    }
+
+    public void setFrequencyDbVariation(float frequencyDbVariation) {
+        this.frequencyDbVariation = frequencyDbVariation;
     }
 
     public static boolean isValid(InstrumentSensitivity sens) {

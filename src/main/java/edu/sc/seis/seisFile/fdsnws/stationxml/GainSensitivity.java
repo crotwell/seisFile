@@ -59,5 +59,13 @@ public class GainSensitivity {
         return frequency;
     }
 
+    public void setSensitivityValue(float sensitivityValue) {
+        this.sensitivityValue = sensitivityValue;
+    }
+
+    public void setFrequency(float frequency) {
+        this.frequency = frequency;
+    }
+
     float sensitivityValue, frequency;
 }

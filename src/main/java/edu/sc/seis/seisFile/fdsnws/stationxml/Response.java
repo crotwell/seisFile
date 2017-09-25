@@ -15,6 +15,8 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Response {
     
+    Response() {}
+    
     public Response(List<ResponseStage> responseStageList,
                     InstrumentSensitivity instrumentSensitivity,
                     InstrumentPolynomial instrumentPolynomial) {
@@ -117,6 +119,10 @@ public class Response {
 
     public InstrumentSensitivity getInstrumentSensitivity() {
         return instrumentSensitivity;
+    }
+
+    public void setInstrumentSensitivity(InstrumentSensitivity sensitivity) {
+        this.instrumentSensitivity = sensitivity;
     }
 
     public InstrumentPolynomial getInstrumentPolynomial() {

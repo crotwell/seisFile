@@ -138,6 +138,16 @@ public class Channel extends BaseNodeType {
         return response;
     }
     
+    public InstrumentSensitivity getInstrumentSensitivity() {
+        return getResponse() != null ? getResponse().getInstrumentSensitivity() : null;
+    }
+    
+    public void setInstrumentSensitivity(InstrumentSensitivity sensitivity) {
+        if (getResponse() == null) {
+            this.response = new Response();
+        }
+        this.response.setInstrumentSensitivity(sensitivity);
+    }
     public String getChannelCode() {
         return getCode();
     }
