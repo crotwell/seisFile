@@ -168,7 +168,8 @@ artifacts {
 
 
 
-task makeScript(dependsOn: copyToLib) << { task ->
+task makeScript(dependsOn: copyToLib) {
+  doLast { task ->
     group = 'build'
     def dExtras = getDExtras()
     def doBat = true
@@ -193,6 +194,7 @@ task makeScript(dependsOn: copyToLib) << { task ->
     //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('winstonpurge', 'edu.sc.seis.seisFile.winston.PurgeOldData', task.project, dExtras:dExtras, bat:doBat)
+  }
 }
 
 def getDExtras() {
