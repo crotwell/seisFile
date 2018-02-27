@@ -202,8 +202,8 @@ public class WaveServer extends StringMSeedQueryReader {
         String nextReqId = getNextRequestId();
         DecimalFormat df = new DecimalFormat("0.0###", new DecimalFormatSymbols(Locale.US));
         String cmd = "GETSCNLRAW: " + nextReqId + " " + station + " " + channel + " " + network + " "
-                + ((location == null || location == "") ? "--" : location) + " " + df.format(TimeUtils.instantToEpochSeconds(begin) + " "
-                + df.format(TimeUtils.instantToEpochSeconds(end)));
+                + ((location == null || location == "") ? "--" : location) + " " + df.format(TimeUtils.instantToEpochSeconds(begin)) + " "
+                + df.format(TimeUtils.instantToEpochSeconds(end));
         return cmd;
     }
 
