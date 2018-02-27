@@ -189,6 +189,7 @@ public class ListHeader {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
+                            out.flush();
                         }
                     }
                 } else {
