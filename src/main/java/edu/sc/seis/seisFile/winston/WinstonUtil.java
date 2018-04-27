@@ -173,7 +173,7 @@ public class WinstonUtil {
         ZonedDateTime endzdt = ZonedDateTime.ofInstant(endTime, TimeUtils.TZ_UTC);
         int endYear = endzdt.getYear();
         int endMonth = endzdt.getMonthValue();
-        int endDay = endzdt.getMonthValue();
+        int endDay = endzdt.getDayOfMonth();
         List<WinstonTable> tableList = listTablesBetweenDates(channel,
                                                               startYear,
                                                               startMonth,
