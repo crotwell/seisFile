@@ -176,6 +176,7 @@ public abstract class AbstractQueryParams {
         return params.get(key);
     }
 
+    public static final String NO_DATA = "nodata";
     
     public static final String IRIS_HOST = "service.iris.edu";
     
