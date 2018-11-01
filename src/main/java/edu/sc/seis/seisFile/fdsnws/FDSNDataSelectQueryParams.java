@@ -2,7 +2,6 @@
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -36,6 +35,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
 
     public static final String STARTTIME = "starttime";
+
     public static final String STARTTIME_SHORT = "start";
 
     /** Limit results to time series samples on or after the specified start time
@@ -52,6 +52,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
 
     public static final String ENDTIME = "endtime";
+
     public static final String ENDTIME_SHORT = "end";
 
     /** Limit results to time series samples on or before the specified end time
@@ -68,6 +69,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
 
     public static final String NETWORK = "network";
+
     public static final String NETWORK_SHORT = "net";
 
     /** Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.
@@ -84,6 +86,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
 
     public static final String STATION = "station";
+
     public static final String STATION_SHORT = "sta";
 
     /** Select one or more SEED station codes. Multiple codes are comma-separated.
@@ -100,6 +103,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
 
     public static final String LOCATION = "location";
+
     public static final String LOCATION_SHORT = "loc";
 
     /** Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case "--" (two dashes) will be translated to a string of two space characters to match blank location IDs.
@@ -117,6 +121,7 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
 
     public static final String CHANNEL = "channel";
+
     public static final String CHANNEL_SHORT = "cha";
 
     /** Select one or more SEED channel codes. Multiple codes are comma-separated.
@@ -185,9 +190,8 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
         String[] staSplit = getParam(STATION).split(",");
         String[] locSplit = getParam(LOCATION).split(",");
         String[] chanSplit = getParam(CHANNEL).split(",");
-        DateTimeFormatter sdf = createDateFormat();
-            Instant beginDate = TimeUtils.parseISOString(getParam(STARTTIME));
-            Instant endDate = TimeUtils.parseISOString(getParam(ENDTIME));
+        Instant beginDate = TimeUtils.parseISOString(getParam(STARTTIME));
+        Instant endDate = TimeUtils.parseISOString(getParam(ENDTIME));
             for (int n = 0; n < netSplit.length; n++) {
                 for (int s = 0; s < staSplit.length; s++) {
                     for (int l = 0; l < locSplit.length; l++) {
