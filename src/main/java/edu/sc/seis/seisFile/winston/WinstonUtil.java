@@ -85,6 +85,16 @@ public class WinstonUtil {
         conn.commit();
         return out;
     }
+    
+    public boolean channelDatabaseExists(WinstonSCNL channel) throws SQLException {
+        List<WinstonSCNL> allDbList = listChannelDatabases();
+        for (WinstonSCNL winstonSCNL : allDbList) {
+            if (winstonSCNL.equals(channel)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void useDatabase(WinstonSCNL channel) throws SQLException {
         Connection conn = getConnection();
@@ -350,7 +360,7 @@ public class WinstonUtil {
 
     String driver = MYSQL_DRIVER;
     
-    static boolean verbose = true;
+    static boolean verbose = false;
 
     public static final Duration TWO_SECONDS = Duration.ofSeconds(2);
     
