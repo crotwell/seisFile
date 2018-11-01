@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -43,6 +46,9 @@ public class Comment {
         } else if (elName.equals(StationXMLTagNames.ENDEFFECTIVETIME)) {
             endEffectiveTime = StaxUtil.pullText(reader, StationXMLTagNames.ENDEFFECTIVETIME);
             return true;
+        } else if (elName.equals(StationXMLTagNames.AUTHOR)) {
+            authorList.add( new Person(reader, StationXMLTagNames.AUTHOR));
+            return true;
         } else {
             return false;
         }
@@ -68,17 +74,17 @@ public class Comment {
         return id;
     }
 
-    public Person getAuthor() {
-        return author;
+    public List<Person> getAuthorList() {
+        return authorList;
     }
-
+    
     String value;
 
     String beginEffectiveTime, endEffectiveTime;
 
     int id;
 
-    Person author;
+    List<Person> authorList = new ArrayList<Person>();
 
     public String toString() {
         return value;
