@@ -58,11 +58,11 @@ public class ISOTimeParser extends StringParser {
         int year = extract(m, 1, 1970);
         int month = extract(m, 2, ceiling ? 12 : 1);
         YearMonth ym = YearMonth.of(year, month); 
-        int dayOfMonth = extract(m, 2, ceiling ? ym.lengthOfMonth() : 1);
-        int hour = extract(m, 2, ceiling ? 23 : 0);
-        int minute = extract(m, 2, ceiling ? 59 : 0);
-        int second = extract(m, 2, ceiling ? 59 : 0);
-        int nanoOfSecond = extract(m, 2, ceiling ? ((int)TimeUtils.NANOS_IN_SEC) - 1 : 0);
+        int dayOfMonth = extract(m, 3, ceiling ? ym.lengthOfMonth() : 1);
+        int hour = extract(m, 5, ceiling ? 23 : 0);
+        int minute = extract(m, 6, ceiling ? 59 : 0);
+        int second = extract(m, 7, ceiling ? 59 : 0);
+        int nanoOfSecond = extract(m, 8, ceiling ? ((int)TimeUtils.NANOS_IN_SEC) - 1 : 0);
         return ZonedDateTime.of(year, month, dayOfMonth, hour, minute, second, nanoOfSecond, TimeUtils.TZ_UTC)
                 .toInstant();
     }
@@ -138,7 +138,7 @@ public class ISOTimeParser extends StringParser {
                 + floatFormat.format(second) + "Z";
     }
 
-    public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?(T)?(\\d{2})?:?(\\d{2})?:?(\\d{2})?";
+    public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?(T)?(\\d{2})?:?(\\d{2})?:?(\\d{2})?\\.?(\\d)?";
 
     private static Pattern datePattern = Pattern.compile(ISO_TIME_RE);
     
