@@ -198,6 +198,9 @@ public class DataRecord extends SeedRecord implements Serializable {
      */
     public Btime getLastSampleBtime() {
         Btime startBtime = getStartBtime();
+        if (getHeader().getNumSamples() == 0) {
+            return startBtime;
+        }
         // get the number of ten thousandths of seconds of data
         double numTenThousandths = (((double)(getHeader().getNumSamples() - 1) / getSampleRate()) * 10000.0);
         // return the time structure projected by the number of ten thousandths
@@ -341,13 +344,15 @@ public class DataRecord extends SeedRecord implements Serializable {
             throws IOException, SeedFormatException {
         try {
             boolean swapBytes = header.flagByteSwap();
-            /*
-             * Assert.isTrue(header.getDataBlocketteOffset()>= header.getSize(),
-             * "Offset to first blockette must be larger than the header size");
-             */
             DataRecord dataRec = new DataRecord(header);
             // read garbage between header and blockettes
             if (header.getDataBlocketteOffset() != 0) {
+                if (header.getDataBlocketteOffset() < header.getSize()) {
+                    throw new SeedFormatException("dataBlocketteOffset is smaller than header size: "+header.getDataBlocketteOffset());
+                }
+                if (header.getDataBlocketteOffset() > 4096 && header.getDataBlocketteOffset() > defaultRecordSize) {
+                    throw new SeedFormatException("dataBlocketteOffset is large: "+header.getDataBlocketteOffset());
+                }
                 byte[] garbage = new byte[header.getDataBlocketteOffset() - header.getSize()];
                 if (garbage.length != 0) {
                     inStream.readFully(garbage);
