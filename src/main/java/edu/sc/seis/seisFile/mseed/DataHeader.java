@@ -11,6 +11,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * Container class for SEED Fixed Section Data Header information.
@@ -408,36 +410,9 @@ public class DataHeader extends ControlHeader {
     // take the Btime structure and forward-project a new time that is
     // the specified number of ten thousandths of seconds ahead
     static Btime projectTime(Btime bTime, double tenThousandths) {
-        int offset = 0; // leap year offset
-        // check to see if this is a leap year we are starting on
-        boolean is_leap = bTime.year % 4 == 0 && bTime.year % 100 != 0
-                || bTime.year % 400 == 0;
-        if(is_leap)
-            offset = 1;
-        // convert bTime to tenths of seconds in the current year, then
-        // add that value to the incremental time value tenThousandths
-        tenThousandths += ttConvert(bTime);
-        // now increment year if it crosses the year boundary
-        if((tenThousandths) >= (366 + offset) * 864000000.0) {
-            bTime.year++;
-            tenThousandths -= (365 + offset) * 864000000.0;
-        }
-        // increment day
-        bTime.jday = (int)(tenThousandths / 864000000.0);
-        tenThousandths -= (double)bTime.jday * 864000000.0;
-        // increment hour
-        bTime.hour = (int)(tenThousandths / 36000000.0);
-        tenThousandths -= (double)bTime.hour * 36000000.0;
-        // increment minutes
-        bTime.min = (int)(tenThousandths / 600000.0);
-        tenThousandths -= (double)bTime.min * 600000.0;
-        // increment seconds
-        bTime.sec = (int)(tenThousandths / 10000.0);
-        tenThousandths -= (double)bTime.sec * 10000.0;
-        // set tenth seconds
-        bTime.tenthMilli = (int)tenThousandths;
-        // return the resultant value
-        return bTime;
+        Instant inst = bTime.toInstant();
+        Duration dur = Duration.ofSeconds(0, Math.round(tenThousandths*100000));
+        return new Btime(inst.plus(dur));
     }
 
     /**
