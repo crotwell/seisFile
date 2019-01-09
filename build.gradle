@@ -1,8 +1,14 @@
+plugins {
+  id "edu.sc.seis.version-class" version "1.1.1"
+}
 
 group = 'edu.sc.seis'
 version = '2.0.0-SNAPSHOT'
 
+
+
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'groovy'
 
@@ -46,11 +52,11 @@ uploadArchives {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
       repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
+        authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
       }
 
       snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
+        authentication(userName: hasProperty('ossrhUsername')?ossrhUsername:'', password: hasProperty('ossrhPassword')?ossrhPassword:'')
       }
 
       pom.project {
@@ -84,7 +90,13 @@ uploadArchives {
     }
   }
 }
-
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
 
 def binDistFiles = copySpec {
     from('build/output') {
