@@ -11,33 +11,78 @@ public class DataLinkPacket extends DataLinkResponse {
 
     public DataLinkPacket(DataLinkHeader header, byte[] rawData) throws DataLinkException {
         super(header);
-      this.streamId = this.header.split[1];
-      this.pktid = this.header.split[2];
-      this.hppackettime = this.header.split[3];
-      this.hppacketstart = this.header.split[4];
-      this.hppacketend = this.header.split[5];
-      this.dataSize = Integer.parseInt(this.header.split[6]);
-      if (rawData.length < this.dataSize) {
-        throw new Error("not enough bytes in raw data for packet: "+this.dataSize);
-      }
-      extract(rawData);
+        this.streamId = this.headerSplit(1);
+        this.pktid = this.headerSplit(2);
+        this.hppackettime = this.headerSplit(3);
+        this.hppacketstart = this.headerSplit(4);
+        this.hppacketend = this.headerSplit(5);
+        this.dataSize = Integer.parseInt(this.headerSplit(6));
+        this.rawData = rawData;
+        if (rawData.length < this.dataSize) {
+            throw new Error("not enough bytes in raw data for packet: " + this.dataSize);
+        }
     }
 
 
 
-    void extract(byte[] data) throws DataLinkException {
-        if (this.streamId.endsWith(DataLink.MSEED_TYPE)) {
-            try {
-            DataInputStream bis = new DataInputStream(new ByteArrayInputStream(data));
-            this.miniseed = (DataRecord) DataRecord.read(bis);
-            } catch(SeedFormatException e) {
-                throw new DataLinkException(e);
-            } catch(IOException e) {
-                throw new DataLinkException(e);
+    public String getStreamId() {
+        return streamId;
+    }
+
+
+
+    public String getPktid() {
+        return pktid;
+    }
+
+
+
+    public String getHppackettime() {
+        return hppackettime;
+    }
+
+
+
+    public String getHppacketstart() {
+        return hppacketstart;
+    }
+
+
+
+    public String getHppacketend() {
+        return hppacketend;
+    }
+
+
+
+    public int getDataSize() {
+        return dataSize;
+    }
+
+
+
+    public byte[] getRawData() {
+        return rawData;
+    }
+
+
+
+    public DataRecord getMiniseed() throws DataLinkException {
+        if (miniseed == null) {
+            if (this.streamId.endsWith(DataLink.MSEED_TYPE)) {
+                try {
+                    DataInputStream bis = new DataInputStream(new ByteArrayInputStream(this.rawData));
+                    this.miniseed = (DataRecord) DataRecord.read(bis);
+                } catch(SeedFormatException e) {
+                    throw new DataLinkException(e);
+                } catch(IOException e) {
+                    throw new DataLinkException(e);
+                }
+            } else {
+                throw new DataLinkException("Unknown DataLink Packet type: "+this.streamId);
             }
-          } else {
-            throw new DataLinkException("Unknown DataLink Packet type: "+this.streamId);
-          }
+        }
+        return miniseed;
     }
 
     String streamId;
@@ -46,6 +91,7 @@ public class DataLinkPacket extends DataLinkResponse {
     String hppacketstart;
     String hppacketend;
     int dataSize;
+    byte[] rawData;
     DataRecord miniseed;
     
 }

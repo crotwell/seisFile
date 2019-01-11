@@ -7,5 +7,13 @@ public class DataLinkMessage extends DataLinkResponse {
         this.message = message;
     }
 
-    String message;
+    public String getMessage() {
+        return message;
+    }
+
+    public String toString() {
+        return super.getHeaderString()+" | "+message;
+    }
+    
+    private String message;
 }

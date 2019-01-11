@@ -20,7 +20,7 @@ public class Client {
             if (response instanceof DataLinkPacket) {
                 handlePacket((DataLinkPacket)response);
             } else {
-                System.out.println("Response: "+response.header.key);
+                System.out.println("Response: "+response.getKey());
             }
         }
         dl.endStream();
@@ -29,8 +29,8 @@ public class Client {
             handlePacket((DataLinkPacket)response);
             response = dl.readPacket();
         }
-        if ( ! response.header.key.equals(DataLink.ENDSTREAM)) {
-            System.err.println("Expected ENDSTREAM, but got "+response.header.key);
+        if ( ! response.getKey().equals(DataLink.ENDSTREAM)) {
+            System.err.println("Expected ENDSTREAM, but got "+response.getKey());
         }
         dl.close();
     }

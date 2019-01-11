@@ -42,45 +42,41 @@ public class DataLink {
         this.timeoutSeconds = timeoutSeconds;
         this.clientIdNum = 42;
         this.username = "unknown";
-        System.out.println("DataLink const "+host);
         initConnection();
     }
 
 
     private void initConnection() throws DataLinkException {
         try {
-            System.out.println("init connection");
             verbose("initConnection to "+host+":"+port);
-        socket = new Socket(host, port);
-        socket.setSoTimeout(timeoutSeconds*1000);
-        out = new BufferedOutputStream(socket.getOutputStream());
-        //in = (new BufferedInputStream(socket.getInputStream());
-        in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
-        inData = new DataInputStream(in);
-        mode = QUERY_MODE;
-        verbose("Connection made");
-        sendId();
-        while (availableBytes() < 3) {
-            verbose("not bytes available "+availableBytes());
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
+            socket = new Socket(host, port);
+            socket.setSoTimeout(timeoutSeconds*1000);
+            out = new BufferedOutputStream(socket.getOutputStream());
+            in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
+            inData = new DataInputStream(in);
+            mode = QUERY_MODE;
+            verbose("Connection made");
+            sendId();
+            while (availableBytes() < 3) {
+                verbose("not bytes available "+availableBytes());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                }
             }
-        }
-        verbose("readPacket");
-        DataLinkResponse dlr = readPacket();
-        if (dlr.header.key.equals("ID") && dlr.header.split[1].equals("DataLink")) {
-            this.serverId = dlr.header.header;
-        } else {
-            verbose("Not ID response: "+dlr.header.key+"  "+dlr.header.split[1]+"  "+dlr.header.header);
-        }
+            verbose("readPacket");
+            DataLinkResponse dlr = readPacket();
+            if (dlr.getKey().equals("ID") && dlr.headerSplit(1).equals("DataLink")) {
+                this.serverId = dlr.getHeaderString();
+            } else {
+                verbose("Not ID response: "+dlr.getKey()+"  "+dlr.headerSplit(1)+"  "+dlr.getHeaderString());
+            }
         } catch(UnknownHostException e) {
             throw new DataLinkException(e);
         } catch(IOException e) {
             throw new DataLinkException(e);
         }
     }
-
 
     /**
      * Read a packet.
@@ -112,14 +108,14 @@ public class DataLink {
         String headerStr = new String(headerBytes);
         DataLinkHeader header = new DataLinkHeader(headerStr);
         DataLinkResponse out = null;
-        byte[] rawData = new byte[header.dataSize];
+        byte[] rawData = new byte[header.getDataSize()];
         inData.readFully(rawData);
-        if (header.key.startsWith(PACKET)) {
+        if (header.getKey().startsWith(PACKET)) {
             out = new DataLinkPacket(header, rawData);
-        } else if (header.key.startsWith(ID) || header.key.startsWith(INFO) || header.key.startsWith(OK) || header.key.startsWith(ERROR) || header.key.startsWith(ENDSTREAM)) {
+        } else if (header.isMessageType()) {
             out = new DataLinkMessage(header, new String(rawData));
         } else {
-            throw new DataLinkException("Unknown packet type: "+header.key);
+            throw new DataLinkException("Unknown packet type: "+header.getKey());
         }
         return out;
     }
@@ -297,10 +293,9 @@ public class DataLink {
       } catch (IOException e) {
           throw new DataLinkException("Unable to get response to command: "+command, e);
       }
-      if (resp.header.key.equals(OK)) {
+      if (resp.getKey().equals(OK)) {
           return resp;
-      } else if (resp.header.key.equals(ERROR)) {
-          
+      } else if (resp.getKey().equals(ERROR)) {
           return resp;
       } else {
           throw new DataLinkException("Unknown response, was expecting OK or ERROR");
