@@ -797,11 +797,15 @@ public class DataHeader extends ControlHeader {
      */
     public String toString() {
         String s = super.toString() + " ";
-        s += " "+ getNetworkCode() + "." + getStationIdentifier() + "." 
-                + getLocationIdentifier() + "." + getChannelIdentifier() + "." 
+        s += " "+ getCodes() + "." 
                 + getStartTime() + "  " + getSampleRate()*getNumSamples() + " "
                 + getNumBlockettes() + " " + getDataOffset() + " " + getDataBlocketteOffset();
         return s;
+    }
+    
+    public String getCodes() {
+        return getNetworkCode().trim() + "." + getStationIdentifier().trim() + "." 
+                + getLocationIdentifier().trim() + "." + getChannelIdentifier().trim();
     }
 }
 // DataHeader.java
