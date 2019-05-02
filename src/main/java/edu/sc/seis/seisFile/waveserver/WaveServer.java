@@ -47,8 +47,7 @@ public class WaveServer extends StringMSeedQueryReader {
     public List<MenuItem> getMenu() throws IOException {
         List<MenuItem> result = new ArrayList<MenuItem>();
         String nextReqId = getNextRequestId();
-        PrintWriter socketOut = getOut();
-        socketOut.println("MENU: " + nextReqId + " SCNL");
+        sendCmd("MENU: " + nextReqId + " SCNL");
         String all = new BufferedReader(new InputStreamReader(getIn())).readLine(); // newline ends reply
         String[] sections = all.split("  "); // double space separates entries
         for (int i = 1; i < sections.length; i++) {
@@ -91,12 +90,7 @@ public class WaveServer extends StringMSeedQueryReader {
     
     public List<TraceBuf2> getTraceBuf(String cmd) throws IOException {
         List<TraceBuf2> ans = new ArrayList<TraceBuf2>();
-        if (isVerbose()) {
-            System.out.println("send cmd: " + cmd);
-        }
-        PrintWriter socketOut = getOut();
-        socketOut.println(cmd);
-        socketOut.flush();
+        sendCmd(cmd);
         DataInputStream dataIn = getIn();
         String all = dataIn.readLine(); // newline ends ascii part of reply
         if (isVerbose()) {
@@ -131,6 +125,16 @@ public class WaveServer extends StringMSeedQueryReader {
             }
         }
         return ans;
+    }
+    
+    void sendCmd(String cmd) throws IOException {
+        if (isVerbose()) {
+            System.out.println("send cmd: " + cmd);
+        }
+        PrintWriter socketOut = getOut();
+        // manually use newline as println line terminator is os specific 
+        socketOut.print(cmd+"\n"); 
+        socketOut.flush();
     }
 
     public String getHost() {
