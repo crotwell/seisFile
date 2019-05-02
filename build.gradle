@@ -206,6 +206,8 @@ task makeScript(dependsOn: copyToLib) {
     //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('winstonpurge', 'edu.sc.seis.seisFile.winston.PurgeOldData', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('datalinkclient', 'edu.sc.seis.seisFile.datalink.Client', task.project, dExtras:dExtras, bat:doBat)
+    
   }
 }
 
