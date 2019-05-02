@@ -77,7 +77,7 @@ public class ListHeader {
             } else if (args[i].equals("--help")) {
                 out.println("java "
                         + ListHeader.class.getName()
-                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][--verbose][--version][--timed][--help] <filename> [<filename>...]");
+                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][-d][--verbose][--version][--timed][--help] <filename> [<filename>...]");
                 System.exit(0);
             } else {
                 filenameList.add(args[i]);
