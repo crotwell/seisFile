@@ -1,10 +1,15 @@
 
-group = 'edu.sc.seis'
-version = '1.8.1-SNAPSHOT'
 
+plugins {
+  id "edu.sc.seis.version-class" version "1.1.1"
+}
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'groovy'
+
+group = 'edu.sc.seis'
+version = '1.8.1-SNAPSHOT'
+
 
 dependencies {
 //    compile project(':seedCodec')
@@ -41,49 +46,52 @@ signing {
     sign configurations.archives
 }
 
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
-
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
-
-      pom.project {
-        name 'seisFile'
-        packaging 'jar'
-        // optionally artifactId can be defined here 
-        description 'A library for reading and writing seismic file formats in java.'
-        url 'http://www.seis.sc.edu/seisFile.html'
-
-        scm {
-          connection 'scm:git:https://github.com/crotwell/seisFile.git'
-          developerConnection 'scm:git:https://github.com/crotwell/seisFile.git'
-          url 'https://github.com/crotwell/seisFile'
-        }
-
-        licenses {
-          license {
-            name 'The GNU General Public License, Version 3'
-            url 'http://www.gnu.org/licenses/gpl-3.0.html'
+if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword') ) {
+    uploadArchives {
+      repositories {
+        mavenDeployer {
+          beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+    
+          repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            authentication(userName: ossrhUsername, password: ossrhPassword)
           }
-        }
-
-        developers {
-          developer {
-            id 'crotwell'
-            name 'Philip Crotwell'
-            email 'crotwell@seis.sc.edu'
+    
+          snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            authentication(userName: ossrhUsername, password: ossrhPassword)
+          }
+    
+          pom.project {
+            name 'seisFile'
+            packaging 'jar'
+            // optionally artifactId can be defined here 
+            description 'A library for reading and writing seismic file formats in java.'
+            url 'http://www.seis.sc.edu/seisFile.html'
+    
+            scm {
+              connection 'scm:git:https://github.com/crotwell/seisFile.git'
+              developerConnection 'scm:git:https://github.com/crotwell/seisFile.git'
+              url 'https://github.com/crotwell/seisFile'
+            }
+    
+            licenses {
+              license {
+                name 'The GNU General Public License, Version 3'
+                url 'http://www.gnu.org/licenses/gpl-3.0.html'
+              }
+            }
+    
+            developers {
+              developer {
+                id 'crotwell'
+                name 'Philip Crotwell'
+                email 'crotwell@seis.sc.edu'
+              }
+            }
           }
         }
       }
     }
-  }
 }
 
 
@@ -169,31 +177,34 @@ artifacts {
 
 
 
-task makeScript(dependsOn: copyToLib) << { task ->
+task makeScript(dependsOn: copyToLib) {
+  doLast {
     group = 'build'
     def dExtras = getDExtras()
     def doBat = true
-    ScriptBuilder.create('fdsnevent', 'edu.sc.seis.seisFile.fdsnws.EventClient', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('fdsnstationxml', 'edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('fdsnstation', 'edu.sc.seis.seisFile.fdsnws.StationClient', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('fdsndataselect', 'edu.sc.seis.seisFile.fdsnws.DataSelectClient', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('saclh', 'edu.sc.seis.seisFile.sac.ListHeader', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('mseedlh', 'edu.sc.seis.seisFile.mseed.ListHeader', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('cwbclient', 'edu.sc.seis.seisFile.usgsCWB.Client', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('winstonclient', 'edu.sc.seis.seisFile.winston.WinstonClient', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('winstonexport', 'edu.sc.seis.seisFile.winston.WinstonExport', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('earthwormExportTest', 'edu.sc.seis.seisFile.earthworm.EarthwormExport', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('earthwormImportTest', 'edu.sc.seis.seisFile.earthworm.EarthwormImport', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('waveserverclient', 'edu.sc.seis.seisFile.waveserver.WaveServerClient', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('syncfilecompare', 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('syncfile2gmt', 'edu.sc.seis.seisFile.syncFile.GMTSyncFile', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('refinesyncfile', 'edu.sc.seis.seisFile.syncFile.RefineSyncFile', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', task.project, dExtras:dExtras, bat:doBat)
-    //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create('winstonpurge', 'edu.sc.seis.seisFile.winston.PurgeOldData', task.project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fdsnevent', 'edu.sc.seis.seisFile.fdsnws.EventClient', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fdsnstationxml', 'edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fdsnstation', 'edu.sc.seis.seisFile.fdsnws.StationClient', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('fdsndataselect', 'edu.sc.seis.seisFile.fdsnws.DataSelectClient', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('saclh', 'edu.sc.seis.seisFile.sac.ListHeader', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('mseedlh', 'edu.sc.seis.seisFile.mseed.ListHeader', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('seedlinkclient', 'edu.sc.seis.seisFile.seedlink.Client', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('cwbclient', 'edu.sc.seis.seisFile.usgsCWB.Client', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('lissclient', 'edu.sc.seis.seisFile.liss.Client', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('winstonclient', 'edu.sc.seis.seisFile.winston.WinstonClient', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('winstonexport', 'edu.sc.seis.seisFile.winston.WinstonExport', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('earthwormExportTest', 'edu.sc.seis.seisFile.earthworm.EarthwormExport', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('earthwormImportTest', 'edu.sc.seis.seisFile.earthworm.EarthwormImport', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('waveserverclient', 'edu.sc.seis.seisFile.waveserver.WaveServerClient', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('syncfilecompare', 'edu.sc.seis.seisFile.syncFile.SyncFileCompare', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('syncfile2gmt', 'edu.sc.seis.seisFile.syncFile.GMTSyncFile', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('refinesyncfile', 'edu.sc.seis.seisFile.syncFile.RefineSyncFile', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('gcfserialtoew', 'edu.sc.seis.seisFile.gcf.GCFEarthwormExport', project, dExtras:dExtras, bat:doBat)
+    //ScriptBuilder.create('fakegcfserial', 'edu.sc.seis.seisFile.gcf.GCFSerialOutput', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', project, dExtras:dExtras, bat:doBat)
+    ScriptBuilder.create('winstonpurge', 'edu.sc.seis.seisFile.winston.PurgeOldData', project, dExtras:dExtras, bat:doBat)
+
+    }
 }
 
 def getDExtras() {
