@@ -2,13 +2,14 @@
 
 plugins {
   id "edu.sc.seis.version-class" version "1.1.1"
+  id "java-library"
 }
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'groovy'
 
 group = 'edu.sc.seis'
-version = '1.8.1-SNAPSHOT'
+version = '1.8.1'
 
 
 dependencies {
@@ -20,7 +21,7 @@ dependencies {
 //
 //    compile 'org.rxtx:rxtx:2.2.pre2'  ...but not in maven
     compile 'org.rxtx:rxtx:2.1.7'
-    compile "org.codehaus.woodstox:woodstox-core-lgpl:4.4.1"
+    compile "com.fasterxml.woodstox:woodstox-core:5.2.1"
     compile "net.java.dev.msv:msv-core:2013.6.1"
     compile 'org.apache.httpcomponents:httpclient:4.5.3'
     runtime "mysql:mysql-connector-java:5.1.39"
@@ -52,35 +53,35 @@ if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')
       repositories {
         mavenDeployer {
           beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-    
+
           repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
             authentication(userName: ossrhUsername, password: ossrhPassword)
           }
-    
+
           snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
             authentication(userName: ossrhUsername, password: ossrhPassword)
           }
-    
+
           pom.project {
             name 'seisFile'
             packaging 'jar'
-            // optionally artifactId can be defined here 
+            // optionally artifactId can be defined here
             description 'A library for reading and writing seismic file formats in java.'
             url 'http://www.seis.sc.edu/seisFile.html'
-    
+
             scm {
               connection 'scm:git:https://github.com/crotwell/seisFile.git'
               developerConnection 'scm:git:https://github.com/crotwell/seisFile.git'
               url 'https://github.com/crotwell/seisFile'
             }
-    
+
             licenses {
               license {
                 name 'The GNU General Public License, Version 3'
                 url 'http://www.gnu.org/licenses/gpl-3.0.html'
               }
             }
-    
+
             developers {
               developer {
                 id 'crotwell'
@@ -143,7 +144,7 @@ task explodeBin(type: Sync, dependsOn: ['makeScript', 'exampleClasses' ]) {
     into file("$buildDir/explode")
 }
 
-task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionClass', 'createBuildScript', ':seiswww:makeSite', 'wrapper']) {
+task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionClass', 'createBuildScript', ':seiswww:makeSite']) {
     group = 'dist'
     with distFiles
     into file("$buildDir/explode")
@@ -210,6 +211,3 @@ task makeScript(dependsOn: copyToLib) {
 def getDExtras() {
     return [ 'seisFile':getVersion()]
 }
-
-
-
