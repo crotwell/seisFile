@@ -2,10 +2,10 @@ package edu.sc.seis.seisFile.mseed;
 
 /**
  * MiniSeedRead.java
- * 
- * 
+ *
+ *
  * Created: Thu Apr 8 12:10:52 1999
- * 
+ *
  * @author Philip Crotwell
  * @version
  */
@@ -19,10 +19,11 @@ import java.io.PrintWriter;
 
 /**
  * @deprecated See ListHeader for an example client and SeedRecord.read for reading
- * 
+ *
  * @author crotwell
  *
  */
+@Deprecated
 public class MiniSeedRead {
 
     protected MiniSeedRead() {}

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TimeQueryLog {
 
-    /** @returns number of queries to host in last second. */
+    /** @return number of queries to host in last second. */
     public static int add(URI uri) {
         totalQueries++;
         QueryTime current = new QueryTime(uri);

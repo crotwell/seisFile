@@ -18,6 +18,7 @@ import java.io.IOException;
  * @author crotwell
  *
  */
+@Deprecated
 public class MultiFileMSeedRead extends MiniSeedRead {
 
     public MultiFileMSeedRead(File[] files) throws IOException {
@@ -81,4 +82,3 @@ public class MultiFileMSeedRead extends MiniSeedRead {
 
 
 }
-
