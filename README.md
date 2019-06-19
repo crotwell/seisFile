@@ -20,3 +20,17 @@ Currently support exists for:
   * Guralp GCF format streams
 
 These are low level routines that provide basic connection to the services and basic parsing of the file formats into objects that closely mirror those formats. Hence they are intended to be used as a library rather than an application. The clients, although functional, mainly serve as an example of how to connect to these services. Full SEED support was also not intended. However there are cases of almost miniseed, such as one or two control records before the data records. SeisFile can handle the basic structure of these control records, allowing these mixed files to be read without crashing, but not all blockettes are parsed into fields. Support for the many blockette types in full SEED could be added in the future, although there is a large amount of bookkeeping to implement that and seisFile was intended to be small and focused.
+
+### Building
+
+seisFile can be built with gradle. For example:
+
+```./gradlew jar```
+will build the seisFile jar file.
+
+```./gradlew explodeBin```
+will build a binary distribution directlry in build/explode with all scripts in bin and bat directories and all dependency jars in the lib directory. 
+
+```./gradlew explodeDist``` will also include javadocs, gradle wrapper, src, etc.
+
+```./gradlew tarDist``` will package this into a tar file.
