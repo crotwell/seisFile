@@ -7,13 +7,26 @@ version = '2.0.0-SNAPSHOT'
 
 
 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'project-report'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'groovy'
 
+repositories {
+    mavenLocal()
+    maven { url "http://www.seis.sc.edu/software/maven2" }
+    mavenCentral()
+    maven { url "http://spring-rich-c.sourceforge.net/maven2repository" }
+    maven { url "http://oss.sonatype.org/content/groups/public" }
+    maven { url "https://repository.jboss.org/nexus/content/repositories/public" }
+}
+
 dependencies {
-    compile project(':seedCodec')
+    //compile project(':seedCodec')
+    compile 'edu.sc.seis:seedCodec:1.0.11'
     compile "com.martiansoftware:jsap:2.1"
     compile "org.slf4j:slf4j-api:1.7.21"
     compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.21"
@@ -62,7 +75,7 @@ uploadArchives {
       pom.project {
         name 'seisFile'
         packaging 'jar'
-        // optionally artifactId can be defined here 
+        // optionally artifactId can be defined here
         description 'A library for reading and writing seismic file formats in java.'
         url 'http://www.seis.sc.edu/seisFile.html'
 
@@ -178,7 +191,11 @@ artifacts {
 }
 
 
-
+task copyToLib(dependsOn: configurations.default.allArtifacts.buildDependencies, type: Copy) {
+    into "$buildDir/explode/lib"
+    from configurations.default
+    from configurations.default.allArtifacts.files
+}
 
 task makeScript(dependsOn: copyToLib) {
   doLast { task ->
@@ -207,13 +224,10 @@ task makeScript(dependsOn: copyToLib) {
     ScriptBuilder.create('sfgroovy', 'groovy.lang.GroovyShell', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('winstonpurge', 'edu.sc.seis.seisFile.winston.PurgeOldData', task.project, dExtras:dExtras, bat:doBat)
     ScriptBuilder.create('datalinkclient', 'edu.sc.seis.seisFile.datalink.Client', task.project, dExtras:dExtras, bat:doBat)
-    
+
   }
 }
 
 def getDExtras() {
     return [ 'seisFile':getVersion()]
 }
-
-
-
