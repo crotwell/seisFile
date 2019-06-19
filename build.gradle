@@ -109,12 +109,16 @@ if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')
 
 
 def binDistFiles = copySpec {
-    from('build/output') {
+    from(configurations.default) {
+        into('lib')
+    }
+    from(configurations.default.allArtifacts.files) {
+        into('lib')
+    }
+    from('build/scripts') {
         fileMode=0755
         include('bin/**')
-    }
-    from('build/output') {
-        include('lib/**')
+        include('bat/**')
     }
 }
 
@@ -189,14 +193,7 @@ artifacts {
 }
 
 
-task copyToLib(dependsOn: configurations.default.allArtifacts.buildDependencies, type: Copy) {
-    into "$buildDir/explode/lib"
-    from configurations.default
-    from configurations.default.allArtifacts.files
-}
-
-
-task makeScript(dependsOn: copyToLib) {
+task makeScript() {
   doLast {
     group = 'build'
     def dExtras = getDExtras()

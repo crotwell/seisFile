@@ -49,7 +49,7 @@ class ScriptBuilder {
                       mainClass,
                       project) {
         extrasDefaults(extras)
-        def binDir = project.file('build/output/bin')
+        def binDir = new File(project.buildDir, "scripts/bin")
         binDir.mkdirs()
         def projName = project.name.toUpperCase()
         def scriptFile = new File(binDir, scriptName)
@@ -131,7 +131,7 @@ echo \$! > ${scriptName}.pid
                       mainClass,
                       project) {
         extrasDefaults(extras)
-        def binDir = project.file('build/output/bin')
+        def binDir = new File(project.buildDir, "scripts/bat")
         binDir.mkdirs()
         def projName = project.name.toUpperCase()
         def scriptFile = new File(binDir, scriptName)
