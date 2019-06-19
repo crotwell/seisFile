@@ -4,12 +4,14 @@ plugins {
   id "edu.sc.seis.version-class" version "1.1.1"
   id "java-library"
 }
+apply plugin: 'eclipse'
+apply plugin: 'project-report'
 apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'groovy'
 
 group = 'edu.sc.seis'
-version = '1.8.1'
+version = '1.8.2-SNAPSHOT'
 
 
 dependencies {
@@ -25,6 +27,15 @@ dependencies {
     compile "net.java.dev.msv:msv-core:2013.6.1"
     compile 'org.apache.httpcomponents:httpclient:4.5.3'
     runtime "mysql:mysql-connector-java:5.1.39"
+}
+
+repositories {
+    mavenLocal()
+    maven { url "http://www.seis.sc.edu/software/maven2" }
+    mavenCentral()
+    maven { url "http://spring-rich-c.sourceforge.net/maven2repository" }
+    maven { url "http://oss.sonatype.org/content/groups/public" }
+    maven { url "https://repository.jboss.org/nexus/content/repositories/public" }
 }
 
 sourceSets {
@@ -144,7 +155,8 @@ task explodeBin(type: Sync, dependsOn: ['makeScript', 'exampleClasses' ]) {
     into file("$buildDir/explode")
 }
 
-task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionClass', 'createBuildScript', ':seiswww:makeSite']) {
+//task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc', 'modVersionClass', 'createBuildScript', ':seiswww:makeSite']) {
+task explodeDist(type: Sync, dependsOn: ['explodeBin', 'javadoc']) {
     group = 'dist'
     with distFiles
     into file("$buildDir/explode")
@@ -176,6 +188,11 @@ artifacts {
 }
 
 
+task copyToLib(dependsOn: configurations.default.allArtifacts.buildDependencies, type: Copy) {
+    into "$buildDir/explode/lib"
+    from configurations.default
+    from configurations.default.allArtifacts.files
+}
 
 
 task makeScript(dependsOn: copyToLib) {
