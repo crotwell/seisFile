@@ -34,6 +34,7 @@ publishing {
             artifact javadocJar
 
           pom {
+            name = "seisFile"
             description = 'A library for reading and writing seismic file formats in java.'
             url = 'http://www.seis.sc.edu/seisFile.html'
 
