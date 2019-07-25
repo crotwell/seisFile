@@ -100,6 +100,34 @@ public class Arrival {
         return commentList;
     }
 
+    public RealQuantity getTakeoffAngle() {
+        return takeoffAngle;
+    }
+
+    public Float getHorizontalSlownessWeight() {
+        return horizontalSlownessWeight;
+    }
+
+    public Float getBackazimuthWeight() {
+        return backazimuthWeight;
+    }
+
+    public Float getHorizontalSlownessResidual() {
+        return horizontalSlownessResidual;
+    }
+
+    public Float getBackazimuthResidual() {
+        return backazimuthResidual;
+    }
+
+    public Float getTimeWeight() {
+        return timeWeight;
+    }
+
+    public String getEarthModelID() {
+        return earthModelID;
+    }
+
     String publicId;
 
     String phase;
