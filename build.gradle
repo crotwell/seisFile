@@ -1,5 +1,6 @@
 plugins {
   id "edu.sc.seis.version-class" version "1.1.1"
+  id "groovy"
 }
 
 group = 'edu.sc.seis'
@@ -13,7 +14,6 @@ apply plugin: 'project-report'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
-apply plugin: 'groovy'
 
 repositories {
     mavenLocal()
@@ -22,6 +22,31 @@ repositories {
     maven { url "http://spring-rich-c.sourceforge.net/maven2repository" }
     maven { url "http://oss.sonatype.org/content/groups/public" }
     maven { url "https://repository.jboss.org/nexus/content/repositories/public" }
+}
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+    main {
+        java {
+            srcDir 'build/generated-src/version/java'
+        }
+    }
+   example {
+      java {
+         compileClasspath += main.output
+         compileClasspath += main.compileClasspath
+         runtimeClasspath += main.output
+         runtimeClasspath += main.runtimeClasspath
+      }
+   }
+//   metacode {
+//      groovy {
+//         srcDir 'src/metacode/groovy'
+//      }
+//   }
 }
 
 dependencies {
@@ -33,26 +58,12 @@ dependencies {
 //
 //    compile 'org.rxtx:rxtx:2.2.pre2'  ...but not in maven
     compile 'org.rxtx:rxtx:2.1.7'
-    compile "org.codehaus.woodstox:woodstox-core-lgpl:4.4.1"
+    compile "com.fasterxml.woodstox:woodstox-core:5.2.1"
     compile "net.java.dev.msv:msv-core:2013.6.1"
     compile 'org.apache.httpcomponents:httpclient:4.5.3'
     runtime "mysql:mysql-connector-java:5.1.39"
-}
-
-sourceSets {
-   example {
-      java {
-         compileClasspath += main.output
-         compileClasspath += main.compileClasspath
-         runtimeClasspath += main.output
-         runtimeClasspath += main.runtimeClasspath
-      }
-   }
-   metacode {
-      groovy {
-         srcDir 'src/metacode/groovy'
-      }
-   }
+//    metacodeImplementation localGroovy()
+    testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 signing {
