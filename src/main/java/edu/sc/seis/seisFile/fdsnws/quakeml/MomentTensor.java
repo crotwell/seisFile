@@ -62,28 +62,8 @@ public class MomentTensor {
         }
     }
 
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public String getDerivedOriginID() {
-        return derivedOriginID;
-    }
-
-    public String getMomentMagnitudeID() {
-        return momentMagnitudeID;
-    }
-
-    public RealQuantity getScalarMoment() {
-        return scalarMoment;
-    }
-
-    public Tensor getTensor() {
-        return tensor;
-    }
-
-    public float getDoubleCouple() {
-        return doubleCouple;
+    public String getCategory() {
+        return category;
     }
 
     public float getClvd() {
@@ -98,17 +78,85 @@ public class MomentTensor {
         return creationInfo;
     }
 
-    public String getMethodID() {
-        return methodID;
-    }
-
     public DataUsed getDataUsed() {
         return dataUsed;
     }
 
+    public String getDerivedOriginID() {
+        return derivedOriginID;
+    }
+
+    public float getDoubleCouple() {
+        return doubleCouple;
+    }
+
+    public String getMethodID() {
+        return methodID;
+    }
+
+    public String getMomentMagnitudeID() {
+        return momentMagnitudeID;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public RealQuantity getScalarMoment() {
+        return scalarMoment;
+    }
+
+    public Tensor getTensor() {
+        return tensor;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setClvd(float clvd) {
+        this.clvd = clvd;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setDataUsed(DataUsed dataUsed) {
+        this.dataUsed = dataUsed;
+    }
+
+    public void setDerivedOriginID(String derivedOriginID) {
+        this.derivedOriginID = derivedOriginID;
+    }
+
+    public void setDoubleCouple(float doubleCouple) {
+        this.doubleCouple = doubleCouple;
+    }
+
+    public void setMethodID(String methodID) {
+        this.methodID = methodID;
+    }
+
+    public void setMomentMagnitudeID(String momentMagnitudeID) {
+        this.momentMagnitudeID = momentMagnitudeID;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public void setScalarMoment(RealQuantity scalarMoment) {
+        this.scalarMoment = scalarMoment;
+    }
+
     
-    public String getCategory() {
-        return category;
+    public void setTensor(Tensor tensor) {
+        this.tensor = tensor;
     }
 
     String publicId;

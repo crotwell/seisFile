@@ -38,24 +38,44 @@ public class Time {
         }
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public Float getUncertainty() {
-        return uncertainty;
+    public Float getConfidenceLevel() {
+        return confidenceLevel;
     }
 
     public Float getLowerUncertainty() {
         return lowerUncertainty;
     }
 
+    public Float getUncertainty() {
+        return uncertainty;
+    }
+
     public Float getUpperUncertainty() {
         return upperUncertainty;
     }
 
-    public Float getConfidenceLevel() {
-        return confidenceLevel;
+    public String getValue() {
+        return value;
+    }
+
+    public void setConfidenceLevel(Float confidenceLevel) {
+        this.confidenceLevel = confidenceLevel;
+    }
+
+    public void setLowerUncertainty(Float lowerUncertainty) {
+        this.lowerUncertainty = lowerUncertainty;
+    }
+
+    public void setUncertainty(Float uncertainty) {
+        this.uncertainty = uncertainty;
+    }
+
+    public void setUpperUncertainty(Float upperUncertainty) {
+        this.upperUncertainty = upperUncertainty;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     String value;

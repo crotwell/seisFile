@@ -38,12 +38,24 @@ public class Axis {
         return azimuth;
     }
 
+    public RealQuantity getLength() {
+        return length;
+    }
+
     public RealQuantity getPlunge() {
         return plunge;
     }
 
-    public RealQuantity getLength() {
-        return length;
+    public void setAzimuth(RealQuantity azimuth) {
+        this.azimuth = azimuth;
+    }
+
+    public void setLength(RealQuantity length) {
+        this.length = length;
+    }
+
+    public void setPlunge(RealQuantity plunge) {
+        this.plunge = plunge;
     }
 
     RealQuantity azimuth;

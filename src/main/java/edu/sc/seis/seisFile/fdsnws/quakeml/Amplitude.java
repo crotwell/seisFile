@@ -15,6 +15,10 @@ public class Amplitude {
 
     public static final String ELEMENT_NAME = QuakeMLTagNames.amplitude;
 
+    public static String getElementName() {
+        return ELEMENT_NAME;
+    }
+
     public Amplitude(XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
         publicID = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
@@ -68,60 +72,16 @@ public class Amplitude {
         }
     }
 
-    public String getPublicID() {
-        return publicID;
-    }
-
-    public String getPickID() {
-        return pickID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public RealQuantity getGenericAmplitude() {
-        return genericAmplitude;
-    }
-
-    public RealQuantity getPeriod() {
-        return period;
-    }
-
-    public TimeWindow getTimeWindow() {
-        return timeWindow;
-    }
-
-    public Time getScalingTime() {
-        return scalingTime;
-    }
-
-    public Float getSnr() {
-        return snr;
-    }
-
     public String getCategory() {
         return category;
     }
 
-    public String getUnit() {
-        return unit;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
-    public String getMethodID() {
-        return methodID;
-    }
-
-    public WaveformStreamID getWaveformID() {
-        return waveformID;
-    }
-
-    public String getFilterID() {
-        return filterID;
-    }
-
-    public String getMagnitudeHint() {
-        return magnitudeHint;
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
     }
 
     public String getEvaluationMode() {
@@ -132,12 +92,128 @@ public class Amplitude {
         return evaluationStatus;
     }
 
-    public CreationInfo getCreationInfo() {
-        return creationInfo;
+    public String getFilterID() {
+        return filterID;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public RealQuantity getGenericAmplitude() {
+        return genericAmplitude;
+    }
+
+    public String getMagnitudeHint() {
+        return magnitudeHint;
+    }
+
+    public String getMethodID() {
+        return methodID;
+    }
+
+    public RealQuantity getPeriod() {
+        return period;
+    }
+
+    public String getPickID() {
+        return pickID;
+    }
+
+    public String getPublicID() {
+        return publicID;
+    }
+
+    public Time getScalingTime() {
+        return scalingTime;
+    }
+
+    public Float getSnr() {
+        return snr;
+    }
+
+    public TimeWindow getTimeWindow() {
+        return timeWindow;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public WaveformStreamID getWaveformID() {
+        return waveformID;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setEvaluationMode(String evaluationMode) {
+        this.evaluationMode = evaluationMode;
+    }
+
+    public void setEvaluationStatus(String evaluationStatus) {
+        this.evaluationStatus = evaluationStatus;
+    }
+
+    public void setFilterID(String filterID) {
+        this.filterID = filterID;
+    }
+
+    public void setGenericAmplitude(RealQuantity genericAmplitude) {
+        this.genericAmplitude = genericAmplitude;
+    }
+
+    public void setMagnitudeHint(String magnitudeHint) {
+        this.magnitudeHint = magnitudeHint;
+    }
+
+    public void setMethodID(String methodID) {
+        this.methodID = methodID;
+    }
+
+    public void setPeriod(RealQuantity period) {
+        this.period = period;
+    }
+
+    public void setPickID(String pickID) {
+        this.pickID = pickID;
+    }
+
+    public void setPublicID(String publicID) {
+        this.publicID = publicID;
+    }
+
+    public void setScalingTime(Time scalingTime) {
+        this.scalingTime = scalingTime;
+    }
+
+    public void setSnr(Float snr) {
+        this.snr = snr;
+    }
+
+    public void setTimeWindow(TimeWindow timeWindow) {
+        this.timeWindow = timeWindow;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public void setWaveformID(WaveformStreamID waveformID) {
+        this.waveformID = waveformID;
     }
 
     String publicID;

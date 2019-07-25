@@ -37,13 +37,23 @@ public class Comment {
     }
     
     
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
+    }
+
+
     public String getText() {
         return text;
     }
 
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
     
-    public CreationInfo getCreationInfo() {
-        return creationInfo;
+    public void setText(String text) {
+        this.text = text;
     }
 
     String text;

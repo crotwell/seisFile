@@ -45,6 +45,22 @@ public class ConfidenceEllipsoid {
         }
     }
 
+    public Float getMajorAxisAzimuth() {
+        return majorAxisAzimuth;
+    }
+
+    public Float getMajorAxisPlunge() {
+        return majorAxisPlunge;
+    }
+
+    public Float getMajorAxisRotation() {
+        return majorAxisRotation;
+    }
+
+    public Float getSemiIntermediateAxisLength() {
+        return semiIntermediateAxisLength;
+    }
+
     public Float getSemiMajorAxisLength() {
         return semiMajorAxisLength;
     }
@@ -53,20 +69,28 @@ public class ConfidenceEllipsoid {
         return semiMinorAxisLength;
     }
 
-    public Float getSemiIntermediateAxisLength() {
-        return semiIntermediateAxisLength;
+    public void setMajorAxisAzimuth(Float majorAxisAzimuth) {
+        this.majorAxisAzimuth = majorAxisAzimuth;
     }
 
-    public Float getMajorAxisPlunge() {
-        return majorAxisPlunge;
+    public void setMajorAxisPlunge(Float majorAxisPlunge) {
+        this.majorAxisPlunge = majorAxisPlunge;
     }
 
-    public Float getMajorAxisAzimuth() {
-        return majorAxisAzimuth;
+    public void setMajorAxisRotation(Float majorAxisRotation) {
+        this.majorAxisRotation = majorAxisRotation;
     }
 
-    public Float getMajorAxisRotation() {
-        return majorAxisRotation;
+    public void setSemiIntermediateAxisLength(Float semiIntermediateAxisLength) {
+        this.semiIntermediateAxisLength = semiIntermediateAxisLength;
+    }
+
+    public void setSemiMajorAxisLength(Float semiMajorAxisLength) {
+        this.semiMajorAxisLength = semiMajorAxisLength;
+    }
+
+    public void setSemiMinorAxisLength(Float semiMinorAxisLength) {
+        this.semiMinorAxisLength = semiMinorAxisLength;
     }
 
     Float semiMajorAxisLength;

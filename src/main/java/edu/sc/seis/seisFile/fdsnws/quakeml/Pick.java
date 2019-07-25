@@ -58,44 +58,16 @@ public class Pick {
         }
     }
 
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public WaveformStreamID getWaveformID() {
-        return waveformID;
-    }
-
     public RealQuantity getBackazimuth() {
         return backazimuth;
     }
 
-    public String getFilterID() {
-        return filterID;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
-    public String getOnset() {
-        return onset;
-    }
-
-    public String getMethodID() {
-        return methodID;
-    }
-
-    public String getSlownessMethodID() {
-        return slownessMethodID;
-    }
-
-    public String getPhaseHint() {
-        return phaseHint;
-    }
-
-    public String getPolarity() {
-        return polarity;
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
     }
 
     public String getEvaluationMode() {
@@ -106,12 +78,96 @@ public class Pick {
         return evaluationStatus;
     }
 
-    public CreationInfo getCreationInfo() {
-        return creationInfo;
+    public String getFilterID() {
+        return filterID;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public String getMethodID() {
+        return methodID;
+    }
+
+    public String getOnset() {
+        return onset;
+    }
+
+    public String getPhaseHint() {
+        return phaseHint;
+    }
+
+    public String getPolarity() {
+        return polarity;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public String getSlownessMethodID() {
+        return slownessMethodID;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public WaveformStreamID getWaveformID() {
+        return waveformID;
+    }
+
+    public void setBackazimuth(RealQuantity backazimuth) {
+        this.backazimuth = backazimuth;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setEvaluationMode(String evaluationMode) {
+        this.evaluationMode = evaluationMode;
+    }
+
+    public void setEvaluationStatus(String evaluationStatus) {
+        this.evaluationStatus = evaluationStatus;
+    }
+
+    public void setFilterID(String filterID) {
+        this.filterID = filterID;
+    }
+
+    public void setMethodID(String methodID) {
+        this.methodID = methodID;
+    }
+
+    public void setOnset(String onset) {
+        this.onset = onset;
+    }
+
+    public void setPhaseHint(String phaseHint) {
+        this.phaseHint = phaseHint;
+    }
+
+    public void setPolarity(String polarity) {
+        this.polarity = polarity;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public void setSlownessMethodID(String slownessMethodID) {
+        this.slownessMethodID = slownessMethodID;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    public void setWaveformID(WaveformStreamID waveformID) {
+        this.waveformID = waveformID;
     }
 
     private String publicId;

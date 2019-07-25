@@ -18,6 +18,22 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
 
 public class Quakeml {
 
+    public static Quakeml createEmptyQuakeML() {
+        try {
+            URL url = Quakeml.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/empty.quakeml");
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            XMLEventReader r;
+            r = factory.createXMLEventReader(url.toString(), url.openStream());
+            return new Quakeml(r);
+        } catch(Exception e) {
+            throw new RuntimeException("Should not happen", e);
+        }
+    }
+
+    public static URL loadSchema() {
+        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/QuakeML-1.2.xsd");
+    }
+
     public Quakeml(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         this.reader = reader;
         StaxUtil.skipToStartElement(reader);
@@ -43,26 +59,8 @@ public class Quakeml {
         }
     }
 
-    public EventParameters getEventParameters() {
-        return eventParameters;
-    }
-
-    public String getSchemaVersion() {
-        return schemaVersion;
-    }
-
-    EventParameters eventParameters;
-
-    XMLEventReader reader;
-
-    String schemaVersion;
-
     public boolean checkSchemaVersion() {
         return QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION.equals(schemaVersion);
-    }
-
-    public void setResponse(CloseableHttpResponse response) {
-        this.response = response;
     }
 
     public void close() {
@@ -84,28 +82,38 @@ public class Quakeml {
         response = null;
     }
 
-    CloseableHttpResponse response;
-    
-    public static Quakeml createEmptyQuakeML() {
-        try {
-            URL url = Quakeml.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/empty.quakeml");
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-            XMLEventReader r;
-            r = factory.createXMLEventReader(url.toString(), url.openStream());
-            return new Quakeml(r);
-        } catch(Exception e) {
-            throw new RuntimeException("Should not happen", e);
-        }
+    public EventParameters getEventParameters() {
+        return eventParameters;
     }
 
-
-    public static URL loadSchema() {
-        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/QuakeML-1.2.xsd");
+    public String getSchemaVersion() {
+        return schemaVersion;
     }
-    
-    /* this is so that the querier will not be garbage collected while the QuakeML is being processed. */
-    FDSNEventQuerier querier;
+
+    public void setEventParameters(EventParameters eventParameters) {
+        this.eventParameters = eventParameters;
+    }
+
     public void setQuerier(FDSNEventQuerier q) {
         this.querier = q;
     }
+
+    public void setResponse(CloseableHttpResponse response) {
+        this.response = response;
+    }
+
+    public void setSchemaVersion(String schemaVersion) {
+        this.schemaVersion = schemaVersion;
+    }
+
+    EventParameters eventParameters;
+    
+    XMLEventReader reader;
+
+
+    String schemaVersion;
+    
+    CloseableHttpResponse response;
+    /* this is so that the querier will not be garbage collected while the QuakeML is being processed. */
+    FDSNEventQuerier querier;
 }

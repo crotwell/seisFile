@@ -42,14 +42,29 @@ public class TimeWindow {
         return begin;
     }
 
-    
+
     public Float getEnd() {
         return end;
     }
 
-    
+
     public String getReference() {
         return reference;
+    }
+
+
+    public void setBegin(Float begin) {
+        this.begin = begin;
+    }
+
+    
+    public void setEnd(Float end) {
+        this.end = end;
+    }
+
+    
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     Float begin;

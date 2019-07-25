@@ -34,16 +34,28 @@ public class NodalPlane {
         }
     }
 
-    public RealQuantity getStrike() {
-        return strike;
-    }
-
     public RealQuantity getDip() {
         return dip;
     }
 
     public RealQuantity getRake() {
         return rake;
+    }
+
+    public RealQuantity getStrike() {
+        return strike;
+    }
+
+    public void setDip(RealQuantity dip) {
+        this.dip = dip;
+    }
+
+    public void setRake(RealQuantity rake) {
+        this.rake = rake;
+    }
+
+    public void setStrike(RealQuantity strike) {
+        this.strike = strike;
     }
 
     RealQuantity strike;

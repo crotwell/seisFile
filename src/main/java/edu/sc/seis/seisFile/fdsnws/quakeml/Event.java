@@ -72,12 +72,48 @@ public class Event {
         }
     }
 
-    public String getPreferredOriginID() {
-        return preferredOriginID;
+    public List<Amplitude> getAmplitudeList() {
+        return amplitudeList;
     }
 
-    public String getPreferredMagnitudeID() {
-        return preferredMagnitudeID;
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
+    }
+
+    public Integer getDbid() {
+		return dbid;
+	}
+
+    public List<EventDescription> getDescriptionList() {
+        return descriptionList;
+    }
+
+    public List<FocalMechanism> getFocalMechanismList() {
+        return focalMechanismList;
+    }
+
+    public int getIrisFECode() {
+        return irisFECode;
+    }
+
+    public List<Magnitude> getMagnitudeList() {
+        return magnitudeList;
+    }
+
+    public List<Origin> getOriginList() {
+        return originList;
+    }
+
+    public List<Pick> getPickList() {
+        return pickList;
+    }
+
+    public String getPreferredFocalMechanismID() {
+        return preferredFocalMechanismID;
     }
 
     /** Finds the preferred magnitude, returns null if no magnitude
@@ -93,93 +129,25 @@ public class Event {
         return null;
     }
 
-    public String getPreferredFocalMechanismID() {
-        return preferredFocalMechanismID;
+    public String getPreferredMagnitudeID() {
+        return preferredMagnitudeID;
     }
 
-    public List<EventDescription> getDescriptionList() {
-        return descriptionList;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public List<Origin> getOriginList() {
-        return originList;
+    public String getPreferredOriginID() {
+        return preferredOriginID;
     }
 
     public String getPublicId() {
         return publicId;
     }
 
-    public List<Magnitude> getMagnitudeList() {
-        return magnitudeList;
-    }
-
     public List<StationMagnitude> getStationMagnitudeList() {
         return stationMagnitudeList;
     }
-
-    public int getIrisFECode() {
-        return irisFECode;
-    }
-
-    public List<Pick> getPickList() {
-        return pickList;
-    }
-
+    
     public String getType() {
         return type;
     }
-
-    public CreationInfo getCreationInfo() {
-        return creationInfo;
-    }
-
-    public List<FocalMechanism> getFocalMechanismList() {
-        return focalMechanismList;
-    }
-
-    public List<Amplitude> getAmplitudeList() {
-        return amplitudeList;
-    }
-    
-    public Integer getDbid() {
-		return dbid;
-	}
-
-	public void setDbid(Integer dbid) {
-		this.dbid = dbid;
-	}
-
-	public void setPreferredOriginID(String preferredOriginID) {
-		this.preferredOriginID = preferredOriginID;
-	}
-
-	public void setPreferredMagnitudeID(String preferredMagnitudeID) {
-		this.preferredMagnitudeID = preferredMagnitudeID;
-	}
-
-	public void setPreferredFocalMechanismID(String preferredFocalMechanismID) {
-		this.preferredFocalMechanismID = preferredFocalMechanismID;
-	}
-
-	public void setPublicId(String publicId) {
-		this.publicId = publicId;
-	}
-
-	public void setDescriptionList(List<EventDescription> descriptionList) {
-		this.descriptionList = descriptionList;
-	}
-
-	public void setMagnitudeList(List<Magnitude> magnitudeList) {
-		this.magnitudeList = magnitudeList;
-	}
-
-	public void setStationMagnitudeList(List<StationMagnitude> stationMagnitudeList) {
-		this.stationMagnitudeList = stationMagnitudeList;
-	}
 
 	public void setAmplitudeList(List<Amplitude> amplitudeList) {
 		this.amplitudeList = amplitudeList;
@@ -189,28 +157,60 @@ public class Event {
 		this.commentList = commentList;
 	}
 
-	public void setPickList(List<Pick> pickList) {
-		this.pickList = pickList;
+	public void setCreationInfo(CreationInfo creationInfo) {
+		this.creationInfo = creationInfo;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setDbid(Integer dbid) {
+		this.dbid = dbid;
 	}
 
-	public void setIrisFECode(int irisFECode) {
-		this.irisFECode = irisFECode;
-	}
-
-	public void setOriginList(List<Origin> originList) {
-		this.originList = originList;
+	public void setDescriptionList(List<EventDescription> descriptionList) {
+		this.descriptionList = descriptionList;
 	}
 
 	public void setFocalMechanismList(List<FocalMechanism> focalMechanismList) {
 		this.focalMechanismList = focalMechanismList;
 	}
 
-	public void setCreationInfo(CreationInfo creationInfo) {
-		this.creationInfo = creationInfo;
+	public void setIrisFECode(int irisFECode) {
+		this.irisFECode = irisFECode;
+	}
+
+	public void setMagnitudeList(List<Magnitude> magnitudeList) {
+		this.magnitudeList = magnitudeList;
+	}
+
+	public void setOriginList(List<Origin> originList) {
+		this.originList = originList;
+	}
+
+	public void setPickList(List<Pick> pickList) {
+		this.pickList = pickList;
+	}
+
+	public void setPreferredFocalMechanismID(String preferredFocalMechanismID) {
+		this.preferredFocalMechanismID = preferredFocalMechanismID;
+	}
+
+	public void setPreferredMagnitudeID(String preferredMagnitudeID) {
+		this.preferredMagnitudeID = preferredMagnitudeID;
+	}
+
+	public void setPreferredOriginID(String preferredOriginID) {
+		this.preferredOriginID = preferredOriginID;
+	}
+
+	public void setPublicId(String publicId) {
+		this.publicId = publicId;
+	}
+
+	public void setStationMagnitudeList(List<StationMagnitude> stationMagnitudeList) {
+		this.stationMagnitudeList = stationMagnitudeList;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 

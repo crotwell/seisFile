@@ -21,7 +21,6 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 public class EventParameters {
     
     public EventParameters(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
-        this.reader = reader;
         StaxUtil.skipToStartElement(reader);
         StartElement startE = StaxUtil.expectStartElement(QuakeMLTagNames.eventParameter, reader);
         while (reader.hasNext()) {
@@ -43,6 +42,22 @@ public class EventParameters {
         }
     }
     
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setEvents(EventIterator events) {
+        this.events = events;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
     void processOneStartElement(XMLEventReader reader) throws XMLStreamException, SeisFileException {
         XMLEvent e = reader.peek();
         if (e.isStartElement()) {
@@ -103,5 +118,4 @@ public class EventParameters {
     
     List<Comment> commentList = new ArrayList<Comment>();
     
-    XMLEventReader reader;
 }

@@ -50,40 +50,76 @@ public class StationMagnitude {
         }
     }
 
-    public String getOriginId() {
-        return originId;
-    }
-
-    public RealQuantity getMag() {
-        return mag;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getMethodID() {
-        return methodID;
-    }
-
-    public WaveformStreamID getWaveformID() {
-        return waveformID;
-    }
-
     public String getAmplitudeID() {
         return amplitudeID;
     }
 
-    public String getPublicId() {
-        return publicId;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
     public CreationInfo getCreationInfo() {
         return creationInfo;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public RealQuantity getMag() {
+        return mag;
+    }
+
+    public String getMethodID() {
+        return methodID;
+    }
+
+    public String getOriginId() {
+        return originId;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public WaveformStreamID getWaveformID() {
+        return waveformID;
+    }
+
+    public void setAmplitudeID(String amplitudeID) {
+        this.amplitudeID = amplitudeID;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setMag(RealQuantity mag) {
+        this.mag = mag;
+    }
+
+    public void setMethodID(String methodID) {
+        this.methodID = methodID;
+    }
+
+    public void setOriginId(String originId) {
+        this.originId = originId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setWaveformID(WaveformStreamID waveformID) {
+        this.waveformID = waveformID;
     }
 
     private String originId;

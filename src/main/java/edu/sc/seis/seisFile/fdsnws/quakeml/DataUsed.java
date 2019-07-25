@@ -40,24 +40,44 @@ public class DataUsed {
         }
     }
 
-    public String getWaveType() {
-        return waveType;
-    }
-
-    public int getStationCount() {
-        return stationCount;
-    }
-
     public int getComponentCount() {
         return componentCount;
+    }
+
+    public float getLongestPeriod() {
+        return longestPeriod;
     }
 
     public float getShortestPeriod() {
         return shortestPeriod;
     }
 
-    public float getLongestPeriod() {
-        return longestPeriod;
+    public int getStationCount() {
+        return stationCount;
+    }
+
+    public String getWaveType() {
+        return waveType;
+    }
+
+    public void setComponentCount(int componentCount) {
+        this.componentCount = componentCount;
+    }
+
+    public void setLongestPeriod(float longestPeriod) {
+        this.longestPeriod = longestPeriod;
+    }
+
+    public void setShortestPeriod(float shortestPeriod) {
+        this.shortestPeriod = shortestPeriod;
+    }
+
+    public void setStationCount(int stationCount) {
+        this.stationCount = stationCount;
+    }
+
+    public void setWaveType(String waveType) {
+        this.waveType = waveType;
     }
 
     private String waveType;

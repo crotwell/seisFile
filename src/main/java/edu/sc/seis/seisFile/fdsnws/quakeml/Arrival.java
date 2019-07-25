@@ -64,40 +64,132 @@ public class Arrival {
         }
     }
 
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public String getPhase() {
-        return phase;
-    }
-
     public float getAzimuth() {
         return azimuth;
     }
 
-    public float getDistance() {
-        return distance;
+    public Float getBackazimuthResidual() {
+        return backazimuthResidual;
     }
 
-    public float getTimeResidual() {
-        return timeResidual;
+    public Float getBackazimuthWeight() {
+        return backazimuthWeight;
     }
 
-    public float getTimeCorrection() {
-        return timeCorrection;
-    }
-
-    public String getPickID() {
-        return pickID;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
     public CreationInfo getCreationInfo() {
         return creationInfo;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public float getDistance() {
+        return distance;
+    }
+
+    public String getEarthModelID() {
+        return earthModelID;
+    }
+
+    public Float getHorizontalSlownessResidual() {
+        return horizontalSlownessResidual;
+    }
+
+    public Float getHorizontalSlownessWeight() {
+        return horizontalSlownessWeight;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public String getPickID() {
+        return pickID;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public RealQuantity getTakeoffAngle() {
+        return takeoffAngle;
+    }
+
+    public float getTimeCorrection() {
+        return timeCorrection;
+    }
+
+    public float getTimeResidual() {
+        return timeResidual;
+    }
+
+    public Float getTimeWeight() {
+        return timeWeight;
+    }
+
+    public void setAzimuth(float azimuth) {
+        this.azimuth = azimuth;
+    }
+
+    public void setBackazimuthResidual(Float backazimuthResidual) {
+        this.backazimuthResidual = backazimuthResidual;
+    }
+
+    public void setBackazimuthWeight(Float backazimuthWeight) {
+        this.backazimuthWeight = backazimuthWeight;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+    public void setEarthModelID(String earthModelID) {
+        this.earthModelID = earthModelID;
+    }
+
+    public void setHorizontalSlownessResidual(Float horizontalSlownessResidual) {
+        this.horizontalSlownessResidual = horizontalSlownessResidual;
+    }
+
+    public void setHorizontalSlownessWeight(Float horizontalSlownessWeight) {
+        this.horizontalSlownessWeight = horizontalSlownessWeight;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    public void setPickID(String pickID) {
+        this.pickID = pickID;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public void setTakeoffAngle(RealQuantity takeoffAngle) {
+        this.takeoffAngle = takeoffAngle;
+    }
+
+    public void setTimeCorrection(float timeCorrection) {
+        this.timeCorrection = timeCorrection;
+    }
+
+    public void setTimeResidual(float timeResidual) {
+        this.timeResidual = timeResidual;
+    }
+
+    public void setTimeWeight(Float timeWeight) {
+        this.timeWeight = timeWeight;
     }
 
     String publicId;

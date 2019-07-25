@@ -61,48 +61,96 @@ public class OriginQuality {
         return associatedPhaseCount;
     }
 
-    public Integer getUsedPhaseCount() {
-        return usedPhaseCount;
-    }
-
     public Integer getAssociatedStationCount() {
         return associatedStationCount;
-    }
-
-    public Integer getUsedStationCount() {
-        return usedStationCount;
-    }
-
-    public Integer getDepthPhaseCount() {
-        return depthPhaseCount;
-    }
-
-    public Float getStandardError() {
-        return standardError;
     }
 
     public Float getAzimuthalGap() {
         return azimuthalGap;
     }
 
-    public Float getSecondaryAzimuthalGap() {
-        return secondaryAzimuthalGap;
+    public Integer getDepthPhaseCount() {
+        return depthPhaseCount;
+    }
+
+    public String getGroundTruthLevel() {
+        return groundTruthLevel;
     }
 
     public Float getMaximumDistance() {
         return maximumDistance;
     }
 
-    public Float getMinimumDistance() {
-        return minimumDistance;
-    }
-
     public Float getMedianDistance() {
         return medianDistance;
     }
 
-    public String getGroundTruthLevel() {
-        return groundTruthLevel;
+    public Float getMinimumDistance() {
+        return minimumDistance;
+    }
+
+    public Float getSecondaryAzimuthalGap() {
+        return secondaryAzimuthalGap;
+    }
+
+    public Float getStandardError() {
+        return standardError;
+    }
+
+    public Integer getUsedPhaseCount() {
+        return usedPhaseCount;
+    }
+
+    public Integer getUsedStationCount() {
+        return usedStationCount;
+    }
+
+    public void setAssociatedPhaseCount(Integer associatedPhaseCount) {
+        this.associatedPhaseCount = associatedPhaseCount;
+    }
+
+    public void setAssociatedStationCount(Integer associatedStationCount) {
+        this.associatedStationCount = associatedStationCount;
+    }
+
+    public void setAzimuthalGap(Float azimuthalGap) {
+        this.azimuthalGap = azimuthalGap;
+    }
+
+    public void setDepthPhaseCount(Integer depthPhaseCount) {
+        this.depthPhaseCount = depthPhaseCount;
+    }
+
+    public void setGroundTruthLevel(String groundTruthLevel) {
+        this.groundTruthLevel = groundTruthLevel;
+    }
+
+    public void setMaximumDistance(Float maximumDistance) {
+        this.maximumDistance = maximumDistance;
+    }
+
+    public void setMedianDistance(Float medianDistance) {
+        this.medianDistance = medianDistance;
+    }
+
+    public void setMinimumDistance(Float minimumDistance) {
+        this.minimumDistance = minimumDistance;
+    }
+
+    public void setSecondaryAzimuthalGap(Float secondaryAzimuthalGap) {
+        this.secondaryAzimuthalGap = secondaryAzimuthalGap;
+    }
+
+    public void setStandardError(Float standardError) {
+        this.standardError = standardError;
+    }
+
+    public void setUsedPhaseCount(Integer usedPhaseCount) {
+        this.usedPhaseCount = usedPhaseCount;
+    }
+
+    public void setUsedStationCount(Integer usedStationCount) {
+        this.usedStationCount = usedStationCount;
     }
 
     Integer associatedPhaseCount;

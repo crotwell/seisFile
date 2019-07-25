@@ -38,10 +38,6 @@ public class RealQuantity {
         }
     }
 
-    public Float getValue() {
-        return value;
-    }
-
     public Float getConfidenceLevel() {
         return confidenceLevel;
     }
@@ -50,13 +46,29 @@ public class RealQuantity {
         return uncertainty;
     }
 
+    public Float getValue() {
+        return value;
+    }
+
+    public void setConfidenceLevel(Float confidenceLevel) {
+        this.confidenceLevel = confidenceLevel;
+    }
+
+    public void setUncertainty(Float uncertainty) {
+        this.uncertainty = uncertainty;
+    }
+
+    public void setValue(Float value) {
+        this.value = value;
+    }
+
+    public String toString() {
+        return "" + value;
+    }
+
     Float value;
 
     Float confidenceLevel;
 
     Float uncertainty;
-
-    public String toString() {
-        return "" + value;
-    }
 }

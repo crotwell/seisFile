@@ -54,20 +54,12 @@ public class Magnitude {
         }
     }
 
-    public String getPublicId() {
-        return publicId;
+    public Float getAzimuthalGap() {
+        return azimuthalGap;
     }
 
-    public String getOriginId() {
-        return originId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public RealQuantity getMag() {
-        return mag;
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
     }
 
     public String getEvaluationMode() {
@@ -78,24 +70,76 @@ public class Magnitude {
         return evaluationStatus;
     }
 
-    public CreationInfo getCreationInfo() {
-        return creationInfo;
+    public RealQuantity getMag() {
+        return mag;
     }
 
     public String getMethodID() {
         return methodID;
     }
 
+    public String getOriginId() {
+        return originId;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
     public Integer getStationCount() {
         return stationCount;
     }
 
-    public Float getAzimuthalGap() {
-        return azimuthalGap;
-    }
-
     public List<StationMagnitudeContribution> getStationMagnitudeContributionList() {
         return stationMagnitudeContributionList;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setAzimuthalGap(Float azimuthalGap) {
+        this.azimuthalGap = azimuthalGap;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setEvaluationMode(String evaluationMode) {
+        this.evaluationMode = evaluationMode;
+    }
+
+    public void setEvaluationStatus(String evaluationStatus) {
+        this.evaluationStatus = evaluationStatus;
+    }
+
+    public void setMag(RealQuantity mag) {
+        this.mag = mag;
+    }
+
+    public void setMethodID(String methodID) {
+        this.methodID = methodID;
+    }
+
+    public void setOriginId(String originId) {
+        this.originId = originId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public void setStationCount(Integer stationCount) {
+        this.stationCount = stationCount;
+    }
+
+    public void setStationMagnitudeContributionList(List<StationMagnitudeContribution> stationMagnitudeContributionList) {
+        this.stationMagnitudeContributionList = stationMagnitudeContributionList;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     String publicId;

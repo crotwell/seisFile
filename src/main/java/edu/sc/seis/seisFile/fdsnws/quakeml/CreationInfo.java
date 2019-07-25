@@ -50,29 +50,59 @@ public class CreationInfo {
         return agencyID;
     }
 
-    
+
     public String getAgencyURI() {
         return agencyURI;
     }
 
-    
+
     public String getAuthor() {
         return author;
     }
 
-    
+
     public String getAuthorURI() {
         return authorURI;
     }
 
-    
+
     public String getCreationTime() {
         return creationTime;
     }
 
-    
+
     public String getVersion() {
         return version;
+    }
+
+
+    public void setAgencyID(String agencyID) {
+        this.agencyID = agencyID;
+    }
+
+    
+    public void setAgencyURI(String agencyURI) {
+        this.agencyURI = agencyURI;
+    }
+
+    
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    
+    public void setAuthorURI(String authorURI) {
+        this.authorURI = authorURI;
+    }
+
+    
+    public void setCreationTime(String creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     String agencyID, agencyURI, author, authorURI, creationTime, version;

@@ -36,16 +36,40 @@ public class PrincipalAxes {
         }
     }
 
-    public Axis getTAxis() {
-        return tAxis;
+    public Axis getnAxis() {
+        return nAxis;
+    }
+
+    public Axis getNAxis() {
+        return nAxis;
+    }
+
+    public Axis getpAxis() {
+        return pAxis;
     }
 
     public Axis getPAxis() {
         return pAxis;
     }
 
-    public Axis getNAxis() {
-        return nAxis;
+    public Axis gettAxis() {
+        return tAxis;
+    }
+
+    public Axis getTAxis() {
+        return tAxis;
+    }
+
+    public void setnAxis(Axis nAxis) {
+        this.nAxis = nAxis;
+    }
+
+    public void setpAxis(Axis pAxis) {
+        this.pAxis = pAxis;
+    }
+
+    public void settAxis(Axis tAxis) {
+        this.tAxis = tAxis;
     }
 
     Axis tAxis;

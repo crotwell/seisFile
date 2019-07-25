@@ -48,18 +48,6 @@ public class OriginUncertainty {
         }
     }
 
-    public Float getHorizontalUncertainty() {
-        return horizontalUncertainty;
-    }
-
-    public Float getMinHorizontalUncertainty() {
-        return minHorizontalUncertainty;
-    }
-
-    public Float getMaxHorizontalUncertainty() {
-        return maxHorizontalUncertainty;
-    }
-
     public Float getAzimuthMaxHorizontalUncertainty() {
         return azimuthMaxHorizontalUncertainty;
     }
@@ -72,8 +60,48 @@ public class OriginUncertainty {
         return confidenceLevel;
     }
 
+    public Float getHorizontalUncertainty() {
+        return horizontalUncertainty;
+    }
+
+    public Float getMaxHorizontalUncertainty() {
+        return maxHorizontalUncertainty;
+    }
+
+    public Float getMinHorizontalUncertainty() {
+        return minHorizontalUncertainty;
+    }
+
     public String getPreferredDescription() {
         return preferredDescription;
+    }
+
+    public void setAzimuthMaxHorizontalUncertainty(Float azimuthMaxHorizontalUncertainty) {
+        this.azimuthMaxHorizontalUncertainty = azimuthMaxHorizontalUncertainty;
+    }
+
+    public void setConfidenceEllipsoid(ConfidenceEllipsoid confidenceEllipsoid) {
+        this.confidenceEllipsoid = confidenceEllipsoid;
+    }
+
+    public void setConfidenceLevel(Float confidenceLevel) {
+        this.confidenceLevel = confidenceLevel;
+    }
+
+    public void setHorizontalUncertainty(Float horizontalUncertainty) {
+        this.horizontalUncertainty = horizontalUncertainty;
+    }
+
+    public void setMaxHorizontalUncertainty(Float maxHorizontalUncertainty) {
+        this.maxHorizontalUncertainty = maxHorizontalUncertainty;
+    }
+
+    public void setMinHorizontalUncertainty(Float minHorizontalUncertainty) {
+        this.minHorizontalUncertainty = minHorizontalUncertainty;
+    }
+
+    public void setPreferredDescription(String preferredDescription) {
+        this.preferredDescription = preferredDescription;
     }
 
     Float horizontalUncertainty;

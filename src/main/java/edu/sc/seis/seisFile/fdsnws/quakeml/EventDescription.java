@@ -45,21 +45,33 @@ public class EventDescription {
         }
     }
     
-    public String toString() {
-        return getType()+": "+(getText()==null?"":getText());
+    public int getIrisFECode() {
+        return irisFECode;
     }
-    
+
     public String getText() {
         return text;
     }
 
-    
     public String getType() {
         return type;
     }
+
+    public void setIrisFECode(int irisFECode) {
+        this.irisFECode = irisFECode;
+    }
     
-    public int getIrisFECode() {
-        return irisFECode;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    public String toString() {
+        return getType()+": "+(getText()==null?"":getText());
     }
 
     int irisFECode = -1;

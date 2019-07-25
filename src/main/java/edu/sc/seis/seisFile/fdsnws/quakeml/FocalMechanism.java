@@ -85,8 +85,24 @@ public class FocalMechanism {
         }
     }
 
-    public String getPublicId() {
-        return publicId;
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public CreationInfo getCreationInfo() {
+        return creationInfo;
+    }
+
+    public String getEvaluationMode() {
+        return evaluationMode;
+    }
+
+    public String getEvaluationStatus() {
+        return evaluationStatus;
+    }
+
+    public String getMethodID() {
+        return methodID;
     }
 
     public MomentTensor getMomentTensor() {
@@ -101,32 +117,60 @@ public class FocalMechanism {
         return principalAxes;
     }
 
-    public String getEvaluationMode() {
-        return evaluationMode;
+    public String getPublicId() {
+        return publicId;
     }
 
-    public String getEvaluationStatus() {
-        return evaluationStatus;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public CreationInfo getCreationInfo() {
-        return creationInfo;
-    }
-
-    public String getMethodID() {
-        return methodID;
+    public String getTriggeringOriginID() {
+        return triggeringOriginID;
     }
 
     public WaveformStreamID getWaveformID() {
         return waveformID;
     }
 
-    public String getTriggeringOriginID() {
-        return triggeringOriginID;
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setCreationInfo(CreationInfo creationInfo) {
+        this.creationInfo = creationInfo;
+    }
+
+    public void setEvaluationMode(String evaluationMode) {
+        this.evaluationMode = evaluationMode;
+    }
+
+    public void setEvaluationStatus(String evaluationStatus) {
+        this.evaluationStatus = evaluationStatus;
+    }
+
+    public void setMethodID(String methodID) {
+        this.methodID = methodID;
+    }
+
+    public void setMomentTensor(MomentTensor momentTensor) {
+        this.momentTensor = momentTensor;
+    }
+
+    public void setNodalPlane(NodalPlane[] nodalPlane) {
+        this.nodalPlane = nodalPlane;
+    }
+
+    public void setPrincipalAxes(PrincipalAxes principalAxes) {
+        this.principalAxes = principalAxes;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public void setTriggeringOriginID(String triggeringOriginID) {
+        this.triggeringOriginID = triggeringOriginID;
+    }
+
+    public void setWaveformID(WaveformStreamID waveformID) {
+        this.waveformID = waveformID;
     }
 
     String publicId;

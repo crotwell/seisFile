@@ -36,16 +36,28 @@ public class StationMagnitudeContribution {
         }
     }
 
-    public String getStationMagnitudeID() {
-        return stationMagnitudeID;
-    }
-
     public float getResidual() {
         return residual;
     }
 
+    public String getStationMagnitudeID() {
+        return stationMagnitudeID;
+    }
+
     public float getWeight() {
         return weight;
+    }
+
+    public void setResidual(float residual) {
+        this.residual = residual;
+    }
+
+    public void setStationMagnitudeID(String stationMagnitudeID) {
+        this.stationMagnitudeID = stationMagnitudeID;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
     private String stationMagnitudeID;

@@ -20,6 +20,42 @@ public class WaveformStreamID {
         resourceReference = StaxUtil.pullContiguousText(reader); //eats the end element, ignores any sub elements
     }
     
+    public String getChannelCode() {
+        return channelCode;
+    }
+
+    public String getLocationCode() {
+        return locationCode;
+    }
+
+    public String getNetworkCode() {
+        return networkCode;
+    }
+
+    public String getResourceReference() {
+        return resourceReference;
+    }
+
+    public String getStationCode() {
+        return stationCode;
+    }
+
+    public void setChannelCode(String channelCode) {
+        this.channelCode = channelCode;
+    }
+    public void setLocationCode(String locationCode) {
+        this.locationCode = locationCode;
+    }
+    public void setNetworkCode(String networkCode) {
+        this.networkCode = networkCode;
+    }
+    public void setResourceReference(String resourceReference) {
+        this.resourceReference = resourceReference;
+    }
+    public void setStationCode(String stationCode) {
+        this.stationCode = stationCode;
+    }
+
     String networkCode;
     String stationCode;
     String locationCode;

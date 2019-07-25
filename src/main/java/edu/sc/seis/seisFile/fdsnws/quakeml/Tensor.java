@@ -42,28 +42,52 @@ public class Tensor {
         }
     }
 
-    public RealQuantity getMrr() {
-        return Mrr;
-    }
-
-    public RealQuantity getMtt() {
-        return Mtt;
-    }
-
     public RealQuantity getMpp() {
         return Mpp;
-    }
-
-    public RealQuantity getMrt() {
-        return Mrt;
     }
 
     public RealQuantity getMrp() {
         return Mrp;
     }
 
+    public RealQuantity getMrr() {
+        return Mrr;
+    }
+
+    public RealQuantity getMrt() {
+        return Mrt;
+    }
+
     public RealQuantity getMtp() {
         return Mtp;
+    }
+
+    public RealQuantity getMtt() {
+        return Mtt;
+    }
+
+    public void setMpp(RealQuantity mpp) {
+        Mpp = mpp;
+    }
+
+    public void setMrp(RealQuantity mrp) {
+        Mrp = mrp;
+    }
+
+    public void setMrr(RealQuantity mrr) {
+        Mrr = mrr;
+    }
+
+    public void setMrt(RealQuantity mrt) {
+        Mrt = mrt;
+    }
+
+    public void setMtp(RealQuantity mtp) {
+        Mtp = mtp;
+    }
+
+    public void setMtt(RealQuantity mtt) {
+        Mtt = mtt;
     }
 
     RealQuantity Mrr, Mtt, Mpp, Mrt, Mrp, Mtp;

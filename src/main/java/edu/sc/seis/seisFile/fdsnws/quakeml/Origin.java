@@ -17,17 +17,17 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Origin {
 
+	public static final String ELEMENT_NAME = QuakeMLTagNames.origin;
+	
 	public Origin() {
 		
 	}
-	
-	public Origin(Instant originTime, float lat, float lon) {
+
+    public Origin(Instant originTime, float lat, float lon) {
 		datetime = originTime;
 		latitude = new RealQuantity(lat);
 		longitude = new RealQuantity(lon);
 	}
-	
-    public static final String ELEMENT_NAME = QuakeMLTagNames.origin;
 
     public Origin(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
@@ -97,61 +97,33 @@ public class Origin {
             }
         }
     }
-
-    public String toString() {
-        return time.getValue() + " (" + latitude.getValue() + ", " + longitude.getValue() + ") " + depth.getValue();
-    }
-
-    public Time getTime() {
-        return time;
-    }
-    
-    public Instant getDateTime() {
-    	 	return TimeUtils.parseISOString(getTime().value);
-    }
-
-    public RealQuantity getLatitude() {
-        return latitude;
-    }
-
-    public RealQuantity getLongitude() {
-        return longitude;
-    }
-
-    public RealQuantity getDepth() {
-        return depth;
+	
+    public List<Arrival> getArrivalList() {
+        return arrivalList;
     }
 
     public List<Comment> getCommentList() {
         return commentList;
     }
 
-    public String getWaveformID() {
-        return waveformID;
-    }
-
     public CreationInfo getCreationInfo() {
         return creationInfo;
     }
 
-    public String getPublicId() {
-        return publicId;
+    public Instant getDatetime() {
+        return datetime;
+    }
+    
+    public Instant getDateTime() {
+    	 	return TimeUtils.parseISOString(getTime().value);
     }
 
-    public String getIrisContributor() {
-        return irisContributor;
-    }
+    public Integer getDbid() {
+		return dbid;
+	}
 
-    public String getIrisCatalog() {
-        return irisCatalog;
-    }
-
-    public List<Arrival> getArrivalList() {
-        return arrivalList;
-    }
-
-    public OriginUncertainty getOriginUncertainty() {
-        return originUncertainty;
+    public RealQuantity getDepth() {
+        return depth;
     }
 
     public String getDepthType() {
@@ -162,10 +134,6 @@ public class Origin {
         return earthModelID;
     }
 
-    public OriginQuality getQuality() {
-        return quality;
-    }
-
     public String getEvaluationMode() {
         return evaluationMode;
     }
@@ -174,20 +142,36 @@ public class Origin {
         return evaluationStatus;
     }
 
-    public String getType() {
-        return type;
+    public String getIrisCatalog() {
+        return irisCatalog;
     }
 
-    public boolean isTimeFixed() {
-        return timeFixed;
+    public String getIrisContributor() {
+        return irisContributor;
     }
 
-    public boolean isEpicenterFixed() {
-        return epicenterFixed;
+    public RealQuantity getLatitude() {
+        return latitude;
+    }
+
+    public RealQuantity getLongitude() {
+        return longitude;
     }
 
     public String getMethodID() {
         return methodID;
+    }
+
+    public OriginUncertainty getOriginUncertainty() {
+        return originUncertainty;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public OriginQuality getQuality() {
+        return quality;
     }
 
     public String getReferenceSystemID() {
@@ -198,25 +182,45 @@ public class Origin {
         return region;
     }
 
-    
-    public Integer getDbid() {
-		return dbid;
+    public Time getTime() {
+        return time;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getWaveformID() {
+        return waveformID;
+    }
+
+    public boolean isEpicenterFixed() {
+        return epicenterFixed;
+    }
+
+    public boolean isTimeFixed() {
+        return timeFixed;
+    }
+
+    public void setArrivalList(List<Arrival> arrivalList) {
+		this.arrivalList = arrivalList;
 	}
+
+    
+    public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
+	}
+
+	public void setCreationInfo(CreationInfo creationInfo) {
+		this.creationInfo = creationInfo;
+	}
+
+	public void setDatetime(Instant datetime) {
+        this.datetime = datetime;
+    }
 
 	public void setDbid(Integer dbid) {
 		this.dbid = dbid;
-	}
-
-	public void setTime(Time time) {
-		this.time = time;
-	}
-
-	public void setLatitude(RealQuantity latitude) {
-		this.latitude = latitude;
-	}
-
-	public void setLongitude(RealQuantity longitude) {
-		this.longitude = longitude;
 	}
 
 	public void setDepth(RealQuantity depth) {
@@ -227,36 +231,12 @@ public class Origin {
 		this.depthType = depthType;
 	}
 
-	public void setTimeFixed(boolean timeFixed) {
-		this.timeFixed = timeFixed;
-	}
-
-	public void setEpicenterFixed(boolean epicenterFixed) {
-		this.epicenterFixed = epicenterFixed;
-	}
-
 	public void setEarthModelID(String earthModelID) {
 		this.earthModelID = earthModelID;
 	}
 
-	public void setCommentList(List<Comment> commentList) {
-		this.commentList = commentList;
-	}
-
-	public void setArrivalList(List<Arrival> arrivalList) {
-		this.arrivalList = arrivalList;
-	}
-
-	public void setWaveformID(String waveformID) {
-		this.waveformID = waveformID;
-	}
-
-	public void setQuality(OriginQuality quality) {
-		this.quality = quality;
-	}
-
-	public void setOriginUncertainty(OriginUncertainty originUncertainty) {
-		this.originUncertainty = originUncertainty;
+	public void setEpicenterFixed(boolean epicenterFixed) {
+		this.epicenterFixed = epicenterFixed;
 	}
 
 	public void setEvaluationMode(String evaluationMode) {
@@ -267,16 +247,36 @@ public class Origin {
 		this.evaluationStatus = evaluationStatus;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setIrisCatalog(String irisCatalog) {
+		this.irisCatalog = irisCatalog;
 	}
 
-	public void setCreationInfo(CreationInfo creationInfo) {
-		this.creationInfo = creationInfo;
+	public void setIrisContributor(String irisContributor) {
+		this.irisContributor = irisContributor;
+	}
+
+	public void setLatitude(RealQuantity latitude) {
+		this.latitude = latitude;
+	}
+
+	public void setLongitude(RealQuantity longitude) {
+		this.longitude = longitude;
 	}
 
 	public void setMethodID(String methodID) {
 		this.methodID = methodID;
+	}
+
+	public void setOriginUncertainty(OriginUncertainty originUncertainty) {
+		this.originUncertainty = originUncertainty;
+	}
+
+	public void setPublicId(String publicId) {
+		this.publicId = publicId;
+	}
+
+	public void setQuality(OriginQuality quality) {
+		this.quality = quality;
 	}
 
 	public void setReferenceSystemID(String referenceSystemID) {
@@ -287,17 +287,25 @@ public class Origin {
 		this.region = region;
 	}
 
-	public void setPublicId(String publicId) {
-		this.publicId = publicId;
+	public void setTime(Time time) {
+		this.time = time;
 	}
 
-	public void setIrisContributor(String irisContributor) {
-		this.irisContributor = irisContributor;
+	public void setTimeFixed(boolean timeFixed) {
+		this.timeFixed = timeFixed;
 	}
 
-	public void setIrisCatalog(String irisCatalog) {
-		this.irisCatalog = irisCatalog;
+	public void setType(String type) {
+		this.type = type;
 	}
+
+	public void setWaveformID(String waveformID) {
+		this.waveformID = waveformID;
+	}
+
+	public String toString() {
+        return time.getValue() + " (" + latitude.getValue() + ", " + longitude.getValue() + ") " + depth.getValue();
+    }
 
 	Instant datetime = null;
 
