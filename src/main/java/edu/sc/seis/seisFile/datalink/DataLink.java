@@ -21,7 +21,7 @@ public class DataLink {
     public DataLink() throws DataLinkException {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
-    
+
     /** uses the default port of 18000 */
     public DataLink(String host) throws DataLinkException {
         this(host, DEFAULT_PORT);
@@ -130,9 +130,9 @@ public class DataLink {
       if (this.mode.equals(QUERY_MODE)) {return;}
       this.mode = QUERY_MODE;
       this.sendDLCommand(ENDSTREAM, null);
-      
+
     }
-    
+
     public void match(String matchRegEx) throws DataLinkException {
         if (this.mode == STREAM_MODE) {
             endStream();
@@ -140,7 +140,7 @@ public class DataLink {
         this.matchRegEx = matchRegEx;
         sendDLCommand(MATCH, matchRegEx);
     }
-    
+
     public void reject(String rejectRegEx) throws DataLinkException {
         if (this.mode == STREAM_MODE) {
             endStream();
@@ -148,10 +148,10 @@ public class DataLink {
         this.rejectRegEx = rejectRegEx;
         sendDLCommand(REJECT, rejectRegEx);
     }
-    
-    /** true if there is enough data in the instream to possibly read a data record. 
+
+    /** true if there is enough data in the instream to possibly read a data record.
      * This should not block, unlike hasNext() and next().
-     * 
+     *
      */
     public boolean available() throws IOException {
         // check for closed connection and server sending END
@@ -160,9 +160,9 @@ public class DataLink {
         }
         return in.available() > 3;
     }
-    
+
     /** Returns available() from the underlying InputStream, in bytes
-     * 
+     *
      */
     public int availableBytes() throws IOException {
         return in.available();
@@ -197,7 +197,7 @@ public class DataLink {
 
     /**
      * Would be really nice to keep state and reconnect plus backfill, but...
-     * 
+     *
      * @throws IOException
      * @throws DataLinkException
      */
@@ -221,7 +221,7 @@ public class DataLink {
  * a string. This works for client generated commands
  * but not for a PACKET, which would have binary data.
  * PACKET is what client receives, but usually never
- * sends if it does not generate data. 
+ * sends if it does not generate data.
  * @throws DataLinkException */
   public byte[] encodeDLCommand(String command, String dataString) throws DataLinkException {
     int cmdLen = command.length();
@@ -234,7 +234,7 @@ public class DataLink {
       len+=dataString.length();
     }
     if (len > 256) throw new DataLinkException("command string too long: "+len);
-    
+
     byte[] packet = new byte[len];
     packet[0] = 'D'; // ascii D
     packet[1] = 'L'; // ascii L
@@ -254,14 +254,13 @@ public class DataLink {
     }
     return packet;
   }
-  
-  
+
+
 
   /**
    * Sends a DL Command and awaits the response, either OK or ERROR.
    * @param command
    * @param dataString
-   * @return the servers response
    * @throws DataLinkException
    */
   public void sendDLCommand(String command, String dataString) throws DataLinkException {
@@ -283,7 +282,7 @@ public class DataLink {
       throw new DataLinkException("Socket has been closed.");
     }
   }
-  
+
   public DataLinkResponse awaitDLCommand(String command, String dataString) throws DataLinkException {
       sendDLCommand(command, dataString);
 
@@ -301,13 +300,13 @@ public class DataLink {
           throw new DataLinkException("Unknown response, was expecting OK or ERROR");
       }
   }
-  
+
   public void sendId() throws DataLinkException {
       verbose("sendId");
       sendDLCommand("ID seisFile:"+this.username+":"+this.clientIdNum+":java", null);
   }
 
-    
+
     private PrintWriter verboseWriter;
 
     public void verbose(String message) {
@@ -315,7 +314,7 @@ public class DataLink {
             getVerboseWriter().println(message);
         }
     }
-    
+
     public boolean isVerbose() {
         return verbose;
     }
@@ -345,12 +344,12 @@ public class DataLink {
     public int getPort() {
         return port;
     }
-    
+
     Socket socket;
     BufferedOutputStream out;
     PushbackInputStream in;
     DataInputStream inData;
-    
+
     String url;
     String mode;
     String serverId;
@@ -359,17 +358,17 @@ public class DataLink {
 
     String matchRegEx = null;
     String rejectRegEx = null;
-    
+
     PacketHandler packetHandler;
-    
+
     boolean verbose = false;
 
     String host;
 
     int port;
-    
+
     int timeoutSeconds = DEFAULT_TIMEOUT_SECOND;
-    
+
 
     public static final String IRIS_HOST = "rtserve.iris.washington.edu";
     public static final int IRIS_PORT = 18000;
@@ -381,7 +380,7 @@ public class DataLink {
     public static final int DEFAULT_PORT = EEYORE_PORT;
 
     public static final int DEFAULT_TIMEOUT_SECOND = 20;
-    
+
     public static final String DATALINK_PROTOCOL = "1.0";
     public static final String QUERY_MODE = "QUERY";
     public static final String STREAM_MODE = "STREAM";

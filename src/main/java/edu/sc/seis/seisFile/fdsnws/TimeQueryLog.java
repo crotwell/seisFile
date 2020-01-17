@@ -11,7 +11,12 @@ import edu.sc.seis.seisFile.TimeUtils;
 
 public class TimeQueryLog {
 
-    /** @returns number of queries to host in last second. */
+    /**
+     * Increments number of recent queries to the given uri.
+     * 
+     * @param  uri request url
+     * @return number of queries to host in last second.
+     */
     public static int add(URI uri) {
         totalQueries++;
         QueryTime current = new QueryTime(uri);
