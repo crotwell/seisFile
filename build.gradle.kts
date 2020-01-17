@@ -6,6 +6,12 @@ plugins {
   "eclipse"
   "project-report"
   "maven-publish"
+  application
+}
+
+application {
+  mainClassName = "edu.sc.seis.seisFile.fdsnws.EventClient"
+  applicationName = "seisfile"
 }
 
 group = "edu.sc.seis"
@@ -88,7 +94,7 @@ dependencies {
 
 repositories {
     mavenLocal()
-    maven { url  = uri("http://www.seis.sc.edu/software/maven2") }
+    maven { url  = uri("https://www.seis.sc.edu/software/maven2") }
     mavenCentral()
   //  maven { url "http://spring-rich-c.sourceforge.net/maven2repository" }
   //  maven { url "http://oss.sonatype.org/content/groups/public" }
@@ -198,9 +204,50 @@ artifacts {
 */
 
 
-tasks.register<CreateStartScripts>("fdsnevent") {
+tasks.register<CreateStartScripts>("xxxfdsnevent") {
   mainClassName = "edu.sc.seis.seisFile.fdsnws.EventClient"
   applicationName = "fdsnevent"
+}
+
+tasks.register("createRunScripts"){}
+tasks.named("startScripts") {
+    dependsOn("createRunScripts")
+}
+
+val scriptNames = mapOf(
+  "fdsnevent" to "edu.sc.seis.seisFile.fdsnws.EventClient",
+  "fdsnstationxml" to "edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML",
+  "fdsnstation" to "edu.sc.seis.seisFile.fdsnws.StationClient",
+  "fdsndataselect" to "edu.sc.seis.seisFile.fdsnws.DataSelectClient",
+  "saclh" to "edu.sc.seis.seisFile.sac.ListHeader",
+  "mseedlh" to "edu.sc.seis.seisFile.mseed.ListHeader",
+  "seedlinkclient" to "edu.sc.seis.seisFile.seedlink.Client",
+  "datalinkclient" to "edu.sc.seis.seisFile.datalink.Client",
+  "cwbclient" to "edu.sc.seis.seisFile.usgsCWB.Client",
+  "lissclient" to "edu.sc.seis.seisFile.liss.Client",
+  "winstonclient" to "edu.sc.seis.seisFile.winston.WinstonClient",
+  "winstonexport" to "edu.sc.seis.seisFile.winston.WinstonExport",
+  "earthwormExportTest" to "edu.sc.seis.seisFile.earthworm.EarthwormExport",
+  "earthwormImportTest" to "edu.sc.seis.seisFile.earthworm.EarthwormImport",
+  "waveserverclient" to "edu.sc.seis.seisFile.waveserver.WaveServerClient",
+  "syncfilecompare" to "edu.sc.seis.seisFile.syncFile.SyncFileCompare",
+  "syncfile2gmt" to "edu.sc.seis.seisFile.syncFile.GMTSyncFile",
+  "refinesyncfile" to "edu.sc.seis.seisFile.syncFile.RefineSyncFile",
+  "gcfserialtoew" to "edu.sc.seis.seisFile.gcf.GCFEarthwormExport",
+  //"fakegcfserial" to "edu.sc.seis.seisFile.gcf.GCFSerialOutput",
+  "sfgroovy" to "groovy.lang.GroovyShell",
+  "winstonpurge" to "edu.sc.seis.seisFile.winston.PurgeOldData"
+  )
+for (key in scriptNames.keys) {
+  tasks.register<CreateStartScripts>(key) {
+    outputDir = file("build/scripts")
+    mainClassName = scriptNames[key]
+    applicationName = key
+    classpath = sourceSets["main"].runtimeClasspath + project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files
+  }
+  tasks.named("createRunScripts") {
+      dependsOn(key)
+  }
 }
 
 tasks.register("makeScript") {
