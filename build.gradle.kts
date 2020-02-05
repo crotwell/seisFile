@@ -96,9 +96,6 @@ repositories {
     mavenLocal()
     maven { url  = uri("https://www.seis.sc.edu/software/maven2") }
     mavenCentral()
-  //  maven { url "http://spring-rich-c.sourceforge.net/maven2repository" }
-  //  maven { url "http://oss.sonatype.org/content/groups/public" }
-  //  maven { url "https://repository.jboss.org/nexus/content/repositories/public" }
 }
 
 sourceSets {
@@ -233,9 +230,6 @@ val scriptNames = mapOf(
   "syncfilecompare" to "edu.sc.seis.seisFile.syncFile.SyncFileCompare",
   "syncfile2gmt" to "edu.sc.seis.seisFile.syncFile.GMTSyncFile",
   "refinesyncfile" to "edu.sc.seis.seisFile.syncFile.RefineSyncFile",
-  "gcfserialtoew" to "edu.sc.seis.seisFile.gcf.GCFEarthwormExport",
-  //"fakegcfserial" to "edu.sc.seis.seisFile.gcf.GCFSerialOutput",
-  "sfgroovy" to "groovy.lang.GroovyShell",
   "winstonpurge" to "edu.sc.seis.seisFile.winston.PurgeOldData"
   )
 for (key in scriptNames.keys) {
