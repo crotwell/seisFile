@@ -5,13 +5,17 @@
  */
 package edu.sc.seis.seisFile.mseed;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
-import junit.framework.TestCase;
 
-public class DataHeaderTest extends TestCase {
+public class DataHeaderTest  {
 
+	@Test
     public void testWrite() throws Exception {
         DataHeader header = new DataHeader(1, 'D', false);
         header.setChannelIdentifier("BHZ");
@@ -45,42 +49,41 @@ public class DataHeaderTest extends TestCase {
         // System.out.print(out[i]);
         // }
         // System.out.println("");
-        assertEquals("year=", time.year, Utility.bytesToShort(out[20],
+        assertEquals( time.year, Utility.bytesToShort(out[20],
                                                               out[21],
                                                               false));
-        assertEquals("jday=", time.jday, Utility.bytesToShort(out[22],
+        assertEquals( time.jday, Utility.bytesToShort(out[22],
                                                               out[23],
                                                               false));
-        assertEquals("hour=", time.hour, out[24]);
-        assertEquals("min=", time.min, out[25]);
-        assertEquals("sec=", time.sec, out[26]);
-        assertEquals("unused=", 0, out[27]);
-        assertEquals("tsec=", time.tenthMilli, Utility.bytesToShort(out[28],
+        assertEquals( time.hour, out[24]);
+        assertEquals( time.min, out[25]);
+        assertEquals( time.sec, out[26]);
+        assertEquals( 0, out[27]);
+        assertEquals( time.tenthMilli, Utility.bytesToShort(out[28],
                                                                     out[29],
                                                                     false));
-        assertEquals("numPTS=", numSamp, Utility.bytesToShort(out[30],
+        assertEquals( numSamp, Utility.bytesToShort(out[30],
                                                               out[31],
                                                               false));
-        assertEquals("sampFac=", sampFac, Utility.bytesToShort(out[32],
+        assertEquals( sampFac, Utility.bytesToShort(out[32],
                                                                out[33],
                                                                false));
-        assertEquals("sampMul=", sampMul, Utility.bytesToShort(out[34],
+        assertEquals( sampMul, Utility.bytesToShort(out[34],
                                                                out[35],
                                                                false));
         byte zero = (byte)0;
-        assertEquals("ac=", zero, out[36]);
-        assertEquals("io=", zero, out[37]);
-        assertEquals("qual=", zero, out[38]);
-        assertEquals("numBlockettes=", numBlockettes, out[39]);
-        assertEquals("ac=", zero, out[40]);
-        assertEquals("ac=", zero, out[41]);
-        assertEquals("ac=", zero, out[42]);
-        assertEquals("ac=", zero, out[43]);
-        assertEquals("beginData=", dataOffset, Utility.bytesToShort(out[44],
+        assertEquals( zero, out[36]);
+        assertEquals( zero, out[37]);
+        assertEquals( zero, out[38]);
+        assertEquals( numBlockettes, out[39]);
+        assertEquals( zero, out[40]);
+        assertEquals( zero, out[41]);
+        assertEquals( zero, out[42]);
+        assertEquals( zero, out[43]);
+        assertEquals( dataOffset, Utility.bytesToShort(out[44],
                                                                     out[45],
                                                                     false));
-        assertEquals("firstBlockette=",
-                     blockOffset,
+        assertEquals(blockOffset,
                      Utility.bytesToShort(out[46], out[47], false));
     }
 }

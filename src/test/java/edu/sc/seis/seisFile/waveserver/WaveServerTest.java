@@ -1,5 +1,9 @@
 package edu.sc.seis.seisFile.waveserver;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -8,9 +12,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.junit.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.SeisFileException;
@@ -19,7 +20,7 @@ import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 
-public class WaveServerTest extends TestCase {
+public class WaveServerTest {
 
     @Test
     public void testGetMenu() throws Exception {
@@ -27,8 +28,7 @@ public class WaveServerTest extends TestCase {
         PrintWriter out = new PrintWriter(new OutputStreamWriter(new ByteArrayOutputStream()));
         WaveServer ws = new WaveServer(out, in);
         List<MenuItem> items = ws.getMenu();
-        assertTrue("items is empty", 0 != items.size());
-        assertEquals("items is 69", 69, items.size());
+        assertEquals( 69, items.size());
     }
     @Test
     public void testGetMenuSCNL() throws Exception {
@@ -36,8 +36,7 @@ public class WaveServerTest extends TestCase {
         PrintWriter out = new PrintWriter(new OutputStreamWriter(new ByteArrayOutputStream()));
         WaveServer ws = new WaveServer(out, in);
         List<MenuItem> items = ws.getMenu();
-        assertTrue("items is empty", 0 != items.size());
-        assertEquals("items is 204", 204, items.size());
+        assertEquals( 204, items.size());
     }
     
     @Test
@@ -63,14 +62,14 @@ public class WaveServerTest extends TestCase {
         for (DataRecord dr : mseedList) {
             numPoints += dr.getHeader().getNumSamples();
         }
-        assertEquals("num points without compression", tb.getNumSamples(), numPoints);
+        assertEquals(tb.getNumSamples(), numPoints);
         // with compression
         mseedList = tb.toMiniSeed(12, B1000Types.STEIM1);
         numPoints = 0;
         for (DataRecord dr : mseedList) {
             numPoints += dr.getHeader().getNumSamples();
         }
-        assertEquals("num points for compression", tb.getNumSamples(), numPoints);
+        assertEquals( tb.getNumSamples(), numPoints);
         
     }
 

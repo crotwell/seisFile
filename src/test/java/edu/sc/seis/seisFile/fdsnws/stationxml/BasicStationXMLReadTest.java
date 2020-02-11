@@ -1,6 +1,9 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -11,7 +14,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.SeisFileException;
 
@@ -21,7 +23,7 @@ public class BasicStationXMLReadTest {
     @Test
     public void testNetworkLevel() throws IOException, SeisFileException, XMLStreamException {
         FDSNStationXML fdsnStationXML = loadStationXML("fdsnstation_network.xml");
-        assertTrue("schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION, fdsnStationXML.checkSchemaVersion());
+        assertTrue( fdsnStationXML.checkSchemaVersion(), "schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION);
         NetworkIterator it = fdsnStationXML.getNetworks();
         while (it.hasNext()) {
             Network n = it.next();
@@ -34,7 +36,7 @@ public class BasicStationXMLReadTest {
     @Test
     public void testStationLevel() throws IOException, SeisFileException, XMLStreamException {
         FDSNStationXML fdsnStationXML = loadStationXML("fdsnstation_station.xml");
-        assertTrue("schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION, fdsnStationXML.checkSchemaVersion());
+        assertTrue( fdsnStationXML.checkSchemaVersion(), "schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION);
         NetworkIterator it = fdsnStationXML.getNetworks();
         while (it.hasNext()) {
             Network n = it.next();
@@ -47,7 +49,7 @@ public class BasicStationXMLReadTest {
     @Test
     public void testChannelLevel() throws IOException, SeisFileException, XMLStreamException {
         FDSNStationXML fdsnStationXML = loadStationXML("fdsnstation_channel.xml");
-        assertTrue("schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION, fdsnStationXML.checkSchemaVersion());
+        assertTrue( fdsnStationXML.checkSchemaVersion(), "schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION);
         NetworkIterator it = fdsnStationXML.getNetworks();
         while (it.hasNext()) {
             Network n = it.next();
@@ -60,7 +62,7 @@ public class BasicStationXMLReadTest {
     @Test
     public void testResponseLevel() throws IOException, SeisFileException, XMLStreamException {
         FDSNStationXML fdsnStationXML = loadStationXML("fdsnstation_response.xml");
-        assertTrue("schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION, fdsnStationXML.checkSchemaVersion());
+        assertTrue( fdsnStationXML.checkSchemaVersion(), "schema version "+fdsnStationXML.getSchemaVersion()+"  "+StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION);
         NetworkIterator it = fdsnStationXML.getNetworks();
         while (it.hasNext()) {
             Network n = it.next();

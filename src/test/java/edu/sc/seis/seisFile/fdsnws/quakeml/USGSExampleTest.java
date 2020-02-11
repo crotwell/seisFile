@@ -1,6 +1,9 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -10,7 +13,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
 
-import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -50,7 +52,7 @@ public class USGSExampleTest {
                 FDSNEventQuerier.validateQuakeML(factory.createXMLStreamReader(url.toString(),
                                                                                QuakeMLTest.loadResource(filename)));
                 Quakeml qml = new Quakeml(r);
-                assertTrue("sceham version", qml.checkSchemaVersion());
+                assertTrue( qml.checkSchemaVersion());
                 EventParameters ep = qml.getEventParameters();
                 EventIterator it = ep.getEvents();
                 while (it.hasNext()) {
@@ -64,10 +66,10 @@ public class USGSExampleTest {
                 }
                 if (subEx instanceof SAXParseException) {
                     SAXParseException saxEx = (SAXParseException)subEx;
-                    fail("SAX Trouble with " + filename + " at " + saxEx.getLineNumber() + ":"
+                    assertTrue(false, "SAX Trouble with " + filename + " at " + saxEx.getLineNumber() + ":"
                             + saxEx.getColumnNumber()+" "+ex);
                 } else {
-                    fail("Trouble with " + filename+" "+ex);
+                	assertTrue(false, "Trouble with " + filename+" "+ex);
                 }
             }
         }

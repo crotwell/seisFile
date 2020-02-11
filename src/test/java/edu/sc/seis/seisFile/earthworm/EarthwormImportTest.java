@@ -1,11 +1,14 @@
 package edu.sc.seis.seisFile.earthworm;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.earthworm.EarthwormEscapeOutputStream;
 import edu.sc.seis.seisFile.earthworm.EarthwormExport;
@@ -42,29 +45,29 @@ public class EarthwormImportTest {
         EarthwormExport ewExport = new EarthwormExport(ewOut, module, institution);
         ewExport.export(tb);
         byte[] wireBytes = bos.toByteArray();
-        assertTrue("wire bytes", TraceBuf2.HEADER_SIZE+data.length*4 <= wireBytes.length);
+        assertTrue( TraceBuf2.HEADER_SIZE+data.length*4 <= wireBytes.length);
         
         ByteArrayInputStream bis = new ByteArrayInputStream(wireBytes);
         EarthwormImport importer = new EarthwormImport(bis);
         EarthwormMessage message = importer.nextMessage();
-        assertEquals("module", module, message.getModule());
-        assertEquals("institution", institution, message.getInstitution());
-        assertEquals("type", EarthwormMessage.MESSAGE_TYPE_TRACEBUF2, message.getMessageType());
-        assertTrue("message bytes "+TraceBuf2.HEADER_SIZE+data.length*4 +" > "+ message.getData().length, TraceBuf2.HEADER_SIZE+data.length*4 <= message.getData().length);
+        assertEquals( module, message.getModule());
+        assertEquals( institution, message.getInstitution());
+        assertEquals( EarthwormMessage.MESSAGE_TYPE_TRACEBUF2, message.getMessageType());
+        assertTrue( TraceBuf2.HEADER_SIZE+data.length*4 <= message.getData().length);
 
         TraceBuf2 out = new TraceBuf2(message.getData());
-        assertEquals("size", tb.getSize(), out.getSize());
-        assertEquals("dataType", tb.getDataType(), out.getDataType());
-        assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
-        assertEquals("end", tb.getEndTime(), out.getEndTime(), 0.000001);
-        assertEquals("net", tb.getNetwork(), out.getNetwork());
-        assertEquals("sta", tb.getStation(), out.getStation());
-        assertEquals("loc", tb.getLocId(), out.getLocId());
-        assertEquals("chan", tb.getChannel(), out.getChannel());
-        assertEquals("version", tb.getVersion(), out.getVersion());
-        assertEquals("quality", tb.getQuality(), out.getQuality());
-        assertEquals("pad", tb.getPad(), out.getPad());
+        assertEquals( tb.getSize(), out.getSize());
+        assertEquals( tb.getDataType(), out.getDataType());
+        assertEquals( tb.getStartTime(), out.getStartTime(), 0.000001);
+        assertEquals( tb.getEndTime(), out.getEndTime(), 0.000001);
+        assertEquals( tb.getNetwork(), out.getNetwork());
+        assertEquals( tb.getStation(), out.getStation());
+        assertEquals( tb.getLocId(), out.getLocId());
+        assertEquals( tb.getChannel(), out.getChannel());
+        assertEquals( tb.getVersion(), out.getVersion());
+        assertEquals( tb.getQuality(), out.getQuality());
+        assertEquals( tb.getPad(), out.getPad());
         assertArrayEquals(data, out.getIntData());
-        assertArrayEquals("data", tb.getIntData(), out.getIntData());
+        assertArrayEquals( tb.getIntData(), out.getIntData());
     }
 }

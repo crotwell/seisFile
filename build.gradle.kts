@@ -3,7 +3,7 @@
 plugins {
   id("edu.sc.seis.version-class") version "1.1.1"
   "java-library"
-  "eclipse"
+  eclipse
   "project-report"
   "maven-publish"
   application

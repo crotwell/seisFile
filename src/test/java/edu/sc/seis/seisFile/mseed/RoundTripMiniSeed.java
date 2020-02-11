@@ -1,12 +1,14 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.IOException;
 import java.time.Instant;
 
-import org.junit.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.iris.dmc.seedcodec.Codec;
@@ -45,9 +47,8 @@ public class RoundTripMiniSeed {
         SteimFrameBlock steimData = null;
         
         steimData = Steim2.encode(data, 63);
-        if (steimData.getNumSamples() < data.length) {
-            fail("Can't fit all data into one record"+steimData.getNumSamples()+" out of "+data.length);
-        }
+        assertTrue(steimData.getNumSamples() < data.length, "Can't fit all data into one record"+steimData.getNumSamples()+" out of "+data.length);
+        
         
 
         int[] out = Steim2.decode(steimData.getEncodedData(), data.length, false);

@@ -1,7 +1,10 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,7 +17,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.TimeUtils;
 
@@ -45,7 +47,7 @@ public class UtilityTest {
         b = Utility.doubleToByteArray(d);
         System.out.println(b[0]+" "+b[1]+" "+b[2]+" "+b[3]+" "+b[4]+" "+b[5]+" "+b[6]+" "+b[7]);
         double dOut = Utility.bytesToDouble(b, 0, false);
-        assertEquals("double round trip", d, dOut, 0.01);
+        assertEquals( d, dOut, 0.01);
         
         byte[] bOut = Utility.doubleToByteArray(dOut);
         assertArrayEquals(b, bOut);
@@ -64,7 +66,7 @@ public class UtilityTest {
         os.writeLong(l);
         os.close();
         byte[] bFromDOS = bos.toByteArray();
-        assertArrayEquals("from DOS", b, bFromDOS);
+        assertArrayEquals( b, bFromDOS);
         
         double d = Double.longBitsToDouble(l);
         System.out.println(d+ " double sec time: "+TimeUtils.instantFromEpochSeconds(d));
@@ -78,7 +80,7 @@ public class UtilityTest {
 
         
         double jan1_2012 = TimeUtils.instantToEpochSeconds(zdt.toInstant());
-        assertEquals("on 2012 jan 1 "+zdt+" err="+(jan1_2012-d), jan1_2012, d, 0.0001);
+        assertEquals( jan1_2012, d, 0.0001);
         
     }
     

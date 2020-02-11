@@ -1,6 +1,9 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,8 +13,6 @@ import java.net.URL;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
@@ -48,18 +49,18 @@ public class QuakeMLTest {
     }
     
     private void checkEvent(int num, EventIterator it, String time, float lat, float lon, float depth, float mag) throws XMLStreamException, SeisFileException {
-        assertTrue("has event", it.hasNext());
+        assertTrue(it.hasNext(), "has event");
         Event e = it.next();
-        assertEquals(num+" num origins", 1, e.getOriginList().size());
+        assertEquals( 1, e.getOriginList().size(), num+" num origins");
         Origin o = e.getOriginList().get(0);
         System.out.println(e.getDescriptionList().get(0)+" "+o.toString());
-        assertEquals(num+" time", time, o.getTime().getValue());
-        assertEquals(num+" lat", lat, o.getLatitude().getValue(), 0.000001f);
-        assertEquals(num+" lon", lon, o.getLongitude().getValue(), 0.000001f);
-        assertEquals(num+" depth", depth, o.getDepth().getValue(), 0.000001f);
-        assertEquals(num+" num magnitudes", 1, e.getMagnitudeList().size());
+        assertEquals( time, o.getTime().getValue(), num+" time");
+        assertEquals( lat, o.getLatitude().getValue(), 0.000001f, num+" lat");
+        assertEquals( lon, o.getLongitude().getValue(), 0.000001f, num+" lon");
+        assertEquals(depth, o.getDepth().getValue(), 0.000001f, num+" depth");
+        assertEquals( 1, e.getMagnitudeList().size(), num+" num magnitudes");
         Magnitude m = e.getMagnitudeList().get(0);
-        assertEquals(num+" mag", mag, m.getMag().getValue(), 0.000001f);
+        assertEquals( mag, m.getMag().getValue(), 0.000001f, num+" mag");
     }
 
 

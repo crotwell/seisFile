@@ -3,9 +3,10 @@ package edu.sc.seis.seisFile;
 import java.time.Duration;
 import java.time.Instant;
 
-import org.junit.Assert;
-import org.junit.ComparisonFailure;
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 
 public class TimeUtilsTest {
@@ -19,16 +20,16 @@ public class TimeUtilsTest {
     public void testDurationFromSeconds() {
         double seconds = 5.234;
         Duration d = TimeUtils.durationFromSeconds(seconds);
-        Assert.assertEquals("seconds", Math.round(seconds), d.getSeconds());
-        Assert.assertEquals("nanos", Math.round(seconds*TimeUtils.NANOS_IN_SEC), d.toNanos());
+        assertEquals(Math.round(seconds), d.getSeconds(), "seconds");
+        assertEquals(Math.round(seconds*TimeUtils.NANOS_IN_SEC), d.toNanos(), "nanos");
     }
 
     @Test
     public void testInstantFromEpochSeconds() {
         Instant a = TimeUtils.parseISOString("2017-09-13T15:43:08.123Z");
         Instant b = TimeUtils.instantFromEpochSeconds(TimeUtils.instantToEpochSeconds(a));
-        Assert.assertEquals(a.getEpochSecond(),b.getEpochSecond());
-        Assert.assertEquals(a.getNano()/TimeUtils.NANOS_IN_SEC, b.getNano()/TimeUtils.NANOS_IN_SEC, 0.0001);
+        assertEquals(a.getEpochSecond(),b.getEpochSecond());
+        assertEquals(a.getNano()/TimeUtils.NANOS_IN_SEC, b.getNano()/TimeUtils.NANOS_IN_SEC, 0.0001);
     }
     
     @Test
@@ -38,7 +39,7 @@ public class TimeUtilsTest {
         double d = TimeUtils.instantToEpochSeconds(now);
         Instant rt = TimeUtils.instantFromEpochSeconds(d);
         System.out.println("now: "+now+"  "+d);
-        assertEquals("to double round trip", now, rt, TimeUtils.ONE_MICROSECOND);
+        assertInstantEquals(now, rt, TimeUtils.ONE_MICROSECOND, "to double round trip" );
     }
 
     @Test
@@ -46,19 +47,21 @@ public class TimeUtilsTest {
         Instant expected = TimeUtils.parseISOString("2017-09-01T18:34:08.865000000Z");
         Instant actual = TimeUtils.parseISOString("2017-09-01T18:34:08.864900000Z");
         Duration error = Duration.ofNanos(100000);
-        assertEquals("check within tenthmilli", expected, actual, error);
+        assertInstantEquals(expected, actual, error, "check within tenthmilli" );
     }
     
     
-    static public void assertEquals(String message, Instant expected,
-                                    Instant actual, Duration error) {
+    static public void assertInstantEquals(Instant expected,
+                                    Instant actual, Duration error, String message) {
         if (expected == null && actual == null) {
             return;
-        } else if (Duration.between(expected, actual).abs().compareTo(error) > 0) {
-            String cleanMessage = message == null ? "" : message;
-            throw new ComparisonFailure(cleanMessage+" greater than "+error, expected.toString(),
-                                         actual.toString());
         }
+        assertTrue(Duration.between(expected, actual).abs().compareTo(error) > 0,
+        		() ->  ( (message == null ? "" : message)+" greater than "+error +" "+
+        				expected.toString()+" "+
+                        actual.toString()));
+        
+        
     }
     
 

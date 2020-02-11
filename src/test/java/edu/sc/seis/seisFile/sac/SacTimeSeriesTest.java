@@ -1,13 +1,16 @@
 package edu.sc.seis.seisFile.sac;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * SacTimeSeriesTest.java
  * 
  * @author Created by Philip Oliver-Paull
  */
-public class SacTimeSeriesTest extends TestCase {
+public class SacTimeSeriesTest {
 
     public void testSwapBytesShort() {
         short s1 = Short.MIN_VALUE;

@@ -1,6 +1,10 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -9,7 +13,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.sac.TestSacFileData;
 
@@ -29,12 +32,12 @@ public class TestReadPartialBlockettes {
                 if (sr instanceof ControlRecord) {
                     Blockette[] blockettes = ((ControlRecord)sr).getBlockettes();
                     for (Blockette b : blockettes) {
-                        assertFalse("type "+b.getType(), b instanceof PartialBlockette);
+                        assertFalse( b instanceof PartialBlockette);
                     }
                     System.out.println(sr.getControlHeader());
                     defaultSize = sr.getRecordSize();
                 } else {
-                    fail("Not a control record, skipping..."+sr.getControlHeader().getSequenceNum()+" "+sr.getControlHeader().getTypeCode());
+                	assertTrue(sr instanceof ControlRecord, "Not a control record, skipping..."+sr.getControlHeader().getSequenceNum()+" "+sr.getControlHeader().getTypeCode());
                 }
             } catch (EOFException e) {
                 System.out.println("Got EOF");

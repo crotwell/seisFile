@@ -5,6 +5,10 @@
  */
 package edu.sc.seis.seisFile.mseed;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 /**
  * DataHeaderTest.java
  * 
@@ -13,10 +17,10 @@ package edu.sc.seis.seisFile.mseed;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
-import junit.framework.TestCase;
 
-public class Blockette1000Test extends TestCase {
-
+public class Blockette1000Test  {
+	
+	@Test
     public void testWrite() throws Exception {
         Blockette1000 blockette = new Blockette1000();
         byte encoding = (byte)10;
@@ -31,16 +35,15 @@ public class Blockette1000Test extends TestCase {
         ByteArrayOutputStream bos = new ByteArrayOutputStream(4096);
         blockette.write(new DataOutputStream(bos), nextOffset);
         byte[] out = bos.toByteArray();
-        assertEquals("blockette length", 8, out.length);
-        assertEquals("type",
-                     (short)blockette.getType(),
+        assertEquals(8, out.length);
+        assertEquals((short)blockette.getType(),
                      Utility.bytesToShort(out[0], out[1], false));
-        assertEquals("type", nextOffset, Utility.bytesToShort(out[2],
+        assertEquals( nextOffset, Utility.bytesToShort(out[2],
                                                               out[3],
                                                               false));
-        assertEquals("encoding", encoding, out[4]);
-        assertEquals("wordOrder", wordOrder, out[5]);
-        assertEquals("dataLength", dataLength, out[6]);
-        assertEquals("reserved", reserved, out[7]);
+        assertEquals( encoding, out[4]);
+        assertEquals( wordOrder, out[5]);
+        assertEquals( dataLength, out[6]);
+        assertEquals( reserved, out[7]);
     }
 }

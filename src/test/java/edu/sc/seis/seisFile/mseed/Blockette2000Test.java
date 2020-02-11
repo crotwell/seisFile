@@ -1,9 +1,13 @@
 package edu.sc.seis.seisFile.mseed;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
-public class Blockette2000Test extends TestCase {
 
+public class Blockette2000Test {
+
+	@Test
     public void testInternalConsistency() throws SeedFormatException {
         String[] headerFields = new String[] {"one", "two", "three"};
         Blockette2000 b2000 = new Blockette2000(headerFields, new byte[] {1});

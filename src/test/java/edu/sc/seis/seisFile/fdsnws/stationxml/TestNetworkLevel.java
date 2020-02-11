@@ -1,12 +1,16 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
@@ -29,12 +33,12 @@ public class TestNetworkLevel {
             Network net = netIt.next();
             assertNotNull(net.getDescription());
             assertNotNull(net.getCode());
-            assertEquals("selected stations", 0, net.getSelectedNumStations());
+            assertEquals(0, net.getSelectedNumStations());
             if (net.getCode().equals("CO")) {
-                assertEquals("Description", "South Carolina Seismic Network", net.getDescription());
-                assertEquals("totStations", 8, net.getTotalNumStations());
+                assertEquals( "South Carolina Seismic Network", net.getDescription());
+                assertEquals( 8, net.getTotalNumStations());
             }
-            assertFalse("stations", net.getStations().hasNext());
+            assertFalse( net.getStations().hasNext());
         }
     }
 }

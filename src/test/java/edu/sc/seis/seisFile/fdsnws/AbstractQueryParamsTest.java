@@ -1,12 +1,14 @@
 package edu.sc.seis.seisFile.fdsnws;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.TimeUtils;
 

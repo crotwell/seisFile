@@ -1,10 +1,12 @@
 package edu.sc.seis.seisFile.winston;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.text.ParseException;
 
-import org.junit.Test;
 
 
 public class WinstonTableTest {

@@ -1,8 +1,10 @@
 package edu.sc.seis.seisFile.earthworm;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -11,7 +13,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
-import org.junit.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.TimeUtils;
@@ -28,19 +29,19 @@ public class TraceBuf2Test {
         TraceBuf2 tb = createTraceBuf(numSamples);
         byte[] dataBytes = tb.toByteArray();
         TraceBuf2 out = new TraceBuf2(dataBytes);
-        assertEquals("size", tb.getSize(), out.getSize());
-        assertEquals("dataType", tb.getDataType(), out.getDataType());
-        assertEquals("start", tb.getStartTime(), out.getStartTime(), 0.000001);
-        assertEquals("end", tb.getEndTime(), out.getEndTime(), 0.000001);
-        assertEquals("net", tb.getNetwork(), out.getNetwork());
-        assertEquals("sta", tb.getStation(), out.getStation());
-        assertEquals("loc", tb.getLocId(), out.getLocId());
-        assertEquals("chan", tb.getChannel(), out.getChannel());
-        assertEquals("version", tb.getVersion(), out.getVersion());
-        assertEquals("quality", tb.getQuality(), out.getQuality());
-        assertEquals("pad", tb.getPad(), out.getPad());
+        assertEquals( tb.getSize(), out.getSize());
+        assertEquals( tb.getDataType(), out.getDataType());
+        assertEquals( tb.getStartTime(), out.getStartTime(), 0.000001);
+        assertEquals( tb.getEndTime(), out.getEndTime(), 0.000001);
+        assertEquals( tb.getNetwork(), out.getNetwork());
+        assertEquals( tb.getStation(), out.getStation());
+        assertEquals( tb.getLocId(), out.getLocId());
+        assertEquals( tb.getChannel(), out.getChannel());
+        assertEquals( tb.getVersion(), out.getVersion());
+        assertEquals( tb.getQuality(), out.getQuality());
+        assertEquals( tb.getPad(), out.getPad());
         assertArrayEquals(tb.getIntData(), out.getIntData());
-        assertArrayEquals("data", tb.getIntData(), out.getIntData());
+        assertArrayEquals( tb.getIntData(), out.getIntData());
     }
 
     @Test
@@ -63,34 +64,33 @@ public class TraceBuf2Test {
     }
 
     public static void checkSplit(int numSamples, TraceBuf2 tb, List<TraceBuf2> splitList) {
-        assertEquals("start for " + numSamples, tb.getStartTime(), splitList.get(0).getStartTime(), 0.000001);
+        assertEquals(tb.getStartTime(), splitList.get(0).getStartTime(), 0.000001, "start for " + numSamples);
         int totSamps = 0;
         int splitNum = 0;
         double nextStart = tb.getStartTime();
         for (TraceBuf2 splitTB : splitList) {
-            assertEquals(numSamples + " " + splitNum + ": pin", tb.getPin(), splitTB.getPin());
-            assertEquals(numSamples + " " + splitNum + ": dataType", tb.getDataType(), splitTB.getDataType());
-            assertEquals(numSamples + " " + splitNum + ": net", tb.getNetwork(), splitTB.getNetwork());
-            assertEquals(numSamples + " " + splitNum + ": sta", tb.getStation(), splitTB.getStation());
-            assertEquals(numSamples + " " + splitNum + ": loc", tb.getLocId(), splitTB.getLocId());
-            assertEquals(numSamples + " " + splitNum + ": chan", tb.getChannel(), splitTB.getChannel());
-            assertEquals(numSamples + " " + splitNum + ": version", tb.getVersion(), splitTB.getVersion());
-            assertEquals(numSamples + " " + splitNum + ": quality", tb.getQuality(), splitTB.getQuality());
-            assertEquals(numSamples + " " + splitNum + ": pad", tb.getPad(), splitTB.getPad());
+            assertEquals(tb.getPin(), splitTB.getPin(), numSamples + " " + splitNum + ": pin");
+            assertEquals(tb.getDataType(), splitTB.getDataType(), numSamples + " " + splitNum + ": dataType");
+            assertEquals(tb.getNetwork(), splitTB.getNetwork(), numSamples + " " + splitNum + ": net");
+            assertEquals(tb.getStation(), splitTB.getStation(), numSamples + " " + splitNum + ": sta");
+            assertEquals(tb.getLocId(), splitTB.getLocId(), numSamples + " " + splitNum + ": loc");
+            assertEquals(tb.getChannel(), splitTB.getChannel(), numSamples + " " + splitNum + ": chan");
+            assertEquals(tb.getVersion(), splitTB.getVersion(), numSamples + " " + splitNum + ": version");
+            assertEquals(tb.getQuality(), splitTB.getQuality(), numSamples + " " + splitNum + ": quality" );
+            assertEquals(tb.getPad(), splitTB.getPad(), numSamples + " " + splitNum + ": pad" );
             totSamps += splitTB.getNumSamples();
-            assertEquals(numSamples + " " + splitNum + ": start", nextStart, splitTB.getStartTime(), 0.0000001);
-            assertEquals(numSamples + " " + splitNum + ": end",
-                         nextStart + (splitTB.getNumSamples() - 1) / splitTB.getSampleRate(),
+            assertEquals(nextStart, splitTB.getStartTime(), 0.0000001, numSamples + " " + splitNum + ": start" );
+            assertEquals(nextStart + (splitTB.getNumSamples() - 1) / splitTB.getSampleRate(),
                          splitTB.getEndTime(),
-                         0.000001);
+                         0.000001, numSamples + " " + splitNum + ": end");
             nextStart = tb.getStartTime() + totSamps / splitTB.getSampleRate();
-            assertTrue(numSamples + " " + splitNum + ": less than max size: " + splitTB.getSize() + " > "
-                    + TraceBuf2.MAX_TRACEBUF_SIZE, TraceBuf2.MAX_TRACEBUF_SIZE >= splitTB.getSize());
+            assertTrue(TraceBuf2.MAX_TRACEBUF_SIZE >= splitTB.getSize(), numSamples + " " + splitNum + ": less than max size: " + splitTB.getSize() + " > "
+                    + TraceBuf2.MAX_TRACEBUF_SIZE);
             assertEquals(numSamples + " " + splitNum + ": dataType", tb.getDataType(), splitTB.getDataType());
             splitNum++;
         }
-        assertEquals(numSamples + ": total num points", tb.getNumSamples(), totSamps);
-        assertEquals(numSamples + ": end", tb.getEndTime(), splitList.get(splitList.size() - 1).getEndTime(), 0.000001);
+        assertEquals(tb.getNumSamples(), totSamps, numSamples + ": total num points" );
+        assertEquals(tb.getEndTime(), splitList.get(splitList.size() - 1).getEndTime(), 0.000001, numSamples + ": end");
     }
 
     @Test
@@ -117,28 +117,27 @@ public class TraceBuf2Test {
         Duration TWO_TENTH_MILLI = TimeUtils.TENTH_MILLI.multipliedBy(2);
         TraceBuf2 tb = createTraceBuf(4000);
         List<DataRecord> mseedList = tb.toMiniSeed(9, B1000Types.STEIM1);
-        TimeUtilsTest.assertEquals("start ", tb.getStartDate(),
-                     mseedList.get(0).getHeader().getStartBtime().toInstant(), TWO_TENTH_MILLI);
-        TimeUtilsTest.assertEquals("end", tb.getEndDate(), mseedList.get(mseedList.size() - 1)
-                .getLastSampleBtime().toInstant(), TWO_TENTH_MILLI);
+        TimeUtilsTest.assertInstantEquals(tb.getStartDate(),
+                     mseedList.get(0).getHeader().getStartBtime().toInstant(), TWO_TENTH_MILLI, "start ");
+        TimeUtilsTest.assertInstantEquals(tb.getEndDate(), mseedList.get(mseedList.size() - 1)
+                .getLastSampleBtime().toInstant(), TWO_TENTH_MILLI, "end");
         Instant nextSampleTime = tb.getStartDate();
         int numPts = 0;
         for (DataRecord dr : mseedList) {
             Blockette1000 b1000 = (Blockette1000)dr.getUniqueBlockette(1000);
-            assertEquals("dataType", B1000Types.STEIM1, b1000.getEncodingFormat());
-            assertEquals("net", tb.getNetwork(), dr.getHeader().getNetworkCode());
-            assertEquals("sta", tb.getStation(), dr.getHeader().getStationIdentifier());
-            assertEquals("loc", tb.getLocId(), dr.getHeader().getLocationIdentifier());
-            assertEquals("chan", tb.getChannel(), dr.getHeader().getChannelIdentifier());
+            assertEquals(B1000Types.STEIM1, b1000.getEncodingFormat(), "dataType");
+            assertEquals(tb.getNetwork(), dr.getHeader().getNetworkCode());
+            assertEquals(tb.getStation(), dr.getHeader().getStationIdentifier());
+            assertEquals( tb.getLocId(), dr.getHeader().getLocationIdentifier());
+            assertEquals( tb.getChannel(), dr.getHeader().getChannelIdentifier());
             Instant drStart = dr.getHeader().getStartBtime().toInstant();
-            TimeUtilsTest.assertEquals("previous dr date", nextSampleTime, drStart, TWO_TENTH_MILLI);
-            assertTrue("start before end",
-                       drStart.isBefore(dr.getLastSampleBtime().toInstant()));
+            TimeUtilsTest.assertInstantEquals(nextSampleTime, drStart, TWO_TENTH_MILLI, "previous dr date");
+            assertTrue(drStart.isBefore(dr.getLastSampleBtime().toInstant()));
             numPts += dr.getHeader().getNumSamples();
             nextSampleTime = dr.getPredictedNextStartBtime().toInstant();
         }
-        assertTrue("nextSample after end", nextSampleTime.isAfter(tb.getEndDate()));
-        assertEquals("npts", tb.getNumSamples(), numPts);
+        assertTrue(nextSampleTime.isAfter(tb.getEndDate()));
+        assertEquals(tb.getNumSamples(), numPts);
     }
 
     TraceBuf2 createTraceBuf(int numSamples) {

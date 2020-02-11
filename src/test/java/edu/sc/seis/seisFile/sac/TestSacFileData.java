@@ -1,17 +1,19 @@
 package edu.sc.seis.seisFile.sac;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import junit.framework.TestCase;
 
 /**
  *
  * @author viglione
  */
-public class TestSacFileData extends TestCase
-{
+public class TestSacFileData {
     // A tolerance value to check floating-point values.
     public static final double TOL = 0.000001;
     // This array holds the expected values of the .sac file based on the

@@ -1,16 +1,17 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
 
 public class ContinuedControlRecordTest {
 
-    @Before
     public void setUp() throws Exception {}
 
     @Test

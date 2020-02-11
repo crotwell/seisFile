@@ -1,11 +1,12 @@
 package edu.sc.seis.seisFile.mseed;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
 
 import java.time.Instant;
 
-import org.junit.Test;
 
 import edu.sc.seis.seisFile.TimeUtils;
 
