@@ -2,14 +2,18 @@ package edu.sc.seis.seisFile.fdsnws.stationxml;
 
 
 public final class StationXMLTagNames {
-    
-    
+
+
     public static final String CURRENT_SCHEMALOCATION_VERSION = "http://www.fdsn.org/xml/station/1";
-    public static final String CURRENT_SCHEMALOCATION_LOCATION = "http://www.fdsn.org/xml/station/fdsn-station-1.0.xsd";
-    public static final String CURRENT_SCHEMA_VERSION = "1.0";
-    
+    public static final String CURRENT_SCHEMALOCATION_LOCATION = "http://www.fdsn.org/xml/station/fdsn-station-1.1.xsd";
+    public static final String CURRENT_SCHEMA_VERSION = "1.1";
+
+    public static final String PREV_SCHEMALOCATION_VERSION = "http://www.fdsn.org/xml/station/1";
+    public static final String PREV_SCHEMALOCATION_LOCATION = "http://www.fdsn.org/xml/station/fdsn-station-1.0.xsd";
+    public static final String PREV_SCHEMA_VERSION = "1.0";
+
     private StationXMLTagNames() {}
-    
+
 
     public static final String NAMESPACE = "http://www.data.scec.org/xml/station/";
     public static final String FDSNSTATIONXML = "FDSNStationXML";
@@ -120,7 +124,7 @@ public final class StationXMLTagNames {
     public static final String RECORDEDCHANNELS = "RecordedChannels";
     public static final String DATALOGGER = "DataLogger";
     public static final String XMLNS = "xmlns";
-    
+
     public static final String IRISSTATIONCOMMENTS = "StationComments";
     public static final String IRISCHANNELCOMMENTS = "ChannelComments";
     public static final String IRISCOMMENT = "Comment";
@@ -182,5 +186,5 @@ public final class StationXMLTagNames {
     public static final String COEFFICIENT_ANALOG_HERTZ = "ANALOG (HERTZ)";
     public static final String COEFFICIENT_DIGITAL = "DIGITAL";
     public static final String STORAGEFORMAT = "StorageFormat";
-    
+
     }
