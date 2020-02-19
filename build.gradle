@@ -10,27 +10,18 @@ apply plugin: 'project-report'
 apply plugin: 'groovy'
 
 group = 'edu.sc.seis'
-version = '1.8.2'
+version = '1.8.3-SNAPSHOT'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-task sourcesJar(type: Jar) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar) {
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
-}
 
 publishing {
     publications {
         myLibrary(MavenPublication) {
             from components.java
 
-            artifact sourcesJar
+            artifact sourceJar
             artifact javadocJar
 
           pom {
