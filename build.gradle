@@ -25,9 +25,6 @@ publishing {
         myLibrary(MavenPublication) {
             from components.java
 
-            artifact sourceJar
-            artifact javadocJar
-
           pom {
             name = "seisFile"
             description = 'A library for reading and writing seismic file formats in java.'
