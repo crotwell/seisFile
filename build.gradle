@@ -15,6 +15,10 @@ version = '1.8.3-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
 
 publishing {
     publications {
