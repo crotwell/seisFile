@@ -26,6 +26,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -48,16 +49,20 @@ public abstract class AbstractFDSNQuerier {
     public abstract URI formURI() throws URISyntaxException;
 
     public abstract URL getSchemaURL();
-    
+
     public void connect() throws URISyntaxException, FDSNWSException {
         connectionUri = formURI();
         try {
-            RequestConfig requestConfig = RequestConfig.custom()
+            RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
                     .setConnectTimeout(getConnectTimeout())
                     .setConnectionRequestTimeout(getConnectTimeout())
                     .setSocketTimeout(getReadTimeout())
-                    .setRedirectsEnabled(true)
-                    .build();
+                    .setRedirectsEnabled(true);
+            if (getProxyHost() != null) {
+              HttpHost proxy = new HttpHost(getProxyHost(), getProxyPort(), getProxyProtocol());
+              requestConfigBuilder.setProxy(proxy);
+            }
+            RequestConfig requestConfig = requestConfigBuilder.build();
             CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
             HttpGet request = new HttpGet(connectionUri);
             request.setHeader("User-Agent", getUserAgent());
@@ -161,7 +166,7 @@ public abstract class AbstractFDSNQuerier {
      * returns the URI that was used to open the connection. This may be null if
      * connect() has not yet been called. formUri() can be used to get the URI
      * without connecting.
-     * 
+     *
      * @return
      */
     public URI getConnectionUri() {
@@ -177,7 +182,7 @@ public abstract class AbstractFDSNQuerier {
             throw new RuntimeException("Not connected yet");
         }
     }
-    
+
     public XMLEventReader getReader() throws XMLStreamException, URISyntaxException {
         if (reader == null) {
             XMLInputFactory2 factory = (XMLInputFactory2)XMLInputFactory.newInstance();
@@ -189,7 +194,7 @@ public abstract class AbstractFDSNQuerier {
                     if (schema == null) {
                         if (sfactory == null) {
                             sfactory = XMLValidationSchemaFactory.newInstance(XMLValidationSchema.SCHEMA_ID_W3C_SCHEMA);
-                        }                   
+                        }
                         schema = sfactory.createSchema(getSchemaURL());
                         schemaCache.put(getSchemaURL(), schema);
                     }
@@ -239,13 +244,13 @@ public abstract class AbstractFDSNQuerier {
         return out;
     }
 
-    
+
     public String getAcceptHeader() {
         return acceptHeader;
     }
 
     /** set the Accept: html header, default is application/xml.
-     * 
+     *
      */
     public void setAcceptHeader(String acceptHeader) {
         this.acceptHeader = acceptHeader;
@@ -257,6 +262,36 @@ public abstract class AbstractFDSNQuerier {
 
     public String getUserAgent() {
         return userAgent;
+    }
+
+    public void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    public void setProxyPort(int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    public int getProxyPort() {
+        if (proxyPort <= 0) {
+          return 80;
+        }
+        return proxyPort;
+    }
+
+    public void setProxyProtocol(String proxyProtocol) {
+        this.proxyProtocol = proxyProtocol;
+    }
+
+    public String getProxyProtocol() {
+        if (proxyProtocol == null) {
+          return "http";
+        }
+        return proxyProtocol;
     }
 
     public int getResponseCode() {
@@ -336,9 +371,9 @@ public abstract class AbstractFDSNQuerier {
             }
         }
     }
-    
+
     static XMLValidationSchemaFactory sfactory;
-    
+
     static HashMap<URL, XMLValidationSchema> schemaCache = new HashMap<URL, XMLValidationSchema>();
 
     String userAgent = AbstractClient.DEFAULT_USER_AGENT;
@@ -358,6 +393,12 @@ public abstract class AbstractFDSNQuerier {
     InputStream inputStream;
 
     CloseableHttpResponse response;
+
+    protected String proxyHost = null;
+
+    protected int proxyPort = -1;
+
+    protected String proxyProtocol = null;
 
     // URLConnection urlConn;
     protected URI connectionUri;
