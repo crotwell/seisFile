@@ -12,7 +12,7 @@ apply plugin: 'project-report'
 apply plugin: 'groovy'
 
 group = 'edu.sc.seis'
-version = '1.8.4-SHAPSHOT'
+version = '1.8.4-SNAPSHOT'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
