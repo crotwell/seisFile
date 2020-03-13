@@ -59,7 +59,7 @@ public abstract class AbstractFDSNQuerier {
                     .setSocketTimeout(getReadTimeout())
                     .setRedirectsEnabled(true);
             if (getProxyHost() != null) {
-              HttpHost proxy = new HttpHost(getProxyHost(), getProxyPort(), getProxyProtocol());
+              HttpHost proxy = new HttpHost(getProxyHost(), getProxyPort(), getProxyScheme());
               requestConfigBuilder.setProxy(proxy);
             }
             RequestConfig requestConfig = requestConfigBuilder.build();
@@ -283,15 +283,15 @@ public abstract class AbstractFDSNQuerier {
         return proxyPort;
     }
 
-    public void setProxyProtocol(String proxyProtocol) {
-        this.proxyProtocol = proxyProtocol;
+    public void setProxyScheme(String proxyScheme) {
+        this.proxyScheme = proxyScheme;
     }
 
-    public String getProxyProtocol() {
-        if (proxyProtocol == null) {
+    public String getProxyScheme() {
+        if (proxyScheme == null) {
           return "http";
         }
-        return proxyProtocol;
+        return proxyScheme;
     }
 
     public int getResponseCode() {
@@ -398,7 +398,7 @@ public abstract class AbstractFDSNQuerier {
 
     protected int proxyPort = -1;
 
-    protected String proxyProtocol = null;
+    protected String proxyScheme = null;
 
     // URLConnection urlConn;
     protected URI connectionUri;
