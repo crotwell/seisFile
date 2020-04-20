@@ -11,6 +11,10 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class Site {
 
+	Site() {
+		
+	}
+	
     public Site(String name, String description, String town, String county, String region, String country) {
         super();
         this.name = name;
@@ -75,7 +79,31 @@ public class Site {
         return country;
     }
     
-    @Override
+    public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setTown(String town) {
+		this.town = town;
+	}
+
+	public void setCounty(String county) {
+		this.county = county;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	@Override
     public String toString() {
         return getName();
     }
