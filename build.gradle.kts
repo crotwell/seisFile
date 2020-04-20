@@ -75,8 +75,8 @@ dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.0.11")
     implementation("com.martiansoftware:jsap:2.1")
-    implementation( "org.slf4j:slf4j-api:1.7.30")
-    implementation( "org.slf4j:slf4j-log4j12:1.7.30")
+    implementation( "org.slf4j:slf4j-api:1.7.26")
+    implementation( "org.slf4j:slf4j-log4j12:1.7.26")
 //
 //    compile "org.rxtx:rxtx:2.2.pre2"  ...but not in maven
     implementation( "org.rxtx:rxtx:2.1.7")
