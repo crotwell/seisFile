@@ -75,6 +75,12 @@ nexusPublishing {
     }
 }
 
+
+configurations {
+    intTestImplementation.extendsFrom implementation
+    intTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
 dependencies {
 //    compile project(':seedCodec')
     compile "edu.sc.seis:seedCodec:1.0.11"
@@ -88,7 +94,9 @@ dependencies {
     compile "net.java.dev.msv:msv-core:2013.6.1"
     compile 'org.apache.httpcomponents:httpclient:4.5.12'
     runtime "mysql:mysql-connector-java:5.1.47"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'junit', name: 'junit', version: '4.13'
+
+    intTestImplementation group: 'junit', name: 'junit', version: '4.13'
 }
 
 repositories {
@@ -114,8 +122,11 @@ sourceSets {
          srcDir 'src/metacode/groovy'
       }
    }
+   intTest {
+       compileClasspath += sourceSets.main.output
+       runtimeClasspath += sourceSets.main.output
+   }
 }
-
 
 def binDistFiles = copySpec {
     from(configurations.default) {
@@ -235,3 +246,19 @@ task makeScript() {
 def getDExtras() {
     return [ 'seisFile':getVersion()]
 }
+
+test {
+    useJUnit {
+    }
+}
+
+task integrationTest(type: Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.intTest.output.classesDirs
+    classpath = sourceSets.intTest.runtimeClasspath
+    shouldRunAfter test
+}
+
+check.dependsOn integrationTest

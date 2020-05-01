@@ -46,7 +46,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
 
     /**
      * This uses POST instead of GET, allowing many channel time windows.
-     * 
+     *
      */
     public FDSNDataSelectQuerier(FDSNDataSelectQueryParams queryParams, List<ChannelTimeWindow> request) {
         this.queryParams = queryParams;
@@ -54,10 +54,22 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
         setAcceptHeader("application/vnd.fdsn.mseed");
     }
 
+
+    public void initHttpClientBuilder() {
+      super.initHttpClientBuilder();
+      if (username != null && username.length()!= 0 && password != null && password.length() != 0) {
+          logger.info("Adding user/pass cred to query");
+          UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password);
+          CredentialsProvider credsProvider = new BasicCredentialsProvider();
+          credsProvider.setCredentials(new AuthScope(queryParams.getHost(), queryParams.getPort(), realm), creds);
+          httpClientBuilder.setDefaultCredentialsProvider(credsProvider);
+      }
+    }
+
     public void enableRestrictedData(String username, String password) {
         enableRestrictedData( username,  password, null); // empty realm
     }
-    
+
     public void enableRestrictedData(String username, String password, String realm) {
         this.username = username;
         this.password = password;
@@ -104,12 +116,12 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
 
     /**
      * This uses POST instead of GET, allowing many channel time windows.
-     * 
+     *
      * @throws SeisFileException
      * @throws URISyntaxException
      * @throws IOException
      * @throws MalformedURLException
-     * @throws FDSNWSException 
+     * @throws FDSNWSException
      */
     void connectForPost() throws URISyntaxException, MalformedURLException, IOException, FDSNWSException {
         String postQuery = queryParams.formPostString(request);
@@ -123,21 +135,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                                 queryParams.getFragment());
         logger.info("Post Query: " + connectionUri);
         logger.info(postQuery);
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(getConnectTimeout())
-                .setConnectionRequestTimeout(getConnectTimeout())
-                .setSocketTimeout(getReadTimeout())
-                .build();
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
-                .setDefaultRequestConfig(requestConfig);
-        if (username != null && username.length()!= 0 && password != null && password.length() != 0) {
-            logger.info("Adding user/pass cred to query");
-            UsernamePasswordCredentials creds = new UsernamePasswordCredentials(username, password);
-            CredentialsProvider credsProvider = new BasicCredentialsProvider();
-            credsProvider.setCredentials(new AuthScope(queryParams.getHost(), queryParams.getPort(), realm), creds);
-            httpClientBuilder.setDefaultCredentialsProvider(credsProvider);
-        }
-        CloseableHttpClient httpClient = httpClientBuilder.build();
+        CloseableHttpClient httpClient = buildHttpClient();
         TimeQueryLog.add(connectionUri);
         HttpPost request = new HttpPost(connectionUri);
         HttpClientContext context = HttpClientContext.create();

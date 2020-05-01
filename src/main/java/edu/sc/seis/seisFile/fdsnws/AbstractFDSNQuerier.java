@@ -50,20 +50,39 @@ public abstract class AbstractFDSNQuerier {
 
     public abstract URL getSchemaURL();
 
+    public void initHttpRequestConfigBuilder() {
+      requestConfigBuilder = RequestConfig.custom()
+              .setConnectTimeout(getConnectTimeout())
+              .setConnectionRequestTimeout(getConnectTimeout())
+              .setSocketTimeout(getReadTimeout())
+              .setRedirectsEnabled(true);
+      if (getProxyHost() != null) {
+        HttpHost proxy = new HttpHost(getProxyHost(), getProxyPort(), getProxyScheme());
+        requestConfigBuilder.setProxy(proxy);
+      }
+    }
+
+    public void initHttpClientBuilder() {
+      if (requestConfigBuilder == null) {
+        initHttpRequestConfigBuilder();
+      }
+      if (httpClientBuilder == null) {
+        RequestConfig requestConfig = requestConfigBuilder.build();
+        httpClientBuilder = HttpClientBuilder.create()
+                .setDefaultRequestConfig(requestConfig);
+      }
+    }
+
+    public CloseableHttpClient buildHttpClient() {
+      initHttpClientBuilder();
+      CloseableHttpClient httpClient = httpClientBuilder.build();
+      return httpClient;
+    }
+
     public void connect() throws URISyntaxException, FDSNWSException {
         connectionUri = formURI();
         try {
-            RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
-                    .setConnectTimeout(getConnectTimeout())
-                    .setConnectionRequestTimeout(getConnectTimeout())
-                    .setSocketTimeout(getReadTimeout())
-                    .setRedirectsEnabled(true);
-            if (getProxyHost() != null) {
-              HttpHost proxy = new HttpHost(getProxyHost(), getProxyPort(), getProxyScheme());
-              requestConfigBuilder.setProxy(proxy);
-            }
-            RequestConfig requestConfig = requestConfigBuilder.build();
-            CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+            CloseableHttpClient httpClient = buildHttpClient();
             HttpGet request = new HttpGet(connectionUri);
             request.setHeader("User-Agent", getUserAgent());
             request.setHeader("Accept", getAcceptHeader());
@@ -244,7 +263,6 @@ public abstract class AbstractFDSNQuerier {
         return out;
     }
 
-
     public String getAcceptHeader() {
         return acceptHeader;
     }
@@ -393,6 +411,10 @@ public abstract class AbstractFDSNQuerier {
     InputStream inputStream;
 
     CloseableHttpResponse response;
+
+    RequestConfig.Builder requestConfigBuilder;
+
+    HttpClientBuilder httpClientBuilder;
 
     protected String proxyHost = null;
 
