@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
@@ -69,6 +70,9 @@ public class Equipment {
             removalDate = StaxUtil.pullText(reader, StationXMLTagNames.REMOVALDATE);
             return true;
         } else if (elName.equals(StationXMLTagNames.CALIBRATIONDATE)) {
+            if (calibrationDate == null) {
+                calibrationDate = new ArrayList<String>();
+            }
             calibrationDate.add(StaxUtil.pullText(reader, StationXMLTagNames.CALIBRATIONDATE));
             return true;
         } else {
