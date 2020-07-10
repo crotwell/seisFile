@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -39,6 +42,9 @@ public class Comment {
         } else if (elName.equals(StationXMLTagNames.ENDEFFECTIVETIME)) {
             endEffectiveTime = StaxUtil.pullText(reader, StationXMLTagNames.ENDEFFECTIVETIME);
             return true;
+        } else if (elName.equals(StationXMLTagNames.AUTHOR)) {
+            authorList.add( new Person(reader, StationXMLTagNames.AUTHOR));
+            return true;
         } else {
             return false;
         }
@@ -64,8 +70,20 @@ public class Comment {
         return id;
     }
 
+    /**
+     *  @deprecated
+     *  use getAuthorList() as can have more than one author
+     */
+    @Deprecated
     public Person getAuthor() {
-        return author;
+        if (authorList.size() > 0) {
+            return authorList.get(0);
+        }
+        return null;
+    }
+
+    public List<Person> getAuthorList() {
+        return authorList;
     }
 
     String value;
@@ -74,7 +92,7 @@ public class Comment {
 
     int id;
 
-    Person author;
+    List<Person> authorList = new ArrayList<Person>();
 
     public String toString() {
         return value;
