@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
@@ -115,5 +116,5 @@ public class Equipment {
     String resourceId;
     
     protected String type, description, manufacturer, vendor, model, serialNumber, installationDate, removalDate;
-    protected List<String> calibrationDate;
+    protected List<String> calibrationDate = new ArrayList<String>();
 }
