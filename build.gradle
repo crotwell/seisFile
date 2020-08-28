@@ -12,7 +12,7 @@ apply plugin: 'project-report'
 apply plugin: 'groovy'
 
 group = 'edu.sc.seis'
-version = '1.8.5-SNAPSHOT'
+version = '1.8.5'
 
 ext.isReleaseVersion = ! ( version.contains("SNAPSHOT") || version.contains("alpha"))
 
