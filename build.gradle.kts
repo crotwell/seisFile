@@ -83,7 +83,6 @@ dependencies {
     implementation( "com.fasterxml.woodstox:woodstox-core:5.2.1")
     implementation( "net.java.dev.msv:msv-core:2013.6.1")
     implementation( "org.apache.httpcomponents:httpclient:4.5.9")
-    implementation( "mysql:mysql-connector-java:5.1.47")
 
     // Use JUnit Jupiter API for testing.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
@@ -153,7 +152,7 @@ val distFiles: CopySpec = copySpec {
 }
 
 tasks.register<Sync>("explodeBin") {
-  dependsOn("makeScript")
+  dependsOn("createRunScripts")
   dependsOn("exampleClasses")
   group = "dist"
   with( binDistFiles)
@@ -220,17 +219,9 @@ val scriptNames = mapOf(
   "mseedlh" to "edu.sc.seis.seisFile.mseed.ListHeader",
   "seedlinkclient" to "edu.sc.seis.seisFile.seedlink.Client",
   "datalinkclient" to "edu.sc.seis.seisFile.datalink.Client",
-  "cwbclient" to "edu.sc.seis.seisFile.usgsCWB.Client",
-  "lissclient" to "edu.sc.seis.seisFile.liss.Client",
-  "winstonclient" to "edu.sc.seis.seisFile.winston.WinstonClient",
-  "winstonexport" to "edu.sc.seis.seisFile.winston.WinstonExport",
   "earthwormExportTest" to "edu.sc.seis.seisFile.earthworm.EarthwormExport",
   "earthwormImportTest" to "edu.sc.seis.seisFile.earthworm.EarthwormImport",
-  "waveserverclient" to "edu.sc.seis.seisFile.waveserver.WaveServerClient",
-  "syncfilecompare" to "edu.sc.seis.seisFile.syncFile.SyncFileCompare",
-  "syncfile2gmt" to "edu.sc.seis.seisFile.syncFile.GMTSyncFile",
-  "refinesyncfile" to "edu.sc.seis.seisFile.syncFile.RefineSyncFile",
-  "winstonpurge" to "edu.sc.seis.seisFile.winston.PurgeOldData"
+  "waveserverclient" to "edu.sc.seis.seisFile.waveserver.WaveServerClient"
   )
 for (key in scriptNames.keys) {
   tasks.register<CreateStartScripts>(key) {
@@ -244,34 +235,3 @@ for (key in scriptNames.keys) {
   }
 }
 
-tasks.register("makeScript") {
-  doLast {
-    group = "build"
-    //val dExtras = getDExtras()
-    val doBat = true
-    dependsOn("fdsnevent")
-    /*
-    ScriptBuilder.create("fdsnevent", "edu.sc.seis.seisFile.fdsnws.EventClient", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("fdsnstationxml", "edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("fdsnstation", "edu.sc.seis.seisFile.fdsnws.StationClient", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("fdsndataselect", "edu.sc.seis.seisFile.fdsnws.DataSelectClient", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("saclh", "edu.sc.seis.seisFile.sac.ListHeader", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("mseedlh", "edu.sc.seis.seisFile.mseed.ListHeader", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("seedlinkclient", "edu.sc.seis.seisFile.seedlink.Client", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("cwbclient", "edu.sc.seis.seisFile.usgsCWB.Client", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("lissclient", "edu.sc.seis.seisFile.liss.Client", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("winstonclient", "edu.sc.seis.seisFile.winston.WinstonClient", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("winstonexport", "edu.sc.seis.seisFile.winston.WinstonExport", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("earthwormExportTest", "edu.sc.seis.seisFile.earthworm.EarthwormExport", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("earthwormImportTest", "edu.sc.seis.seisFile.earthworm.EarthwormImport", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("waveserverclient", "edu.sc.seis.seisFile.waveserver.WaveServerClient", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("syncfilecompare", "edu.sc.seis.seisFile.syncFile.SyncFileCompare", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("syncfile2gmt", "edu.sc.seis.seisFile.syncFile.GMTSyncFile", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("refinesyncfile", "edu.sc.seis.seisFile.syncFile.RefineSyncFile", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("gcfserialtoew", "edu.sc.seis.seisFile.gcf.GCFEarthwormExport", project, dExtras:dExtras, bat:doBat)
-    //ScriptBuilder.create("fakegcfserial", "edu.sc.seis.seisFile.gcf.GCFSerialOutput", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("sfgroovy", "groovy.lang.GroovyShell", project, dExtras:dExtras, bat:doBat)
-    ScriptBuilder.create("winstonpurge", "edu.sc.seis.seisFile.winston.PurgeOldData", project, dExtras:dExtras, bat:doBat)
-*/
-    }
-}

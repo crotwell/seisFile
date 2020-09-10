@@ -1,8 +1,6 @@
 package edu.sc.seis.seisFile.waveserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,12 +10,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
-import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 
 public class WaveServerTest {
@@ -49,7 +47,7 @@ public class WaveServerTest {
         }
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS,
+                                     TraceBuf2.Y1970_TO_Y2000_SECONDS,
                                      1,
                                      "JSC",
                                      "CO",

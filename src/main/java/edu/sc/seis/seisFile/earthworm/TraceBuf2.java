@@ -902,4 +902,6 @@ public class TraceBuf2 {
     
     public static final short S_ZERO = (short)0;
     
+	public static long Y1970_TO_Y2000_SECONDS = 946728000l;
+    
 }

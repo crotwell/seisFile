@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import edu.sc.seis.seisFile.winston.WinstonUtil;
 
 public class EarthwormExport {
 
@@ -173,9 +172,10 @@ public class EarthwormExport {
         for (int i = 0; i < data.length; i++) {
             data[i] = i%100;
         }
+        long Y1970_TO_Y2000_SECONDS = 946728000l;
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS,
+                                     Y1970_TO_Y2000_SECONDS,
                                      1,
                                      "XXX",
                                      "SS",

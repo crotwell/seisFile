@@ -3,19 +3,11 @@ package edu.sc.seis.seisFile.earthworm;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
-
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-
-import edu.sc.seis.seisFile.earthworm.EarthwormEscapeOutputStream;
-import edu.sc.seis.seisFile.earthworm.EarthwormExport;
-import edu.sc.seis.seisFile.earthworm.EarthwormImport;
-import edu.sc.seis.seisFile.earthworm.EarthwormMessage;
-import edu.sc.seis.seisFile.earthworm.TraceBuf2;
-import edu.sc.seis.seisFile.winston.WinstonUtil;
+import org.junit.jupiter.api.Test;
 
 
 public class EarthwormImportTest {
@@ -29,7 +21,7 @@ public class EarthwormImportTest {
         }
         TraceBuf2 tb = new TraceBuf2(1,
                                      data.length,
-                                     WinstonUtil.Y1970_TO_Y2000_SECONDS,
+                                     TraceBuf2.Y1970_TO_Y2000_SECONDS,
                                      1,
                                      "JSC",
                                      "CO",
