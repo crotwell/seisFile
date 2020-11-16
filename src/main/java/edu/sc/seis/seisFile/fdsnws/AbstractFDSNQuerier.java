@@ -376,8 +376,12 @@ public abstract class AbstractFDSNQuerier {
             try {
                 inputStream.close();
                 inputStream = null;
+            } catch(org.apache.http.MalformedChunkCodingException ee) {
+            	//not sure, but don't think we care about this...
             } catch(IOException e) {
                 logger.warn("can't close inputstream: "+connectionUri, e);
+            } finally {
+            	inputStream = null;
             }
         }
         if (response != null) {
@@ -386,6 +390,8 @@ public abstract class AbstractFDSNQuerier {
                 response = null;
             } catch(IOException e) {
                 logger.warn("can't close response", e);
+            } finally {
+            	response = null;
             }
         }
     }
