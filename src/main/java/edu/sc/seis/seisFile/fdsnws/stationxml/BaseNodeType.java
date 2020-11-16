@@ -33,6 +33,9 @@ public class BaseNodeType {
         } else if (elName.equals(StationXMLTagNames.DATAAVAILABILITY)) {
             dataAvailability = new DataAvailability(reader);
             return true;
+        } else if (elName.equals(StationXMLTagNames.IDENTIFIER)) {
+        	identifierList.add(new Identifier(reader, StationXMLTagNames.IDENTIFIER));
+            return true;
         } else {
             return false;
         }
@@ -70,6 +73,10 @@ public class BaseNodeType {
         return commentList;
     }
 
+    public List<Identifier> getIdentifierList() {
+        return identifierList;
+    }
+
     public DataAvailability getDataAvailability() {
         return dataAvailability;
     }
@@ -89,6 +96,8 @@ public class BaseNodeType {
     String description;
 
     List<Comment> commentList = new ArrayList<Comment>();
+    
+    List<Identifier> identifierList = new ArrayList<Identifier>();
 
     DataAvailability dataAvailability;
 }
