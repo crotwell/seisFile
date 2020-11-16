@@ -186,5 +186,6 @@ public final class StationXMLTagNames {
     public static final String COEFFICIENT_ANALOG_HERTZ = "ANALOG (HERTZ)";
     public static final String COEFFICIENT_DIGITAL = "DIGITAL";
     public static final String STORAGEFORMAT = "StorageFormat";
-    
+    public static final String IDENTIFIER = "Identifier";
+
     }
