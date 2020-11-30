@@ -77,9 +77,6 @@ dependencies {
     implementation("com.martiansoftware:jsap:2.1")
     implementation( "org.slf4j:slf4j-api:1.7.26")
     implementation( "org.slf4j:slf4j-log4j12:1.7.26")
-//
-//    compile "org.rxtx:rxtx:2.2.pre2"  ...but not in maven
-    implementation( "org.rxtx:rxtx:2.1.7")
     implementation( "com.fasterxml.woodstox:woodstox-core:5.2.1")
     implementation( "net.java.dev.msv:msv-core:2013.6.1")
     implementation( "org.apache.httpcomponents:httpclient:4.5.9")
