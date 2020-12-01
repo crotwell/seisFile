@@ -5,7 +5,7 @@ plugins {
   "java-library"
   eclipse
   "project-report"
-  "maven-publish"
+  `maven-publish`
   application
 }
 
@@ -24,38 +24,37 @@ java {
     withSourcesJar()
 }
 
-/*
 publishing {
     publications {
-        create<MavenPublication>("default") {
+        create<MavenPublication>("maven") {
           from(components["java"])
 
           //  artifact(sourcesJar)
           //  artifact(javadocJar)
 
           pom {
-            name = "seisFile"
-            description = "A library for reading and writing seismic file formats in java."
-            url = "http://www.seis.sc.edu/seisFile.html"
+            name.set("seisFile")
+            description.set("A library for reading and writing seismic file formats in java.")
+            url.set("http://www.seis.sc.edu/seisFile.html")
 
             scm {
-              connection = "scm:git:https://github.com/crotwell/seisFile.git"
-              developerConnection = "scm:git:https://github.com/crotwell/seisFile.git"
-              url = "https://github.com/crotwell/seisFile"
+              connection.set("scm:git:https://github.com/crotwell/seisFile.git")
+              developerConnection.set("scm:git:https://github.com/crotwell/seisFile.git")
+              url.set("https://github.com/crotwell/seisFile")
             }
 
             licenses {
               license {
-                name = "The GNU General Public License, Version 3"
-                url = "http://www.gnu.org/licenses/gpl-3.0.html"
+                name.set("The GNU General Public License, Version 3")
+                url.set("http://www.gnu.org/licenses/gpl-3.0.html")
               }
             }
 
             developers {
               developer {
-                id = "crotwell"
-                name = "Philip Crotwell"
-                email = "crotwell@seis.sc.edu"
+                id.set("crotwell")
+                name.set("Philip Crotwell")
+                email.set("crotwell@seis.sc.edu")
               }
             }
           }
@@ -67,16 +66,16 @@ publishing {
             name = "myRepo"
             url = uri("file://${buildDir}/repo")
         }
+        mavenLocal()
     }
 }
-*/
 
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.0.11")
     implementation("com.martiansoftware:jsap:2.1")
-    implementation( "org.slf4j:slf4j-api:1.7.26")
-    implementation( "org.slf4j:slf4j-log4j12:1.7.26")
+    implementation( "org.slf4j:slf4j-api:1.7.30")
+    implementation( "org.slf4j:slf4j-log4j12:1.7.30")
     implementation( "com.fasterxml.woodstox:woodstox-core:5.2.1")
     implementation( "net.java.dev.msv:msv-core:2013.6.1")
     implementation( "org.apache.httpcomponents:httpclient:4.5.9")
