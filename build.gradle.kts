@@ -10,7 +10,7 @@ plugins {
 }
 
 application {
-  mainClassName = "edu.sc.seis.seisFile.fdsnws.EventClient"
+  mainClass.set("edu.sc.seis.seisFile.fdsnws.EventClient")
   applicationName = "seisfile"
 }
 
