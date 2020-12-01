@@ -80,14 +80,17 @@ public class SacTimeSeries {
         setY(data);
     }
 
+    @Deprecated
     public SacTimeSeries(File file) throws FileNotFoundException, IOException {
         read(file);
     }
 
+    @Deprecated
     public SacTimeSeries(String filename) throws FileNotFoundException, IOException {
         this(new File(filename));
     }
 
+    @Deprecated
     public SacTimeSeries(DataInput inStream) throws IOException {
         read(inStream);
     }
