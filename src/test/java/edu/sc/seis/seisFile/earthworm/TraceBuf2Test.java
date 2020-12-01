@@ -51,7 +51,7 @@ public class TraceBuf2Test {
         tb.locId = "  ";
         byte[] dataBytes = tb.toByteArray();
         TraceBuf2 out = new TraceBuf2(dataBytes);
-        assertEquals("loc", "--", out.getLocId());
+        assertEquals("--", out.getLocId(), "loc");
     }
 
     @Test
@@ -86,7 +86,7 @@ public class TraceBuf2Test {
             nextStart = tb.getStartTime() + totSamps / splitTB.getSampleRate();
             assertTrue(TraceBuf2.MAX_TRACEBUF_SIZE >= splitTB.getSize(), numSamples + " " + splitNum + ": less than max size: " + splitTB.getSize() + " > "
                     + TraceBuf2.MAX_TRACEBUF_SIZE);
-            assertEquals(numSamples + " " + splitNum + ": dataType", tb.getDataType(), splitTB.getDataType());
+            assertEquals(tb.getDataType(), splitTB.getDataType(), numSamples + " " + splitNum + ": dataType");
             splitNum++;
         }
         assertEquals(tb.getNumSamples(), totSamps, numSamples + ": total num points" );

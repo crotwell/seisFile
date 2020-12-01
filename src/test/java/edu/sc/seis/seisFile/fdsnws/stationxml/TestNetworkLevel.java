@@ -23,11 +23,11 @@ public class TestNetworkLevel {
     @Test
     public void test() throws XMLStreamException, IOException, SeisFileException {
         FDSNStationXML fdsnStationXML = BasicStationXMLReadTest.loadStationXML("fdsnstation_network.xml");
-        assertEquals("source", "IRIS-DMC", fdsnStationXML.getSource());
-        assertEquals("sender", "IRIS-DMC", fdsnStationXML.getSender());
-        assertEquals("module", "IRIS WEB SERVICE: fdsnws-station | version: 1.0.2", fdsnStationXML.getModule());
-        assertEquals("moduleUri", "http://service.iris.edu/fdsnws/station/1/query?level=network", fdsnStationXML.getModuleUri());
-        assertEquals("created", "2013-04-09T14:29:03", fdsnStationXML.getCreated());
+        assertEquals("IRIS-DMC", fdsnStationXML.getSource());
+        assertEquals("IRIS-DMC", fdsnStationXML.getSender());
+        assertEquals( "IRIS WEB SERVICE: fdsnws-station | version: 1.0.2", fdsnStationXML.getModule());
+        assertEquals("http://service.iris.edu/fdsnws/station/1/query?level=network", fdsnStationXML.getModuleUri());
+        assertEquals( "2013-04-09T14:29:03", fdsnStationXML.getCreated());
         NetworkIterator netIt = fdsnStationXML.getNetworks();
         while(netIt.hasNext()) {
             Network net = netIt.next();
