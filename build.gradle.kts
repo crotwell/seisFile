@@ -24,6 +24,10 @@ java {
     withSourcesJar()
 }
 
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {
@@ -76,15 +80,15 @@ dependencies {
     implementation("com.martiansoftware:jsap:2.1")
     implementation( "org.slf4j:slf4j-api:1.7.30")
     implementation( "org.slf4j:slf4j-log4j12:1.7.30")
-    implementation( "com.fasterxml.woodstox:woodstox-core:5.2.1")
+    implementation( "com.fasterxml.woodstox:woodstox-core:6.2.3")
     implementation( "net.java.dev.msv:msv-core:2013.6.1")
-    implementation( "org.apache.httpcomponents:httpclient:4.5.9")
+    implementation( "org.apache.httpcomponents:httpclient:4.5.13")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }
 
 repositories {
@@ -103,10 +107,10 @@ sourceSets {
 }
 
 val binDistFiles: CopySpec = copySpec {
-    from(configurations.default) {
+    from(configurations.runtimeClasspath) {
         into("lib")
     }
-    from(configurations.default.allArtifacts.files) {
+    from(configurations.runtimeClasspath.allArtifacts.files) {
         into("lib")
     }
     from("build/scripts") {
