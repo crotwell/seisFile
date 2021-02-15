@@ -1,1 +1,0 @@
-bin/lissclient -n IU -s ANMO -l 00 -c BHZ -m 3
