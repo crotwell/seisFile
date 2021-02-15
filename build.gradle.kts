@@ -128,12 +128,11 @@ val distFiles: CopySpec = copySpec {
     from("build/docs") {
         include("javadoc/**")
     }
-    from("build") {
-        include("build.gradle")
-        include("settings.gradle")
-    }
     from(".") {
-        include("gpl-3.0.txt")
+        include("LICENSE")
+        include("README.md")
+        include("build.gradle.kts")
+        include("settings.gradle.kts")
         include("doc/**")
         include("src/**")
         include("gradle/**")
