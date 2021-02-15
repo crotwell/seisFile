@@ -28,11 +28,11 @@ public class AbstractQueryParamsTest {
             }
         };
         aqp.appendToParam(T, first);
-        assertEquals("first", first, aqp.getParam(T));
+        assertEquals(first, aqp.getParam(T), "first");
         aqp.appendToParam(T, second);
-        assertEquals("second", first+","+second, aqp.getParam(T));
+        assertEquals(first+","+second, aqp.getParam(T), "second");
         aqp.appendToParam(T, third);
-        assertEquals("third", first+","+second+","+third, aqp.getParam(T));
+        assertEquals(first+","+second+","+third, aqp.getParam(T), "third");
     }
     
     @Test
@@ -50,17 +50,17 @@ public class AbstractQueryParamsTest {
         aqp.appendToParam(T, first);
         assertEquals("first", first, aqp.getParam(T));
         aqp.appendToParam(T, second);
-        assertEquals("second", first+","+second, aqp.getParam(T));
+        assertEquals(first+","+second, aqp.getParam(T), "second");
         aqp.appendToParam(T, third);
-        assertEquals("third", first+","+second+","+third, aqp.getParam(T));
+        assertEquals(first+","+second+","+third, aqp.getParam(T), "third");
         // repeat, so not appended
         String expected = first+","+second+","+third;
         aqp.appendToParam(T, first);
-        assertEquals("repeat first", expected, aqp.getParam(T));
+        assertEquals(expected, aqp.getParam(T), "repeat first");
         aqp.appendToParam(T, second);
-        assertEquals("repeat first", expected, aqp.getParam(T));
+        assertEquals(expected, aqp.getParam(T), "repeat first");
         aqp.appendToParam(T, third);
-        assertEquals("repeat first", expected, aqp.getParam(T));
+        assertEquals(expected, aqp.getParam(T), "repeat first");
     }
 
     
@@ -76,6 +76,6 @@ public class AbstractQueryParamsTest {
         Instant time = TimeUtils.parseISOString("2013-03-15T12:35:21Z");
         aqp.setParam(T, time);
         System.out.println("Q: "+aqp.formURI());
-        assertEquals("time", time.toString(), aqp.getParam(T));
+        assertEquals(time.toString(), aqp.getParam(T), "time");
     }
 }

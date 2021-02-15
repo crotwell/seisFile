@@ -56,10 +56,11 @@ public class TimeUtilsTest {
         if (expected == null && actual == null) {
             return;
         }
-        assertTrue(Duration.between(expected, actual).abs().compareTo(error) > 0,
+        assertTrue(Duration.between(expected, actual).abs().toNanos() <= error.toNanos(),
         		() ->  ( (message == null ? "" : message)+" greater than "+error +" "+
         				expected.toString()+" "+
-                        actual.toString()));
+                        actual.toString()+" "+
+                        Duration.between(expected, actual).abs().toString()));
         
         
     }

@@ -47,7 +47,7 @@ public class RoundTripMiniSeed {
         SteimFrameBlock steimData = null;
         
         steimData = Steim2.encode(data, 63);
-        assertTrue(steimData.getNumSamples() < data.length, "Can't fit all data into one record"+steimData.getNumSamples()+" out of "+data.length);
+        assertTrue(steimData.getNumSamples() <= data.length, "Can't fit all data into one record"+steimData.getNumSamples()+" out of "+data.length);
         
         
 

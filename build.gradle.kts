@@ -11,7 +11,7 @@ plugins {
 }
 
 application {
-  mainClassName = "edu.sc.seis.seisFile.fdsnws.EventClient"
+  mainClass.set("edu.sc.seis.seisFile.fdsnws.EventClient")
   applicationName = "seisfile"
 }
 
@@ -110,10 +110,10 @@ sourceSets {
 }
 
 val binDistFiles: CopySpec = copySpec {
-    from(configurations.default) {
+    from(configurations.runtimeClasspath) {
         into("lib")
     }
-    from(configurations.default.allArtifacts.files) {
+    from(configurations.runtimeClasspath.allArtifacts.files) {
         into("lib")
     }
     from("build/scripts") {
