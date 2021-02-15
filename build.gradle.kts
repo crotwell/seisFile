@@ -5,7 +5,8 @@ plugins {
   "java-library"
   eclipse
   "project-report"
-  "maven-publish"
+  `maven-publish`
+  signing
   application
 }
 
@@ -24,68 +25,73 @@ java {
     withSourcesJar()
 }
 
-/*
 publishing {
     publications {
-        create<MavenPublication>("default") {
-          from(components["java"])
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            pom {
+              name.set("seisFile")
+              description.set("A library for reading and writing seismic file formats in java.")
+              url.set("http://www.seis.sc.edu/seisFile.html")
 
-          //  artifact(sourcesJar)
-          //  artifact(javadocJar)
+              scm {
+                connection.set("scm:git:https://github.com/crotwell/seisFile.git")
+                developerConnection.set("scm:git:https://github.com/crotwell/seisFile.git")
+                url.set("https://github.com/crotwell/seisFile")
+              }
 
-          pom {
-            name = "seisFile"
-            description = "A library for reading and writing seismic file formats in java."
-            url = "http://www.seis.sc.edu/seisFile.html"
+              licenses {
+                license {
+                  name.set("GNU Lesser General Public License, Version 3")
+                  url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
+                }
+              }
 
-            scm {
-              connection = "scm:git:https://github.com/crotwell/seisFile.git"
-              developerConnection = "scm:git:https://github.com/crotwell/seisFile.git"
-              url = "https://github.com/crotwell/seisFile"
-            }
-
-            licenses {
-              license {
-                name = "The GNU General Public License, Version 3"
-                url = "http://www.gnu.org/licenses/gpl-3.0.html"
+              developers {
+                developer {
+                  id.set("crotwell")
+                  name.set("Philip Crotwell")
+                  email.set("crotwell@seis.sc.edu")
+                }
               }
             }
-
-            developers {
-              developer {
-                id = "crotwell"
-                name = "Philip Crotwell"
-                email = "crotwell@seis.sc.edu"
-              }
-            }
-          }
         }
     }
-
     repositories {
-        maven {
-            name = "myRepo"
-            url = uri("file://${buildDir}/repo")
-        }
+      maven {
+        name = "TestDeploy"
+        url = uri("$buildDir/repos/test-deploy")
+      }
+      maven {
+          val releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+          val snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
+          url = uri(if ( version.toString().toLowerCase().endsWith("snapshot")) snapshotRepo else releaseRepo)
+          name = "ossrh"
+          // credentials in gradle.properties as ossrhUsername and ossrhPassword
+          credentials(PasswordCredentials::class)
+      }
     }
+
 }
-*/
+
+signing {
+    sign(publishing.publications["mavenJava"])
+}
 
 dependencies {
 //    compile project(":seedCodec")
-    implementation("edu.sc.seis:seedCodec:1.0.11")
+    implementation("edu.sc.seis:seedCodec:1.1.1")
     implementation("com.martiansoftware:jsap:2.1")
-    implementation( "org.slf4j:slf4j-api:1.7.26")
-    implementation( "org.slf4j:slf4j-log4j12:1.7.26")
-    implementation( "com.fasterxml.woodstox:woodstox-core:5.2.1")
-    implementation( "net.java.dev.msv:msv-core:2013.6.1")
-    implementation( "org.apache.httpcomponents:httpclient:4.5.9")
+    implementation( "org.slf4j:slf4j-api:1.7.30")
+    implementation( "org.slf4j:slf4j-log4j12:1.7.30")
+    implementation( "com.fasterxml.woodstox:woodstox-core:6.2.3")
+    implementation( "org.apache.httpcomponents:httpclient:4.5.13")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
 }
 
 repositories {
@@ -231,4 +237,3 @@ for (key in scriptNames.keys) {
       dependsOn(key)
   }
 }
-
