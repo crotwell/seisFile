@@ -1,35 +1,38 @@
 package edu.sc.seis.seisFile.client;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.Instant;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.ParseException;
-import com.martiansoftware.jsap.StringParser;
-
 import edu.sc.seis.seisFile.TimeUtils;
+import picocli.CommandLine.ITypeConverter;
 
 
 
-public class ISOTimeParser extends StringParser {
+public class ISOTimeParser  implements ITypeConverter<Instant>{
 
+    public Instant convert(String value) throws Exception {
+        return getDate(value);
+    }
+    
+
+    public ISOTimeParser() {
+        this(true);
+    }
+    
     public ISOTimeParser(boolean ceiling){
         this.ceiling = ceiling;
     }
 
-    public Object parse(String arg) throws ParseException {
+    public Object parse(String arg) {
         return getDate(arg);
     }
     
-    public String parseDate(String arg) throws ParseException {
+    public String parseDate(String arg) {
         return format(getDate(arg));
     }
     
@@ -43,7 +46,7 @@ public class ISOTimeParser extends StringParser {
         return isoFormat.format(d);
     }
     
-    public Instant getDate(String arg) throws ParseException {
+    public Instant getDate(String arg) {
         if (arg.equals("now")) {
             return Instant.now();
         }
@@ -52,7 +55,7 @@ public class ISOTimeParser extends StringParser {
         }
         Matcher m = datePattern.matcher(arg);
         if(!m.matches()) {
-            throw new ParseException("A time must be formatted as YYYY[[[[[-MM]-DD]Thh]:mm]:ss] like 2006-11-19 or 2006-11-19T06:34:21, not '"
+            throw new java.lang.IllegalArgumentException("A time must be formatted as YYYY[[[[[-MM]-DD]Thh]:mm]:ss] like 2006-11-19 or 2006-11-19T06:34:21, not '"
                     + arg + "'");
         }
         int year = extract(m, 1, 1970);
@@ -74,44 +77,6 @@ public class ISOTimeParser extends StringParser {
         return Integer.parseInt(m.group(i));
     }
 
-
-    public static FlaggedOption createRequiredParam(String name,
-                                                     String helpMessage,
-                                                     boolean ceiling) {
-        return new FlaggedOption(name,
-                                 new ISOTimeParser(ceiling),
-                                 null,
-                                 true,
-                                 name.charAt(0),
-                                 name,
-                                 helpMessage);
-    }
-
-    public static FlaggedOption createYesterdayParam(String name,
-                                                     String helpMessage,
-                                                     boolean ceiling) {
-        return createParam(name, YESTERDAY, helpMessage, ceiling);
-    }
-
-    public static FlaggedOption createParam(String name,
-                                                     String helpMessage,
-                                                     boolean ceiling) {
-        return createParam(name, null, helpMessage, ceiling);
-    }
-
-    public static FlaggedOption createParam(String name,
-                                            String defaultTime,
-                                            String helpMessage,
-                                            boolean ceiling) {
-        return new FlaggedOption(name,
-                                 new ISOTimeParser(ceiling),
-                                 defaultTime,
-                                 false,
-                                 name.charAt(0),
-                                 name,
-                                 helpMessage);
-    }
-
     private boolean ceiling;
 
     public static final TimeZone UTC = TimeZone.getTimeZone("UTC");
@@ -123,22 +88,7 @@ public class ISOTimeParser extends StringParser {
                 .toInstant();
     }
 
-    @Deprecated
-    public static String getISOString(int year,
-                                      int jday,
-                                      int hour,
-                                      int minute,
-                                      float second) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        DecimalFormat xxFormat = new DecimalFormat("00", symbols);
-        DecimalFormat xxxFormat = new DecimalFormat("000", symbols);
-        DecimalFormat floatFormat = new DecimalFormat("00.000#", symbols);
-        return xxxFormat.format(year) + xxxFormat.format(jday) + "J"
-                + xxFormat.format(hour) + xxFormat.format(minute)
-                + floatFormat.format(second) + "Z";
-    }
-
-    public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?(T)?(\\d{2})?:?(\\d{2})?:?(\\d{2})?\\.?(\\d)?";
+    public static final String ISO_TIME_RE = "(\\-?\\d{4})-?(\\d{2})?-?(\\d{2})?(T)?(\\d{2})?:?(\\d{2})?:?(\\d{2})?\\.?(\\d)?(Z)?";
 
     private static Pattern datePattern = Pattern.compile(ISO_TIME_RE);
     

@@ -1,6 +1,5 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
-import com.martiansoftware.jsap.JSAPException;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
 import edu.sc.seis.seisFile.fdsnws.StationClient;
@@ -221,9 +220,10 @@ public class FDSNStationXML {
     }
 
     public static URL loadSchema() {
-        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station-1.0.xsd");
+        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station-1.1.xsd");
     }
 
+    @Deprecated
     public static URL loadSchemaWithAvailability() {
         return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station+availability-1.0.xsd");
     }
@@ -249,19 +249,21 @@ public class FDSNStationXML {
         return loadStationXML(new FileInputStream(filename));
     }
 
-    public static void main(String[] args) throws XMLStreamException, IOException, SeisFileException, JSAPException {
+    public static void main(String[] args) throws XMLStreamException, IOException, SeisFileException {
         final FDSNStationXML stationXml = loadStationXML(args[0]);
-        StationClient sc = new StationClient(new String[0]) {
-            public void run() {
+        StationClient sc = new StationClient() {
+            public Integer call() {
                 try {
                     handleResults(stationXml);
+                    return 0;
                 } catch (XMLStreamException | SeisFileException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                    return 1;
                 }
             }
         };
-        sc.run();
+        sc.call();
     }
 
     /**

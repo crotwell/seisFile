@@ -5,10 +5,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.martiansoftware.jsap.ParseException;
-import com.martiansoftware.jsap.StringParser;
+import picocli.CommandLine.ITypeConverter;
 
-public abstract class PatternParser extends StringParser {
+public abstract class PatternParser {
 
     public PatternParser(String re, String[] fields) {
         this.re = Pattern.compile(re);
@@ -17,12 +16,12 @@ public abstract class PatternParser extends StringParser {
 
     public abstract String getErrorMessage(String arg);
 
-    public Object parse(String arg) throws ParseException {
+    public Map<String,String> parse(String arg) {
         Matcher m = re.matcher(arg);
         if(!m.matches()) {
-            throw new ParseException(getErrorMessage(arg));
+            throw new java.lang.IllegalArgumentException(getErrorMessage(arg));
         }
-        Map box = new HashMap();
+        Map<String,String> box = new HashMap();
         for(int i = 0; i < fields.length; i++) {
             box.put(fields[i], m.group(i + 1));
         }

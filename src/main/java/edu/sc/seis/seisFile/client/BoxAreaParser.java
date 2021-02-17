@@ -1,24 +1,28 @@
 package edu.sc.seis.seisFile.client;
 
-import com.martiansoftware.jsap.FlaggedOption;
+import java.util.Map;
 
-public class BoxAreaParser extends PatternParser {
 
+import picocli.CommandLine.ITypeConverter;
+
+public class BoxAreaParser extends PatternParser implements ITypeConverter<BoxArea> {
+
+    public BoxArea convert(String value) throws Exception {
+        Map<String, String> m = parse(value);
+        BoxArea box = new  BoxArea();
+        box.west = Float.parseFloat(m.get("west"));
+        box.east = Float.parseFloat(m.get("east"));
+        box.north = Float.parseFloat(m.get("north"));
+        box.south = Float.parseFloat(m.get("south"));
+        return box;
+    }
+    
+    
     public BoxAreaParser() {
         super(FOUR_SLASH_DELIMITED_DECIMALS_RE, new String[] {"west",
                                                               "east",
                                                               "south",
                                                               "north"});
-    }
-
-    public static FlaggedOption createParam(String helpMessage) {
-        return new FlaggedOption(NAME,
-                                 new BoxAreaParser(),
-                                 null,
-                                 false,
-                                 'R',
-                                 "box-area",
-                                 helpMessage);
     }
 
     public String getErrorMessage(String arg) {

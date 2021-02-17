@@ -81,7 +81,8 @@ signing {
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.1.1")
-    implementation("com.martiansoftware:jsap:2.1")
+    implementation("info.picocli:picocli:4.6.1")
+    annotationProcessor("info.picocli:picocli-codegen:4.6.1")
     implementation( "org.slf4j:slf4j-api:1.7.30")
     implementation( "org.slf4j:slf4j-log4j12:1.7.30")
     implementation( "com.fasterxml.woodstox:woodstox-core:6.2.3")
@@ -93,6 +94,18 @@ dependencies {
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
 }
+
+// for picocli
+tasks.withType<JavaCompile> {
+	val compilerArgs = options.compilerArgs
+	compilerArgs.add("-Aproject=${project.group}/${project.name}")
+}
+
+// for junit
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+}
+
 
 repositories {
     mavenLocal()
@@ -117,9 +130,8 @@ val binDistFiles: CopySpec = copySpec {
         into("lib")
     }
     from("build/scripts") {
-        include("bin/**")
-        include("bat/**")
-        fileMode = 755
+        into("bin")
+        include("*")
     }
 }
 

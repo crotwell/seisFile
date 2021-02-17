@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.sc.seis.seisFile.TimeUtils;
+import picocli.CommandLine.Option;
 
 public abstract class AbstractQueryParams {
 
@@ -66,6 +67,9 @@ public abstract class AbstractQueryParams {
     }
 
     public URI formURI() throws URISyntaxException {
+        if (params.size() == 0) {
+            throw new IllegalArgumentException("at least one parameter is required");
+        }
         StringBuilder newQuery = new StringBuilder();
         if (newQuery.length() != 0) {
             newQuery.append("&");
@@ -84,9 +88,20 @@ public abstract class AbstractQueryParams {
         return new URI(getScheme(), getUserInfo(), getHost(), getPort(), getPath(), newQuery.toString(), getFragment());
     }
 
+    @Option(names = "--host", description = "host to connect to, defaults to IRIS DMC")
     String host = IRIS_HOST;
 
+    @Option(names = "--port", description = "port to connect to, defaults to 80")
     int port = 80;
+
+    @Option(names="--"+AbstractFDSNClient.BASEURL, description="Base URL for queries, ie everything before the '/<service>/<version>/<query>?'")
+    public void setBaseURL(URI uri) {
+        internalSetBaseURI(uri);
+    }
+    
+    @Option(names = "--nodata", description = "nodata http return code", defaultValue="204")
+    public int nodata = 204;
+
 
     String scheme = "http";
     
@@ -182,4 +197,6 @@ public abstract class AbstractQueryParams {
     
     // actual used is per service, event is usgs, station and datacenter are iris
     public static final String DEFAULT_HOST = IRIS_HOST; 
+    
+    public static final String NEWLINE = "\n";
 }

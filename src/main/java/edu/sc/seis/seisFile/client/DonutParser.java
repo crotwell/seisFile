@@ -1,22 +1,26 @@
 package edu.sc.seis.seisFile.client;
 
-import com.martiansoftware.jsap.FlaggedOption;
+import java.util.Map;
 
-public class DonutParser extends PatternParser {
 
+import picocli.CommandLine.ITypeConverter;
+
+public class DonutParser extends PatternParser implements ITypeConverter<DonutArea> {
+
+    public DonutArea convert(String value) throws Exception {
+        Map<String, String> m = parse(value);
+        DonutArea donut = new  DonutArea();
+        donut.latitude = Float.parseFloat(m.get("lat"));
+        donut.longitude = Float.parseFloat(m.get("lon"));
+        donut.minradius = Float.parseFloat(m.get("min"));
+        donut.maxradius = Float.parseFloat(m.get("max"));
+        return donut;
+    }
+    
+    
     public DonutParser() {
         super(BoxAreaParser.FOUR_SLASH_DELIMITED_DECIMALS_RE,
               new String[] {"lat", "lon", "min", "max"});
-    }
-
-    public static FlaggedOption createParam(String helpMessage) {
-        return new FlaggedOption(NAME,
-                                 new DonutParser(),
-                                 null,
-                                 false,
-                                 'd',
-                                 "donut",
-                                 helpMessage);
     }
 
     public String getErrorMessage(String arg) {
