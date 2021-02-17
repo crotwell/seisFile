@@ -18,11 +18,13 @@ import edu.sc.seis.seisFile.mseed.DataRecordIterator;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import picocli.CommandLine;
 import picocli.CommandLine.ArgGroup;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
+@Command(versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class DataSelectClient extends AbstractFDSNClient {
 
 

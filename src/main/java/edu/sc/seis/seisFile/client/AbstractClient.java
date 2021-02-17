@@ -2,7 +2,7 @@ package edu.sc.seis.seisFile.client;
 
 import java.util.concurrent.Callable;
 
-import edu.sc.seis.seedCodec.BuildVersion;
+import edu.sc.seis.seisFile.BuildVersion;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 import picocli.CommandLine.Model.CommandSpec;

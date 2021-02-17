@@ -15,10 +15,12 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationIterator;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
+@Command(versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class StationClient extends AbstractFDSNClient {
 
     @Override

@@ -10,10 +10,12 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
+@Command(versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EventClient extends AbstractFDSNClient {
 
     private static final String DEPTH = "depth";
