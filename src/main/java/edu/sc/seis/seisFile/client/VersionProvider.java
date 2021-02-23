@@ -5,9 +5,6 @@ import picocli.CommandLine.IVersionProvider;
 
 public class VersionProvider implements IVersionProvider {
 
-    public VersionProvider() {
-        // TODO Auto-generated constructor stub
-    }
 
     @Override
     public String[] getVersion() throws Exception {

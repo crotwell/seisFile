@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile.sac;
 import java.io.BufferedInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -14,8 +15,19 @@ public class SacIncrementalloader {
     }
     
     public SacIncrementalloader(String filename, int chunkSize) throws IOException {
-        this.filename = filename;
-        in = new DataInputStream(new BufferedInputStream(new FileInputStream(filename)));
+        this(new File(filename), chunkSize);
+    }
+
+    public SacIncrementalloader(File file) throws IOException {
+        this(file, DEFAULT_SIZE);
+    }
+
+    public SacIncrementalloader(File file, int chunkSize) throws IOException {
+        this(new DataInputStream(new BufferedInputStream(new FileInputStream(file))), chunkSize);
+    }
+    
+    public SacIncrementalloader(DataInput in, int chunkSize) throws IOException {
+        this.in = in;
         header = new SacHeader(in);
     }
     
@@ -48,11 +60,25 @@ public class SacIncrementalloader {
         return ptsRead;
     }
     
+    public void close() {
+        if (in != null) {
+            if (in instanceof DataInputStream) {
+                try {
+                    ((DataInputStream)in).close();
+                } catch (IOException e) {
+                    // oh well...
+                }
+            }
+        }
+        in = null;
+    }
+    
     DataInput in;
     SacHeader header;
     int chunkSize;
     int ptsRead = 0;
     String filename;
+    File file;
     
     public static final int DEFAULT_SIZE = 10000;
     

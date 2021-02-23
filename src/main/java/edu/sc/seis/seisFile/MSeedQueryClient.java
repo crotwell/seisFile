@@ -9,11 +9,15 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import edu.sc.seis.seisFile.client.AbstractClient;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
-public abstract class MSeedQueryClient {
+public abstract class MSeedQueryClient extends AbstractClient {
 
+    public MSeedQueryClient() throws SeisFileException  {
+        
+    }
     public MSeedQueryClient(String[] args) throws SeisFileException  {
         BasicConfigurator.configure();
         params = initQueryParams(args);

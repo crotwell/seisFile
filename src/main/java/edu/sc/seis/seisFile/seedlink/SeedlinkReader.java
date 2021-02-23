@@ -8,9 +8,12 @@ import java.io.PrintWriter;
 import java.io.PushbackInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
@@ -355,6 +358,23 @@ public class SeedlinkReader {
 		startData(EMPTY, EMPTY);
     }
 
+
+    /**
+     * Start the data transfer. Note the DMC only goes back 48 hours.
+     * The start and end time format is year,month,day,hour,minute,second,
+     * e.g. '2002,08,05,14,00'.
+     * @param start the start time or null if none.
+     * @param end the end time or null if none (ignored if no start time.)
+     * @throws SeedlinkException if a SeedLink error occurs.
+     * @throws IOException if an I/O Exception occurs.
+     */
+    public void startData(Instant start, Instant end) throws SeedlinkException, IOException {
+        DateTimeFormatter seedlinkFormat = TimeUtils.createFormatter("yyyy,MM,dd,HH,mm,ss");
+        String startStr = start == null ? "" : seedlinkFormat.format(start);
+        String endStr = end == null ? "" : seedlinkFormat.format(end);
+        startData(startStr, endStr);
+    }
+    
     /**
      * Start the data transfer. Note the DMC only goes back 48 hours.
      * The start and end time format is year,month,day,hour,minute,second,
@@ -365,9 +385,9 @@ public class SeedlinkReader {
      * @throws IOException if an I/O Exception occurs.
      */
     public void startData(String start, String end) throws SeedlinkException, IOException {
-    	if (start.length() == 0) {
+    	if (start == null || start.length() == 0) {
     		sendCmd(DATA_COMMAND);
-    	} else if (end.length() == 0) {
+    	} else if (end == null || end.length() == 0) {
     		sendCmd(TIME_COMMAND + " " + start);
     	} else {
     		sendCmd(TIME_COMMAND + " " + start + " " + end);

@@ -15,7 +15,7 @@ import picocli.CommandLine.Mixin;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
-@Command(versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="fdsnevent", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EventClient extends AbstractFDSNClient {
 
     private static final String DEPTH = "depth";

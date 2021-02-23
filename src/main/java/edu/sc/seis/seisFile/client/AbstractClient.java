@@ -10,11 +10,13 @@ import picocli.CommandLine.Model.CommandSpec;
 public abstract class AbstractClient implements Callable<Integer> {
 
     @Option(names = { "--help" }, usageHelp = true, description = "display a help message")
-    boolean helpRequested = false;
+    protected boolean helpRequested = false;
 
     @Option(names = { "-V", "--version" }, versionHelp = true, description = "Print version and exit")
-    boolean versionRequested = false;
-    
+    protected boolean versionRequested = false;
+
+    @Option(names = { "-v", "--verbose" }, description = "Verbose")
+    protected boolean verbose = false;
 
     @Spec
     protected CommandSpec spec;

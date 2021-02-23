@@ -5,13 +5,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.Instant;
 
-
-import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.client.ISOTimeParser;
 import edu.sc.seis.seisFile.mseed.DataHeader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.DataRecordIterator;
@@ -24,7 +18,7 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
-@Command(versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="fdsndataselect", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class DataSelectClient extends AbstractFDSNClient {
 
 

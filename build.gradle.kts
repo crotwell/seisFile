@@ -1,17 +1,18 @@
 
 
 plugins {
-  id("edu.sc.seis.version-class") version "1.1.1"
+  id("edu.sc.seis.version-class") version "1.2.0"
   "java-library"
   eclipse
   "project-report"
   `maven-publish`
   signing
   application
+  id("org.asciidoctor.convert") version "1.5.12"
 }
 
 application {
-  mainClass.set("edu.sc.seis.seisFile.fdsnws.EventClient")
+  mainClass.set("edu.sc.seis.seisFile.client.SeisFile")
   applicationName = "seisfile"
 }
 
@@ -139,6 +140,15 @@ val distFiles: CopySpec = copySpec {
     with(binDistFiles)
     from("build/docs") {
         include("javadoc/**")
+        into("doc")
+    }
+    from("build/picocli/doc") {
+        include("**")
+        into("doc")
+    }
+    from("build/picocli") {
+        include("bashcompletion/**")
+        into("doc")
     }
     from(".") {
         include("LICENSE")
@@ -219,6 +229,13 @@ tasks.register<CreateStartScripts>("xxxfdsnevent") {
   applicationName = "fdsnevent"
 }
 
+tasks.asciidoctor {
+  sourceDir = File(project.buildDir,  "picocli/man")
+  outputDir = File(project.buildDir,  "picocli/doc")
+  backends(  "manpage", "html5")
+}
+
+tasks.register("genAutocomplete"){}
 tasks.register("createRunScripts"){}
 tasks.named("startScripts") {
     dependsOn("createRunScripts")
@@ -226,7 +243,6 @@ tasks.named("startScripts") {
 
 val scriptNames = mapOf(
   "fdsnevent" to "edu.sc.seis.seisFile.fdsnws.EventClient",
-  "fdsnstationxml" to "edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML",
   "fdsnstation" to "edu.sc.seis.seisFile.fdsnws.StationClient",
   "fdsndataselect" to "edu.sc.seis.seisFile.fdsnws.DataSelectClient",
   "saclh" to "edu.sc.seis.seisFile.sac.ListHeader",
@@ -247,4 +263,35 @@ for (key in scriptNames.keys) {
   tasks.named("createRunScripts") {
       dependsOn(key)
   }
+  tasks.register<JavaExec>("generateManpageAsciiDoc"+key) {
+    description = "generate picocli man pages for "+key
+    group = "Documentation"
+    classpath = configurations.annotationProcessor + sourceSets.getByName("main").runtimeClasspath
+    main = "picocli.codegen.docgen.manpage.ManPageGenerator"
+    val outDir =  File(project.buildDir,  "picocli/man")
+    outDir.mkdirs()
+    args = listOf("-f", "-d", outDir.path, scriptNames[key])
+    dependsOn += tasks.getByName("compileJava")
+  }
+  tasks.named("asciidoctor") {
+      dependsOn("generateManpageAsciiDoc"+key)
+  }
+  tasks.register<JavaExec>("genAutocomplete"+key) {
+    description = "generate picocli bash/zsh autocomplete file "+key
+    classpath = sourceSets.getByName("main").runtimeClasspath
+    main = "picocli.AutoComplete"
+    val outDir =  File(project.buildDir,  "picocli/bashcompletion")
+    outDir.mkdirs()
+    val outFile = File(outDir, key+"_completion")
+    args = listOf(scriptNames[key], "-f", "-o", outFile.path)
+    dependsOn += tasks.getByName("compileJava")
+  }
+  tasks.named("genAutocomplete") {
+      dependsOn("genAutocomplete"+key)
+  }
 }
+
+
+tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
+tasks.get("explodeDist").dependsOn(tasks.get("asciidoctor"))
+tasks.get("assemble").dependsOn(tasks.get("tarDist"))

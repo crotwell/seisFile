@@ -22,7 +22,9 @@ import edu.iris.dmc.seedcodec.CodecException;
 import edu.iris.dmc.seedcodec.DecompressedData;
 import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
 import edu.sc.seis.seisFile.BuildVersion;
+import picocli.CommandLine.Command;
 
+@Command(name="mseedlh", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class ListHeader {
 
     public static void main(String[] args) throws IOException, SeedFormatException {

@@ -9,9 +9,15 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
+import picocli.CommandLine.Command;
 
+@Command(name="earthwormExportTest", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EarthwormExport {
 
+    public EarthwormExport() {
+        
+    }
+    
     public EarthwormExport(int port, 
                            int module, 
                            int institution, 

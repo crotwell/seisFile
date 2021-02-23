@@ -9,9 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import picocli.CommandLine.Command;
 
+@Command(name="earthwormImportTest", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EarthwormImport {
     
+    public EarthwormImport() {
+        
+    }
     public EarthwormImport(InputStream in) {
         this.in = in;
     }

@@ -10,8 +10,20 @@ import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.MSeedQueryClient;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
+import picocli.CommandLine.Command;
 
+@Command(name="waveserverclient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class WaveServerClient extends MSeedQueryClient {
+
+    public WaveServerClient() throws SeisFileException {
+        
+    }
+    
+    @Override
+    public Integer call() throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     public WaveServerClient(String[] args) throws SeisFileException {
         super(args);

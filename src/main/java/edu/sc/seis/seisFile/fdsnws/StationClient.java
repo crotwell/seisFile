@@ -20,7 +20,7 @@ import picocli.CommandLine.Mixin;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
-@Command(versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="fdsnstation", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class StationClient extends AbstractFDSNClient {
 
     @Override
