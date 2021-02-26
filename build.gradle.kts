@@ -80,23 +80,23 @@ signing {
 }
 
 sourceSets {
-    create("example") {
+    create("client") {
         compileClasspath += sourceSets.main.get().output
         runtimeClasspath += sourceSets.main.get().output
     }
 }
 
-val exampleImplementation by configurations.getting {
+val clientImplementation by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
 
-configurations["exampleRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+configurations["clientRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 
 
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.1.1")
-    exampleImplementation("info.picocli:picocli:4.6.1")
+    clientImplementation("info.picocli:picocli:4.6.1")
 
     annotationProcessor("info.picocli:picocli-codegen:4.6.1")
     implementation( "org.slf4j:slf4j-api:1.7.30")
@@ -130,20 +130,20 @@ repositories {
 }
 
 
-tasks.register<Jar>("exampleJar") {
-  dependsOn("exampleClasses" )
-  from(sourceSets["example"].output)
-  baseName = "seisFileExample"
+tasks.register<Jar>("clientJar") {
+  dependsOn("clientClasses" )
+  from(sourceSets["client"].output)
+  baseName = "seisFileclient"
 }
 
 val binDistFiles: CopySpec = copySpec {
-    from(configurations["exampleCompileClasspath"]) {
+    from(configurations["clientCompileClasspath"]) {
        into("lib")
     }
     from(tasks.named("jar")) {
       into("lib")
     }
-    from(tasks.named("exampleJar")) {
+    from(tasks.named("clientJar")) {
       into("lib")
     }
     from("build/scripts") {
@@ -193,8 +193,8 @@ val distFiles: CopySpec = copySpec {
 
 tasks.register<Sync>("explodeBin") {
   dependsOn("createRunScripts")
-  dependsOn("exampleClasses")
-  dependsOn("exampleJar")
+  dependsOn("clientClasses")
+  dependsOn("clientJar")
   group = "dist"
   with( binDistFiles)
   into( file("$buildDir/explode"))
@@ -262,9 +262,9 @@ for (key in scriptNames.keys) {
     outputDir = file("build/scripts")
     mainClassName = scriptNames[key]
     applicationName = key
-    classpath = sourceSets["example"].runtimeClasspath +
+    classpath = sourceSets["client"].runtimeClasspath +
       project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files +
-      project.tasks["exampleJar"].outputs.files
+      project.tasks["clientJar"].outputs.files
   }
   tasks.named("createRunScripts") {
       dependsOn(key)
@@ -272,7 +272,7 @@ for (key in scriptNames.keys) {
   tasks.register<JavaExec>("genManTemplate"+key) {
     description = "generate picocli/asciidoctor template for man pages "+key
     group = "Documentation"
-    classpath = configurations.annotationProcessor + sourceSets.getByName("example").runtimeClasspath
+    classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
     main = "picocli.codegen.docgen.manpage.ManPageGenerator"
     val outTemplateDir =  File(project.projectDir,  "src/doc/man-templates")
     outTemplateDir.mkdirs()
@@ -287,7 +287,7 @@ for (key in scriptNames.keys) {
   tasks.register<JavaExec>("generateManpageAsciiDoc"+key) {
     description = "generate picocli man pages for "+key
     group = "Documentation"
-    classpath = configurations.annotationProcessor + sourceSets.getByName("example").runtimeClasspath
+    classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
     main = "picocli.codegen.docgen.manpage.ManPageGenerator"
     val outDir =  File(project.buildDir,  "picocli/man")
     outDir.mkdirs()
@@ -299,7 +299,7 @@ for (key in scriptNames.keys) {
   }
   tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
-    classpath = sourceSets.getByName("example").runtimeClasspath
+    classpath = sourceSets.getByName("client").runtimeClasspath
     main = "picocli.AutoComplete"
     val outDir =  File(project.buildDir,  "picocli/bashcompletion")
     outDir.mkdirs()
