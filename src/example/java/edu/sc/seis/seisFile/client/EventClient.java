@@ -1,8 +1,12 @@
-package edu.sc.seis.seisFile.fdsnws;
+package edu.sc.seis.seisFile.client;
+
+import java.net.URI;
 
 import javax.xml.stream.XMLStreamException;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.FDSNEventQuerier;
+import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
 import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Magnitude;
@@ -34,7 +38,16 @@ public class EventClient extends AbstractFDSNClient {
 
     private static final String INCLUDEARRIVALS = "includearrivals";
 
+    FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
 
+    @Mixin
+    FDSNEventCmdLineQueryParams cmdLine;
+
+    public EventClient() {
+        this.cmdLine = new FDSNEventCmdLineQueryParams();
+        this.queryParams = this.cmdLine.queryParams;
+    }
+    
     @Override
     public Integer call() {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
@@ -99,9 +112,14 @@ public class EventClient extends AbstractFDSNClient {
     public static final String NO_ORIGIN = "no origin";
     public static final String NO_MAGNITUDE = "no magnitude";
 
-    @Mixin
-    FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
+    public FDSNEventQueryParams getQueryParams() {
+        return queryParams;
+    }
 
+    protected void internalSetBaseURI(URI uri) {
+        queryParams.setBaseURL(uri);
+    }
+    
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new EventClient()).execute(args));
     }

@@ -1,10 +1,13 @@
-package edu.sc.seis.seisFile.datalink;
+package edu.sc.seis.seisFile.client;
 
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
 
-import edu.sc.seis.seisFile.client.AbstractClient;
+import edu.sc.seis.seisFile.datalink.DataLink;
+import edu.sc.seis.seisFile.datalink.DataLinkException;
+import edu.sc.seis.seisFile.datalink.DataLinkPacket;
+import edu.sc.seis.seisFile.datalink.DataLinkResponse;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -12,7 +15,7 @@ import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
 @Command(name="datalinkclient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class Client extends AbstractClient {
+public class DataLinkClient extends AbstractClient {
 
     @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, "+DataLink.IRIS_HOST)
     public String host = DataLink.IRIS_HOST;
@@ -32,7 +35,7 @@ public class Client extends AbstractClient {
     @Option(names= {"--timeout"}, description="timeout seconds")
     public Integer timeoutSec = 20;
     
-    public Client() {
+    public DataLinkClient() {
         
     }
 
@@ -48,7 +51,7 @@ public class Client extends AbstractClient {
 
     public void run() throws DataLinkException, IOException {
         DataLink dl = new DataLink(host, port, timeoutSec, verbose);
-        System.out.println("Server ID: "+dl.serverId);
+        System.out.println("Server ID: "+dl.getServerId());
         dl.match(match);
         dl.stream();
         DataLinkResponse response = null;
@@ -75,16 +78,16 @@ public class Client extends AbstractClient {
     
     public void handlePacket(DataLinkPacket packet) throws DataLinkException, IOException {
         if (dataout != null) {
-            dataout.write(packet.rawData);
+            dataout.write(packet.getRawData());
         } else {
-            System.out.println(" Packet: "+packet.streamId+"  "+packet.hppacketstart);
+            System.out.println(" Packet: "+packet.getStreamId()+"  "+packet.getHppacketstart());
         }
     }
     
     private DataOutput dataout;
 
     public static void main(String... args) { // bootstrap the application
-        System.exit(new CommandLine(new Client()).execute(args));
+        System.exit(new CommandLine(new DataLinkClient()).execute(args));
     }
     
 }

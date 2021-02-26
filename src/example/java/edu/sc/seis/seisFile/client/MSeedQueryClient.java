@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile;
+package edu.sc.seis.seisFile.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,7 +9,10 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import edu.sc.seis.seisFile.client.AbstractClient;
+import edu.sc.seis.seisFile.BuildVersion;
+import edu.sc.seis.seisFile.MSeedQueryReader;
+import edu.sc.seis.seisFile.QueryParams;
+import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 

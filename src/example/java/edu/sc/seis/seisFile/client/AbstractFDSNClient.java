@@ -1,7 +1,10 @@
-package edu.sc.seis.seisFile.fdsnws;
+package edu.sc.seis.seisFile.client;
 
+
+import java.net.URI;
 
 import edu.sc.seis.seisFile.client.AbstractClient;
+import edu.sc.seis.seisFile.fdsnws.AbstractQueryParams;
 import picocli.CommandLine.Option;
 
 public abstract class AbstractFDSNClient extends AbstractClient {
@@ -19,6 +22,17 @@ public abstract class AbstractFDSNClient extends AbstractClient {
     public static final String BEGIN = "begin";
 
     public static final String END = "end";
+
+
+    @Option(names="--"+AbstractFDSNClient.BASEURL, description="Base URL for queries, ie everything before the '/<service>/<version>/<query>?'")
+    public void setBaseURL(URI uri) {
+        internalSetBaseURI(uri);
+    }
+    
+    protected abstract void internalSetBaseURI(URI uri);
+
+    @Option(names = "--nodata", description = "nodata http return code", defaultValue="204")
+    public int nodata = 204;
 
 
     @Option(names="--"+PRINTURL, description="Construct and print URL and exit")

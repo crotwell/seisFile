@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.seedlink;
+package edu.sc.seis.seisFile.client;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -7,11 +7,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
-import edu.sc.seis.seisFile.client.AbstractClient;
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.seedlink.SeedlinkPacket;
+import edu.sc.seis.seisFile.seedlink.SeedlinkReader;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -22,7 +22,7 @@ import picocli.CommandLine.ParseResult;
  * Added support for an info output file and specifying a start and end time.
  */
 @Command(name="seedlinkclient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class Client extends AbstractClient {
+public class SeedLinkClient extends AbstractClient {
 
     @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, "+SeedlinkReader.DEFAULT_HOST)
     public String host = SeedlinkReader.DEFAULT_HOST;
@@ -58,7 +58,7 @@ public class Client extends AbstractClient {
     @Option(names= {"--timeout"}, description="timeout seconds")
     public Integer timeoutSec = SeedlinkReader.DEFAULT_TIMEOUT_SECOND;
     
-    public Client() {
+    public SeedLinkClient() {
     }
     
     @Override
@@ -136,7 +136,7 @@ public class Client extends AbstractClient {
     }
     
     public static void main(String... args) { // bootstrap the application
-        System.exit(new CommandLine(new Client()).execute(args));
+        System.exit(new CommandLine(new SeedLinkClient()).execute(args));
     }
 
 }

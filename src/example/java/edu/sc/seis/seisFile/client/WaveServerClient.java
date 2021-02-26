@@ -1,15 +1,15 @@
-package edu.sc.seis.seisFile.waveserver;
+package edu.sc.seis.seisFile.client;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import edu.sc.seis.seisFile.BuildVersion;
-import edu.sc.seis.seisFile.MSeedQueryClient;
 import edu.sc.seis.seisFile.QueryParams;
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.waveserver.MenuItem;
+import edu.sc.seis.seisFile.waveserver.WaveServer;
 import picocli.CommandLine.Command;
 
 @Command(name="waveserverclient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)

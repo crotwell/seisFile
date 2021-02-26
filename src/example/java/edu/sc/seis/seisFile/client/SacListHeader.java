@@ -1,15 +1,14 @@
-package edu.sc.seis.seisFile.sac;
+package edu.sc.seis.seisFile.client;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.sc.seis.seisFile.client.AbstractClient;
-import edu.sc.seis.seisFile.fdsnws.DataSelectClient;
+import edu.sc.seis.seisFile.sac.SacHeader;
+import edu.sc.seis.seisFile.sac.SacIncrementalloader;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -18,7 +17,7 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParseResult;
 
 @Command(name="saclh", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class ListHeader extends AbstractClient {
+public class SacListHeader extends AbstractClient {
     
     @Option(names={"-h","--headers"}, description="Headers to print")
     public List<String> headerList = new ArrayList<String>();
@@ -68,6 +67,6 @@ public class ListHeader extends AbstractClient {
     }
 
     public static void main(String... args) { // bootstrap the application
-        System.exit(new CommandLine(new ListHeader()).execute(args));
+        System.exit(new CommandLine(new SacListHeader()).execute(args));
     }
 }

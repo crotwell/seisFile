@@ -2,10 +2,10 @@ package edu.sc.seis.seisFile.client;
 
 import java.util.concurrent.Callable;
 
-import edu.sc.seis.seisFile.BuildVersion;
+import edu.sc.seis.seisFile.fdsnws.AbstractFDSNQuerier;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
-import picocli.CommandLine.Model.CommandSpec;
 
 public abstract class AbstractClient implements Callable<Integer> {
 
@@ -51,8 +51,7 @@ public abstract class AbstractClient implements Callable<Integer> {
 
     protected String commandName;
     
-    protected String userAgent = DEFAULT_USER_AGENT;
+    protected String userAgent = AbstractFDSNQuerier.DEFAULT_USER_AGENT;
     
-    public static final String DEFAULT_USER_AGENT = "SeisFile-"+BuildVersion.getVersion();
 
 }

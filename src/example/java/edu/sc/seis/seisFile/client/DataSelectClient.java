@@ -1,11 +1,15 @@
-package edu.sc.seis.seisFile.fdsnws;
+package edu.sc.seis.seisFile.client;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 
+import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
+import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
+import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
 import edu.sc.seis.seisFile.mseed.DataHeader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.DataRecordIterator;
@@ -21,6 +25,15 @@ import picocli.CommandLine.ParseResult;
 @Command(name="fdsndataselect", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class DataSelectClient extends AbstractFDSNClient {
 
+    FDSNDataSelectQueryParams queryParams;
+
+    @Mixin
+    FDSNDataSelectCmdLineQueryParams cmdLine;
+
+    public DataSelectClient() {
+        this.cmdLine = new FDSNDataSelectCmdLineQueryParams();
+        this.queryParams = this.cmdLine.queryParams;
+    }
 
     @Override
     public Integer call() {
@@ -101,15 +114,19 @@ public class DataSelectClient extends AbstractFDSNClient {
         String password;
     }
     
+    public FDSNDataSelectQueryParams getQueryParams() {
+        return queryParams;
+    }
+
+    protected void internalSetBaseURI(URI uri) {
+        queryParams.setBaseURL(uri);
+    }
 
     private static final String OUTPUT = "output";
 
     private static final String USER = "user";
 
     private static final String PASSWORD = "password";
-
-    @Mixin
-    FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
     
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new DataSelectClient()).execute(args));

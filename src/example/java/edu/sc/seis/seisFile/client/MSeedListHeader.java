@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.mseed;
+package edu.sc.seis.seisFile.client;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -22,10 +22,13 @@ import edu.iris.dmc.seedcodec.CodecException;
 import edu.iris.dmc.seedcodec.DecompressedData;
 import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
 import edu.sc.seis.seisFile.BuildVersion;
+import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.SeedFormatException;
+import edu.sc.seis.seisFile.mseed.SeedRecord;
 import picocli.CommandLine.Command;
 
 @Command(name="mseedlh", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class ListHeader {
+public class MSeedListHeader {
 
     public static void main(String[] args) throws IOException, SeedFormatException {
         String network = null;
@@ -78,7 +81,7 @@ public class ListHeader {
                 System.exit(0);
             } else if (args[i].equals("--help")) {
                 out.println("java "
-                        + ListHeader.class.getName()
+                        + MSeedListHeader.class.getName()
                         + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][-d][--verbose][--version][--timed][--help] <filename> [<filename>...]");
                 System.exit(0);
             } else {

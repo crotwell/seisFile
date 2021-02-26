@@ -1,10 +1,14 @@
-package edu.sc.seis.seisFile.fdsnws;
+package edu.sc.seis.seisFile.client;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
+import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
+import edu.sc.seis.seisFile.fdsnws.FDSNStationQueryParams;
 import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.fdsnws.stationxml.DataAvailability;
@@ -23,6 +27,16 @@ import picocli.CommandLine.ParseResult;
 @Command(name="fdsnstation", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class StationClient extends AbstractFDSNClient {
 
+    FDSNStationQueryParams queryParams;
+
+    @Mixin
+    FDSNStationCmdLineQueryParams cmdLine;
+
+    public StationClient() {
+        this.cmdLine = new FDSNStationCmdLineQueryParams();
+        this.queryParams = this.cmdLine.queryParams;
+    }
+    
     @Override
     public Integer call() {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
@@ -89,8 +103,13 @@ public class StationClient extends AbstractFDSNClient {
         return "";
     }
 
-    @Mixin
-    FDSNStationQueryParams queryParams = new FDSNStationQueryParams();
+    public FDSNStationQueryParams getQueryParams() {
+        return queryParams;
+    }
+
+    protected void internalSetBaseURI(URI uri) {
+        queryParams.setBaseURL(uri);
+    }
     
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new StationClient()).execute(args));
