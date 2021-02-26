@@ -16,7 +16,7 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"--host", hostname, "-n", "CO"};
         cmd.parseArgs(args);
-        assertEquals("http://"+hostname + ":80/fdsnws/station/1/query?network=CO", sc.queryParams.formURI().toString());
+        assertEquals("http://"+hostname + ":80/fdsnws/station/1/query?network=CO", sc.getQueryParams().formURI().toString());
     }
 
     @Test
@@ -25,7 +25,7 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO"};
         cmd.parseArgs(args);
-        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO", sc.queryParams.formURI().toString());
+        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO", sc.getQueryParams().formURI().toString());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO", "-s", "JSC"};
         cmd.parseArgs(args);
-        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC", sc.queryParams.formURI().toString());
+        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC", sc.getQueryParams().formURI().toString());
     }
 
     @Test
@@ -43,7 +43,7 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO", "-s", "JSC,CASEE"};
         cmd.parseArgs(args);
-        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC,CASEE", sc.queryParams.formURI().toString());
+        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC,CASEE", sc.getQueryParams().formURI().toString());
     }
     
 
@@ -55,9 +55,9 @@ public class StationClientTest {
         String argString = "-n CO -s JSC,CASEE -l 00 --network II --endafter 2010-01-02 --box 30/35/-100/-75 --donut 32/-85/0/5 --level response --start 2009";
         String[] args = argString.split(" ");
         cmd.parseArgs(args);
-        assertEquals("CO,II", sc.queryParams.getParam(FDSNStationQueryParams.NETWORK));
-        assertEquals("JSC,CASEE", sc.queryParams.getParam(FDSNStationQueryParams.STATION));
-        assertEquals("2010-01-02T00:00:00Z", sc.queryParams.getParam(FDSNStationQueryParams.ENDAFTER));
+        assertEquals("CO,II", sc.getQueryParams().getParam(FDSNStationQueryParams.NETWORK));
+        assertEquals("JSC,CASEE", sc.getQueryParams().getParam(FDSNStationQueryParams.STATION));
+        assertEquals("2010-01-02T00:00:00Z", sc.getQueryParams().getParam(FDSNStationQueryParams.ENDAFTER));
        // assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC,CASEE", queryParams.formURI().toString());
     }
 }
