@@ -1,10 +1,10 @@
-package edu.sc.seis.seisFile.fdsnws;
+package edu.sc.seis.seisFile.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import edu.sc.seis.seisFile.client.StationClient;
+import edu.sc.seis.seisFile.fdsnws.FDSNStationQueryParams;
 import picocli.CommandLine;
 
 public class StationClientTest {
@@ -45,7 +45,7 @@ public class StationClientTest {
         cmd.parseArgs(args);
         assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC,CASEE", sc.getQueryParams().formURI().toString());
     }
-    
+
 
 
     @Test
