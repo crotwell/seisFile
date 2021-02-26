@@ -84,6 +84,11 @@ sourceSets {
         compileClasspath += sourceSets.main.get().output
         runtimeClasspath += sourceSets.main.get().output
     }
+
+    create("clientTest") {
+        compileClasspath += sourceSets.main.get().output + sourceSets["client"].output
+        runtimeClasspath += sourceSets.main.get().output + sourceSets["client"].output
+    }
 }
 
 val clientImplementation by configurations.getting {
@@ -91,6 +96,12 @@ val clientImplementation by configurations.getting {
 }
 
 configurations["clientRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+val clientTestImplementation by configurations.getting {
+    extendsFrom(clientImplementation)
+}
+
+configurations["clientTestRuntimeOnly"].extendsFrom(configurations["clientRuntimeOnly"]).extendsFrom(configurations["testRuntimeOnly"])
 
 
 dependencies {
@@ -104,11 +115,18 @@ dependencies {
     implementation( "com.fasterxml.woodstox:woodstox-core:6.2.3")
     implementation( "org.apache.httpcomponents:httpclient:4.5.13")
 
+
     // Use JUnit Jupiter API for testing.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+
+    // Use JUnit Jupiter API for testing.
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+
+    // Use JUnit Jupiter Engine for testing.
+    //clientTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
 }
 
 // for picocli
@@ -121,6 +139,15 @@ tasks.withType<JavaCompile> {
 tasks.named<Test>("test") {
     useJUnitPlatform()
 }
+task<Test>("clientTest") {
+    description = "Runs the separate client jar tests"
+    group = "verification"
+    testClassesDirs = sourceSets["clientTest"].output.classesDirs
+    classpath = sourceSets["clientTest"].runtimeClasspath
+    mustRunAfter(tasks["test"])
+    useJUnitPlatform()
+}
+tasks.check { dependsOn("clientTest") }
 
 
 repositories {
