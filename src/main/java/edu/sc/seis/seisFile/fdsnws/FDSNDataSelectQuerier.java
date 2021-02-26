@@ -113,14 +113,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
      */
     void connectForPost() throws URISyntaxException, MalformedURLException, IOException, FDSNWSException {
         String postQuery = queryParams.formPostString(request);
-        connectionUri = new URI(queryParams.getScheme(), // don't form as all
-                                                         // parameters in POST
-                                queryParams.getUserInfo(),
-                                queryParams.getHost(),
-                                queryParams.getPort(),
-                                queryParams.getPath(),
-                                "",
-                                queryParams.getFragment());
+        connectionUri = formURIForPost();
         logger.info("Post Query: " + connectionUri);
         logger.info(postQuery);
         RequestConfig requestConfig = RequestConfig.custom()
@@ -175,6 +168,17 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
     @Override
     public URI formURI() throws URISyntaxException {
         return queryParams.formURI();
+    }
+
+    public URI formURIForPost() throws URISyntaxException {
+        // all parameters in POST, not in url
+        return new URI(queryParams.getScheme(), 
+                       queryParams.getUserInfo(),
+                       queryParams.getHost(),
+                       queryParams.getPort(),
+                       queryParams.getPath(),
+                       "",
+                       queryParams.getFragment());
     }
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FDSNDataSelectQuerier.class);

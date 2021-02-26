@@ -42,11 +42,24 @@ public class DataSelectClient extends AbstractFDSNClient {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         try {
+            
+            FDSNDataSelectQuerier querier;
+            if (cmdLine.doPost) {
+                querier = new FDSNDataSelectQuerier(queryParams, queryParams.createChannelTimeWindow());
+
+            } else {
+                querier = new FDSNDataSelectQuerier(queryParams);
+            }
             if (isPrintUrl) {
-                System.out.println(queryParams.formURI());
+                if (cmdLine.doPost) {
+                    System.out.println(querier.formURIForPost());
+                    System.out.println("POST:");
+                    System.out.println(queryParams.formPostString());
+                } else {
+                    System.out.println(querier.formURI());
+                }
                 return 0;
             } else {
-                FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams);
                 if (userPassword != null) {
                     querier.enableRestrictedData(userPassword.user, userPassword.password);
                 }

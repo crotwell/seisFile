@@ -51,7 +51,7 @@ public abstract class AbstractQueryParams {
     }
 
     protected void setParam(String key, Instant value) {
-        setParam(key, ISOTimeParser.format(value));
+        setParam(key, ISOTimeParser.formatWithTimezone(value));
     }
 
     protected void clearParam(String key) {

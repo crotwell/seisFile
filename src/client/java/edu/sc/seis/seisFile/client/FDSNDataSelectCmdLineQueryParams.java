@@ -114,6 +114,9 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
+    @Option(names = {"--post"}, description="use http POST instead of GET")
+    boolean doPost = false;
+
     public String getServiceName() {
         return queryParams.getServiceName();
     }

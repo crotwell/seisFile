@@ -34,6 +34,11 @@ public class ISOTimeParser  {
         DateTimeFormatter isoFormat = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return isoFormat.format(d);
     }
+
+    public static String formatWithTimezone(Instant d) {
+        DateTimeFormatter isoFormat = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        return isoFormat.format(d)+"Z";
+    }
     
     public static String formatForParsing(Instant d) {
         DateTimeFormatter isoFormat = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss");

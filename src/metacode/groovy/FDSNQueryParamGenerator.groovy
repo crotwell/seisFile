@@ -503,7 +503,15 @@ public class FDSN${service.capitalize()}CmdLineQueryParams {
 ''',
         'DataSelect':'''
 
-    public String formPostString() {
+    /**
+     * Forms the list of ChannelTimeWindow for use in a POST request to
+     * the web service. All possible combinations of Networks, Stations
+     * and Channels are combined with the start and end times to form
+     * the list of ChannelTimeWindow.
+     *
+     * @return List of Channels paired with the time window
+     */
+    public java.util.List<ChannelTimeWindow> createChannelTimeWindow() {
         java.util.List<ChannelTimeWindow> request = new java.util.ArrayList<ChannelTimeWindow>();
         String[] netSplit = getParam(NETWORK).split(",");
         String[] staSplit = getParam(STATION).split(",");
@@ -525,7 +533,11 @@ public class FDSN${service.capitalize()}CmdLineQueryParams {
                     }
                 }
             }
-        return formPostString(request);
+        return request;
+    }
+
+    public String formPostString() {
+        return formPostString(createChannelTimeWindow());
     }
 
     /**
@@ -585,6 +597,9 @@ public class FDSN${service.capitalize()}CmdLineQueryParams {
 
 ''',
         'DataSelect':'''
+
+    @Option(names = {"--post"}, description="use http POST instead of GET")
+    boolean doPost = false;
 
     public String getServiceName() {
         return queryParams.getServiceName();
