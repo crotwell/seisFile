@@ -17,10 +17,10 @@ import picocli.CommandLine.ParseResult;
 @Command(name="datalinkclient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class DataLinkClient extends AbstractClient {
 
-    @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, "+DataLink.IRIS_HOST)
+    @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, "+DataLink.IRIS_HOST, defaultValue=DataLink.IRIS_HOST)
     public String host = DataLink.IRIS_HOST;
     
-    @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, "+DataLink.IRIS_PORT)
+    @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, "+DataLink.IRIS_PORT, defaultValue=""+DataLink.IRIS_PORT)
     public Integer port = DataLink.IRIS_PORT;
     
     @Option(names= {"-m", "--match"}, description="match pattern, as a regular expression. For miniseed the conventions is NN_SSS_LL_CCC/MSEED")
@@ -32,8 +32,8 @@ public class DataLinkClient extends AbstractClient {
     @Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")
     private File outputFile;
     
-    @Option(names= {"--timeout"}, description="timeout seconds")
-    public Integer timeoutSec = 20;
+    @Option(names= {"--timeout"}, description="timeout seconds", defaultValue = ""+DataLink.DEFAULT_TIMEOUT_SECOND)
+    public Integer timeoutSec = DataLink.DEFAULT_TIMEOUT_SECOND;
     
     public DataLinkClient() {
         

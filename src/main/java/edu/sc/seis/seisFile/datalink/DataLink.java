@@ -393,7 +393,7 @@ public class DataLink {
     public static final String DEFAULT_HOST = EEYORE_HOST;
     public static final int DEFAULT_PORT = EEYORE_PORT;
 
-    public static final int DEFAULT_TIMEOUT_SECOND = 20;
+    public static final int DEFAULT_TIMEOUT_SECOND = 120;
 
     public static final String DATALINK_PROTOCOL = "1.0";
     public static final String QUERY_MODE = "QUERY";
