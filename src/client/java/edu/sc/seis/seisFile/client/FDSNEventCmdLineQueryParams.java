@@ -43,7 +43,7 @@ public class FDSNEventCmdLineQueryParams {
 
     /** Limit to events on or before the specified end time.
      */
-    @Option(names = { "-e","--endtime","--end" }, description="Limit to events on or before the specified end time.", converter=CeilingISOTimeParser.class)
+    @Option(names = { "-e","--endtime","--end" }, description="Limit to events on or before the specified end time.", converter=FloorISOTimeParser.class)
     public FDSNEventQueryParams setEndTime(Instant value) {
         queryParams.setEndTime(value);
         return queryParams;

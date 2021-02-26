@@ -43,7 +43,7 @@ public class FDSNStationCmdLineQueryParams {
 
     /** Limit to metadata epochs ending on or before the specified end time.
      */
-    @Option(names = { "-e","--endtime","--end" }, description="Limit to metadata epochs ending on or before the specified end time.", converter=CeilingISOTimeParser.class)
+    @Option(names = { "-e","--endtime","--end" }, description="Limit to metadata epochs ending on or before the specified end time.", converter=FloorISOTimeParser.class)
     public FDSNStationQueryParams setEndTime(Instant value) {
         queryParams.setEndTime(value);
         return queryParams;
@@ -52,7 +52,7 @@ public class FDSNStationCmdLineQueryParams {
 
     /** Limit to metadata epochs starting before specified time.
      */
-    @Option(names = { "--startbefore" }, description="Limit to metadata epochs starting before specified time.", converter=FloorISOTimeParser.class)
+    @Option(names = { "--startbefore" }, description="Limit to metadata epochs starting before specified time.", converter=CeilingISOTimeParser.class)
     public FDSNStationQueryParams setStartBefore(Instant value) {
         queryParams.setStartBefore(value);
         return queryParams;
@@ -79,7 +79,7 @@ public class FDSNStationCmdLineQueryParams {
 
     /** Limit to metadata epochs ending after specified time.
      */
-    @Option(names = { "--endafter" }, description="Limit to metadata epochs ending after specified time.", converter=CeilingISOTimeParser.class)
+    @Option(names = { "--endafter" }, description="Limit to metadata epochs ending after specified time.", converter=FloorISOTimeParser.class)
     public FDSNStationQueryParams setEndAfter(Instant value) {
         queryParams.setEndAfter(value);
         return queryParams;

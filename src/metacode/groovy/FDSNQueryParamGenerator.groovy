@@ -17,15 +17,8 @@ class FDSNQueryParamGenerator {
     String createItem(key, doc, service) {
         String t = ""
         String shortName = null
-        String converter = ''
         if (key in shortNames) shortName = shortNames[key]
-        if (key in dateTypes) {
-            t="Instant";
-            converter=', converter=FloorISOTimeParser.class';
-            if (key.startsWith('end')) {
-                converter=', converter=CeilingISOTimeParser.class';
-            }
-        }
+        if (key in dateTypes) {t="Instant";}
         else if(key in floatTypes) {t="float"}
         else if (key in intTypes) {t="int"}
         else if (key in booleanTypes) {t="boolean"}
@@ -44,8 +37,7 @@ class FDSNQueryParamGenerator {
                        'setter':setter,
                        'locidSpaceCheck':locidSpaceCheck,
                        'shortName':shortName,
-                       'arrayType':arrayType,
-                       'converter':converter]
+                       'arrayType':arrayType]
         String out = ""
         if (key in shortNames) {
             out += engine.createTemplate(templateTextShortConst).make(binding)
@@ -69,7 +61,7 @@ class FDSNQueryParamGenerator {
         if (key in dateTypes) {
             t="Instant";
             converter=', converter=FloorISOTimeParser.class';
-            if (key.startsWith('end')) {
+            if (key.equals('end') || key.endsWith('Before')) {
                 converter=', converter=CeilingISOTimeParser.class';
             }
         }
@@ -616,7 +608,7 @@ public class FDSN${service.capitalize()}CmdLineQueryParams {
                 }
                 writer.println x.createPost(s)
             }
-            new File("../../example/java/edu/sc/seis/seisFile/client/FDSN${s}CmdLineQueryParams.java").withWriter { writer ->
+            new File("../../client/java/edu/sc/seis/seisFile/client/FDSN${s}CmdLineQueryParams.java").withWriter { writer ->
                 def ws = s.toLowerCase()
                 def extra = ""
                 def binding = ['service':s, 'ws':ws, 'extra':extra]
