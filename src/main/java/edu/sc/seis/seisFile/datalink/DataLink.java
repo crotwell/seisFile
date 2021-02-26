@@ -345,6 +345,20 @@ public class DataLink {
         return port;
     }
 
+    public String getServerId() {
+        return serverId;
+    }
+
+
+    public int getClientIdNum() {
+        return clientIdNum;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+
     Socket socket;
     BufferedOutputStream out;
     PushbackInputStream in;

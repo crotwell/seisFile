@@ -2,7 +2,6 @@
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.time.Instant;
-import picocli.CommandLine.Option;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -34,6 +33,10 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
         this.host = host;
         return this;
     }
+    public FDSNStationQueryParams setPort(int port) {
+        this.port = port;
+        return this;
+    }
 
 
     public static final String STARTTIME = "starttime";
@@ -48,7 +51,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata epochs startingon or after the specified start time.
      */
-    @Option(names = { "-b","--starttime","--start" }, description="Limit to metadata epochs startingon or after the specified start time.", converter=CeilingISOTimeParser.class)
     public FDSNStationQueryParams setStartTime(Instant value) {
         setParam(STARTTIME, value);
         return this;
@@ -67,7 +69,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata epochs ending on or before the specified end time.
      */
-    @Option(names = { "-e","--endtime","--end" }, description="Limit to metadata epochs ending on or before the specified end time.", converter=FloorISOTimeParser.class)
     public FDSNStationQueryParams setEndTime(Instant value) {
         setParam(ENDTIME, value);
         return this;
@@ -85,7 +86,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata epochs starting before specified time.
      */
-    @Option(names = { "--startbefore" }, description="Limit to metadata epochs starting before specified time.", converter=CeilingISOTimeParser.class)
     public FDSNStationQueryParams setStartBefore(Instant value) {
         setParam(STARTBEFORE, value);
         return this;
@@ -103,7 +103,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata epochs starting after specified time.
      */
-    @Option(names = { "--startafter" }, description="Limit to metadata epochs starting after specified time.", converter=CeilingISOTimeParser.class)
     public FDSNStationQueryParams setStartAfter(Instant value) {
         setParam(STARTAFTER, value);
         return this;
@@ -121,7 +120,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata epochs ending before specified time.
      */
-    @Option(names = { "--endbefore" }, description="Limit to metadata epochs ending before specified time.", converter=FloorISOTimeParser.class)
     public FDSNStationQueryParams setEndBefore(Instant value) {
         setParam(ENDBEFORE, value);
         return this;
@@ -139,7 +137,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata epochs ending after specified time.
      */
-    @Option(names = { "--endafter" }, description="Limit to metadata epochs ending after specified time.", converter=FloorISOTimeParser.class)
     public FDSNStationQueryParams setEndAfter(Instant value) {
         setParam(ENDAFTER, value);
         return this;
@@ -159,7 +156,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.
      */
-    @Option(names = { "-n","--network","--net" }, description="Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.")
     public FDSNStationQueryParams setNetwork(String[] value) {
         clearNetwork();
         for(String v: value) appendToNetwork(v);
@@ -185,7 +181,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Select one or more SEED station codes. Multiple codes are comma-separated.
      */
-    @Option(names = { "-s","--station","--sta" }, description="Select one or more SEED station codes. Multiple codes are comma-separated.")
     public FDSNStationQueryParams setStation(String[] value) {
         clearStation();
         for(String v: value) appendToStation(v);
@@ -211,7 +206,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.
      */
-    @Option(names = { "-l","--location","--loc" }, description="Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.")
     public FDSNStationQueryParams setLocation(String[] value) {
         clearLocation();
         for(String v: value) appendToLocation(v);
@@ -238,7 +232,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Select one or more SEED channel codes. Multiple codes are comma-separated.
      */
-    @Option(names = { "-c","--channel","--cha" }, description="Select one or more SEED channel codes. Multiple codes are comma-separated.")
     public FDSNStationQueryParams setChannel(String[] value) {
         clearChannel();
         for(String v: value) appendToChannel(v);
@@ -263,7 +256,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to stations with a latitude larger than the specified minimum.
      */
-    @Option(names = { "--minlatitude","--minlat" }, description="Limit to stations with a latitude larger than the specified minimum.")
     public FDSNStationQueryParams setMinLatitude(float value) {
         setParam(MINLATITUDE, value);
         return this;
@@ -282,7 +274,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to stations with a latitude smaller than the specified maximum.
      */
-    @Option(names = { "--maxlatitude","--maxlat" }, description="Limit to stations with a latitude smaller than the specified maximum.")
     public FDSNStationQueryParams setMaxLatitude(float value) {
         setParam(MAXLATITUDE, value);
         return this;
@@ -301,7 +292,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to stations with a longitude larger than the specified minimum.
      */
-    @Option(names = { "--minlongitude","--minlon" }, description="Limit to stations with a longitude larger than the specified minimum.")
     public FDSNStationQueryParams setMinLongitude(float value) {
         setParam(MINLONGITUDE, value);
         return this;
@@ -320,7 +310,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to stations with a longitude smaller than the specified maximum.
      */
-    @Option(names = { "--maxlongitude","--maxlon" }, description="Limit to stations with a longitude smaller than the specified maximum.")
     public FDSNStationQueryParams setMaxLongitude(float value) {
         setParam(MAXLONGITUDE, value);
         return this;
@@ -339,7 +328,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Specify the latitude to be used for a radius search.
      */
-    @Option(names = { "--latitude","--lat" }, description="Specify the latitude to be used for a radius search.")
     public FDSNStationQueryParams setLatitude(float value) {
         setParam(LATITUDE, value);
         return this;
@@ -358,7 +346,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Specify the longitude to the used for a radius search.
      */
-    @Option(names = { "--longitude","--lon" }, description="Specify the longitude to the used for a radius search.")
     public FDSNStationQueryParams setLongitude(float value) {
         setParam(LONGITUDE, value);
         return this;
@@ -376,7 +363,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit results to stations within the specified minimum number of degrees from the geographic point defined by the latitude and longitude parameters.
      */
-    @Option(names = { "--minradius" }, description="Limit results to stations within the specified minimum number of degrees from the geographic point defined by the latitude and longitude parameters.")
     public FDSNStationQueryParams setMinRadius(float value) {
         setParam(MINRADIUS, value);
         return this;
@@ -394,7 +380,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit results to stations within the specified maximum number of degrees from the geographic point defined by the latitude and longitude parameters.
      */
-    @Option(names = { "--maxradius" }, description="Limit results to stations within the specified maximum number of degrees from the geographic point defined by the latitude and longitude parameters.")
     public FDSNStationQueryParams setMaxRadius(float value) {
         setParam(MAXRADIUS, value);
         return this;
@@ -412,7 +397,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Specify the level of detail for the results.
      */
-    @Option(names = { "-L","--level" }, description="Specify the level of detail for the results.")
     public FDSNStationQueryParams setLevel(String value) {
         setParam(LEVEL, value);
         return this;
@@ -430,7 +414,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Specify if results should include information for restricted stations.
      */
-    @Option(names = { "--includerestricted" }, description="Specify if results should include information for restricted stations.")
     public FDSNStationQueryParams setIncludeRestricted(boolean value) {
         setParam(INCLUDERESTRICTED, value);
         return this;
@@ -448,7 +431,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Specify if results should include information about time series data availability.
      */
-    @Option(names = { "--includeavailability" }, description="Specify if results should include information about time series data availability.")
     public FDSNStationQueryParams setIncludeAvailability(boolean value) {
         setParam(INCLUDEAVAILABILITY, value);
         return this;
@@ -466,7 +448,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata where selection criteria matches time series data availability.
      */
-    @Option(names = { "--matchtimeseries" }, description="Limit to metadata where selection criteria matches time series data availability.")
     public FDSNStationQueryParams setMatchTimeseries(boolean value) {
         setParam(MATCHTIMESERIES, value);
         return this;
@@ -484,7 +465,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     /** Limit to metadata updated after specified date; updates are data center specific.
      */
-    @Option(names = { "--updatedafter" }, description="Limit to metadata updated after specified date; updates are data center specific.", converter=FloorISOTimeParser.class)
     public FDSNStationQueryParams setUpdatedAfter(Instant value) {
         setParam(UPDATEDAFTER, value);
         return this;
@@ -492,7 +472,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
 
 
-    @Option(names = {"--box"}, description="constraining box as west/east/south/north", converter=BoxAreaParser.class)
     public FDSNStationQueryParams boxArea(BoxArea box) {
         return area(box.south, box.north, box.west, box.east);
     }
@@ -505,7 +484,6 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
         return setLatitude(lat).setLongitude(lon).setMaxRadius(maxRadius);
     }
 
-    @Option(names = {"--donut"}, description="constraining donut as lat/lon/minRadius/maxRadius", converter=DonutParser.class)
     public FDSNStationQueryParams donut(DonutArea donut) {
         return ring(donut.latitude, donut.longitude, donut.maxradius).setMinRadius(donut.minradius);
     }

@@ -1,15 +1,12 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
-import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
-import edu.sc.seis.seisFile.fdsnws.StationClient;
-import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -17,7 +14,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
+
+import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
+import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class FDSNStationXML {
 
@@ -247,23 +249,6 @@ public class FDSNStationXML {
 
     public static FDSNStationXML loadStationXML(String filename) throws XMLStreamException, IOException, SeisFileException {
         return loadStationXML(new FileInputStream(filename));
-    }
-
-    public static void main(String[] args) throws XMLStreamException, IOException, SeisFileException {
-        final FDSNStationXML stationXml = loadStationXML(args[0]);
-        StationClient sc = new StationClient() {
-            public Integer call() {
-                try {
-                    handleResults(stationXml);
-                    return 0;
-                } catch (XMLStreamException | SeisFileException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    return 1;
-                }
-            }
-        };
-        sc.call();
     }
 
     /**

@@ -9,16 +9,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.sc.seis.seisFile.TimeUtils;
-import picocli.CommandLine.ITypeConverter;
 
 
 
-public class ISOTimeParser  implements ITypeConverter<Instant>{
-
-    public Instant convert(String value) throws Exception {
-        return getDate(value);
-    }
-    
+public class ISOTimeParser  {
 
     public ISOTimeParser() {
         this(true);

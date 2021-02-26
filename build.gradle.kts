@@ -79,10 +79,25 @@ signing {
     sign(publishing.publications["mavenJava"])
 }
 
+sourceSets {
+    create("example") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
+val exampleImplementation by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+
+configurations["exampleRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.1.1")
-    implementation("info.picocli:picocli:4.6.1")
+    exampleImplementation("info.picocli:picocli:4.6.1")
+
     annotationProcessor("info.picocli:picocli-codegen:4.6.1")
     implementation( "org.slf4j:slf4j-api:1.7.30")
     implementation( "org.slf4j:slf4j-log4j12:1.7.30")
@@ -114,21 +129,22 @@ repositories {
     mavenCentral()
 }
 
-sourceSets {
-  create("example") {
-    compileClasspath += sourceSets.main.get().output
-    compileClasspath += sourceSets.main.get().compileClasspath
-    runtimeClasspath += sourceSets.main.get().output
-    runtimeClasspath += sourceSets.main.get().runtimeClasspath
-  }
+
+tasks.register<Jar>("exampleJar") {
+  dependsOn("exampleClasses" )
+  from(sourceSets["example"].output)
+  baseName = "seisFileExample"
 }
 
 val binDistFiles: CopySpec = copySpec {
-    from(configurations.runtimeClasspath) {
-        into("lib")
+    from(configurations["exampleCompileClasspath"]) {
+       into("lib")
     }
-    from(configurations.runtimeClasspath.allArtifacts.files) {
-        into("lib")
+    from(tasks.named("jar")) {
+      into("lib")
+    }
+    from(tasks.named("exampleJar")) {
+      into("lib")
     }
     from("build/scripts") {
         into("bin")
@@ -178,6 +194,7 @@ val distFiles: CopySpec = copySpec {
 tasks.register<Sync>("explodeBin") {
   dependsOn("createRunScripts")
   dependsOn("exampleClasses")
+  dependsOn("exampleJar")
   group = "dist"
   with( binDistFiles)
   into( file("$buildDir/explode"))
@@ -210,31 +227,18 @@ tasks.register<Tar>("tarDist") {
     }
 }
 
-/*
-tasks.register<Jar>("exampleJar") {
-  dependsOn("exampleClasses" )
-    from(sourceSets.example.get().output)
-    baseName("seisFileExample")
-}
-
-explodeBin.dependsOn(exampleJar)
-artifacts {
-    exampleJar
-}
-*/
-
-
 tasks.register<CreateStartScripts>("xxxfdsnevent") {
   mainClassName = "edu.sc.seis.seisFile.fdsnws.EventClient"
   applicationName = "fdsnevent"
 }
 
 tasks.asciidoctor {
-  sourceDir = File(project.buildDir,  "picocli/man")
+  sourceDir =  File(project.projectDir,  "src/doc/man-templates")
   outputDir = File(project.buildDir,  "picocli/doc")
   backends(  "manpage", "html5")
 }
 
+tasks.register("genManTemplate"){}
 tasks.register("genAutocomplete"){}
 tasks.register("createRunScripts"){}
 tasks.named("startScripts") {
@@ -242,31 +246,48 @@ tasks.named("startScripts") {
 }
 
 val scriptNames = mapOf(
-  "fdsnevent" to "edu.sc.seis.seisFile.fdsnws.EventClient",
-  "fdsnstation" to "edu.sc.seis.seisFile.fdsnws.StationClient",
-  "fdsndataselect" to "edu.sc.seis.seisFile.fdsnws.DataSelectClient",
-  "saclh" to "edu.sc.seis.seisFile.sac.ListHeader",
-  "mseedlh" to "edu.sc.seis.seisFile.mseed.ListHeader",
-  "seedlinkclient" to "edu.sc.seis.seisFile.seedlink.Client",
-  "datalinkclient" to "edu.sc.seis.seisFile.datalink.Client",
-  "earthwormExportTest" to "edu.sc.seis.seisFile.earthworm.EarthwormExport",
-  "earthwormImportTest" to "edu.sc.seis.seisFile.earthworm.EarthwormImport",
-  "waveserverclient" to "edu.sc.seis.seisFile.waveserver.WaveServerClient"
+  "fdsnevent" to "edu.sc.seis.seisFile.client.EventClient",
+  "fdsnstation" to "edu.sc.seis.seisFile.client.StationClient",
+  "fdsndataselect" to "edu.sc.seis.seisFile.client.DataSelectClient",
+  "saclh" to "edu.sc.seis.seisFile.client.SacListHeader",
+  "mseedlh" to "edu.sc.seis.seisFile.client.MSeedListHeader",
+  "seedlinkclient" to "edu.sc.seis.seisFile.client.SeedLinkClient",
+  "datalinkclient" to "edu.sc.seis.seisFile.client.DataLinkClient",
+  "earthwormExportTest" to "edu.sc.seis.seisFile.client.EarthwormExportClient",
+  "earthwormImportTest" to "edu.sc.seis.seisFile.client.EarthwormImportClient",
+  "waveserverclient" to "edu.sc.seis.seisFile.client.WaveServerClient"
   )
 for (key in scriptNames.keys) {
   tasks.register<CreateStartScripts>(key) {
     outputDir = file("build/scripts")
     mainClassName = scriptNames[key]
     applicationName = key
-    classpath = sourceSets["main"].runtimeClasspath + project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files
+    classpath = sourceSets["example"].runtimeClasspath +
+      project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files +
+      project.tasks["exampleJar"].outputs.files
   }
   tasks.named("createRunScripts") {
       dependsOn(key)
   }
+  tasks.register<JavaExec>("genManTemplate"+key) {
+    description = "generate picocli/asciidoctor template for man pages "+key
+    group = "Documentation"
+    classpath = configurations.annotationProcessor + sourceSets.getByName("example").runtimeClasspath
+    main = "picocli.codegen.docgen.manpage.ManPageGenerator"
+    val outTemplateDir =  File(project.projectDir,  "src/doc/man-templates")
+    outTemplateDir.mkdirs()
+    val outDir =  File(project.buildDir,  "picocli/man")
+    outDir.mkdirs()
+    args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key])
+    dependsOn += tasks.getByName("compileJava")
+  }
+  tasks.named("genManTemplate") {
+    dependsOn("genManTemplate"+key)
+  }
   tasks.register<JavaExec>("generateManpageAsciiDoc"+key) {
     description = "generate picocli man pages for "+key
     group = "Documentation"
-    classpath = configurations.annotationProcessor + sourceSets.getByName("main").runtimeClasspath
+    classpath = configurations.annotationProcessor + sourceSets.getByName("example").runtimeClasspath
     main = "picocli.codegen.docgen.manpage.ManPageGenerator"
     val outDir =  File(project.buildDir,  "picocli/man")
     outDir.mkdirs()
@@ -278,7 +299,7 @@ for (key in scriptNames.keys) {
   }
   tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
-    classpath = sourceSets.getByName("main").runtimeClasspath
+    classpath = sourceSets.getByName("example").runtimeClasspath
     main = "picocli.AutoComplete"
     val outDir =  File(project.buildDir,  "picocli/bashcompletion")
     outDir.mkdirs()
@@ -290,6 +311,7 @@ for (key in scriptNames.keys) {
       dependsOn("genAutocomplete"+key)
   }
 }
+
 
 
 tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))

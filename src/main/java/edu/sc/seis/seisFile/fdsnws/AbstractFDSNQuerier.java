@@ -40,7 +40,8 @@ import org.codehaus.stax2.validation.XMLValidationSchema;
 import org.codehaus.stax2.validation.XMLValidationSchemaFactory;
 import org.xml.sax.SAXException;
 
-import edu.sc.seis.seisFile.client.AbstractClient;
+import edu.sc.seis.seisFile.BuildVersion;
+
 
 public abstract class AbstractFDSNQuerier {
 
@@ -389,8 +390,10 @@ public abstract class AbstractFDSNQuerier {
     static XMLValidationSchemaFactory sfactory;
 
     static HashMap<URL, XMLValidationSchema> schemaCache = new HashMap<URL, XMLValidationSchema>();
-
-    String userAgent = AbstractClient.DEFAULT_USER_AGENT;
+    
+    public static final String DEFAULT_USER_AGENT = "SeisFile-"+BuildVersion.getVersion();
+    
+    String userAgent = DEFAULT_USER_AGENT;
 
     String acceptHeader = "application/xml";
 

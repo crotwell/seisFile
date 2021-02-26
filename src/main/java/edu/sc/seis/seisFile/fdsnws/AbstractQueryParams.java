@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.sc.seis.seisFile.TimeUtils;
-import picocli.CommandLine.Option;
+import edu.sc.seis.seisFile.client.ISOTimeParser;
 
 public abstract class AbstractQueryParams {
 
@@ -51,7 +51,7 @@ public abstract class AbstractQueryParams {
     }
 
     protected void setParam(String key, Instant value) {
-        setParam(key, value.toString());
+        setParam(key, ISOTimeParser.format(value));
     }
 
     protected void clearParam(String key) {
@@ -88,18 +88,14 @@ public abstract class AbstractQueryParams {
         return new URI(getScheme(), getUserInfo(), getHost(), getPort(), getPath(), newQuery.toString(), getFragment());
     }
 
-    @Option(names = "--host", description = "host to connect to, defaults to IRIS DMC")
     String host = IRIS_HOST;
 
-    @Option(names = "--port", description = "port to connect to, defaults to 80")
     int port = 80;
 
-    @Option(names="--"+AbstractFDSNClient.BASEURL, description="Base URL for queries, ie everything before the '/<service>/<version>/<query>?'")
     public void setBaseURL(URI uri) {
         internalSetBaseURI(uri);
     }
     
-    @Option(names = "--nodata", description = "nodata http return code", defaultValue="204")
     public int nodata = 204;
 
 
@@ -121,17 +117,13 @@ public abstract class AbstractQueryParams {
     
     void internalSetBaseURI(URI baseURI) {
         setScheme(baseURI.getScheme());
-        setPort(baseURI.getPort());
+        this.port = baseURI.getPort();
         setFdsnwsPath(baseURI.getPath());
         this.host = baseURI.getHost();
     }
 
     public HashMap<String, String> getParams() {
         return params;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
     }
 
     public void setScheme(String scheme) {

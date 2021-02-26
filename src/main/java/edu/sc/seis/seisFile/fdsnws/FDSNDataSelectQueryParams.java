@@ -2,7 +2,6 @@
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.time.Instant;
-import picocli.CommandLine.Option;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -34,6 +33,10 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
         this.host = host;
         return this;
     }
+    public FDSNDataSelectQueryParams setPort(int port) {
+        this.port = port;
+        return this;
+    }
 
 
     public static final String STARTTIME = "starttime";
@@ -48,7 +51,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Limit results to time series samples on or after the specified start time
      */
-    @Option(names = { "-b","--starttime","--start" }, description="Limit results to time series samples on or after the specified start time", converter=CeilingISOTimeParser.class)
     public FDSNDataSelectQueryParams setStartTime(Instant value) {
         setParam(STARTTIME, value);
         return this;
@@ -67,7 +69,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Limit results to time series samples on or before the specified end time
      */
-    @Option(names = { "-e","--endtime","--end" }, description="Limit results to time series samples on or before the specified end time", converter=FloorISOTimeParser.class)
     public FDSNDataSelectQueryParams setEndTime(Instant value) {
         setParam(ENDTIME, value);
         return this;
@@ -87,7 +88,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.
      */
-    @Option(names = { "-n","--network","--net" }, description="Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.")
     public FDSNDataSelectQueryParams setNetwork(String[] value) {
         clearNetwork();
         for(String v: value) appendToNetwork(v);
@@ -113,7 +113,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Select one or more SEED station codes. Multiple codes are comma-separated.
      */
-    @Option(names = { "-s","--station","--sta" }, description="Select one or more SEED station codes. Multiple codes are comma-separated.")
     public FDSNDataSelectQueryParams setStation(String[] value) {
         clearStation();
         for(String v: value) appendToStation(v);
@@ -139,7 +138,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.
      */
-    @Option(names = { "-l","--location","--loc" }, description="Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.")
     public FDSNDataSelectQueryParams setLocation(String[] value) {
         clearLocation();
         for(String v: value) appendToLocation(v);
@@ -166,7 +164,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Select one or more SEED channel codes. Multiple codes are comma-separated.
      */
-    @Option(names = { "-c","--channel","--cha" }, description="Select one or more SEED channel codes. Multiple codes are comma-separated.")
     public FDSNDataSelectQueryParams setChannel(String[] value) {
         clearChannel();
         for(String v: value) appendToChannel(v);
@@ -190,7 +187,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Select a specific SEED quality indicator, handling is data center dependent.
      */
-    @Option(names = { "--quality" }, description="Select a specific SEED quality indicator, handling is data center dependent.")
     public FDSNDataSelectQueryParams setQuality(String value) {
         setParam(QUALITY, value);
         return this;
@@ -208,7 +204,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Limit results to continuous data segments of a minimum length specified in seconds.
      */
-    @Option(names = { "--minimumlength" }, description="Limit results to continuous data segments of a minimum length specified in seconds.")
     public FDSNDataSelectQueryParams setMinimumLength(int value) {
         setParam(MINIMUMLENGTH, value);
         return this;
@@ -226,7 +221,6 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
 
     /** Limit results to the longest continuous segment per channel.
      */
-    @Option(names = { "--longestonly" }, description="Limit results to the longest continuous segment per channel.")
     public FDSNDataSelectQueryParams setLongestOnly(boolean value) {
         setParam(LONGESTONLY, value);
         return this;

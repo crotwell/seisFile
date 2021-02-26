@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import edu.sc.seis.seisFile.client.StationClient;
 import picocli.CommandLine;
 
 public class StationClientTest {

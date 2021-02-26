@@ -22,7 +22,7 @@ class FDSNQueryParamGenerator {
         if (key in dateTypes) {
             t="Instant";
             converter=', converter=FloorISOTimeParser.class';
-            if (key.startsWith('start')) {
+            if (key.startsWith('end')) {
                 converter=', converter=CeilingISOTimeParser.class';
             }
         }
@@ -60,6 +60,106 @@ class FDSNQueryParamGenerator {
         }
     }
 
+
+    String createOptionItem(key, doc, service) {
+        String t = ""
+        String shortName = null
+        String converter = ''
+        if (key in shortNames) shortName = shortNames[key]
+        if (key in dateTypes) {
+            t="Instant";
+            converter=', converter=FloorISOTimeParser.class';
+            if (key.startsWith('end')) {
+                converter=', converter=CeilingISOTimeParser.class';
+            }
+        }
+        else if(key in floatTypes) {t="float"}
+        else if (key in intTypes) {t="int"}
+        else if (key in booleanTypes) {t="boolean"}
+        String setter = 'set'
+        String arrayType = ''
+        if (key in addTypes) { arrayType = "[]" }
+        String locidSpaceCheck = ""
+        if (key in locIdTypes) {locidSpaceCheck = 'if (value == null || Channel.EMPTY_LOC_CODE.equals(value.trim())) { value = "--";}\n        ' }
+        String optionNames = '"--'+key.toLowerCase()+'"'
+        if (shortName != null) { optionNames+=',"--'+shortName+'"' }
+        if (key in singleCharNames) { optionNames = '"-'+singleCharNames[key]+ '",'+optionNames }
+        def binding = ['key':key,
+                       'optionNames':optionNames,
+                       'doc':doc, 'type':t,
+                       'service':service,
+                       'setter':setter,
+                       'locidSpaceCheck':locidSpaceCheck,
+                       'shortName':shortName,
+                       'arrayType':arrayType,
+                       'converter':converter]
+        String out = ""
+        if (arrayType == "[]") {
+          out += engine.createTemplate(templateTextOptionArray).make(binding)
+        } else {
+          out += engine.createTemplate(templateTextOptionSet).make(binding)
+        }
+    }
+
+
+    String createTestItem(key, doc, service) {
+        String t = ""
+        String shortName = null
+        String converter = ''
+        String preargs = ''
+        if (service in testingpreargs) preargs = testingpreargs[service]
+        if (key in shortNames) shortName = shortNames[key]
+        if (key in dateTypes) {
+            t="Instant";
+            converter=', converter=FloorISOTimeParser.class';
+            if (key.startsWith('end')) {
+                converter=', converter=CeilingISOTimeParser.class';
+            }
+        }
+        else if(key in floatTypes) {t="float"}
+        else if (key in intTypes) {t="int"}
+        else if (key in booleanTypes) {t="boolean"}
+        String setter = 'set'
+        String arrayType = ''
+        if (key in addTypes) { arrayType = "[]" }
+        String locidSpaceCheck = ""
+        if (key in locIdTypes) {locidSpaceCheck = 'if (value == null || Channel.EMPTY_LOC_CODE.equals(value.trim())) { value = "--";}\n        ' }
+        String optionNames = '"--'+key.toLowerCase()+'"'
+        if (shortName != null) { optionNames+=',"--'+shortName+'"' }
+        if (key in singleCharNames) { optionNames = '"-'+singleCharNames[key]+ '",'+optionNames }
+        String data = 'data'
+        if (key in dateTypes) {
+            data = '2021-01-01'
+            if (key.startsWith('end')) {
+                data = '2021-01-02'
+            }
+        }
+        else if (key in floatTypes || key in intTypes) {if (key.startsWith("min")) { data = '5'} else {data = "10"} }
+        else if (key in intTypes) {t="int"}
+        else if (key in booleanTypes) {data=''}
+        def binding = ['key':key,
+                       'optionNames':optionNames,
+                       'doc':doc, 'type':t,
+                       'service':service,
+                       'setter':setter,
+                       'locidSpaceCheck':locidSpaceCheck,
+                       'shortName':shortName,
+                       'arrayType':arrayType,
+                       'converter':converter,
+                       'data':data,
+                       'preargs': preargs ]
+        String out = ""
+        if (key in shortNames) {
+            out += engine.createTemplate(templateTestingShortConst).make(binding)
+        } else {
+            out += engine.createTemplate(templateTestingConst).make(binding)
+        }
+        if (arrayType == "[]") {
+          out += engine.createTemplate(templateTestingArray).make(binding)
+        }
+        return out;
+    }
+
     String createPre(service) {
         def binding = ['service':service]
         return engine.createTemplate(preTemplate).make(binding)
@@ -76,7 +176,6 @@ class FDSNQueryParamGenerator {
 package edu.sc.seis.seisFile.fdsnws;
 
 import java.time.Instant;
-import picocli.CommandLine.Option;
 
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
@@ -108,6 +207,10 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         this.host = host;
         return this;
     }
+    public FDSN${service}QueryParams setPort(int port) {
+        this.port = port;
+        return this;
+    }
 '''
 
     def postTemplate = '''
@@ -131,7 +234,6 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
     def templateTextSet = '''
     /** $doc
      */
-    @Option(names = { ${optionNames} }, description="$doc"${converter})
     public FDSN${service}QueryParams ${setter}${key.capitalize()}(${type==''?'String':type}${arrayType} value) {
         ${locidSpaceCheck}${setter}Param(${key.toUpperCase()}, value);
         return this;
@@ -150,7 +252,6 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
 
     /** $doc
      */
-    @Option(names = { ${optionNames} }, description="$doc")
     public FDSN${service}QueryParams ${setter}${key.capitalize()}(${type==''?'String':type}${arrayType} value) {
         clear${key.capitalize()}();
         for(${type==''?'String':type} v: value) appendTo${key.capitalize()}(v);
@@ -162,6 +263,83 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         return this;
     }
 '''
+
+// Cmd Line Options....
+
+
+    def preOptionTemplate = '''
+package edu.sc.seis.seisFile.client;
+
+import java.time.Instant;
+import picocli.CommandLine.Option;
+
+import edu.sc.seis.seisFile.fdsnws.FDSN${service.capitalize()}QueryParams;
+
+/** Autogenerated by groovy FDSNQueryParamGenerator.groovy in src/metacode/groovy
+ */
+public class FDSN${service.capitalize()}CmdLineQueryParams {
+
+    FDSN${service.capitalize()}QueryParams queryParams;
+
+    public FDSN${service}CmdLineQueryParams() {
+        this(FDSN${service.capitalize()}QueryParams.${service=='Event'?'USGS_HOST':'DEFAULT_HOST'});
+    }
+
+    public FDSN${service}CmdLineQueryParams(String host) {
+        this.queryParams = new FDSN${service.capitalize()}QueryParams();
+        setHost(host==null ? FDSN${service.capitalize()}QueryParams.${service=='Event'?'USGS_HOST':'DEFAULT_HOST'} : host);
+    }
+
+    @Option(names = { "--host" }, description="host to connect to")
+    public FDSN${service}QueryParams setHost(String host) {
+        return this.queryParams.setHost(host);
+    }
+
+    @Option(names = "--port", description = "port to connect to, defaults to 80", defaultValue="80")
+    public FDSN${service}QueryParams setPort(int port) {
+        return this.queryParams.setPort(port);
+    }
+'''
+
+    def postOptionTemplate = '''
+    ${extra}
+
+}
+'''
+
+    def templateTextOptionSet = '''
+    /** $doc
+     */
+    @Option(names = { ${optionNames} }, description="$doc"${converter})
+    public FDSN${service}QueryParams ${setter}${key.capitalize()}(${type==''?'String':type}${arrayType} value) {
+        queryParams.${setter}${key.capitalize()}(value);
+        return queryParams;
+    }
+'''
+
+    def templateTextOptionArray = '''
+
+    @Option(names = { ${optionNames} }, description="$doc")
+    public FDSN${service}QueryParams set${key.capitalize()}(${type==''?'String':type}${arrayType} value) {
+      queryParams.clear${key.capitalize()}();
+      for(${type==''?'String':type} v: value) queryParams.appendTo${key.capitalize()}(v);
+      return queryParams;
+    }
+'''
+
+    def templateTestingConst = '''
+    bin/fdsn${service.toLowerCase()} ${preargs}  --${key.toLowerCase()} ${data}
+
+'''
+
+    def templateTestingShortConst = '''
+    bin/fdsn${service.toLowerCase()} ${preargs} --${shortName.toLowerCase()} ${data}
+'''
+
+    def templateTestingArray = '''
+    bin/fdsn${service.toLowerCase()} ${preargs} --${shortName.toLowerCase()} ${data} --${shortName.toLowerCase()} ${data}
+'''
+
 
     def addTypes = ['network', 'station', 'location', 'channel']
 
@@ -251,7 +429,6 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
 
     def areaMethods = '''
 
-    @Option(names = {"--box"}, description="constraining box as west/east/south/north", converter=BoxAreaParser.class)
     public FDSN${service}QueryParams boxArea(BoxArea box) {
         return area(box.south, box.north, box.west, box.east);
     }
@@ -264,11 +441,31 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
         return setLatitude(lat).setLongitude(lon).setMaxRadius(maxRadius);
     }
 
-    @Option(names = {"--donut"}, description="constraining donut as lat/lon/minRadius/maxRadius", converter=DonutParser.class)
     public FDSN${service}QueryParams donut(DonutArea donut) {
         return ring(donut.latitude, donut.longitude, donut.maxradius).setMinRadius(donut.minradius);
     }
 '''
+
+    def optionAreaMethods = '''
+
+        @Option(names = {"--box"}, description="constraining box as west/east/south/north", converter=BoxAreaParser.class)
+        public FDSN${service}QueryParams boxArea(BoxArea box) {
+            return queryParams.boxArea(box);
+        }
+
+        public FDSN${service}QueryParams area(float minLat, float maxLat, float minLon, float maxLon) {
+            return queryParams.area( minLat, maxLat, minLon, maxLon);
+        }
+
+        public FDSN${service}QueryParams ring(float lat, float lon, float maxRadius) {
+            return queryParams.ring( lat,  lon,  maxRadius);
+        }
+
+        @Option(names = {"--donut"}, description="constraining donut as lat/lon/minRadius/maxRadius", converter=DonutParser.class)
+        public FDSN${service}QueryParams donut(DonutArea donut) {
+            return queryParams.ring(donut.latitude, donut.longitude, donut.maxradius).setMinRadius(donut.minradius);
+        }
+    '''
 
     def extraPostCode = ['Station':'''
 
@@ -288,14 +485,6 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
     public static final String STATION_SERVICE = "station";
 ''',
         'Event':'''
-
-    @Option(names={"-m", "--magnitude"}, arity="1..2", description="The range of acceptable magnitudes, max may be omitted.")
-    public FDSN${service}QueryParams setMagnitudeRange(float[] minmax) {
-        if (minmax.length >1) {
-            setMaxMagnitude(minmax[1]);
-        }
-        return setMinMagnitude(minmax[0]);
-    }
 
     public static final String USGS_HOST = "earthquake.usgs.gov";
     public static final String ISC_HOST = "www.isc.ac.uk";
@@ -380,6 +569,39 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
 
 ''']
 
+
+    def optionPostCode = ['Station':'''
+
+    public String getServiceName() {
+        return queryParams.getServiceName();
+    }
+
+''',
+        'Event':'''
+
+    @Option(names={"-m", "--magnitude"}, arity="1..2", description="The range of acceptable magnitudes, max may be omitted.")
+    public FDSN${service}QueryParams setMagnitudeRange(float[] minmax) {
+        if (minmax.length >1) {
+            setMaxMagnitude(minmax[1]);
+        }
+        return setMinMagnitude(minmax[0]);
+    }
+
+    public String getServiceName() {
+        return queryParams.getServiceName();
+    }
+
+''',
+        'DataSelect':'''
+
+    public String getServiceName() {
+        return queryParams.getServiceName();
+    }
+''']
+
+   def testingpreargs = ['Station': '-n CO -s BIRD', 'Event': '--box -85/-75/29/35', 'DataSelect': '-n CO -s BIRD']
+
+
     public static void main(String[] args) {
         def x = new FDSNQueryParamGenerator()
         def data = ['Station':x.stationParams, 'Event':x.eventParams, 'DataSelect':x.dataSelectParams]
@@ -393,6 +615,26 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
                     writer.println x.engine.createTemplate(x.areaMethods).make(['service':s])
                 }
                 writer.println x.createPost(s)
+            }
+            new File("../../example/java/edu/sc/seis/seisFile/client/FDSN${s}CmdLineQueryParams.java").withWriter { writer ->
+                def ws = s.toLowerCase()
+                def extra = ""
+                def binding = ['service':s, 'ws':ws, 'extra':extra]
+                writer.println x.engine.createTemplate(x.preOptionTemplate).make(binding)
+                data.get(s).each() { k, v ->
+                    writer.println x.createOptionItem(k, v, s)
+                }
+                if (s != 'DataSelect') {
+                    writer.println x.engine.createTemplate(x.optionAreaMethods).make(['service':s])
+                }
+
+                writer.println x.engine.createTemplate(x.optionPostCode[s]).make(binding)
+                writer.println x.engine.createTemplate(x.postOptionTemplate).make(binding)
+            }
+            new File("../../test/resources/FDSN${s}CmdLineTest.txt").withWriter { writer ->
+                data.get(s).each() { k, v ->
+                    writer.println x.createTestItem(k, v, s)
+                }
             }
         }
     }

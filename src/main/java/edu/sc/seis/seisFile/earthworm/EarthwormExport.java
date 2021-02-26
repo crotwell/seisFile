@@ -9,10 +9,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.List;
 
-import picocli.CommandLine.Command;
-
-@Command(name="earthwormExportTest", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class EarthwormExport {
+public class EarthwormExport  {
 
     public EarthwormExport() {
         
@@ -135,6 +132,22 @@ public class EarthwormExport {
         }
     }
     
+    /**
+     * Reads from the socket input stream, usually just the other sides heartbeats.
+     * @return byte array read from inputStream
+     * @throws IOException 
+     */
+    public byte[] readResponseBytes() throws IOException {
+        if (inStream.available() > 0) {
+            byte[] b = new byte[1024];
+            int bytesRead = inStream.read(b);
+            byte[] outBytes = new byte[bytesRead];
+            System.arraycopy(b, 0, outBytes, 0, bytesRead);
+            return outBytes;
+        }
+        return new byte[0];
+    }
+    
     public synchronized void closeClient() {
         logger.info("close client connection");
         if (outStream != null) {
@@ -169,51 +182,7 @@ public class EarthwormExport {
         }
         return seqNum++;
     }
-
-    public static void main(String[] args) throws Exception {
-        // testing
-        EarthwormExport exporter = new EarthwormExport(10002, 43, 255, "heartbeat", 5);
-        exporter.waitForClient();
-        int[] data = new int[14000];
-        for (int i = 0; i < data.length; i++) {
-            data[i] = i%100;
-        }
-        long Y1970_TO_Y2000_SECONDS = 946728000l;
-        TraceBuf2 tb = new TraceBuf2(1,
-                                     data.length,
-                                     Y1970_TO_Y2000_SECONDS,
-                                     1,
-                                     "XXX",
-                                     "SS",
-                                     "HHZ",
-                                     "00",
-                                     data);
-        for (int i = 0; i < 10; i++) {
-            if (exporter.inStream.available() > 0) {
-                byte[] b = new byte[1024];
-                exporter.inStream.read(b);
-                String s = new String(b);
-                System.out.println("In: "+s);
-            }
-            Thread.sleep(1000);
-
-            boolean notSent = true;
-            while(notSent) {
-                try {
-                    exporter.export(tb);
-                    notSent = false;
-                    tb.startTime += data.length;
-                    tb.endTime += data.length;
-                    System.out.println("Set tb "+tb);
-                } catch(IOException e) {
-                    exporter.closeClient();
-                    exporter.waitForClient();
-                }
-            }
-        }
-        System.out.println("Done");
-    }
-
+    
     int traceBufSent = 0;
     
     int splitTraceBufSent = 0;
