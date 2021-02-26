@@ -17,13 +17,12 @@ import java.util.Locale;
 import edu.iris.dmc.seedcodec.B1000Types;
 import edu.sc.seis.seisFile.ChannelTimeWindow;
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.StringMSeedQueryReader;
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.earthworm.TraceBuf2;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
-public class WaveServer extends StringMSeedQueryReader {
+public class WaveServer {
 
     /**
      * Mainly for testing
@@ -138,6 +137,8 @@ public class WaveServer extends StringMSeedQueryReader {
         return ans;
     }
     
+    
+    
     void sendCmd(String cmd) throws IOException {
         if (isVerbose()) {
             System.out.println("send cmd: " + cmd);
@@ -201,7 +202,6 @@ public class WaveServer extends StringMSeedQueryReader {
         return DEFAULT_TIMEOUT_SECONDS;
     }
 
-    @Override
     public String createQuery(String network, String station, String location, String channel, Instant begin, Instant end) {
         String nextReqId = getNextRequestId();
         DecimalFormat df = new DecimalFormat("0.0###", new DecimalFormatSymbols(Locale.US));
@@ -211,7 +211,6 @@ public class WaveServer extends StringMSeedQueryReader {
         return cmd;
     }
 
-    @Override
     public List<DataRecord> read(String query) throws IOException, SeisFileException, SeedFormatException {
         List<DataRecord> out = new ArrayList<DataRecord>();
         List<TraceBuf2> tbList = getTraceBuf(query);

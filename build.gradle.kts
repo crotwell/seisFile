@@ -281,8 +281,7 @@ val scriptNames = mapOf(
   "seedlinkclient" to "edu.sc.seis.seisFile.client.SeedLinkClient",
   "datalinkclient" to "edu.sc.seis.seisFile.client.DataLinkClient",
   "earthwormExportTest" to "edu.sc.seis.seisFile.client.EarthwormExportClient",
-  "earthwormImportTest" to "edu.sc.seis.seisFile.client.EarthwormImportClient",
-  "waveserverclient" to "edu.sc.seis.seisFile.client.WaveServerClient"
+  "earthwormImportTest" to "edu.sc.seis.seisFile.client.EarthwormImportClient"
   )
 for (key in scriptNames.keys) {
   tasks.register<CreateStartScripts>(key) {
