@@ -76,6 +76,6 @@ public class AbstractQueryParamsTest {
         Instant time = TimeUtils.parseISOString("2013-03-15T12:35:21Z");
         aqp.setParam(T, time);
         System.out.println("Q: "+aqp.formURI());
-        assertEquals(time.toString(), aqp.getParam(T), "time");
+        assertEquals("2013-03-15T12:35:21.000", aqp.getParam(T), "time");
     }
 }

@@ -57,7 +57,7 @@ public class StationClientTest {
         cmd.parseArgs(args);
         assertEquals("CO,II", sc.getQueryParams().getParam(FDSNStationQueryParams.NETWORK));
         assertEquals("JSC,CASEE", sc.getQueryParams().getParam(FDSNStationQueryParams.STATION));
-        assertEquals("2010-01-02T00:00:00Z", sc.getQueryParams().getParam(FDSNStationQueryParams.ENDAFTER));
+        assertEquals("2010-01-02T00:00:00.000", sc.getQueryParams().getParam(FDSNStationQueryParams.ENDAFTER));
        // assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC,CASEE", queryParams.formURI().toString());
     }
 }
