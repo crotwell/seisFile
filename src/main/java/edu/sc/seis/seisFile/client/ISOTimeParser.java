@@ -31,8 +31,8 @@ public class ISOTimeParser  {
     }
     
     public static String format(Instant d) {
-        DateTimeFormatter passcalFormat = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        return passcalFormat.format(d);
+        DateTimeFormatter isoFormat = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        return isoFormat.format(d);
     }
     
     public static String formatForParsing(Instant d) {
