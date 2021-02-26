@@ -32,7 +32,7 @@ public class DataLinkClient extends AbstractClient {
     @Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")
     private File outputFile;
     
-    @Option(names= {"--timeout"}, description="timeout seconds", defaultValue = ""+DataLink.DEFAULT_TIMEOUT_SECOND)
+    @Option(names= {"--timeout"}, description="timeout seconds, defaults to "+DataLink.DEFAULT_TIMEOUT_SECOND, defaultValue = ""+DataLink.DEFAULT_TIMEOUT_SECOND)
     public Integer timeoutSec = DataLink.DEFAULT_TIMEOUT_SECOND;
     
     public DataLinkClient() {
