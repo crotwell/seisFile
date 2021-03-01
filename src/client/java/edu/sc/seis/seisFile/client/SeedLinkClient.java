@@ -21,7 +21,9 @@ import picocli.CommandLine.ParseResult;
 /**
  * Added support for an info output file and specifying a start and end time.
  */
-@Command(name="seedlinkclient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="seedlinkclient", 
+         description="Example client to stream miniseed over seedlink.", 
+         versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class SeedLinkClient extends AbstractClient {
 
     @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, "+SeedlinkReader.DEFAULT_HOST)

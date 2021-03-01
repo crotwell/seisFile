@@ -14,7 +14,9 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
-@Command(name="datalinkclient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="datalinkclient", 
+         description="Example client to stream miniseed over datalink.", 
+         versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class DataLinkClient extends AbstractClient {
 
     @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, "+DataLink.IRIS_HOST, defaultValue=DataLink.IRIS_HOST)

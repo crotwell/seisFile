@@ -17,7 +17,9 @@ import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
-@Command(name="earthwormImportClient", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="earthwormImportClient",
+         description="Example client to import TraceBuf2 packets over an earthworm export socket.",  
+         versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EarthwormImportClient extends AbstractClient {
 
     

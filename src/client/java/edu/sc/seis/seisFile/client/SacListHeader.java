@@ -16,7 +16,9 @@ import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParseResult;
 
-@Command(name="saclh", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="saclh", 
+         description="print some or all header values from a SAC file",
+         versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class SacListHeader extends AbstractClient {
     
     @Option(names={"-h","--headers"}, description="Headers to print")

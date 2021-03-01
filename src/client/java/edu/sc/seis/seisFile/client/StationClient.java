@@ -24,7 +24,9 @@ import picocli.CommandLine.Mixin;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
-@Command(name="fdsnstation", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="fdsnstation",
+         description="example client to query a remote FDSN Station web service",
+         versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class StationClient extends AbstractFDSNClient {
 
     FDSNStationQueryParams queryParams;

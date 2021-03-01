@@ -1,14 +1,16 @@
-
+import org.asciidoctor.gradle.jvm.AsciidoctorTask
+import org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask
 
 plugins {
   id("edu.sc.seis.version-class") version "1.2.0"
   "java-library"
   eclipse
-  "project-report"
+  `project-report`
   `maven-publish`
   signing
   application
-  id("org.asciidoctor.convert") version "1.5.12"
+  id("org.asciidoctor.jvm.convert") version "3.3.0"
+  id("org.asciidoctor.jvm.pdf") version "3.3.0"
 }
 
 application {
@@ -90,17 +92,13 @@ sourceSets {
         runtimeClasspath += sourceSets.main.get().output + sourceSets["client"].output
     }
 }
-
 val clientImplementation by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
-
 configurations["clientRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
-
 val clientTestImplementation by configurations.getting {
     extendsFrom(clientImplementation)
 }
-
 configurations["clientTestRuntimeOnly"].extendsFrom(configurations["clientRuntimeOnly"]).extendsFrom(configurations["testRuntimeOnly"])
 
 
@@ -125,8 +123,6 @@ dependencies {
     // Use JUnit Jupiter API for testing.
     clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
 
-    // Use JUnit Jupiter Engine for testing.
-    //clientTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
 }
 
 // for picocli
@@ -227,7 +223,6 @@ tasks.register<Sync>("explodeBin") {
   into( file("$buildDir/explode"))
 }
 
-//task explodeDist(type: Sync, dependsOn: ["explodeBin", "javadoc", "modVersionClass", "createBuildScript", ":seiswww:makeSite"]) {
 tasks.register<Sync>("explodeDist") {
   dependsOn("explodeBin")
   dependsOn("javadoc")
@@ -259,11 +254,29 @@ tasks.register<CreateStartScripts>("xxxfdsnevent") {
   applicationName = "fdsnevent"
 }
 
-tasks.asciidoctor {
-  sourceDir =  File(project.projectDir,  "src/doc/man-templates")
-  outputDir = File(project.buildDir,  "picocli/doc")
-  backends(  "manpage", "html5")
+
+tasks {
+  "asciidoctor"(AsciidoctorTask::class) {
+    setSourceDir( file("src/doc/man-templates"))
+    setOutputDir( file("build/manhtml"))
+    outputOptions {
+        backends("manpage", "html5")
+    }
+    inputs.files("build/picocli/man/*")
+    inputs.files(project.files("src/doc/man-templates/*"))
+  }
 }
+
+tasks {
+  "asciidoctorPdf"(AsciidoctorPdfTask::class) {
+    setSourceDir( file("src/doc/man-templates"))
+    setOutputDir( file("build/manpdf"))
+    inputs.files("build/picocli/man/*")
+    inputs.files(project.files("src/doc/man-templates/*"))
+  }
+}
+
+
 
 tasks.register("genManTemplate"){}
 tasks.register("genAutocomplete"){}
@@ -284,7 +297,7 @@ val scriptNames = mapOf(
   "earthwormImportTest" to "edu.sc.seis.seisFile.client.EarthwormImportClient"
   )
 for (key in scriptNames.keys) {
-  tasks.register<CreateStartScripts>(key) {
+  val scriptTask = tasks.register<CreateStartScripts>(key) {
     outputDir = file("build/scripts")
     mainClassName = scriptNames[key]
     applicationName = key
@@ -293,7 +306,7 @@ for (key in scriptNames.keys) {
       project.tasks["clientJar"].outputs.files
   }
   tasks.named("createRunScripts") {
-      dependsOn(key)
+      dependsOn(scriptTask)
   }
   tasks.register<JavaExec>("genManTemplate"+key) {
     description = "generate picocli/asciidoctor template for man pages "+key
@@ -310,7 +323,7 @@ for (key in scriptNames.keys) {
   tasks.named("genManTemplate") {
     dependsOn("genManTemplate"+key)
   }
-  tasks.register<JavaExec>("generateManpageAsciiDoc"+key) {
+  val adocTask = tasks.register<JavaExec>("generateManpageAsciiDoc"+key) {
     description = "generate picocli man pages for "+key
     group = "Documentation"
     classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
@@ -319,11 +332,12 @@ for (key in scriptNames.keys) {
     outDir.mkdirs()
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
+    outputs.files(File(outDir, scriptNames[key]+".adoc"))
   }
   tasks.named("asciidoctor") {
-      dependsOn("generateManpageAsciiDoc"+key)
+      dependsOn(adocTask)
   }
-  tasks.register<JavaExec>("genAutocomplete"+key) {
+  val bashautoTask = tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
     classpath = sourceSets.getByName("client").runtimeClasspath
     main = "picocli.AutoComplete"
@@ -334,7 +348,7 @@ for (key in scriptNames.keys) {
     dependsOn += tasks.getByName("compileJava")
   }
   tasks.named("genAutocomplete") {
-      dependsOn("genAutocomplete"+key)
+      dependsOn(bashautoTask)
   }
 }
 

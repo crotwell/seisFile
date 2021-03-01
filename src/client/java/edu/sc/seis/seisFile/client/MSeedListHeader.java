@@ -27,7 +27,9 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 import picocli.CommandLine.Command;
 
-@Command(name="mseedlh", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="mseedlh", 
+         description="list miniseed record headers",
+         versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class MSeedListHeader {
 
     public static void main(String[] args) throws IOException, SeedFormatException {

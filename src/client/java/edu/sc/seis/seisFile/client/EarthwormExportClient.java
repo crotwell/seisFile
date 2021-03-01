@@ -8,7 +8,9 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name="earthwormExportTest", versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
+@Command(name="earthwormExportTest",
+         description="Example client to export fake TraceBuf2 packets over an earthworm export socket.",  
+         versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EarthwormExportClient extends AbstractClient {
 
     public EarthwormExportClient() {
