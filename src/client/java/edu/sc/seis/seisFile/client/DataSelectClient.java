@@ -23,7 +23,13 @@ import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
 @Command(name="fdsndataselect",
-         description="example client to query a remote FDSN DataSelect web service via GET or POST",
+         description="Example client to query a remote FDSN DataSelect web service via GET or POST",
+         footer= {
+                 "",
+                 "Example:",
+                 "",
+                 "fdsndataselect -n CO -s JSC -c HHZ -o jsc.mseed -b 2021-02-28T12:45:00 -e 2021-02-28T12:47:00 -v"
+         },
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class DataSelectClient extends AbstractFDSNClient {
 

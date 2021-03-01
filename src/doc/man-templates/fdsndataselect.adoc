@@ -1,0 +1,37 @@
+:includedir: /Users/crotwell/dev/seis/seisFile/build/picocli/man
+//include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-full-manpage]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-header]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-name]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-synopsis]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-description]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-options]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-arguments]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-commands]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-exit-status]
+
+include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-footer]
+
+== Examples
+
+Ask for 2 minutes of HHZ data from station CO.JSC, and output to a file.
+....
+fdsndataselect -n CO -s JSC -c HHZ -o jsc.mseed -b 2021-02-28T12:45:00 -e 2021-02-28T12:47:00 -v
+....
+
+Multiple channels, either comma separated or using multiple flags.
+....
+fdsndataselect -n CO -s JSC -c HHZ -c HHN,HHE -o jsc.mseed -b 2021-02-28T12:45:00 -e 2021-02-28T12:47:00 -v
+....
+
+Only print the URL that would be accessed without connecting to the remote server.
+....
+fdsndataselect -n CO -s JSC -c HHZ -c HHN,HHE -b 2021-02-28T12:45:00 -e 2021-02-28T12:47:00 --printurl
+....
