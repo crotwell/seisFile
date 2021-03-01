@@ -61,7 +61,7 @@ class FDSNQueryParamGenerator {
         if (key in dateTypes) {
             t="Instant";
             converter=', converter=FloorISOTimeParser.class';
-            if (key.equals('end') || key.endsWith('Before')) {
+            if (key.equals('endTime') || key.endsWith('Before')) {
                 converter=', converter=CeilingISOTimeParser.class';
             }
         }

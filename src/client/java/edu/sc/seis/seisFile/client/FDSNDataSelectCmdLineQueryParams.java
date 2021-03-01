@@ -43,7 +43,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
     /** Limit results to time series samples on or before the specified end time
      */
-    @Option(names = { "-e","--endtime","--end" }, description="Limit results to time series samples on or before the specified end time", converter=FloorISOTimeParser.class)
+    @Option(names = { "-e","--endtime","--end" }, description="Limit results to time series samples on or before the specified end time", converter=CeilingISOTimeParser.class)
     public FDSNDataSelectQueryParams setEndTime(Instant value) {
         queryParams.setEndTime(value);
         return queryParams;

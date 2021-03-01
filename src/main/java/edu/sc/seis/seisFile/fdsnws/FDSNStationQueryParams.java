@@ -49,7 +49,7 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
         return this;
     }
 
-    /** Limit to metadata epochs startingon or after the specified start time.
+    /** Limit to metadata epochs starting on or after the specified start time.
      */
     public FDSNStationQueryParams setStartTime(Instant value) {
         setParam(STARTTIME, value);
