@@ -1,6 +1,7 @@
 package edu.sc.seis.seisFile.client;
 
 
+import java.io.File;
 import java.net.URI;
 
 import edu.sc.seis.seisFile.client.AbstractClient;
@@ -43,5 +44,8 @@ public abstract class AbstractFDSNClient extends AbstractClient {
     
     @Option(names="--"+RAW, description="Output the raw data to stdout")
     public boolean isRaw = false;
+
     
+    @Option(names={"-o","--output"}, description="Filename for outputing DataRecords")
+    public File outputFile;
 }

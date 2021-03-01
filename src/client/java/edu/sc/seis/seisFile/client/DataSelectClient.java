@@ -122,9 +122,6 @@ public class DataSelectClient extends AbstractFDSNClient {
         }
     }
     
-    @Option(names={"-o","--output"}, description="Filename for outputing DataRecords")
-    public File outputFile;
-    
     @ArgGroup(exclusive = false)
     UserPassword userPassword;
 

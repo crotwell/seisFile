@@ -1,5 +1,10 @@
 package edu.sc.seis.seisFile.client;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.net.URI;
 
 import javax.xml.stream.XMLStreamException;
@@ -16,6 +21,7 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
@@ -67,7 +73,12 @@ public class EventClient extends AbstractFDSNClient {
                     querier.validateQuakeML();
                     System.out.println("Valid");
                 } else if (isRaw) {
-                    querier.outputRaw(System.out);
+                    PrintStream out = System.out;
+                    if (outputFile != null) {
+                        out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+                    }
+                    querier.outputRaw(out);
+                    out.flush();
                 } else {
                     quakeml = querier.getQuakeML();
                     if (!quakeml.checkSchemaVersion()) {
@@ -110,7 +121,7 @@ public class EventClient extends AbstractFDSNClient {
             System.out.println(oString + " " + magString + " " + timeString);
         }
     }
-
+    
     public static final String NO_ORIGIN = "no origin";
     public static final String NO_MAGNITUDE = "no magnitude";
 

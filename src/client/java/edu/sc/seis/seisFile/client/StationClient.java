@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.client;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.net.URI;
 import java.util.List;
 
@@ -55,7 +58,12 @@ public class StationClient extends AbstractFDSNClient {
                     querier.validateFDSNStationXML();
                     System.out.println("Valid");
                 } else if (isRaw) {
-                    querier.outputRaw(System.out);
+                    PrintStream out = System.out;
+                    if (outputFile != null) {
+                        out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+                    }
+                    querier.outputRaw(out);
+                    out.flush();
                 } else {
                     FDSNStationXML stationXml = querier.getFDSNStationXML();
                     if (!stationXml.checkSchemaVersion()) {
