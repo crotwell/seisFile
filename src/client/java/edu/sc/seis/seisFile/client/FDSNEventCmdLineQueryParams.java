@@ -21,12 +21,12 @@ public class FDSNEventCmdLineQueryParams {
         setHost(host==null ? FDSNEventQueryParams.USGS_HOST : host);
     }
 
-    @Option(names = { "--host" }, description="host to connect to")
+    @Option(names = { "--host" }, description="host to connect to, defaults to ${DEFAULT-VALUE}", defaultValue=FDSNEventQueryParams.USGS_HOST)
     public FDSNEventQueryParams setHost(String host) {
         return this.queryParams.setHost(host);
     }
 
-    @Option(names = "--port", description = "port to connect to, defaults to 80", defaultValue="80")
+    @Option(names = "--port", description = "port to connect to, defaults to ${DEFAULT-VALUE}", defaultValue="80")
     public FDSNEventQueryParams setPort(int port) {
         return this.queryParams.setPort(port);
     }

@@ -282,12 +282,12 @@ public class FDSN${service.capitalize()}CmdLineQueryParams {
         setHost(host==null ? FDSN${service.capitalize()}QueryParams.${service=='Event'?'USGS_HOST':'DEFAULT_HOST'} : host);
     }
 
-    @Option(names = { "--host" }, description="host to connect to")
+    @Option(names = { "--host" }, description="host to connect to, defaults to \\${DEFAULT-VALUE}", defaultValue=FDSN${service.capitalize()}QueryParams.${service=='Event'?'USGS_HOST':'DEFAULT_HOST'})
     public FDSN${service}QueryParams setHost(String host) {
         return this.queryParams.setHost(host);
     }
 
-    @Option(names = "--port", description = "port to connect to, defaults to 80", defaultValue="80")
+    @Option(names = "--port", description = "port to connect to, defaults to \\${DEFAULT-VALUE}", defaultValue="80")
     public FDSN${service}QueryParams setPort(int port) {
         return this.queryParams.setPort(port);
     }
@@ -368,7 +368,7 @@ public class FDSN${service.capitalize()}CmdLineQueryParams {
         'minimumLength':'Limit results to continuous data segments of a minimum length specified in seconds.',
         'longestOnly':'Limit results to the longest continuous segment per channel.']
 
-    def stationParams = ['startTime':'Limit to metadata epochs startingon or after the specified start time.',
+    def stationParams = ['startTime':'Limit to metadata epochs starting on or after the specified start time.',
         'endTime':'Limit to metadata epochs ending on or before the specified end time.',
         'startBefore':'Limit to metadata epochs starting before specified time.',
         'startAfter':'Limit to metadata epochs starting after specified time.',

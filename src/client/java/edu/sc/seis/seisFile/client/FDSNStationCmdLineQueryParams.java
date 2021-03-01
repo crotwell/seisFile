@@ -21,12 +21,12 @@ public class FDSNStationCmdLineQueryParams {
         setHost(host==null ? FDSNStationQueryParams.DEFAULT_HOST : host);
     }
 
-    @Option(names = { "--host" }, description="host to connect to")
+    @Option(names = { "--host" }, description="host to connect to, defaults to ${DEFAULT-VALUE}", defaultValue=FDSNStationQueryParams.DEFAULT_HOST)
     public FDSNStationQueryParams setHost(String host) {
         return this.queryParams.setHost(host);
     }
 
-    @Option(names = "--port", description = "port to connect to, defaults to 80", defaultValue="80")
+    @Option(names = "--port", description = "port to connect to, defaults to ${DEFAULT-VALUE}", defaultValue="80")
     public FDSNStationQueryParams setPort(int port) {
         return this.queryParams.setPort(port);
     }
@@ -34,7 +34,7 @@ public class FDSNStationCmdLineQueryParams {
 
     /** Limit to metadata epochs startingon or after the specified start time.
      */
-    @Option(names = { "-b","--starttime","--start" }, description="Limit to metadata epochs startingon or after the specified start time.", converter=FloorISOTimeParser.class)
+    @Option(names = { "-b","--starttime","--start" }, description="Limit to metadata epochs starting on or after the specified start time.", converter=FloorISOTimeParser.class)
     public FDSNStationQueryParams setStartTime(Instant value) {
         queryParams.setStartTime(value);
         return queryParams;
