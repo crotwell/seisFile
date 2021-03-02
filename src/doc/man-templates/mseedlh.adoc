@@ -1,0 +1,22 @@
+:includedir: build/picocli/man
+:exampledir: src/doc/man-templates/example_output
+
+//include::{includedir}/mseedlh.adoc[tag=picocli-generated-full-manpage]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-header]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-name]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-synopsis]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-description]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-options]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-arguments]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-commands]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-exit-status]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-footer]

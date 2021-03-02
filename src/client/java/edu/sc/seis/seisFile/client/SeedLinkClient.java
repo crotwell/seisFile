@@ -7,8 +7,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
+import edu.sc.seis.seisFile.datalink.DataLink;
+import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.seedlink.SeedlinkPacket;
 import edu.sc.seis.seisFile.seedlink.SeedlinkReader;
@@ -33,19 +36,20 @@ public class SeedLinkClient extends AbstractClient {
     public Integer port = SeedlinkReader.DEFAULT_PORT;
     
     @Option(names= {"-n", "--network"}, description="list of networks to search")
-    List<String> network;
+    List<String> network = new ArrayList<String>();
     @Option(names= {"-s", "--station"}, description="list of stations to search")
-    List<String> station ;
+    List<String> station = new ArrayList<String>();;
     @Option(names= {"-l", "--location"}, description="list of locations to search")
-    List<String> location;
+    List<String> location = new ArrayList<String>();;
     @Option(names= {"-c", "--channel"}, description="list of channels to search")
-    List<String> channel;
+    List<String> channel = new ArrayList<String>();;
     
-    @Option(names= {"-b", "--start"}, description="start time")
+    @Option(names = { "-b","--starttime","--start" }, description="Limit results to time series samples on or after the specified start time", converter=FloorISOTimeParser.class)
     Instant start;
-    @Option(names= {"-e", "--end"}, description="end time")
+    @Option(names = { "-e","--endtime","--end" }, description="Limit results to time series samples on or before the specified end time", converter=CeilingISOTimeParser.class)
     Instant end;
 
+    
     @Option(names= {"--itype"}, description="info typ, ex "+SeedlinkReader.INFO_STREAMS)
     String infoType = SeedlinkReader.EMPTY;
     @Option(names= { "--iout"}, description="info out file")
@@ -54,11 +58,12 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names= { "--max"}, description="number of packets to receive before ending the connection")
     public int maxRecords = 10;
 
-    @Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")
+    @Option(names={"-o","--output"}, description = "Output file (default: print to console)")
     private File outputFile;
-    
-    @Option(names= {"--timeout"}, description="timeout seconds")
+
+    @Option(names= {"--timeout"}, description="timeout seconds, defaults to ${Default_Value}", defaultValue = ""+SeedlinkReader.DEFAULT_TIMEOUT_SECOND)
     public Integer timeoutSec = SeedlinkReader.DEFAULT_TIMEOUT_SECOND;
+    
     
     public SeedLinkClient() {
     }
