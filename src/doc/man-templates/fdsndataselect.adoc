@@ -1,5 +1,5 @@
 :includedir: build/picocli/man
-:exampledir: src/doc/man-templates
+:exampledir: src/doc/man-templates/example_output
 //include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-full-manpage]
 
 include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-header]
@@ -26,19 +26,19 @@ Ask for 2 minutes of HHZ data from station CO.JSC, and output to a file.
 
 [source,bash]
 ....
-include::{exampledir}/example_output/fdsndataselect_ex1_out[]
+include::{exampledir}/fdsndataselect_ex1_out[]
 ....
 
 Multiple channels, either comma separated or using multiple flags.
 
 [source,bash]
 ....
-include::{exampledir}/example_output/fdsndataselect_ex2_out[]
+include::{exampledir}/fdsndataselect_ex2_out[]
 ....
 
 Only print the URL that would be accessed without connecting to the remote server.
 
 [source,bash]
 ....
-include::{exampledir}/example_output/fdsndataselect_ex3_out[]
+include::{exampledir}/fdsndataselect_ex3_out[]
 ....

@@ -1,7 +1,10 @@
 package edu.sc.seis.seisFile.client;
 
+import java.io.BufferedOutputStream;
 import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import edu.sc.seis.seisFile.datalink.DataLink;
@@ -56,6 +59,9 @@ public class DataLinkClient extends AbstractClient {
         System.out.println("Server ID: "+dl.getServerId());
         dl.match(match);
         dl.stream();
+        if (outputFile != null) {
+            dataout = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+        }
         DataLinkResponse response = null;
         for(int i=0; maxRecords==-1 || i<maxRecords; i++) {
             response = dl.readPacket();
@@ -75,6 +81,10 @@ public class DataLinkClient extends AbstractClient {
             System.err.println("Expected ENDSTREAM, but got "+response.getKey());
         }
         dl.close();
+        if (dataout != null) {
+            dataout.close();
+            dataout = null;
+        }
     }
    
     
@@ -86,7 +96,7 @@ public class DataLinkClient extends AbstractClient {
         }
     }
     
-    private DataOutput dataout;
+    private DataOutputStream dataout;
 
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new DataLinkClient()).execute(args));

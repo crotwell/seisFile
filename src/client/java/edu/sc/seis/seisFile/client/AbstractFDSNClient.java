@@ -46,6 +46,6 @@ public abstract class AbstractFDSNClient extends AbstractClient {
     public boolean isRaw = false;
 
     
-    @Option(names={"-o","--output"}, description="Filename for outputing DataRecords")
+    @Option(names={"-o","--output"}, description="File for outputing DataRecords")
     public File outputFile;
 }

@@ -1,5 +1,5 @@
-:includedir: /Users/crotwell/dev/seis/seisFile/build/picocli/man
-:exampledir: src/doc/man-templates
+:includedir: build/picocli/man
+:exampledir: src/doc/man-templates/example_output
 
 //include::{includedir}/fdsnevent.adoc[tag=picocli-generated-full-manpage]
 
@@ -28,19 +28,19 @@ Ask for magnitude 2 or larger events within 3 degrees of 32/-81 in December 2020
 
 [source,bash]
 ....
-include::{exampledir}/example_output/fdsnevent_ex1_out[]
+include::{exampledir}/fdsnevent_ex1_out[]
 ....
 
 Only print the URL that would be accessed without connecting to the remote server.
 
 [source,bash]
 ....
-include::{exampledir}/example_output/fdsnevent_ex2_out[]
+include::{exampledir}/fdsnevent_ex2_out[]
 ....
 
 Output the raw quakeml to a file.
 
 [source,bash]
 ....
-include::{exampledir}/example_output/fdsnevent_ex3_out[]
+include::{exampledir}/fdsnevent_ex3_out[]
 ....

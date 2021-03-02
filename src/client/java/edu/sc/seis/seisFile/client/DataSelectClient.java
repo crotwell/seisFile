@@ -108,12 +108,14 @@ public class DataSelectClient extends AbstractFDSNClient {
             }
             while (drIter.hasNext()) {
                 DataRecord dr = drIter.next();
-                if (out != null) {
-                    dr.write(out);
-                } else {
+                if (verbose || out == null ) {
                     DataHeader dh = dr.getHeader();
                     System.out.println(dh);
+                } 
+                if (out != null ) {
+                    dr.write(out);
                 }
+                
             }
         } finally {
             if (out != null) {

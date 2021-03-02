@@ -1,0 +1,39 @@
+:includedir: build/picocli/man
+:exampledir: src/doc/man-templates/example_output
+
+//include::{includedir}/datalinkclient.adoc[tag=picocli-generated-full-manpage]
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-header]
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-name]
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-synopsis]
+
+//include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-description]
+== Description
+
+Datalinkclient is an example client that can connect to a datalink service and stream
+miniseed to a file.
+
+The datalink protocol is specified here:
+
+https://seiscode.iris.washington.edu/svn/orb2ringserver/tags/release-1.0/libdali/doc/DataLink.protocol
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-options]
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-arguments]
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-commands]
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-exit-status]
+
+include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-footer]
+
+== Examples
+
+Ask for a few packets of HH. data from station CO.BIRD, and output to a file.
+
+[source,bash]
+....
+include::{exampledir}/datalinkclient_ex1_out[]
+....
