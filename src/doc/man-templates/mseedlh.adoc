@@ -20,3 +20,12 @@ include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-commands]
 include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-exit-status]
 
 include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-footer]
+
+== Examples
+
+Print headers and dump the timeseries data for a miniseed file.
+
+[source,bash]
+....
+include::{exampledir}/mseedlh_ex1_out[]
+....

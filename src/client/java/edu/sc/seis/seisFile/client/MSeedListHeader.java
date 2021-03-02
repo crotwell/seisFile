@@ -7,94 +7,70 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.iris.dmc.seedcodec.CodecException;
 import edu.iris.dmc.seedcodec.DecompressedData;
 import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
-import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.ParameterException;
+import picocli.CommandLine.Parameters;
+import picocli.CommandLine.ParseResult;
 
 @Command(name="mseedlh", 
          description="list miniseed record headers",
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class MSeedListHeader {
+public class MSeedListHeader extends AbstractClient {
 
-    public static void main(String[] args) throws IOException, SeedFormatException {
-        String network = null;
-        String station = null;
-        String location = null;
-        String channel = null;
-        List<String> filenameList = new ArrayList<String>();
-        String outFile = null;
-        int maxRecords = -1;
-        int defaultRecordSize = 4096;
-        boolean verbose = false;
-        boolean dumpData = false;
-        boolean timed = false;
+
+    @Option(names= {"-n", "--network"}, description="list of networks to search")
+    List<String> network = new ArrayList<String>();
+    @Option(names= {"-s", "--station"}, description="list of stations to search")
+    List<String> station = new ArrayList<String>();;
+    @Option(names= {"-l", "--location"}, description="list of locations to search")
+    List<String> location = new ArrayList<String>();;
+    @Option(names= {"-c", "--channel"}, description="list of channels to search")
+    List<String> channel = new ArrayList<String>();;
+
+    @Option(names= { "--max"}, description="number of data records to process before ending", defaultValue="-1")
+    public int maxRecords = -1;
+
+    @Option(names= { "--rec"}, description="default record size if record is missing a B1000", defaultValue="512")
+    public int defaultRecordSize = 512;
+    
+    @Option(names= { "--data"}, description="dump timeseries samples, default is to just print headers", defaultValue="false")
+    boolean dumpData = false;
+    
+    @Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")
+    private File outputFile;
+    
+    @Parameters() 
+    List<File> files;
+
+    
+    
+    @Override
+    public Integer call() throws Exception {
+        ParseResult parsedArgs = spec.commandLine().getParseResult();
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+            throw new ParameterException(spec.commandLine(), "Must use at least one option");
+        }
         DataOutputStream dos = null;
+        if (outputFile != null) {
+            dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+        }
         PrintWriter out = new PrintWriter(System.out, true);
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-n")) {
-                network = args[i + 1];
-                i++;
-            } else if (args[i].equals("-s")) {
-                station = args[i + 1];
-                i++;
-            } else if (args[i].equals("-l")) {
-                location = args[i + 1];
-                i++;
-            } else if (args[i].equals("-c")) {
-                channel = args[i + 1];
-                i++;
-            } else if (args[i].equals("-d")) {
-                dumpData = true;
-            } else if (args[i].equals("-o")) {
-                outFile = args[i + 1];
-                i++;
-                dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
-            } else if (args[i].equals("-r")) {
-                defaultRecordSize = Integer.parseInt(args[i + 1]);
-                i++;
-            } else if (args[i].equals("-m")) {
-                maxRecords = Integer.parseInt(args[i + 1]);
-                i++;
-                if (maxRecords < -1) {
-                    maxRecords = -1;
-                }
-            } else if (args[i].equals("--verbose")) {
-                verbose = true;
-            } else if (args[i].equals("--timed")) {
-                timed = true;
-            } else if (args[i].equals("--version")) {
-                out.println(BuildVersion.getDetailedVersion());
-                System.exit(0);
-            } else if (args[i].equals("--help")) {
-                out.println("java "
-                        + MSeedListHeader.class.getName()
-                        + " [-n net][-s sta][-l loc][-c chan][-o mseedOutfile][-m maxrecords][-d][--verbose][--version][--timed][--help] <filename> [<filename>...]");
-                System.exit(0);
-            } else {
-                filenameList.add(args[i]);
-            }
-        }
-        if (filenameList.size() == 0) {
-            return;
-        }
-        for (String filename : filenameList) {
-            long beforeNanos = System.nanoTime();
+        for (File filename : files) {
             processFile(filename,
                         network,
                         station,
@@ -106,22 +82,20 @@ public class MSeedListHeader {
                         dumpData,
                         dos,
                         out);
-            long afterNanos = System.nanoTime();
-            if (timed) {
-                out.println("Time: " + (afterNanos - beforeNanos) / 1000000000.0 + " sec for " + filename);
-            }
         }
         if (dos != null) {
             dos.close();
         }
-        out.println("Finished: " + Instant.now());
+        
+        return 0;
     }
 
-    public static void processFile(String filename,
-                                   String network,
-                                   String station,
-                                   String location,
-                                   String channel,
+
+    public static void processFile(File infile,
+                                   List<String> network,
+                                   List<String> station,
+                                   List<String> location,
+                                   List<String> channel,
                                    int maxRecords,
                                    int defaultRecordSize,
                                    boolean verbose,
@@ -129,27 +103,12 @@ public class MSeedListHeader {
                                    DataOutputStream dos,
                                    PrintWriter out) throws IOException, SeedFormatException {
         InputStream inStream;
-        if (filename.equals("stdin")) {
+        if (infile == null) {
             inStream = System.in;
+        } else if (infile.exists() && infile.isFile()) {
+            inStream = new FileInputStream(infile);
         } else {
-            File f = new File(filename);
-            if (f.exists() && f.isFile()) {
-                inStream = new FileInputStream(filename);
-            } else {
-                // maybe a url?
-                try {
-                    URL url = new URL(filename);
-                    inStream = url.openStream();
-                } catch(MalformedURLException e) {
-                    out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile="
-                            + f.isFile() + " " + e.getMessage());
-                    return;
-                } catch(FileNotFoundException e) {
-                    out.println("Cannot load '" + filename + "', as file or URL: exists=" + f.exists() + " isFile="
-                            + f.isFile() + " " + e.getMessage());
-                    return;
-                }
-            }
+            throw new IOException("Unable to read file: "+infile.getAbsolutePath());
         }
         // if you wish to customize the blockette creation, for example to add
         // new types of Blockettes,
@@ -163,10 +122,10 @@ public class MSeedListHeader {
                 SeedRecord sr = SeedRecord.read(dataInStream, defaultRecordSize);
                 if (sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
-                    if ((network == null || network.equals(dr.getHeader().getNetworkCode()))
-                            && (station == null || station.equals(dr.getHeader().getStationIdentifier()))
-                            && (location == null || location.equals(dr.getHeader().getLocationIdentifier()))
-                            && (channel == null || channel.equals(dr.getHeader().getChannelIdentifier()))) {
+                    if ((network == null || network.size() == 0 || network.contains(dr.getHeader().getNetworkCode()))
+                            && (station == null || station.size() == 0 || station.contains(dr.getHeader().getStationIdentifier()))
+                            && (location == null || location.size() == 0 || location.contains(dr.getHeader().getLocationIdentifier()))
+                            && (channel == null || channel.size() == 0 || channel.contains(dr.getHeader().getChannelIdentifier()))) {
                         if (dos != null) {
                             dr.write(dos);
                         }
@@ -185,7 +144,7 @@ public class MSeedListHeader {
                                 int[] intData = dd.getAsInt();
                                 for (int j = 0; j < intData.length; j++) {
                                     out.print(intData[j] + " ");
-                                    if (j % 10 == 9) {
+                                    if (j % 10 == 9 || j == intData.length-1) {
                                         out.println();
                                     }
                                 }
@@ -193,8 +152,7 @@ public class MSeedListHeader {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             } catch(CodecException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                                throw new SeedFormatException("Unable to read record "+i+" from "+infile.getPath(), e);
                             }
                             out.flush();
                         }
@@ -213,5 +171,10 @@ public class MSeedListHeader {
                 dataInStream.close();
             }
         }
+    }
+
+    
+    public static void main(String... args) { // bootstrap the application
+        System.exit(new CommandLine(new MSeedListHeader()).execute(args));
     }
 }

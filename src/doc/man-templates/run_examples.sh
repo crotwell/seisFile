@@ -1,7 +1,6 @@
 #!/bin/bash
 
 EXPLODE=../../../../build/explode
-ls ../$EXPLODE
 PATH=${PATH}:${EXPLODE}/bin
 CMD_FILES=$(ls *_ex?.sh)
 cd example_output
