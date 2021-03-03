@@ -1,0 +1,16 @@
+= Example Clients for SeisFile
+
+SeisFile is a library, but includes as a separate jar several clients
+as examples, but are also useful in their own. They are:
+
+== Example Clients
+
+* xref:datalinkclient.adoc[datalinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/DataLinkClient.java[Source]
+* xref:earthwormExportServer.adoc[earthwormExportServer] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormExportServer.java[Source]
+* xref:earthwormImportClient.adoc[earthwormImportClient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java[Source]
+* xref:fdsndataselect.adoc[fdsndataselect] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java[Source]
+* xref:fdsnevent.adoc[fdsnevent] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java[Source]
+* xref:fdsnstation.adoc[fdsnstation] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java[Source]
+* xref:saclh.adoc[saclh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java[Source]
+* xref:mseedlh.adoc[mseedlh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[Source]
+* xref:seedlinkclient.adoc[seedlinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java[Source]
