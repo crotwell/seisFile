@@ -332,6 +332,7 @@ for (key in scriptNames.keys) {
     outDir.mkdirs()
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
+    inputs.dir("src/client")
     outputs.files(File(outDir, scriptNames[key]+".adoc"))
   }
   tasks.named("asciidoctor") {
