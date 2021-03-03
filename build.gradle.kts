@@ -109,8 +109,8 @@ dependencies {
 
     annotationProcessor("info.picocli:picocli-codegen:4.6.1")
     implementation( "org.slf4j:slf4j-api:1.7.30")
-    implementation( "org.slf4j:slf4j-log4j12:1.7.30")
-    implementation( "com.fasterxml.woodstox:woodstox-core:6.2.3")
+    clientImplementation( "org.slf4j:slf4j-log4j12:1.7.30")
+    implementation( "com.fasterxml.woodstox:woodstox-core:6.2.4")
     implementation( "org.apache.httpcomponents:httpclient:4.5.13")
 
 
@@ -353,8 +353,6 @@ for (key in scriptNames.keys) {
       dependsOn(bashautoTask)
   }
 }
-
-
 
 tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
 tasks.get("explodeDist").dependsOn(tasks.get("asciidoctor"))
