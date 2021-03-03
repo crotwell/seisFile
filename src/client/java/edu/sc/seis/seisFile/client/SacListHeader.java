@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.sc.seis.seisFile.sac.SacHeader;
 import edu.sc.seis.seisFile.sac.SacIncrementalloader;
@@ -21,7 +25,7 @@ import picocli.CommandLine.ParseResult;
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class SacListHeader extends AbstractClient {
     
-    @Option(names={"-h","--headers"}, description="Headers to print")
+    @Option(names={"-h","--headers"}, description="Headers to print", split = ",")
     public List<String> headerList = new ArrayList<String>();
 
     @Parameters( description="SAC files")
@@ -29,10 +33,24 @@ public class SacListHeader extends AbstractClient {
     
 
     @Override
-    public Integer call() throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    public Integer call() throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
         if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
+        }
+        // check to see if headers are correct
+
+        Class<SacHeader> headerClass = SacHeader.class;
+        Map<String, Method> fieldMap = new HashMap<String, Method>();
+        for (String h : headerList) {
+            try {
+                String getterName = "get"+h.substring(0,1).toUpperCase()+h.substring(1);
+                Method fieldGetter = headerClass.getMethod(getterName);
+                fieldMap.put(h, fieldGetter);
+            } catch(NoSuchMethodException e) {
+                System.err.println("No header named '"+h+"', cowardly quitting...");
+                return 1;
+            }
         }
         PrintWriter out = new PrintWriter(System.out, true);
         for (File sacFile : sacfileList) {
@@ -52,17 +70,22 @@ public class SacListHeader extends AbstractClient {
                     header.printHeader(out);
                 } else {
                     String headerString = filename+":";
-                    Class<SacHeader> headerClass = SacHeader.class;
                     for (String h : headerList) {
-                        Field field = headerClass.getField(h);
-                        if (field != null) {
-                            headerString+= " "+field.get(header);
+                        Method fieldGetter = fieldMap.get(h);
+                        if (fieldGetter != null) {
+                            if (fieldGetter.getReturnType() == Float.TYPE) {
+                                headerString+= SacHeader.format(h, (float)fieldGetter.invoke(header));
+                            } else if (fieldGetter.getReturnType() == Integer.TYPE) {
+                                headerString+= SacHeader.format(h, (int)fieldGetter.invoke(header));
+                            } else {
+                                headerString+= SacHeader.format(h, (String)fieldGetter.invoke(header), SacHeader.DEFAULT_LABEL_WIDTH, SacHeader.DEFAULT_VALUE_WIDTH);
+                            }
                         }
                     }
                     out.println(headerString);
                 }
             } else {
-                out.println("Cannot load, exists="+sacFile.exists()+" isFile="+sacFile.isFile());
+                out.println("Cannot load, "+sacFile.getPath()+" exists="+sacFile.exists()+" isFile="+sacFile.isFile());
             }
         }
         return 0;

@@ -311,7 +311,7 @@ public class FDSN${service.capitalize()}CmdLineQueryParams {
 
     def templateTextOptionArray = '''
 
-    @Option(names = { ${optionNames} }, description="$doc")
+    @Option(names = { ${optionNames} }, description="$doc", split = ",")
     public FDSN${service}QueryParams set${key.capitalize()}(${type==''?'String':type}${arrayType} value) {
       queryParams.clear${key.capitalize()}();
       for(${type==''?'String':type} v: value) queryParams.appendTo${key.capitalize()}(v);

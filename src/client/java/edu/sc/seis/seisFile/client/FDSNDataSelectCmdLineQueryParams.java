@@ -51,7 +51,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-n","--network","--net" }, description="Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.")
+    @Option(names = { "-n","--network","--net" }, description="Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.", split = ",")
     public FDSNDataSelectQueryParams setNetwork(String[] value) {
       queryParams.clearNetwork();
       for(String v: value) queryParams.appendToNetwork(v);
@@ -60,7 +60,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-s","--station","--sta" }, description="Select one or more SEED station codes. Multiple codes are comma-separated.")
+    @Option(names = { "-s","--station","--sta" }, description="Select one or more SEED station codes. Multiple codes are comma-separated.", split = ",")
     public FDSNDataSelectQueryParams setStation(String[] value) {
       queryParams.clearStation();
       for(String v: value) queryParams.appendToStation(v);
@@ -69,7 +69,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-l","--location","--loc" }, description="Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.")
+    @Option(names = { "-l","--location","--loc" }, description="Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.", split = ",")
     public FDSNDataSelectQueryParams setLocation(String[] value) {
       queryParams.clearLocation();
       for(String v: value) queryParams.appendToLocation(v);
@@ -78,7 +78,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-c","--channel","--cha" }, description="Select one or more SEED channel codes. Multiple codes are comma-separated.")
+    @Option(names = { "-c","--channel","--cha" }, description="Select one or more SEED channel codes. Multiple codes are comma-separated.", split = ",")
     public FDSNDataSelectQueryParams setChannel(String[] value) {
       queryParams.clearChannel();
       for(String v: value) queryParams.appendToChannel(v);

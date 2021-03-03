@@ -498,7 +498,11 @@ public class SacHeader {
     };
     
     public static String format(String label, float f) {
-        return format(label, decimalFormat.get().format(f), 10, 8);
+        return format(label, decimalFormat.get().format(f), DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH);
+    }
+    
+    public static String format(String label, int val) {
+        return format(label, ""+val, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH);
     }
 
     public static String format(String label, String val, int labelWidth, int valWidth) {
@@ -614,23 +618,23 @@ public class SacHeader {
                                lcalda,
                                "unused27",
                                unused27));
-        int labelWidth = 10;
-        int wideValWidth = 31;
-        int valWidth = 10;
-        out.println(format("kstnm", kstnm, labelWidth, valWidth) + format("kevnm", kevnm, labelWidth, wideValWidth)
-                + format("khole", khole, labelWidth+2, valWidth));
-        out.println(format("ko", ko, labelWidth, valWidth) + format("ka = ", ka, labelWidth, valWidth)
-                + format("kt0", kt0, labelWidth, valWidth) + format("kt1", kt1, labelWidth, valWidth));
-        out.println(format("kt2", kt2, labelWidth, valWidth) + format("kt3 = ", kt3, labelWidth, valWidth)
-                + format("kt4", kt4, labelWidth, valWidth) + format("kt5", kt5, labelWidth, valWidth));
-        out.println(format("kt6", kt6, labelWidth, valWidth) + format("kt7 = ", kt7, labelWidth, valWidth)
-                + format("kt8", kt8, labelWidth, valWidth) + format("kt9", kt9, labelWidth, valWidth));
-        out.println(format("kf", kf, labelWidth, valWidth) + format("kuser0 = ", kuser0, labelWidth, valWidth)
-                + format("kuser1", kuser1, labelWidth, valWidth) + format("kuser2", kuser2, labelWidth, valWidth));
-        out.println(format("kcmpnm", kcmpnm, labelWidth, valWidth) + format("knetwk = ", knetwk, labelWidth, valWidth)
-                + format("kdatrd", kdatrd, labelWidth, valWidth) + format("kinst", kinst, labelWidth, valWidth));
+        out.println(format("kstnm", kstnm, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kevnm", kevnm, DEFAULT_LABEL_WIDTH, DEFAULT_WIDE_WIDTH)
+                + format("khole", khole, DEFAULT_LABEL_WIDTH+2, DEFAULT_VALUE_WIDTH));
+        out.println(format("ko", ko, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("ka = ", ka, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH)
+                + format("kt0", kt0, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kt1", kt1, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH));
+        out.println(format("kt2", kt2, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kt3 = ", kt3, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH)
+                + format("kt4", kt4, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kt5", kt5, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH));
+        out.println(format("kt6", kt6, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kt7 = ", kt7, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH)
+                + format("kt8", kt8, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kt9", kt9, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH));
+        out.println(format("kf", kf, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kuser0 = ", kuser0, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH)
+                + format("kuser1", kuser1, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kuser2", kuser2, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH));
+        out.println(format("kcmpnm", kcmpnm, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("knetwk = ", knetwk, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH)
+                + format("kdatrd", kdatrd, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kinst", kinst, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH));
     }
 
+    public static final int DEFAULT_LABEL_WIDTH = 10;
+    public static final int DEFAULT_WIDE_WIDTH = 31;
+    public static final int DEFAULT_VALUE_WIDTH = 10;
     
     boolean byteOrder = SunByteOrder;
 
