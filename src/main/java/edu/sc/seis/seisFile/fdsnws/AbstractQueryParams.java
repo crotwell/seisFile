@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.sc.seis.seisFile.ISOTimeParser;
 import edu.sc.seis.seisFile.TimeUtils;
-import edu.sc.seis.seisFile.client.ISOTimeParser;
 
 public abstract class AbstractQueryParams {
 

@@ -2,7 +2,7 @@ package edu.sc.seis.seisFile.client;
 
 import java.util.Map;
 
-
+import edu.sc.seis.seisFile.BoxArea;
 import picocli.CommandLine.ITypeConverter;
 
 public class BoxAreaParser extends PatternParser implements ITypeConverter<BoxArea> {

@@ -2,7 +2,7 @@ package edu.sc.seis.seisFile.client;
 
 import java.util.Map;
 
-
+import edu.sc.seis.seisFile.DonutArea;
 import picocli.CommandLine.ITypeConverter;
 
 public class DonutParser extends PatternParser implements ITypeConverter<DonutArea> {
