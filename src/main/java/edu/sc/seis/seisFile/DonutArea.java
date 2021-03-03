@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.client;
+package edu.sc.seis.seisFile;
 
 public class DonutArea {
 

@@ -1,4 +1,4 @@
-package edu.sc.seis.seisFile.client;
+package edu.sc.seis.seisFile;
 
 import java.time.Instant;
 import java.time.YearMonth;
@@ -7,8 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import edu.sc.seis.seisFile.TimeUtils;
 
 
 
