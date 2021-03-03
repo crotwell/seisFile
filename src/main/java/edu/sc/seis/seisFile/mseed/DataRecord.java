@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import edu.iris.dmc.seedcodec.Codec;
 import edu.iris.dmc.seedcodec.CodecException;
@@ -466,9 +468,26 @@ public class DataRecord extends SeedRecord implements Serializable {
         }
     }
 
+    private static final ThreadLocal<DecimalFormat> decimalFormat = new ThreadLocal<DecimalFormat>() {  
+        @Override  
+        protected DecimalFormat initialValue() {  
+            return (new DecimalFormat("#####.####", new DecimalFormatSymbols(Locale.US)));  
+        }  
+    };
+
+    public static String oneLineSummaryKey() {
+        return "Type Codes Start Duration Npts";
+        
+    }
+    public String oneLineSummary() {
+        String s = getHeader().getTypeCode()+" "+ getHeader().getCodes() + " " 
+                + getStartTime() + "  " + decimalFormat.get().format(getHeader().getNumSamples()/ getSampleRate() ) +" "+getHeader().getNumSamples();
+        return s;
+    }
+    
     public String toString() {
-        String s = "Data " + super.toString();
-        s += "\n" + data.length + " bytes of data read.";
+        String s = super.toString();
+        s += DEFAULT_INDENT+DEFAULT_INDENT+data.length + " bytes of data";
         return s;
     }
 

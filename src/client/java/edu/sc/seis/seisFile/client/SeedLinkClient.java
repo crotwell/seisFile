@@ -125,7 +125,7 @@ public class SeedLinkClient extends AbstractClient {
                 if (dos == null || verbose) {
                     // print something to the screen if we are not saving to
                     // disk
-                    dr.writeASCII(out, "    ");
+                    out.println(dr.oneLineSummary());
                     out.flush();
                 }
                 i++;

@@ -192,12 +192,15 @@ public abstract class SeedRecord {
             // dont think this should happen
             throw new RuntimeException(e);
         }
+        p.close();
         return sw.toString();
     }
 
     public void writeASCII(PrintWriter out) throws IOException {
         writeASCII(out, "");
     }
+    
+    public static final String DEFAULT_INDENT = "  ";
     
     public void writeASCII(PrintWriter out, String indent) throws IOException {
         if (this instanceof DataRecord) {
@@ -207,9 +210,9 @@ public abstract class SeedRecord {
         } else {
             out.print(indent+"SeedRecord");
         }
-        getControlHeader().writeASCII(out, indent+"  ");
+        getControlHeader().writeASCII(out, indent+DEFAULT_INDENT);
         for (Blockette b : blockettes) {
-            b.writeASCII(out, indent+"    ");
+            b.writeASCII(out, indent+DEFAULT_INDENT+DEFAULT_INDENT);
         }
     }
     

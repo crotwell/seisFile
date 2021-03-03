@@ -65,7 +65,9 @@ public class DataLinkPacket extends DataLinkResponse {
         return rawData;
     }
 
-
+    public boolean isMiniseed() {
+        return this.miniseed != null || this.streamId.endsWith(DataLink.MSEED_TYPE);
+    }
 
     public DataRecord getMiniseed() throws DataLinkException {
         if (miniseed == null) {

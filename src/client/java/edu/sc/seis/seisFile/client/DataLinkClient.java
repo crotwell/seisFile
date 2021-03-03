@@ -11,6 +11,7 @@ import edu.sc.seis.seisFile.datalink.DataLink;
 import edu.sc.seis.seisFile.datalink.DataLinkException;
 import edu.sc.seis.seisFile.datalink.DataLinkPacket;
 import edu.sc.seis.seisFile.datalink.DataLinkResponse;
+import edu.sc.seis.seisFile.mseed.DataRecord;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -91,8 +92,14 @@ public class DataLinkClient extends AbstractClient {
     public void handlePacket(DataLinkPacket packet) throws DataLinkException, IOException {
         if (dataout != null) {
             dataout.write(packet.getRawData());
-        } else {
-            System.out.println(" Packet: "+packet.getStreamId()+"  "+packet.getHppacketstart());
+        }
+        if (dataout == null || verbose ){
+            if (packet.isMiniseed()) {
+                DataRecord dr = packet.getMiniseed();
+                System.out.println(dr.oneLineSummary());
+            } else {
+                System.out.println(" Packet: "+packet.getStreamId()+"  "+packet.getHppacketstart());
+            }
         }
     }
     

@@ -10,6 +10,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -796,11 +797,16 @@ public class DataHeader extends ControlHeader {
      * @return formatted string of object contents
      */
     public String toString() {
-        String s = super.toString() + " ";
-        s += " "+ getCodes() + "." 
-                + getStartTime() + "  " + getSampleRate()*getNumSamples() + " "
-                + getNumBlockettes() + " " + getDataOffset() + " " + getDataBlocketteOffset();
-        return s;
+        StringWriter sw = new StringWriter();
+        PrintWriter p = new PrintWriter(sw);
+        try {
+            writeASCII(p);
+        }catch(IOException e) {
+            // dont think this should happen
+            throw new RuntimeException(e);
+        }
+        p.close();
+        return sw.toString();
     }
     
     public String getCodes() {
