@@ -181,9 +181,13 @@ val distFiles: CopySpec = copySpec {
         include("javadoc/**")
         into("doc")
     }
-    from("build/picocli/doc") {
-        include("**")
+    from("build/manhtml") {
+        include("manpage/**")
         into("doc")
+    }
+    from("build/manhtml/html5") {
+        include("**")
+        into("doc/manhtml")
     }
     from("build/picocli") {
         include("bashcompletion/**")
