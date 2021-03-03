@@ -262,9 +262,8 @@ tasks {
     outputOptions {
         backends("manpage", "html5")
     }
-    inputs.files("build/picocli/man/*")
-    inputs.files(project.files("src/doc/man-templates/*"))
-    inputs.files(project.files("src/doc/man-templates/example_output/*"))
+    inputs.dir("build/picocli/man")
+    inputs.dir("src/doc/man-templates")
   }
 }
 
@@ -272,9 +271,8 @@ tasks {
   "asciidoctorPdf"(AsciidoctorPdfTask::class) {
     setSourceDir( file("src/doc/man-templates"))
     setOutputDir( file("build/manpdf"))
-    inputs.files("build/picocli/man/*")
-    inputs.files(project.files("src/doc/man-templates/*"))
-    inputs.files(project.files("src/doc/man-templates/example_output/*"))
+    inputs.dir("build/picocli/man")
+    inputs.dir("src/doc/man-templates")
   }
 }
 
