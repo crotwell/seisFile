@@ -239,16 +239,15 @@ tasks.register<Sync>("explodeDist") {
 tasks.register<Tar>("tarBin") {
   dependsOn("explodeBin" )
     compression = Compression.GZIP
-    into(project.name+"-"+archiveVersion+"-bin") {
+    into(project.name+"-"+archiveVersion.get()+"-bin") {
         with(binDistFiles)
     }
 }
 
 tasks.register<Tar>("tarDist") {
   dependsOn("explodeDist" )
-    val dirName = project.name+"-"+archiveVersion
     compression = Compression.GZIP
-    into(dirName) {
+    into(project.name+"-"+archiveVersion.get()) {
         with(distFiles)
     }
 }
