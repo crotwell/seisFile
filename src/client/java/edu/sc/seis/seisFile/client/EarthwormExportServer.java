@@ -8,12 +8,12 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name="earthwormExportTest",
+@Command(name="earthwormExportServer",
          description="Example client to export fake TraceBuf2 packets over an earthworm export socket.",  
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class EarthwormExportClient extends AbstractClient {
+public class EarthwormExportServer extends AbstractClient {
 
-    public EarthwormExportClient() {
+    public EarthwormExportServer() {
         // TODO Auto-generated constructor stub
     }
 
@@ -84,6 +84,6 @@ public class EarthwormExportClient extends AbstractClient {
 
 
     public static void main(String... args) { // bootstrap the application
-        System.exit(new CommandLine(new EarthwormExportClient()).execute(args));
+        System.exit(new CommandLine(new EarthwormExportServer()).execute(args));
     }
 }
