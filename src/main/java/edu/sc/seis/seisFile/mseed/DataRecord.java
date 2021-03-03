@@ -315,17 +315,6 @@ public class DataRecord extends SeedRecord implements Serializable {
         } // end of for ()
     }
 
-    /**
-     * @deprecated Confusing method name, use printData(PrintWriter) for textual
-     *             output and write(DataOutputStream) for binary output.
-     * 
-     * @param out
-     */
-    @Deprecated
-    public void writeData(PrintWriter out) {
-        printData(out);
-    }
-
     public void printData(PrintWriter out) {
         byte[] d = getData();
         DecimalFormat byteFormat = new DecimalFormat("000");

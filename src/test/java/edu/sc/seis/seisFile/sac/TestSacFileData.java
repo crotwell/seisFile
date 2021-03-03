@@ -29,9 +29,7 @@ public class TestSacFileData {
          * of a .sac file and print it.  Each data point is a magnitude, and is
          * saved in an array made by the SacTimeSeries.
          */
-        SacTimeSeries sts = new SacTimeSeries();
-
-        sts.read(new DataInputStream(TestSacFileData.class.getClassLoader().getResourceAsStream("edu/sc/seis/seisFile/sac/control.sac")));
+        SacTimeSeries sts =  SacTimeSeries.read(new DataInputStream(TestSacFileData.class.getClassLoader().getResourceAsStream("edu/sc/seis/seisFile/sac/control.sac")));
 
         assertEquals(20, sts.getHeader().getNpts());
 

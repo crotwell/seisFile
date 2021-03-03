@@ -384,94 +384,12 @@ public class DataHeader extends ControlHeader {
         this.startTime = btime.getAsBytes();
     }
 
-    /**
-     * get the sample rate. derived from sample rate factor and the sample rate
-     * multiplier. Note this may not be the true sample rate if the record contains
-     * a blockette 100.
-     * 
-     * @return sample rate
-     * @deprecated Use DataRecord.getSampleRate() as it also checks for a possible blockette100 value. 
-     */
-    @Deprecated
-    public float getSampleRate() {
-        return calcSampleRateFromMultipilerFactor();
-    }
-
-    // convert contents of Btime structure to the number of
-    // ten thousandths of seconds it represents within that year
-    private static double ttConvert(Btime bTime) {
-        double tenThousandths = bTime.jday * 864000000.0;
-        tenThousandths += bTime.hour * 36000000.0;
-        tenThousandths += bTime.min * 600000.0;
-        tenThousandths += bTime.sec * 10000.0;
-        tenThousandths += bTime.tenthMilli;
-        return tenThousandths;
-    }
-
     // take the Btime structure and forward-project a new time that is
     // the specified number of ten thousandths of seconds ahead
     static Btime projectTime(Btime bTime, double tenThousandths) {
         Instant inst = bTime.toInstant();
         Duration dur = Duration.ofSeconds(0, Math.round(tenThousandths*100000));
         return new Btime(inst.plus(dur));
-    }
-
-    /**
-     * return a Btime structure containing the derived end time for this record
-     * Note this is not the time of the last sample, but rather the predicted
-     * begin time of the next record, ie begin + numSample*period instead of
-     * begin + (numSample-1)*period.
-     * 
-     * Note that this may not be correct if the record also contains a more accurate
-     * sample rate in a blockette100.
-     * @deprecated Use DataRecord.getEndBtime() as it also checks for a possible blockette100 value. 
-     */
-    @Deprecated
-    private Btime getEndBtime() {
-        Btime startBtime = getStartBtime();
-        // get the number of ten thousandths of seconds of data
-        double numTenThousandths = (((double)getNumSamples() / getSampleRate()) * 10000.0);
-        // return the time structure projected by the number of ten thousandths
-        // of seconds
-        return projectTime(startBtime, numTenThousandths);
-    }
-
-    /** returns the predicted start time of the next record, ie begin + numSample*period
-     * 
-     * Note that this may not be correct if the record also contains a more accurate
-     * sample rate in a blockette100.
-     * 
-     * @deprecated Use DataRecord.getPredictedNextStartBtime() as it also checks for a possible blockette100 value. 
-     */
-    @Deprecated
-    public Btime getPredictedNextStartBtime() {
-        return getEndBtime();
-    }
-    
-    /**
-     * @deprecated Use DataRecord.getBtimeRange() as it also checks for a possible blockette100 value. 
-     */
-    @Deprecated
-    public BtimeRange getBtimeRange() {
-        return new BtimeRange(getStartBtime(), getLastSampleBtime());
-    }
-    
-    /**
-     * return a Btime structure containing the derived last sample time for this
-     * record.
-     * 
-     * Note that this may not be correct if the record also contains a more accurate
-     * sample rate in a blockette100.
-     * @deprecated Use DataRecord.getLastSampleBtime() as it also checks for a possible blockette100 value. 
-     */
-    @Deprecated
-    public Btime getLastSampleBtime() {
-        Btime startBtime = getStartBtime();
-        // get the number of ten thousandths of seconds of data
-        double numTenThousandths = (((double)(getNumSamples() - 1) / getSampleRate()) * 10000.0);
-        // return the time structure projected by the number of ten thousandths
-        // of seconds
-        return projectTime(startBtime, numTenThousandths);
     }
 
     /**
@@ -493,61 +411,6 @@ public class DataHeader extends ControlHeader {
                 + twoZero.format(startStruct.min) + ":"
                 + twoZero.format(startStruct.sec) + "."
                 + fourZero.format(startStruct.tenthMilli));
-    }
-
-    /**
-     * get the value of end time. derived from Start time, sample rate, and
-     * number of samples. Note this is not the time of the last sample, but
-     * rather the predicted begin time of the next record.
-     * 
-     * Note that this may not be correct if the record also contains a more accurate
-     * sample rate in a blockette100.
-     * 
-     * @return the value of end time
-     * @deprecated Use DataRecord.getEndTime() as it also checks for a possible blockette100 value. 
-     */
-    @Deprecated
-    public String getEndTime() {
-        // get time structure
-        Btime endStruct = getEndBtime();
-        // zero padding format of output numbers
-        DecimalFormat twoZero = new DecimalFormat("00");
-        DecimalFormat threeZero = new DecimalFormat("000");
-        DecimalFormat fourZero = new DecimalFormat("0000");
-        // return string in standard jday format
-        return new String(fourZero.format(endStruct.year) + ","
-                + threeZero.format(endStruct.jday) + ","
-                + twoZero.format(endStruct.hour) + ":"
-                + twoZero.format(endStruct.min) + ":"
-                + twoZero.format(endStruct.sec) + "."
-                + fourZero.format(endStruct.tenthMilli));
-    }
-
-    /**
-     * get the value of end time. derived from Start time, sample rate, and
-     * number of samples.
-     * 
-     * Note that this may not be correct if the record also contains a more accurate
-     * sample rate in a blockette100.
-     * 
-     * @return the value of end time
-     * @deprecated Use DataRecord.getLastSampleTime() as it also checks for a possible blockette100 value. 
-     */
-    @Deprecated
-    public String getLastSampleTime() {
-        // get time structure
-        Btime endStruct = getLastSampleBtime();
-        // zero padding format of output numbers
-        DecimalFormat twoZero = new DecimalFormat("00");
-        DecimalFormat threeZero = new DecimalFormat("000");
-        DecimalFormat fourZero = new DecimalFormat("0000");
-        // return string in standard jday format
-        return new String(fourZero.format(endStruct.year) + ","
-                + threeZero.format(endStruct.jday) + ","
-                + twoZero.format(endStruct.hour) + ":"
-                + twoZero.format(endStruct.min) + ":"
-                + twoZero.format(endStruct.sec) + "."
-                + fourZero.format(endStruct.tenthMilli));
     }
 
     /**

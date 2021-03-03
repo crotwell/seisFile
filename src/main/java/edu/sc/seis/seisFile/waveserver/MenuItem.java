@@ -28,13 +28,8 @@ public class MenuItem {
     }
 
     public String toString() {
-        return network + " " + station + " " + location + " " + channel + " " + formatDate(toDate(start)) + " "
-                + formatDate(toDate(end));
-    }
-
-    @Deprecated
-    public static Instant toDate(double val) {
-        return TimeUtils.instantFromEpochSeconds(val);
+        return network + " " + station + " " + location + " " + channel + " " + formatDate(TimeUtils.instantFromEpochSeconds(start)) + " "
+                + formatDate(TimeUtils.instantFromEpochSeconds(end));
     }
 
     public static String formatDate(Instant d) {
@@ -67,11 +62,11 @@ public class MenuItem {
     }
 
     public Instant getStartDate() {
-        return toDate(start);
+        return TimeUtils.instantFromEpochSeconds(start);
     }
 
     public Instant getEndDate() {
-        return toDate(end);
+        return TimeUtils.instantFromEpochSeconds(end);
     }
 
     public int getPin() {

@@ -659,23 +659,6 @@ public class TraceBuf2 {
         }
     }
 
-    /**
-     * Coverts the data to Miniseed, spliting into multiple data records if it will not fit into one.
-     * @param recLenExp power of 2 for record size, generally 8-12
-     * @param doSteim1 if Steim1 compression should be applied
-     * @return Miniseed records
-     * @throws SeedFormatException
-     * @deprecated use toMiniSeedNoCompression(int) or toMiniSeed(int, int) instead
-     */
-    @Deprecated
-    public List<DataRecord> toMiniSeed(int recLenExp, boolean doSteim1) throws SeedFormatException {
-        if (doSteim1) {
-            return toMiniSeed(recLenExp, B1000Types.STEIM1);
-        } else {
-            return toMiniSeedNoCompression(recLenExp);
-        }
-    }
-
     public static void checkRecordLengthExp(int recLenExp) {
         if (recLenExp > 32) {
             throw new IllegalArgumentException("recLenExp should be exponent of 2, not actual size, "+recLenExp+" is too large, should be <21 and usually 8-12.");
