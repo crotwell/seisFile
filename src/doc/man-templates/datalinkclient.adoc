@@ -17,7 +17,7 @@ miniseed to a file.
 
 The datalink protocol is specified here:
 
-https://seiscode.iris.washington.edu/svn/orb2ringserver/tags/release-1.0/libdali/doc/DataLink.protocol
+https://iris-edu.github.io/libdali/datalink-protocol.html
 
 include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-options]
 

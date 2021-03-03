@@ -11,6 +11,11 @@ include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-syno
 
 include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-description]
 
+Information about the Seedlink protocol can be found here
+https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html
+and information about its use at IRIS here
+http://ds.iris.edu/ds/nodes/dmc/services/seedlink/.
+
 include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-options]
 
 include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-arguments]

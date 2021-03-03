@@ -61,7 +61,7 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names={"-o","--output"}, description = "Output file (default: print to console)")
     private File outputFile;
 
-    @Option(names= {"--timeout"}, description="timeout seconds, defaults to ${Default_Value}", defaultValue = ""+SeedlinkReader.DEFAULT_TIMEOUT_SECOND)
+    @Option(names= {"--timeout"}, description="timeout seconds, defaults to ${DEFAULT-VALUE}", defaultValue = ""+SeedlinkReader.DEFAULT_TIMEOUT_SECOND)
     public Integer timeoutSec = SeedlinkReader.DEFAULT_TIMEOUT_SECOND;
     
     
