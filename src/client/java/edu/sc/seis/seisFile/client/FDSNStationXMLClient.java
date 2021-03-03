@@ -16,7 +16,7 @@ public class FDSNStationXMLClient {
 
     public static void main(String[] args) throws XMLStreamException, IOException, SeisFileException {
         final FDSNStationXML stationXml = FDSNStationXML.loadStationXML(args[0]);
-        StationClient sc = new StationClient() {
+        FDSNStationClient sc = new FDSNStationClient() {
             public Integer call() {
                 try {
                     handleResults(stationXml);

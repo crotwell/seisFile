@@ -12,7 +12,7 @@ public class StationClientTest {
     @Test
     public void testHostArg() throws Exception {
         String hostname = "service.seis.sc.edu";
-        StationClient sc = new StationClient(); // the instance to populate
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"--host", hostname, "-n", "CO"};
         cmd.parseArgs(args);
@@ -21,7 +21,7 @@ public class StationClientTest {
 
     @Test
     public void testNetworkArg() throws Exception {
-        StationClient sc = new StationClient(); // the instance to populate
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO"};
         cmd.parseArgs(args);
@@ -30,7 +30,7 @@ public class StationClientTest {
 
     @Test
     public void testStationArg() throws Exception {
-        StationClient sc = new StationClient(); // the instance to populate
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO", "-s", "JSC"};
         cmd.parseArgs(args);
@@ -39,7 +39,7 @@ public class StationClientTest {
 
     @Test
     public void testTwoStationArg() throws Exception {
-        StationClient sc = new StationClient(); // the instance to populate
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO", "-s", "JSC,CASEE"};
         cmd.parseArgs(args);
@@ -50,7 +50,7 @@ public class StationClientTest {
 
     @Test
     public void testLotsOfArg() throws Exception {
-        StationClient sc = new StationClient(); // the instance to populate
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
         CommandLine cmd = new CommandLine(sc);
         String argString = "-n CO -s JSC,CASEE -l 00 --network II --endafter 2010-01-02 --box 30/35/-100/-75 --donut 32/-85/0/5 --level response --start 2009";
         String[] args = argString.split(" ");

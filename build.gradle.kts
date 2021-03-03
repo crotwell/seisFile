@@ -290,9 +290,9 @@ tasks.named("startScripts") {
 }
 
 val scriptNames = mapOf(
-  "fdsnevent" to "edu.sc.seis.seisFile.client.EventClient",
-  "fdsnstation" to "edu.sc.seis.seisFile.client.StationClient",
-  "fdsndataselect" to "edu.sc.seis.seisFile.client.DataSelectClient",
+  "fdsnevent" to "edu.sc.seis.seisFile.client.FDSNEventClient",
+  "fdsnstation" to "edu.sc.seis.seisFile.client.FDSNStationClient",
+  "fdsndataselect" to "edu.sc.seis.seisFile.client.FDSNDataSelectClient",
   "saclh" to "edu.sc.seis.seisFile.client.SacListHeader",
   "mseedlh" to "edu.sc.seis.seisFile.client.MSeedListHeader",
   "seedlinkclient" to "edu.sc.seis.seisFile.client.SeedLinkClient",
