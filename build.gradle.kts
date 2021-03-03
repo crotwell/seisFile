@@ -156,7 +156,7 @@ repositories {
 tasks.register<Jar>("clientJar") {
   dependsOn("clientClasses" )
   from(sourceSets["client"].output)
-  baseName = "seisFileclient"
+  archiveBaseName.set("seisFileclient")
 }
 
 val binDistFiles: CopySpec = copySpec {
@@ -235,14 +235,14 @@ tasks.register<Sync>("explodeDist") {
 tasks.register<Tar>("tarBin") {
   dependsOn("explodeBin" )
     compression = Compression.GZIP
-    into(project.name+"-"+version+"-bin") {
+    into(project.name+"-"+archiveVersion+"-bin") {
         with(binDistFiles)
     }
 }
 
 tasks.register<Tar>("tarDist") {
   dependsOn("explodeDist" )
-    val dirName = project.name+"-"+version
+    val dirName = project.name+"-"+archiveVersion
     compression = Compression.GZIP
     into(dirName) {
         with(distFiles)
@@ -336,6 +336,7 @@ for (key in scriptNames.keys) {
   }
   tasks.named("asciidoctor") {
       dependsOn(adocTask)
+      inputs.property(key+".adoc", File(project.buildDir,  "picocli/man/"+scriptNames[key]+".adoc"))
   }
   val bashautoTask = tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
