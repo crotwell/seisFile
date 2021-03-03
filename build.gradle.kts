@@ -264,6 +264,7 @@ tasks {
     }
     inputs.files("build/picocli/man/*")
     inputs.files(project.files("src/doc/man-templates/*"))
+    inputs.files(project.files("src/doc/man-templates/example_output/*"))
   }
 }
 
@@ -273,6 +274,7 @@ tasks {
     setOutputDir( file("build/manpdf"))
     inputs.files("build/picocli/man/*")
     inputs.files(project.files("src/doc/man-templates/*"))
+    inputs.files(project.files("src/doc/man-templates/example_output/*"))
   }
 }
 
