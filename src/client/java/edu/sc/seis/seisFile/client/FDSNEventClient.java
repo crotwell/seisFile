@@ -26,7 +26,7 @@ import picocli.CommandLine.ParseResult;
 @Command(name="fdsnevent",
          description="example client to query a remote FDSN Event web service",
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class EventClient extends AbstractFDSNClient {
+public class FDSNEventClient extends AbstractFDSNClient {
 
     FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
 
@@ -36,7 +36,7 @@ public class EventClient extends AbstractFDSNClient {
     @Mixin
     FDSNEventCmdLineQueryParams cmdLine;
 
-    public EventClient() {
+    public FDSNEventClient() {
         this.cmdLine = new FDSNEventCmdLineQueryParams();
         this.queryParams = this.cmdLine.queryParams;
     }
@@ -129,6 +129,6 @@ public class EventClient extends AbstractFDSNClient {
     }
     
     public static void main(String... args) { // bootstrap the application
-        System.exit(new CommandLine(new EventClient()).execute(args));
+        System.exit(new CommandLine(new FDSNEventClient()).execute(args));
     }
 }

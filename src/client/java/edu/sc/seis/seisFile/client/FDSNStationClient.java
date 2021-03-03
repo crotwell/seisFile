@@ -31,7 +31,7 @@ import picocli.CommandLine.ParseResult;
 @Command(name="fdsnstation",
          description="example client to query a remote FDSN Station web service",
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
-public class StationClient extends AbstractFDSNClient {
+public class FDSNStationClient extends AbstractFDSNClient {
 
     FDSNStationQueryParams queryParams;
 
@@ -41,7 +41,7 @@ public class StationClient extends AbstractFDSNClient {
     @Option(names= { "--schema"}, description="prints schema")
     public boolean isPrintSchema = false;
     
-    public StationClient() {
+    public FDSNStationClient() {
         this.cmdLine = new FDSNStationCmdLineQueryParams();
         this.queryParams = this.cmdLine.queryParams;
     }
@@ -136,6 +136,6 @@ public class StationClient extends AbstractFDSNClient {
     }
     
     public static void main(String... args) { // bootstrap the application
-        System.exit(new CommandLine(new StationClient()).execute(args));
+        System.exit(new CommandLine(new FDSNStationClient()).execute(args));
     }
 }
