@@ -15,16 +15,12 @@ public class Station extends BaseNodeType {
     public Station() {}
     
     public Station(Network network, String code) {
-    		this.network = network;
-        this.networkCode = network.getNetworkCode();
-        this.networkId = network.getNetworkId();
+        this.network = network;
         this.code = code;
     }
     
     public Station(XMLEventReader reader, Network network) throws XMLStreamException, StationXMLException {
         this.network = network;
-        this.networkCode = network.getNetworkCode();
-        this.networkId = network.getNetworkId();
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STATION, reader);
         super.parseAttributes(startE);
         while (reader.hasNext()) {
@@ -73,10 +69,6 @@ public class Station extends BaseNodeType {
         }
     }
     
-    @Deprecated
-    public Network getNetworkAttr() {
-        return getNetwork();
-    }
     public Network getNetwork() {
         return network;
     }
@@ -109,11 +101,6 @@ public class Station extends BaseNodeType {
         return getElevation().getValue();
     }
 
-    @Deprecated
-    public String getName() {
-        return name;
-    }
-
     public Site getSite() {
         return site;
     }
@@ -142,13 +129,12 @@ public class Station extends BaseNodeType {
         return geology;
     }
 
-    @Deprecated
     public String getNetworkCode() {
-        return networkCode;
+        return getNetworkId();
     }
 
     public String getNetworkId() {
-        return networkId;
+        return getNetwork().getNetworkId();
     }
     
     public String getStationCode() {
@@ -214,11 +200,6 @@ public class Station extends BaseNodeType {
         this.elevation = elevation;
     }
 
-    @Deprecated
-    public void setName(String name) {
-        this.name = name;
-    }
-
     
     public void setVault(String vault) {
         this.vault = vault;
@@ -242,11 +223,6 @@ public class Station extends BaseNodeType {
     
     public void setSelectedNumChannels(int selectedNumChannels) {
         this.selectedNumChannels = selectedNumChannels;
-    }
-
-    
-    public void setNetworkCode(String networkCode) {
-        this.networkCode = networkCode;
     }
 
     
@@ -296,8 +272,6 @@ public class Station extends BaseNodeType {
     int totalNumChannels;
 
     int selectedNumChannels;
-
-    String networkCode;
     
     String networkId;
 

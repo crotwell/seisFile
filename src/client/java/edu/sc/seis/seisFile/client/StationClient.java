@@ -24,6 +24,7 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
@@ -37,6 +38,9 @@ public class StationClient extends AbstractFDSNClient {
     @Mixin
     FDSNStationCmdLineQueryParams cmdLine;
 
+    @Option(names= { "--schema"}, description="prints schema")
+    public boolean isPrintSchema = false;
+    
     public StationClient() {
         this.cmdLine = new FDSNStationCmdLineQueryParams();
         this.queryParams = this.cmdLine.queryParams;
@@ -51,6 +55,15 @@ public class StationClient extends AbstractFDSNClient {
         try {
             if (isPrintUrl) {
                 System.out.println(queryParams.formURI());
+                return 0;
+            } else if (isPrintSchema) {
+                PrintStream out = System.out;
+                if (outputFile != null) {
+                    out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+                }
+                FDSNStationXML.printSchema(out);
+                out.println();
+                out.flush();
                 return 0;
             } else {
                 FDSNStationQuerier querier = new FDSNStationQuerier(queryParams);

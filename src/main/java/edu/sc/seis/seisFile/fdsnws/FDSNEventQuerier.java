@@ -26,7 +26,7 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
     }
 
     public URL getSchemaURL() {
-        return Quakeml.loadSchema();
+        return Quakeml.findInternalSchema();
     }
     public Quakeml getQuakeML() throws FDSNWSException {
         try {
@@ -92,7 +92,7 @@ public class FDSNEventQuerier extends AbstractFDSNQuerier {
     }
     
     public static void validateQuakeML(XMLStreamReader reader) throws SAXException, IOException {
-        validate(reader, Quakeml.loadSchema());
+        validate(reader, Quakeml.findInternalSchema());
     }
     
     @Override

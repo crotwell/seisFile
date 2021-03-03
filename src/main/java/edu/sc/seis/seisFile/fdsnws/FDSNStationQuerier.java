@@ -25,11 +25,11 @@ public class FDSNStationQuerier extends AbstractFDSNQuerier {
     }
 
     public URL getSchemaURL() {
-        return FDSNStationXML.loadSchemaWithAvailability();
+        return FDSNStationXML.findInternalSchema();
     }
 
     public void validateFDSNStationXML() throws SeisFileException, URISyntaxException {
-        validateFDSNStationXML(FDSNStationXML.loadSchema());
+        validateFDSNStationXML(FDSNStationXML.findInternalSchema());
     }
 
     public void validateFDSNStationXML(URL schemaURL) throws SeisFileException, URISyntaxException {

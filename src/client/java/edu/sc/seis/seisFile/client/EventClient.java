@@ -1,8 +1,6 @@
 package edu.sc.seis.seisFile.client;
 
 import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.net.URI;
@@ -30,24 +28,11 @@ import picocli.CommandLine.ParseResult;
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EventClient extends AbstractFDSNClient {
 
-    private static final String DEPTH = "depth";
-
-    private static final String CONTRIBUTORS = "contributors";
-
-    private static final String CATALOGS = "catalogs";
-
-    private static final String MAGNITUDE = "magnitude";
-
-    private static final String TYPES = "types";
-
-    private static final String INCLUDEALLORIGINS = "includeallorigins";
-
-    private static final String INCLUDEALLMAGNITUDES = "includeallmagnitudes";
-
-    private static final String INCLUDEARRIVALS = "includearrivals";
-
     FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
 
+    @Option(names= { "--schema"}, description="prints schema")
+    public boolean isPrintSchema = false;
+    
     @Mixin
     FDSNEventCmdLineQueryParams cmdLine;
 
@@ -66,6 +51,15 @@ public class EventClient extends AbstractFDSNClient {
         try {
             if (isPrintUrl) {
                 System.out.println(queryParams.formURI());
+                return 0;
+            } else if (isPrintSchema) {
+                PrintStream out = System.out;
+                if (outputFile != null) {
+                    out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+                }
+                Quakeml.printSchema(out);
+                out.println();
+                out.flush();
                 return 0;
             } else {
                 FDSNEventQuerier querier = new FDSNEventQuerier(queryParams);

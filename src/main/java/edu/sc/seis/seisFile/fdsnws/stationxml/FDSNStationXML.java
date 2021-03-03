@@ -1,9 +1,12 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
 
@@ -221,14 +224,23 @@ public class FDSNStationXML {
         }
     }
 
-    public static URL loadSchema() {
+    public static URL findInternalSchema() {
         return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station-1.1.xsd");
     }
-
-    @Deprecated
-    public static URL loadSchemaWithAvailability() {
-        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/stationxml/fdsn-station+availability-1.0.xsd");
+    
+    public static void printSchema(OutputStream out) throws IOException {
+        BufferedInputStream bufIn = new BufferedInputStream(findInternalSchema().openStream());
+        BufferedOutputStream bufOut = new BufferedOutputStream(out);
+        byte[] buf = new byte[1024];
+        int numRead = bufIn.read(buf);
+        while (numRead != -1) {
+            bufOut.write(buf, 0, numRead);
+            numRead = bufIn.read(buf);
+        }
+        bufIn.close(); // close as we hit EOF
+        bufOut.flush();// only flush in case outside wants to write more
     }
+
 
     public static FDSNStationXML loadStationXML(Reader streamReader) throws XMLStreamException, IOException, SeisFileException {
         XMLInputFactory factory = XMLInputFactory.newInstance();

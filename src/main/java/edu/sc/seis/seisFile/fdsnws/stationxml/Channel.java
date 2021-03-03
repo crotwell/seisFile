@@ -18,7 +18,6 @@ public class Channel extends BaseNodeType {
     
     Channel(Station station) {
         this.station = station;
-        this.networkCode = station.getNetworkId();
         this.stationCode = station.getStationCode();
         setLatitude(station.getLatitude());
         setLongitude(station.getLongitude());
@@ -164,9 +163,8 @@ public class Channel extends BaseNodeType {
         return stationCode;
     }
 
-    @Deprecated
     public String getNetworkCode() {
-        return networkCode;
+        return getNetworkId();
     }
 
     public String getNetworkId() {
@@ -315,17 +313,6 @@ public class Channel extends BaseNodeType {
         this.locCode = locCode;
     }
 
-    
-    public void setStationCode(String stationCode) {
-        this.stationCode = stationCode;
-    }
-
-    
-    public void setNetworkCode(String networkCode) {
-        this.networkCode = networkCode;
-    }
-
-
     public void setLatitude(float latitude) {
     		setLatitude(new DegreeFloatType(latitude));
     }
@@ -398,7 +385,7 @@ public class Channel extends BaseNodeType {
 
     private Response response;
 
-    private String locCode, stationCode, networkCode;
+    private String locCode, stationCode;
 
     private DegreeFloatType latitude, longitude, azimuth, dip;
     

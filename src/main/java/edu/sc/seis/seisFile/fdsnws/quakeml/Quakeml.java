@@ -1,6 +1,9 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 
 import javax.xml.stream.XMLEventReader;
@@ -30,9 +33,27 @@ public class Quakeml {
         }
     }
 
-    public static URL loadSchema() {
+    public static URL findInternalSchema() {
         return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/QuakeML-1.2.xsd");
     }
+
+    public static URL findInternalBEDSchema() {
+        return FDSNStationXML.class.getClassLoader().getResource("edu/sc/seis/seisFile/quakeml/1.2/QuakeML-BED-1.2.xsd");
+    }
+    
+    public static void printSchema(OutputStream out) throws IOException {
+        BufferedInputStream bufIn = new BufferedInputStream(findInternalBEDSchema().openStream());
+        BufferedOutputStream bufOut = new BufferedOutputStream(out);
+        byte[] buf = new byte[1024];
+        int numRead = bufIn.read(buf);
+        while (numRead != -1) {
+            bufOut.write(buf, 0, numRead);
+            numRead = bufIn.read(buf);
+        }
+        bufIn.close(); // close as we hit EOF
+        bufOut.flush();// only flush in case outside wants to write more
+    }
+
 
     public Quakeml(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         this.reader = reader;
