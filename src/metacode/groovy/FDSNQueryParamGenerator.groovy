@@ -225,6 +225,8 @@ public class FDSN${service.capitalize()}QueryParams extends AbstractQueryParams 
 
     def templateTextSet = '''
     /** $doc
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSN${service}QueryParams ${setter}${key.capitalize()}(${type==''?'String':type}${arrayType} value) {
         ${locidSpaceCheck}${setter}Param(${key.toUpperCase()}, value);

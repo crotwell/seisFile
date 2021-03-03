@@ -17,20 +17,42 @@ import java.net.UnknownHostException;
 public class DataLink {
 
 
-    /** default of IRIS DMC */
+    /** default of IRIS DMC 
+     * 
+     * @throws DataLinkException if unable to connect
+     * */
     public DataLink() throws DataLinkException {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
 
-    /** uses the default port of 18000 */
+    /** uses the default port of 18000 
+     * 
+     * @param host host to connect to
+     * @throws DataLinkException if unable to connect
+     *  */
     public DataLink(String host) throws DataLinkException {
         this(host, DEFAULT_PORT);
     }
 
+    /**  
+     * Open DataLink socket connection
+     * 
+     * @param host host to connect to
+     * @param port port to connect to
+     * @throws DataLinkException if unable to connect
+     *  */
     public DataLink(String host, int port) throws DataLinkException {
         this(host, port, DEFAULT_TIMEOUT_SECOND);
     }
 
+    /**  
+     * Open DataLink socket connection
+     * 
+     * @param host host to connect to
+     * @param port port to connect to
+     * @param timeoutSeconds timeout value
+     * @throws DataLinkException if unable to connect
+     *  */
     public DataLink(String host, int port, int timeoutSeconds) throws DataLinkException {
         this(host, port, timeoutSeconds, false);
     }
@@ -149,9 +171,12 @@ public class DataLink {
         sendDLCommand(REJECT, rejectRegEx);
     }
 
-    /** true if there is enough data in the instream to possibly read a data record.
+    /** 
+     * true if there is enough data in the instream to possibly read a data record.
      * This should not block, unlike hasNext() and next().
-     *
+     * 
+     * @throws IOException if input stream throws
+     * @return true if enough data to read a record
      */
     public boolean available() throws IOException {
         // check for closed connection and server sending END
@@ -161,13 +186,19 @@ public class DataLink {
         return in.available() > 3;
     }
 
-    /** Returns available() from the underlying InputStream, in bytes
+    /** 
+     * 
+     * @return available() from the underlying InputStream, in bytes
      *
+     * @throws IOException from underlying input stream
      */
     public int availableBytes() throws IOException {
         return in.available();
     }
 
+    /**
+     * Send end and close connection.
+     */
     public void close() {
         try {
             // just in case, doesn't hurt if not streaming
@@ -191,6 +222,10 @@ public class DataLink {
         out = null;
     }
 
+    /**
+     * 
+     * @return true is connected
+     */
     public boolean isConnected() {
         return socket != null && socket.isConnected();
     }
@@ -198,8 +233,8 @@ public class DataLink {
     /**
      * Would be really nice to keep state and reconnect plus backfill, but...
      *
-     * @throws IOException
-     * @throws DataLinkException
+     * @throws IOException from underlying socket
+     * @throws DataLinkException if error with datalink protocol
      */
     public void reconnect() throws IOException, DataLinkException {
         String prevMode = mode;
@@ -217,12 +252,17 @@ public class DataLink {
     }
 
 
-/** encodes command with optional data section as
+/** 
+ * encodes command with optional data section as
  * a string. This works for client generated commands
  * but not for a PACKET, which would have binary data.
  * PACKET is what client receives, but usually never
  * sends if it does not generate data.
- * @throws DataLinkException */
+ * 
+ * @param command command to send
+ * @param dataString optional data
+ * @throws DataLinkException  if command is too long
+ * */
   public byte[] encodeDLCommand(String command, String dataString) throws DataLinkException {
     int cmdLen = command.length();
     int len = 3+command.length();
@@ -259,9 +299,9 @@ public class DataLink {
 
   /**
    * Sends a DL Command and awaits the response, either OK or ERROR.
-   * @param command
-   * @param dataString
-   * @throws DataLinkException
+   * @param command command to send
+   * @param dataString optional associated data
+   * @throws DataLinkException if error sending or with response
    */
   public void sendDLCommand(String command, String dataString) throws DataLinkException {
       if ( ! this.mode.equals(QUERY_MODE)) {

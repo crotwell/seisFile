@@ -50,6 +50,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events on or after the specified start time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setStartTime(Instant value) {
         setParam(STARTTIME, value);
@@ -68,6 +70,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events on or before the specified end time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setEndTime(Instant value) {
         setParam(ENDTIME, value);
@@ -86,6 +90,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with a latitude larger than the specified minimum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMinLatitude(float value) {
         setParam(MINLATITUDE, value);
@@ -104,6 +110,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with a latitude smaller than the specified maximum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMaxLatitude(float value) {
         setParam(MAXLATITUDE, value);
@@ -122,6 +130,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with a longitude larger than the specified minimum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMinLongitude(float value) {
         setParam(MINLONGITUDE, value);
@@ -140,6 +150,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with a longitude smaller than the specified maximum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMaxLongitude(float value) {
         setParam(MAXLONGITUDE, value);
@@ -158,6 +170,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Specify the latitude to be used for a radius search.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setLatitude(float value) {
         setParam(LATITUDE, value);
@@ -176,6 +190,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Specify the longitude to the used for a radius search.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setLongitude(float value) {
         setParam(LONGITUDE, value);
@@ -193,6 +209,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events within the specified minimum number of degrees from the geographic point defined by the latitude and longitude parameters.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMinRadius(float value) {
         setParam(MINRADIUS, value);
@@ -210,6 +228,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events within the specified maximum number of degrees from the geographic point defined by the latitude and longitude parameters.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMaxRadius(float value) {
         setParam(MAXRADIUS, value);
@@ -227,6 +247,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with depth more than the specified minimum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMinDepth(float value) {
         setParam(MINDEPTH, value);
@@ -244,6 +266,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with depth less than the specified maximum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMaxDepth(float value) {
         setParam(MAXDEPTH, value);
@@ -262,6 +286,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with a magnitude larger than the specified minimum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMinMagnitude(float value) {
         setParam(MINMAGNITUDE, value);
@@ -280,6 +306,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events with a magnitude smaller than the specified maximum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMaxMagnitude(float value) {
         setParam(MAXMAGNITUDE, value);
@@ -298,6 +326,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Specify a magnitude type to use for testing the minimum and maximum limits.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setMagnitudeType(String value) {
         setParam(MAGNITUDETYPE, value);
@@ -315,6 +345,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Specify if all origins for the event should be included, default is data center dependent but is suggested to be the preferred origin only.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setIncludeAllOrigins(boolean value) {
         setParam(INCLUDEALLORIGINS, value);
@@ -332,6 +364,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Specify if all magnitudes for the event should be included, default is data center dependent but is suggested to be the preferred magnitude only.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setIncludeAllMagnitudes(boolean value) {
         setParam(INCLUDEALLMAGNITUDES, value);
@@ -349,6 +383,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Specify if phase arrivals should be included.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setIncludeArrivals(boolean value) {
         setParam(INCLUDEARRIVALS, value);
@@ -366,6 +402,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Select a specific event by ID; event identifiers are data center specific.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setEventid(String value) {
         setParam(EVENTID, value);
@@ -383,6 +421,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit the results to the specified number of events.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setLimit(int value) {
         setParam(LIMIT, value);
@@ -400,6 +440,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Return results starting at the event count specified, starting at 1.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setOffset(int value) {
         setParam(OFFSET, value);
@@ -417,6 +459,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Order the result by time or magnitude with the following possibilities: time: order by origin descending time time-asc : order by origin ascending time magnitude: order by descending magnitude magnitude-asc : order by ascending magnitude
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setOrderBy(String value) {
         setParam(ORDERBY, value);
@@ -434,6 +478,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events from a specified catalog
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setCatalog(String value) {
         setParam(CATALOG, value);
@@ -451,6 +497,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events contributed by a specified contributor.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setContributor(String value) {
         setParam(CONTRIBUTOR, value);
@@ -468,6 +516,8 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
     /** Limit to events updated after the specified time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNEventQueryParams setUpdatedAfter(Instant value) {
         setParam(UPDATEDAFTER, value);

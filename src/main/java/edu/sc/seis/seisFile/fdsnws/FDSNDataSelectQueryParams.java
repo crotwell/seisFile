@@ -50,6 +50,8 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
     }
 
     /** Limit results to time series samples on or after the specified start time
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNDataSelectQueryParams setStartTime(Instant value) {
         setParam(STARTTIME, value);
@@ -68,6 +70,8 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
     }
 
     /** Limit results to time series samples on or before the specified end time
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNDataSelectQueryParams setEndTime(Instant value) {
         setParam(ENDTIME, value);
@@ -186,6 +190,8 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
     }
 
     /** Select a specific SEED quality indicator, handling is data center dependent.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNDataSelectQueryParams setQuality(String value) {
         setParam(QUALITY, value);
@@ -203,6 +209,8 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
     }
 
     /** Limit results to continuous data segments of a minimum length specified in seconds.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNDataSelectQueryParams setMinimumLength(int value) {
         setParam(MINIMUMLENGTH, value);
@@ -220,6 +228,8 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
     }
 
     /** Limit results to the longest continuous segment per channel.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNDataSelectQueryParams setLongestOnly(boolean value) {
         setParam(LONGESTONLY, value);

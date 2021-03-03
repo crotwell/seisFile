@@ -50,6 +50,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata epochs starting on or after the specified start time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setStartTime(Instant value) {
         setParam(STARTTIME, value);
@@ -68,6 +70,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata epochs ending on or before the specified end time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setEndTime(Instant value) {
         setParam(ENDTIME, value);
@@ -85,6 +89,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata epochs starting before specified time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setStartBefore(Instant value) {
         setParam(STARTBEFORE, value);
@@ -102,6 +108,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata epochs starting after specified time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setStartAfter(Instant value) {
         setParam(STARTAFTER, value);
@@ -119,6 +127,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata epochs ending before specified time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setEndBefore(Instant value) {
         setParam(ENDBEFORE, value);
@@ -136,6 +146,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata epochs ending after specified time.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setEndAfter(Instant value) {
         setParam(ENDAFTER, value);
@@ -255,6 +267,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to stations with a latitude larger than the specified minimum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setMinLatitude(float value) {
         setParam(MINLATITUDE, value);
@@ -273,6 +287,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to stations with a latitude smaller than the specified maximum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setMaxLatitude(float value) {
         setParam(MAXLATITUDE, value);
@@ -291,6 +307,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to stations with a longitude larger than the specified minimum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setMinLongitude(float value) {
         setParam(MINLONGITUDE, value);
@@ -309,6 +327,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to stations with a longitude smaller than the specified maximum.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setMaxLongitude(float value) {
         setParam(MAXLONGITUDE, value);
@@ -327,6 +347,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Specify the latitude to be used for a radius search.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setLatitude(float value) {
         setParam(LATITUDE, value);
@@ -345,6 +367,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Specify the longitude to the used for a radius search.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setLongitude(float value) {
         setParam(LONGITUDE, value);
@@ -362,6 +386,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit results to stations within the specified minimum number of degrees from the geographic point defined by the latitude and longitude parameters.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setMinRadius(float value) {
         setParam(MINRADIUS, value);
@@ -379,6 +405,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit results to stations within the specified maximum number of degrees from the geographic point defined by the latitude and longitude parameters.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setMaxRadius(float value) {
         setParam(MAXRADIUS, value);
@@ -396,6 +424,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Specify the level of detail for the results.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setLevel(String value) {
         setParam(LEVEL, value);
@@ -413,6 +443,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Specify if results should include information for restricted stations.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setIncludeRestricted(boolean value) {
         setParam(INCLUDERESTRICTED, value);
@@ -430,6 +462,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Specify if results should include information about time series data availability.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setIncludeAvailability(boolean value) {
         setParam(INCLUDEAVAILABILITY, value);
@@ -447,6 +481,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata where selection criteria matches time series data availability.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setMatchTimeseries(boolean value) {
         setParam(MATCHTIMESERIES, value);
@@ -464,6 +500,8 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
     }
 
     /** Limit to metadata updated after specified date; updates are data center specific.
+     *  @param value value to set
+     *  @return the queryParams for method chaining
      */
     public FDSNStationQueryParams setUpdatedAfter(Instant value) {
         setParam(UPDATEDAFTER, value);
