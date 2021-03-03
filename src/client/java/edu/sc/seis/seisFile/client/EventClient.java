@@ -78,6 +78,7 @@ public class EventClient extends AbstractFDSNClient {
                         out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
                     }
                     querier.outputRaw(out);
+                    out.println();
                     out.flush();
                 } else {
                     quakeml = querier.getQuakeML();

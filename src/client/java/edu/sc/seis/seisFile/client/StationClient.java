@@ -63,6 +63,7 @@ public class StationClient extends AbstractFDSNClient {
                         out = new PrintStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
                     }
                     querier.outputRaw(out);
+                    out.println();
                     out.flush();
                 } else {
                     FDSNStationXML stationXml = querier.getFDSNStationXML();
