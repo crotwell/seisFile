@@ -3,7 +3,7 @@
 EXPLODE=../../../../build/explode
 PATH=${PATH}:${EXPLODE}/bin
 CMD_FILES=$(ls *_ex?.sh)
-cd example_output
+cd ../man-templates/example_output
 for exfile in $CMD_FILES ; do
   OUT=${exfile//\.sh/_out}
   echo $exfile
@@ -11,6 +11,6 @@ for exfile in $CMD_FILES ; do
   while read line ; do
     echo "> $line" >> ${OUT}
     $line >> ${OUT}
-  done < ../$exfile
+  done < ../../man-example/$exfile
 done
 cd ..
