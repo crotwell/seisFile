@@ -189,6 +189,10 @@ val distFiles: CopySpec = copySpec {
         include("**")
         into("doc/manhtml")
     }
+    from("build") {
+        include("manpdf/**")
+        into("doc")
+    }
     from("build/picocli") {
         include("bashcompletion/**")
         into("doc")
@@ -262,6 +266,9 @@ tasks {
   "asciidoctor"(AsciidoctorTask::class) {
     setSourceDir( file("src/doc/man-templates"))
     setOutputDir( file("build/manhtml"))
+    sources({
+        exclude("example_output/*")
+      })
     outputOptions {
         backends("manpage", "html5")
     }
@@ -359,4 +366,5 @@ for (key in scriptNames.keys) {
 
 tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
 tasks.get("explodeDist").dependsOn(tasks.get("asciidoctor"))
+tasks.get("explodeDist").dependsOn(tasks.get("asciidoctorPdf"))
 tasks.get("assemble").dependsOn(tasks.get("tarDist"))
