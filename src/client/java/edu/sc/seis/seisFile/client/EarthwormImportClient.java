@@ -32,11 +32,11 @@ public class EarthwormImportClient extends AbstractClient {
     @Spec
     protected CommandSpec spec;
 
-    @Option(names = { "--host" }, description="host to connect to", defaultValue="localhost")
+    @Option(names = { "--host" }, description="host to connect to, defaults to ${DEFAULT-VALUE}", defaultValue="localhost")
     protected String host;
 
 
-    @Option(names = { "--port" }, description="port to connect to", defaultValue="19000")
+    @Option(names = { "--port" }, description="port to connect to, defaults to ${DEFAULT-VALUE}", defaultValue="19000")
     protected Integer port;
     
     /** just for testing, prints a message for each tracebuf received. */

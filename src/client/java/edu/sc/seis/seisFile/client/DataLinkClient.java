@@ -32,7 +32,7 @@ public class DataLinkClient extends AbstractClient {
     @Option(names= {"-m", "--match"}, description="match pattern, as a regular expression. For miniseed the conventions is NN_SSS_LL_CCC/MSEED")
     public String match = "CO_BIRD_00_HHZ";
     
-    @Option(names= { "--max"}, description="number of packets to receive before ending the connection")
+    @Option(names= { "--max"}, description="number of packets to receive before ending the connection, defaults to ${DEFAULT-VALUE}", defaultValue="10")
     public int maxRecords = 10;
 
     @Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")

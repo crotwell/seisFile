@@ -32,7 +32,7 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, "+SeedlinkReader.DEFAULT_HOST)
     public String host = SeedlinkReader.DEFAULT_HOST;
     
-    @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, "+SeedlinkReader.DEFAULT_PORT)
+    @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=""+SeedlinkReader.DEFAULT_PORT)
     public Integer port = SeedlinkReader.DEFAULT_PORT;
     
     @Option(names= {"-n", "--network"}, description="list of networks to search")
@@ -55,7 +55,7 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names= { "--iout"}, description="info out file")
     String ioutFile = SeedlinkReader.EMPTY;
     
-    @Option(names= { "--max"}, description="number of packets to receive before ending the connection")
+    @Option(names= { "--max"}, description="number of packets to receive before ending the connection, defaults to ${DEFAULT-VALUE}", defaultValue="10")
     public int maxRecords = 10;
 
     @Option(names={"-o","--output"}, description = "Output file (default: print to console)")

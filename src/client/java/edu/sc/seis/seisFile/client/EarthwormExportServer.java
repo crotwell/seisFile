@@ -17,16 +17,16 @@ public class EarthwormExportServer extends AbstractClient {
         // TODO Auto-generated constructor stub
     }
 
-    @Option(names = "--port", description = "port to listen on", defaultValue="10002")
+    @Option(names = "--port", description = "port to listen on, defaults to ${DEFAULT-VALUE}", defaultValue="10002")
     protected int port;
-    @Option(names = "--heart", description = "heartbeat interval in seconds", defaultValue="5")
+    @Option(names = "--heart", description = "heartbeat interval in seconds, defaults to ${DEFAULT-VALUE}", defaultValue="5")
     protected int heartbeatSec = 5;
-    @Option(names = "--heartmessage", description = "heartbeat message", defaultValue="heartbeat")
+    @Option(names = "--heartmessage", description = "heartbeat message, defaults to ${DEFAULT-VALUE}", defaultValue="heartbeat")
     protected String heartbeatMsg = "heartbeat";
 
-    @Option(names = "--module", description = "earthworm module number", defaultValue="43")
+    @Option(names = "--module", description = "earthworm module number, defaults to ${DEFAULT-VALUE}", defaultValue="43")
     protected int module = 43;
-    @Option(names = "--inst", description = "earthworm institution number", defaultValue="255")
+    @Option(names = "--inst", description = "earthworm institution number, defaults to ${DEFAULT-VALUE}", defaultValue="255")
     protected int inst = 255;
 
     @Override
