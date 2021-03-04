@@ -2,6 +2,8 @@ package edu.sc.seis.seisFile.client;
 
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.BasicConfigurator;
+
 import edu.sc.seis.seisFile.fdsnws.AbstractFDSNQuerier;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -26,7 +28,8 @@ public abstract class AbstractClient implements Callable<Integer> {
     }
     
     public AbstractClient() {
-        
+        BasicConfigurator.configure();
+        org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.INFO);
     }
 
 
