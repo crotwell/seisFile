@@ -1,3 +1,10 @@
+:includedir: build/picocli/man
+
+:doctype: manpage
+:revnumber: edu.sc.seis seisFile 2.0.0-SNAPSHOT_2021-03-03T203611 2021-03-04T01 36 11Z (1979 e5305132)
+:manmanual: seisFile Manual
+:mansource: edu.sc.seis seisFile 2.0.0-SNAPSHOT_2021-03-03T203611 2021-03-04T01 36 11Z (1979 e5305132)
+:man-linkstyle: pass:[blue R < >]
 = Example Clients for SeisFile
 
 SeisFile is a library, but includes as a separate jar several clients
@@ -5,12 +12,12 @@ as examples, but are also useful in their own. They are:
 
 == Example Clients
 
-* xref:datalinkclient.adoc[datalinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/DataLinkClient.java[Source]
-* xref:earthwormExportServer.adoc[earthwormExportServer] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormExportServer.java[Source]
-* xref:earthwormImportClient.adoc[earthwormImportClient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java[Source]
-* xref:fdsndataselect.adoc[fdsndataselect] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java[Source]
-* xref:fdsnevent.adoc[fdsnevent] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java[Source]
-* xref:fdsnstation.adoc[fdsnstation] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java[Source]
-* xref:saclh.adoc[saclh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java[Source]
-* xref:mseedlh.adoc[mseedlh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[Source]
-* xref:seedlinkclient.adoc[seedlinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java[Source]
+* xref:datalinkclient.adoc[datalinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/DataLinkClient.java[Source] stream miniseed over datalink.
+* xref:earthwormExportServer.adoc[earthwormExportServer] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormExportServer.java[Source] export fake TraceBuf2 packets over an earthworm export socket.
+* xref:earthwormImportClient.adoc[earthwormImportClient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java[Source] import TraceBuf2 packets over an earthworm export socket.
+* xref:fdsndataselect.adoc[fdsndataselect] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java[Source] query a remote FDSN DataSelect web service
+* xref:fdsnevent.adoc[fdsnevent] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java[Source] query a remote FDSN Event web service
+* xref:fdsnstation.adoc[fdsnstation] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java[Source] query a remote FDSN Station web service
+* xref:saclh.adoc[saclh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java[Source] list miniseed record headers
+* xref:mseedlh.adoc[mseedlh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[Source] print some or all header values from a SAC file
+* xref:seedlinkclient.adoc[seedlinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java[Source] stream miniseed over seedlink.
