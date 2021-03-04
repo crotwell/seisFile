@@ -10,8 +10,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.sc.seis.seisFile.datalink.DataLink;
-import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.seedlink.SeedlinkPacket;
 import edu.sc.seis.seisFile.seedlink.SeedlinkReader;
@@ -83,62 +81,65 @@ public class SeedLinkClient extends AbstractClient {
             dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
         }
         SeedlinkReader reader = new SeedlinkReader(host, port, timeoutSec, verbose);
-        if (verbose) {
-            reader.setVerboseWriter(out);
-            String[] lines = reader.sendHello();
-            out.println("line 1 :" + lines[0]);
-            out.println("line 2 :" + lines[1]);
-            out.flush();
-        }
-		if (infoType.length() != 0 || ioutFile.length() != 0)
-		{
-        	if (infoType.length() == 0) {
-        		infoType = SeedlinkReader.INFO_STREAMS;
-        	}
-        	String infoString = reader.getInfoString(infoType);
-        	if (ioutFile == null) {
-        		out.print(infoString);
-        	} else {
-        		PrintWriter pw = null;
-        		try {
-        			pw = new PrintWriter(ioutFile);
-        			pw.print(infoString);
-        		}
-        		finally {
-        			if (pw != null) {
-        				pw.close();
-        			}
-        		}
-        	}
-        }
-        if (maxRecords != 0) {
-        reader.select(String.join(",", network), String.join(",", station), String.join(",", location), String.join(",", channel));
-        reader.startData(start, end);
-        int i = 0;
         try {
-            while ((maxRecords == -1 || i < maxRecords) && reader.hasNext()) {
-                SeedlinkPacket slp = reader.readPacket();
-                DataRecord dr = slp.getMiniSeed();
-                if (dos != null) {
-                    dr.write(dos);
-                }
-                if (dos == null || verbose) {
-                    // print something to the screen if we are not saving to
-                    // disk
-                    out.println(dr.oneLineSummary());
-                    out.flush();
-                }
-                i++;
+            if (verbose) {
+                reader.setVerboseWriter(out);
+                String[] lines = reader.sendHello();
+                out.println("line 1 :" + lines[0]);
+                out.println("line 2 :" + lines[1]);
+                out.flush();
             }
-        } catch(EOFException e) {
-            // done I guess
+            if (infoType.length() != 0 || ioutFile.length() != 0)
+            {
+                if (infoType.length() == 0) {
+                    infoType = SeedlinkReader.INFO_STREAMS;
+                }
+                String infoString = reader.getInfoString(infoType);
+                if (ioutFile == null) {
+                    out.print(infoString);
+                } else {
+                    PrintWriter pw = null;
+                    try {
+                        pw = new PrintWriter(ioutFile);
+                        pw.print(infoString);
+                    }
+                    finally {
+                        if (pw != null) {
+                            pw.close();
+                        }
+                    }
+                }
+            }
+            if (maxRecords != 0) {
+                reader.select(String.join(",", network), String.join(",", station), String.join(",", location), String.join(",", channel));
+                reader.startData(start, end);
+                int i = 0;
+                try {
+                    while ((maxRecords == -1 || i < maxRecords) && reader.hasNext()) {
+                        SeedlinkPacket slp = reader.readPacket();
+                        DataRecord dr = slp.getMiniSeed();
+                        if (dos != null) {
+                            dr.write(dos);
+                        }
+                        if (dos == null || verbose) {
+                            // print something to the screen if we are not saving to
+                            // disk
+                            out.println(dr.oneLineSummary());
+                            out.flush();
+                        }
+                        i++;
+                    }
+                } catch(EOFException e) {
+                    // done I guess
+                }
+            }
+        } finally {
+            if (dos != null) {
+                dos.close();
+            }
+            reader.close();
+            out.println("Finished: " + Instant.now());
         }
-        }
-        if (dos != null) {
-            dos.close();
-        }
-        reader.close();
-        out.println("Finished: " + Instant.now());
         return 0;
     }
     

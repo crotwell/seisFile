@@ -46,46 +46,45 @@ public class DataLinkClient extends AbstractClient {
     }
 
     @Override
-    public Integer call() throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, DataLinkException {
+    public Integer call() throws IOException, DataLinkException {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
         if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
-        run();
-        return 0;
-    }
-
-    public void run() throws DataLinkException, IOException {
         DataLink dl = new DataLink(host, port, timeoutSec, verbose);
-        System.out.println("Server ID: "+dl.getServerId());
-        dl.match(match);
-        dl.stream();
-        if (outputFile != null) {
-            dataout = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
-        }
-        DataLinkResponse response = null;
-        for(int i=0; maxRecords==-1 || i<maxRecords; i++) {
+        try {
+            System.out.println("Server ID: "+dl.getServerId());
+            dl.match(match);
+            dl.stream();
+            if (outputFile != null) {
+                dataout = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+            }
+            DataLinkResponse response = null;
+            for(int i=0; maxRecords==-1 || i<maxRecords; i++) {
+                response = dl.readPacket();
+                if (response instanceof DataLinkPacket) {
+                    handlePacket((DataLinkPacket)response);
+                } else {
+                    System.out.println("Response: "+response.getKey());
+                }
+            }
+            dl.endStream();
             response = dl.readPacket();
-            if (response instanceof DataLinkPacket) {
+            while (response != null && response instanceof DataLinkPacket) {
                 handlePacket((DataLinkPacket)response);
-            } else {
-                System.out.println("Response: "+response.getKey());
+                response = dl.readPacket();
+            }
+            if ( ! response.getKey().equals(DataLink.ENDSTREAM)) {
+                System.err.println("Expected ENDSTREAM, but got "+response.getKey());
+            }
+        } finally {
+            dl.close();
+            if (dataout != null) {
+                dataout.close();
+                dataout = null;
             }
         }
-        dl.endStream();
-        response = dl.readPacket();
-        while (response != null && response instanceof DataLinkPacket) {
-            handlePacket((DataLinkPacket)response);
-            response = dl.readPacket();
-        }
-        if ( ! response.getKey().equals(DataLink.ENDSTREAM)) {
-            System.err.println("Expected ENDSTREAM, but got "+response.getKey());
-        }
-        dl.close();
-        if (dataout != null) {
-            dataout.close();
-            dataout = null;
-        }
+        return 0;
     }
    
     
