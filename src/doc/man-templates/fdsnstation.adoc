@@ -11,6 +11,8 @@ include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-synopsi
 
 include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-description]
 
+link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java[View source code here.]
+
 include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-options]
 
 include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-arguments]

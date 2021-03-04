@@ -14,6 +14,7 @@ include::{includedir}/datalinkclient.adoc[tag=picocli-generated-man-section-syno
 
 Datalinkclient is an example client that can connect to a datalink service and stream
 miniseed to a file.
+link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/DataLinkClient.java[View source code here.]
 
 The datalink protocol is specified here:
 

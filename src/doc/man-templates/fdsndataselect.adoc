@@ -10,6 +10,8 @@ include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-syno
 
 include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-description]
 
+link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java[View source code here.]
+
 include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-options]
 
 include::{includedir}/fdsndataselect.adoc[tag=picocli-generated-man-section-arguments]
