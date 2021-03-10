@@ -126,6 +126,8 @@ public class MSeedListHeader extends AbstractClient {
                             && (station == null || station.size() == 0 || station.contains(dr.getHeader().getStationIdentifier()))
                             && (location == null || location.size() == 0 || location.contains(dr.getHeader().getLocationIdentifier()))
                             && (channel == null || channel.size() == 0 || channel.contains(dr.getHeader().getChannelIdentifier()))) {
+
+                        i++;
                         if (dos != null) {
                             dr.write(dos);
                         }
@@ -162,7 +164,6 @@ public class MSeedListHeader extends AbstractClient {
                     sr.writeASCII(out, "    ");
                     out.flush();
                 }
-                i++;
             }
         } catch(EOFException e) {
             // done I guess
