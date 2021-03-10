@@ -7,15 +7,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Coefficients;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Decimation;
-import edu.sc.seis.seisFile.fdsnws.stationxml.FIR;
-import edu.sc.seis.seisFile.fdsnws.stationxml.GainSensitivity;
-import edu.sc.seis.seisFile.fdsnws.stationxml.PolesZeros;
-import edu.sc.seis.seisFile.fdsnws.stationxml.Polynomial;
-import edu.sc.seis.seisFile.fdsnws.stationxml.ResponseList;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 
 public class ResponseStage {

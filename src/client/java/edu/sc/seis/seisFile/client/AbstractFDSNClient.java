@@ -4,8 +4,6 @@ package edu.sc.seis.seisFile.client;
 import java.io.File;
 import java.net.URI;
 
-import edu.sc.seis.seisFile.client.AbstractClient;
-import edu.sc.seis.seisFile.fdsnws.AbstractQueryParams;
 import picocli.CommandLine.Option;
 
 public abstract class AbstractFDSNClient extends AbstractClient {

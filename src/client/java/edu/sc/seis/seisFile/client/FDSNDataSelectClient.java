@@ -2,15 +2,12 @@ package edu.sc.seis.seisFile.client;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
-import edu.sc.seis.seisFile.fdsnws.FDSNEventQueryParams;
-import edu.sc.seis.seisFile.mseed.DataHeader;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.DataRecordIterator;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
@@ -140,12 +137,6 @@ public class FDSNDataSelectClient extends AbstractFDSNClient {
     protected void internalSetBaseURI(URI uri) {
         queryParams.setBaseURL(uri);
     }
-
-    private static final String OUTPUT = "output";
-
-    private static final String USER = "user";
-
-    private static final String PASSWORD = "password";
     
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new FDSNDataSelectClient()).execute(args));

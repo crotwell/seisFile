@@ -11,9 +11,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 
@@ -111,5 +108,4 @@ public class FDSNEventCatalogQuerier extends AbstractFDSNQuerier {
         return catalogQP.formURI();
     }
 
-    private static Logger logger = LoggerFactory.getLogger(FDSNEventCatalogQuerier.class);
 }

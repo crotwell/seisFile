@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import picocli.CommandLine.ITypeConverter;
-
 public abstract class PatternParser {
 
     public PatternParser(String re, String[] fields) {
@@ -21,7 +19,7 @@ public abstract class PatternParser {
         if(!m.matches()) {
             throw new java.lang.IllegalArgumentException(getErrorMessage(arg));
         }
-        Map<String,String> box = new HashMap();
+        Map<String,String> box = new HashMap<String,String>();
         for(int i = 0; i < fields.length; i++) {
             box.put(fields[i], m.group(i + 1));
         }

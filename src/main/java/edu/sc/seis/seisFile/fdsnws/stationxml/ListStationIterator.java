@@ -3,9 +3,6 @@ package edu.sc.seis.seisFile.fdsnws.stationxml;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationIterator;
-
 public class ListStationIterator extends StationIterator {
 
     @Override

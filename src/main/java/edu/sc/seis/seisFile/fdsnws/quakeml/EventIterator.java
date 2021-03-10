@@ -6,8 +6,6 @@ import javax.xml.stream.XMLStreamException;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxElementProcessor;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 
 public class EventIterator {
 

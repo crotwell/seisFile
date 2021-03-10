@@ -10,12 +10,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Comment;
-import edu.sc.seis.seisFile.fdsnws.quakeml.CreationInfo;
-import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
-import edu.sc.seis.seisFile.fdsnws.quakeml.EventIterator;
-import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
-import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
 
 
 public class EventParameters {

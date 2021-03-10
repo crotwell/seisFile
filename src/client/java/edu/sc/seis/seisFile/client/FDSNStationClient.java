@@ -9,7 +9,6 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 
 import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQueryParams;
 import edu.sc.seis.seisFile.fdsnws.stationxml.BaseNodeType;

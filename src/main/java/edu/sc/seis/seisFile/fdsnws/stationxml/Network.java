@@ -1,7 +1,6 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 

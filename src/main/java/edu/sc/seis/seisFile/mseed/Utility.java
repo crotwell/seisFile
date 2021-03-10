@@ -2,7 +2,6 @@ package edu.sc.seis.seisFile.mseed;
 
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;

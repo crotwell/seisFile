@@ -12,7 +12,7 @@ public class RangeParser extends PatternParser {
     }
     
     public Map<String,String> parse(String arg) {
-        Map result = (Map)super.parse(arg);
+        Map<String, String> result = (Map<String, String>)super.parse(arg);
         if(result.get("max") == null){
             result.put("max", defaultMax);
         }

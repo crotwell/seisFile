@@ -13,10 +13,6 @@ import picocli.CommandLine.Option;
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EarthwormExportServer extends AbstractClient {
 
-    public EarthwormExportServer() {
-        // TODO Auto-generated constructor stub
-    }
-
     @Option(names = "--port", description = "port to listen on, defaults to ${DEFAULT-VALUE}", defaultValue="10002")
     protected int port;
     @Option(names = "--heart", description = "heartbeat interval in seconds, defaults to ${DEFAULT-VALUE}", defaultValue="5")

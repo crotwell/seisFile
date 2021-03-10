@@ -22,13 +22,6 @@ import picocli.CommandLine.Spec;
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class EarthwormImportClient extends AbstractClient {
 
-    
-    
-    public EarthwormImportClient() {
-        // TODO Auto-generated constructor stub
-    }
-
-
     @Spec
     protected CommandSpec spec;
 

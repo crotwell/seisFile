@@ -151,8 +151,7 @@ public class MSeedListHeader extends AbstractClient {
                                     }
                                 }
                             } catch(UnsupportedCompressionType e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                                throw new SeedFormatException("Unable to decompress record "+i+" from "+infile.getPath(), e);
                             } catch(CodecException e) {
                                 throw new SeedFormatException("Unable to read record "+i+" from "+infile.getPath(), e);
                             }
