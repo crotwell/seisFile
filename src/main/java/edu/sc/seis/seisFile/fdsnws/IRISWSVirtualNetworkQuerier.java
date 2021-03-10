@@ -24,8 +24,7 @@ public class IRISWSVirtualNetworkQuerier extends AbstractFDSNQuerier {
 
     @Override
     public URL getSchemaURL() {
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("Virtual network web service does not have schema.");
     }
     
 
@@ -37,14 +36,11 @@ public class IRISWSVirtualNetworkQuerier extends AbstractFDSNQuerier {
                     try {
                         VirtualNetworkList vnets = new VirtualNetworkList(getReader());
                         // should validate, but virtualnetworks doesn't have schema
-                        response.close();
                         return vnets;
                     } catch(XMLStreamException e) {
                         handleXmlStreamException(e);
                         // can't get here as handleXmlStreamException throw FDSNWSException
                         throw new RuntimeException("Should not happen");
-                    } catch(IOException e) {
-                        throw new FDSNWSException("trouble closing", e);
                     }
                 } else {
                     // return iterator with nothing in it
@@ -61,6 +57,15 @@ public class IRISWSVirtualNetworkQuerier extends AbstractFDSNQuerier {
                 throw (FDSNWSException)e;
             } else {
                 throw new FDSNWSException(e.getMessage(), e, getConnectionUri());
+            }
+        } finally {
+            if (response != null ) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    // oh well
+                }
+                response = null;
             }
         }
     }

@@ -5,17 +5,30 @@ import java.time.Instant;
 public class IRISWSVirtualNetworkQueryParams extends AbstractQueryParams  {
 
     public IRISWSVirtualNetworkQueryParams() {
-        super(IRIS_HOST);
+        this(IRIS_HOST);
     }
     
     public IRISWSVirtualNetworkQueryParams(String host) {
         super(host==null ? IRIS_HOST : host);
+        setFdsnwsPath(IRISWS_PATH);
     }
 
     @Override
     public String getServiceName() {
-        // TODO Auto-generated method stub
-        return null;
+        return VIRTUALNETWORK_SERVICE;
+    }
+
+    public static final String VIRTUALNETWORK_SERVICE = "virtualnetwork";
+
+
+
+    public IRISWSVirtualNetworkQueryParams setHost(String host) {
+        this.host = host;
+        return this;
+    }
+    public IRISWSVirtualNetworkQueryParams setPort(int port) {
+        this.port = port;
+        return this;
     }
 
     public static final String CODE = "code";
@@ -90,4 +103,5 @@ public class IRISWSVirtualNetworkQueryParams extends AbstractQueryParams  {
         return this;
     }
 
+    public static final String IRISWS_PATH = "irisws";
 }

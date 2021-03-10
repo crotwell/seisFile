@@ -315,6 +315,7 @@ val scriptNames = mapOf(
   "fdsnevent" to "edu.sc.seis.seisFile.client.FDSNEventClient",
   "fdsnstation" to "edu.sc.seis.seisFile.client.FDSNStationClient",
   "fdsndataselect" to "edu.sc.seis.seisFile.client.FDSNDataSelectClient",
+  "irisvirtnet" to "edu.sc.seis.seisFile.client.IRISVirtualNetClient",
   "saclh" to "edu.sc.seis.seisFile.client.SacListHeader",
   "mseedlh" to "edu.sc.seis.seisFile.client.MSeedListHeader",
   "seedlinkclient" to "edu.sc.seis.seisFile.client.SeedLinkClient",

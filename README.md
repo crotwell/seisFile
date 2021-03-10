@@ -13,6 +13,7 @@ Currently support exists for:
   * FDSN Station web service, which returns FDSN StationXML
   * FDSN Event web service, which returns QuakeML
   * FDSN DataSelect web service, which returns miniseed
+  * IRIS Virtual Network web service
   * SeedLink
   * Datalink
   * Earthworm/Waveserver and ImportGeneric/ExportGeneric
