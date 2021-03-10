@@ -29,9 +29,16 @@ include::{includedir}/saclh.adoc[tag=picocli-generated-man-section-footer]
 
 == Examples
 
-Print the a and kstnm headers for a SAC file.
+Print the all headers for a SAC file.
 
 [source,bash]
 ....
 include::{exampledir}/saclh_ex1_out[]
+....
+
+Print the a and kstnm headers for a SAC file.
+
+[source,bash]
+....
+include::{exampledir}/saclh_ex2_out[]
 ....

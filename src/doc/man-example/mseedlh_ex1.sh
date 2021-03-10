@@ -1,1 +1,1 @@
-mseedlh -c HHE --max 1 --data jsc.mseed
+mseedlh -c LHE --max 1 --data jsc.mseed
