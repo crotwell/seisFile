@@ -175,34 +175,50 @@ val binDistFiles: CopySpec = copySpec {
     }
 }
 
+val specFiles: CopySpec = copySpec {
+  from("src/doc") {
+    include("specs/**")
+  }
+  from("src/main/resources/edu/sc/seis/seisFile/quakeml/1.2") {
+    include("*.xsd")
+    into("specs/quakeml")
+  }
+  from("src/main/resources/edu/sc/seis/seisFile/stationxml") {
+    include("*.xsd")
+    into("specs/stationxml")
+  }
+}
+
 val distFiles: CopySpec = copySpec {
     with(binDistFiles)
+    with(specFiles) {
+      into("docs")
+    }
     from("build/docs") {
         include("javadoc/**")
-        into("doc")
+        into("docs")
     }
     from("build/manhtml") {
         include("manpage/**")
-        into("doc")
+        into("docs")
     }
     from("build/manhtml/html5") {
         include("**")
-        into("doc/manhtml")
+        into("docs/manhtml")
     }
     from("build") {
         include("manpdf/**")
-        into("doc")
+        into("docs")
     }
     from("build/picocli") {
         include("bashcompletion/**")
-        into("doc")
+        into("docs")
     }
     from(".") {
         include("LICENSE")
         include("README.md")
         include("build.gradle.kts")
         include("settings.gradle.kts")
-        include("doc/**")
         include("src/**")
         include("gradle/**")
         include("gradlew")
@@ -372,22 +388,12 @@ for (key in scriptNames.keys) {
 }
 
 val docsFiles: CopySpec = copySpec {
+  with(specFiles)
   from(project.projectDir) {
     include("README.md")
   }
   from("build/manhtml/html5") {
     include("**")
-  }
-  from("src/doc") {
-    include("specs/**")
-  }
-  from("src/main/resources/edu/sc/seis/seisFile/quakeml/1.2") {
-    include("*.xsd")
-    into("specs/quakeml")
-  }
-  from("src/main/resources/edu/sc/seis/seisFile/stationxml") {
-    include("*.xsd")
-    into("specs/stationxml")
   }
 }
 
@@ -401,6 +407,7 @@ tasks.register<Sync>("docsDir") {
 }
 
 
+tasks.get("explodeDist").dependsOn(tasks.get("docsDir"))
 tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
 tasks.get("explodeDist").dependsOn(tasks.get("asciidoctor"))
 tasks.get("explodeDist").dependsOn(tasks.get("asciidoctorPdf"))
