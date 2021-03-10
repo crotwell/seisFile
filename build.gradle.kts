@@ -178,6 +178,7 @@ val binDistFiles: CopySpec = copySpec {
 val specFiles: CopySpec = copySpec {
   from("src/doc") {
     include("specs/**")
+    exclude("man-*")
   }
   from("src/main/resources/edu/sc/seis/seisFile/quakeml/1.2") {
     include("*.xsd")
@@ -189,10 +190,14 @@ val specFiles: CopySpec = copySpec {
   }
 }
 
+val specFilesCopy: CopySpec = copySpec {
+  with(specFiles)
+}
 val distFiles: CopySpec = copySpec {
     with(binDistFiles)
-    with(specFiles) {
+    with(specFilesCopy) {
       into("docs")
+      include("*")
     }
     from("build/docs") {
         include("javadoc/**")
@@ -393,6 +398,9 @@ val docsFiles: CopySpec = copySpec {
   from(project.projectDir) {
     include("README.md")
   }
+  from("src/doc/ghpages") {
+    include("**")
+  }
   from("build/manhtml/html5") {
     include("**")
   }
@@ -402,8 +410,8 @@ val docsFiles: CopySpec = copySpec {
 tasks.register<Sync>("docsDir") {
   dependsOn("asciidoctor")
   group = "dist"
-  with( docsFiles)
-  into( file("docs"))
+  with(docsFiles)
+  into( "docs")
   rename("README.md", "index.md")
 }
 
