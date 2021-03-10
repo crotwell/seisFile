@@ -1,10 +1,5 @@
 :includedir: build/picocli/man
 
-:doctype: manpage
-:revnumber: edu.sc.seis seisFile 2.0.0-SNAPSHOT_2021-03-03T203611 2021-03-04T01 36 11Z (1979 e5305132)
-:manmanual: seisFile Manual
-:mansource: edu.sc.seis seisFile 2.0.0-SNAPSHOT_2021-03-03T203611 2021-03-04T01 36 11Z (1979 e5305132)
-:man-linkstyle: pass:[blue R < >]
 = Example Clients for SeisFile
 
 SeisFile is a library, but includes as a separate jar several clients

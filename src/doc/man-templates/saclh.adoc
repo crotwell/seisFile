@@ -13,6 +13,10 @@ include::{includedir}/saclh.adoc[tag=picocli-generated-man-section-description]
 
 link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java[View source code here.]
 
+link:http://ds.iris.edu/files/sac-manual/[SAC Manual]
+
+link:specs/sac/file_format.html[SAC file format]
+
 include::{includedir}/saclh.adoc[tag=picocli-generated-man-section-options]
 
 include::{includedir}/saclh.adoc[tag=picocli-generated-man-section-arguments]

@@ -324,11 +324,13 @@ for (key in scriptNames.keys) {
     classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
     main = "picocli.codegen.docgen.manpage.ManPageGenerator"
     val outTemplateDir =  File(project.projectDir,  "src/doc/man-templates")
-    outTemplateDir.mkdirs()
     val outDir =  File(project.buildDir,  "picocli/man")
-    outDir.mkdirs()
     args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
+    doLast {
+        mkdir(outTemplateDir)
+        mkdir(outDir)
+    }
   }
   tasks.named("genManTemplate") {
     dependsOn("genManTemplate"+key)
@@ -339,11 +341,13 @@ for (key in scriptNames.keys) {
     classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
     main = "picocli.codegen.docgen.manpage.ManPageGenerator"
     val outDir =  File(project.buildDir,  "picocli/man")
-    outDir.mkdirs()
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
     inputs.dir("src/client")
     outputs.files(File(outDir, scriptNames[key]+".adoc"))
+    doLast {
+        mkdir(outDir)
+    }
   }
   tasks.named("asciidoctor") {
       dependsOn(adocTask)
@@ -354,15 +358,48 @@ for (key in scriptNames.keys) {
     classpath = sourceSets.getByName("client").runtimeClasspath
     main = "picocli.AutoComplete"
     val outDir =  File(project.buildDir,  "picocli/bashcompletion")
-    outDir.mkdirs()
     val outFile = File(outDir, key+"_completion")
     args = listOf(scriptNames[key], "-f", "-o", outFile.path)
     dependsOn += tasks.getByName("compileJava")
+    outputs.files(outFile)
+    doLast {
+        mkdir(outDir)
+    }
   }
   tasks.named("genAutocomplete") {
       dependsOn(bashautoTask)
   }
 }
+
+val docsFiles: CopySpec = copySpec {
+  from(project.projectDir) {
+    include("README.md")
+  }
+  from("build/manhtml/html5") {
+    include("**")
+  }
+  from("src/doc") {
+    include("specs/**")
+  }
+  from("src/main/resources/edu/sc/seis/seisFile/quakeml/1.2") {
+    include("*.xsd")
+    into("specs/quakeml")
+  }
+  from("src/main/resources/edu/sc/seis/seisFile/stationxml") {
+    include("*.xsd")
+    into("specs/stationxml")
+  }
+}
+
+
+tasks.register<Sync>("docsDir") {
+  dependsOn("asciidoctor")
+  group = "dist"
+  with( docsFiles)
+  into( file("docs"))
+  rename("README.md", "index.md")
+}
+
 
 tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
 tasks.get("explodeDist").dependsOn(tasks.get("asciidoctor"))
