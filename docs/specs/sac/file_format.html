@@ -1,0 +1,1844 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
+<title>SAC Data File Format</title>
+<link rel="stylesheet" href="../css/html2css1.css" type="text/css" />
+<link rel="stylesheet" href="../css/style.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="sac-data-file-format">
+<div class="page">
+<div class="headertitle">Using SAC</div>
+<div class="menu">
+  <a href="../manual.html"><span class="menuitem">Using SAC</span></a>
+
+  <span class="menuspace">Commands:</span>
+  <a href="../commands/alpha_commands.html"><span class="menuitem">A - Z</span></a>
+  <a href="../commands/func_commands.html"><span class="menuitem">Functional</span></a>
+
+  <span class="menuspace">Subprocesses:</span>
+  <a href="../commands/spe.com/spe.html"><span class="menuitem">SPE</span></a>
+  <a href="../commands/sss.com/sss.html"><span class="menuitem">SSS</span></a>
+  
+  <span class="menuspace"></span>
+  <a href="http://ds.iris.edu/ds/nodes/dmc/software/downloads/sac/"><span class="menuitem">SAC/IRIS</span></a>
+  
+</div>
+<div class="header">
+<h1 class="title">SAC Data File Format</h1>
+</div>
+
+<div class="content">
+<div class="section" id="overview">
+<h1>Overview</h1>
+<p>This section discusses the contents of the SAC data file, describes the binary
+and alphanumeric formats of this file, and documents the SAC header in detail.</p>
+<p>Since version 100.0, SAC can handle binary data files in either endian (byte
+order), so big-endian systems (Sun Solaris, Mac PPC) can read SAC data files
+written on little-endian systems (Linux, MAC i686, Cygwin) and vice versa.</p>
+<p>Each signal is stored on disk in a separate SAC data file. Through SAC
+version 101.6a, these files contain a fixed length header section followed by
+one or two data sections. The header contains floating point, integer, logical,
+and character fields. Evenly spaced data files have only one data section which
+contains the dependent variable. Unevenly spaced data and spectral data files
+contain two data sections. For unevenly spaced data, the first data section
+contains the dependent variable and the second contains the independent
+variable. For spectral files the first component is either the amplitude or the
+real component and the second component is either the phase or imaginary
+component.</p>
+<p>All reals in the SAC header and data sections are single-precision (32
+bits, 4 bytes).  As discussed in the section on precision in <a class="reference external" href="tutorial.html">TUTORIAL</a>, although
+having single-precision for the data is sufficient, having only
+single-precision for time and distance variables in the header is no
+longer good enough to handle many modern data sets. SAC version
+102.0 solves this problem.  The header is unchanged, but a &quot;footer&quot; is
+added with 22 header variables in double-precision.  Version 102.0 can
+handle &quot;old&quot; SAC data files with no footer or files with a footer, so
+there is complete compatibility. SAC v102.0 distinguishes between
+&quot;old&quot; and &quot;new&quot; files by the header variable NVHDR: if NVHDR = 6, the
+SAC file is in &quot;old&quot; format, if NVHDR = 7, it is in &quot;new&quot; format with
+a footer.  See see the section on <em>Floating-Point Precision in SAC</em> in
+<a class="reference external" href="tutorial.html">TUTORIAL</a> for a more detailed discussion.</p>
+</div>
+<div class="section" id="sac-binary-format-for-nvhdr-6">
+<h1>SAC Binary Format for NVHDR = 6</h1>
+<p>The binary format is the most common one use.  It is is the default format in
+the <a class="reference external" href="../commands/read.html">READ</a> and <a class="reference external" href="../commands/write.html">WRITE</a> commands and in the subroutine library (RSAC1, RSAC2,
+WSAC1, WSAC2, WSAC0.) These are binary (unformatted) files.</p>
+</div>
+<div class="section" id="structure-of-sac-binary-data-file-for-nvhdr-6">
+<h1>Structure of SAC Binary Data File for NVHDR = 6</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="27%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Header Section</th>
+<th class="head">First Data Section</th>
+<th class="head">Second Data Section (if present)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>start word: 0</td>
+<td>start word: 158</td>
+<td>start word: 158+NPTS</td>
+</tr>
+<tr><td>word length: 158</td>
+<td>word length: NPTS</td>
+<td>word length: NPTS</td>
+</tr>
+<tr><td>see table</td>
+<td><ul class="first last simple">
+<li>dependent variable</li>
+<li>amplitude</li>
+<li>real component</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>independent variable unevenly spaced</li>
+<li>phase</li>
+<li>imaginary component</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sac-binary-header">
+<h1>SAC Binary Header</h1>
+<p>The following table shows the contents and layout of the SAC binary data file
+header. The W and T columns give the beginning word and header data type for
+the header variables named on that line. These header variables and data types
+are described later in this section. If the name is INTERNAL then that
+variable is internal to SAC and not normally of interest to the user. If the
+name is UNUSED then that variable is not currently being used. For any given
+file, some of these variables will not have meaningful values. These are
+refered to as &quot;undefined variables&quot; for that file. For each data type, a
+special value signifies this undefined state. They are listed in a table at
+the end of this section.</p>
+</div>
+<div class="section" id="header-data-types">
+<h1>Header Data Types</h1>
+<p>This table lists the header types and their definitions. The third
+column lists the special value used to signify that a particular
+header variable is undefined in a particular file.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="16%" />
+<col width="15%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Type</th>
+<th class="head">Definition</th>
+<th class="head">Undefined</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>F</td>
+<td>Floating</td>
+<td>-12345.0</td>
+<td>Single precision.</td>
+</tr>
+<tr><td>N</td>
+<td>Integer</td>
+<td>-12345</td>
+<td>Name begins with an &quot;N&quot;.</td>
+</tr>
+<tr><td>I</td>
+<td>Enumerated</td>
+<td>-12345</td>
+<td>Name begins with an &quot;I&quot;. Has a limited set
+of integer values. Each value is given a
+specific name. Each value represents a
+specific condition. Subroutines use the
+equivalent alphanumeric name.</td>
+</tr>
+<tr><td>L</td>
+<td>Logical</td>
+<td>FALSE</td>
+<td>Name begins with an &quot;L&quot;. Value is either
+TRUE or FALSE.</td>
+</tr>
+<tr><td>K</td>
+<td>Alphanumeric</td>
+<td>&quot;-12345..&quot;</td>
+<td>Name begins with a &quot;K&quot;.  Either 8 or 16
+characters long.</td>
+</tr>
+<tr><td>A</td>
+<td>Auxilary</td>
+<td>&nbsp;</td>
+<td>Not really in the header.
+Derived from other header fields.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="header-variables">
+<h1>Header Variables</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="13%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Word</th>
+<th class="head">Type</th>
+<th class="head">NAMES</th>
+<th class="head">o</th>
+<th class="head">o</th>
+<th class="head">o</th>
+<th class="head">o</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>0</td>
+<td>F</td>
+<td>DELTA</td>
+<td>DEPMIN</td>
+<td>DEPMAX</td>
+<td>UNUSED</td>
+<td>ODELTA</td>
+</tr>
+<tr><td>5</td>
+<td>F</td>
+<td>B</td>
+<td>E</td>
+<td>O</td>
+<td>A</td>
+<td>INTERNAL</td>
+</tr>
+<tr><td>10</td>
+<td>F</td>
+<td>T0</td>
+<td>T1</td>
+<td>T2</td>
+<td>T3</td>
+<td>T4</td>
+</tr>
+<tr><td>15</td>
+<td>F</td>
+<td>T5</td>
+<td>T6</td>
+<td>T7</td>
+<td>T8</td>
+<td>T9</td>
+</tr>
+<tr><td>20</td>
+<td>F</td>
+<td>F</td>
+<td>RESP0</td>
+<td>RESP1</td>
+<td>RESP2</td>
+<td>RESP3</td>
+</tr>
+<tr><td>25</td>
+<td>F</td>
+<td>RESP4</td>
+<td>RESP5</td>
+<td>RESP6</td>
+<td>RESP7</td>
+<td>RESP8</td>
+</tr>
+<tr><td>30</td>
+<td>F</td>
+<td>RESP9</td>
+<td>STLA</td>
+<td>STLO</td>
+<td>STEL</td>
+<td>STDP</td>
+</tr>
+<tr><td>35</td>
+<td>F</td>
+<td>EVLA</td>
+<td>EVLO</td>
+<td>EVEL</td>
+<td>EVDP</td>
+<td>MAG</td>
+</tr>
+<tr><td>40</td>
+<td>F</td>
+<td>USER0</td>
+<td>USER1</td>
+<td>USER2</td>
+<td>USER3</td>
+<td>USER4</td>
+</tr>
+<tr><td>45</td>
+<td>F</td>
+<td>USER5</td>
+<td>USER6</td>
+<td>USER7</td>
+<td>USER8</td>
+<td>USER9</td>
+</tr>
+<tr><td>50</td>
+<td>F</td>
+<td>DIST</td>
+<td>AZ</td>
+<td>BAZ</td>
+<td>GCARC</td>
+<td>INTERNAL</td>
+</tr>
+<tr><td>55</td>
+<td>F</td>
+<td>INTERNAL</td>
+<td>DEPMEN</td>
+<td>CMPAZ</td>
+<td>CMPINC</td>
+<td>XMINIMUM</td>
+</tr>
+<tr><td>60</td>
+<td>F</td>
+<td>XMAXIMUM</td>
+<td>YMINIMUM</td>
+<td>YMAXIMUM</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>65</td>
+<td>F</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>70</td>
+<td>I</td>
+<td>NZYEAR</td>
+<td>NZJDAY</td>
+<td>NZHOUR</td>
+<td>NZMIN</td>
+<td>NZSEC</td>
+</tr>
+<tr><td>75</td>
+<td>I</td>
+<td>NZMSEC</td>
+<td>NVHDR</td>
+<td>NORID</td>
+<td>NEVID</td>
+<td>NPTS</td>
+</tr>
+<tr><td>80</td>
+<td>I</td>
+<td>INTERNAL</td>
+<td>NWFID</td>
+<td>NXSIZE</td>
+<td>NYSIZE</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>85</td>
+<td>I</td>
+<td>IFTYPE</td>
+<td>IDEP</td>
+<td>IZTYPE</td>
+<td>UNUSED</td>
+<td>IINST</td>
+</tr>
+<tr><td>90</td>
+<td>I</td>
+<td>ISTREG</td>
+<td>IEVREG</td>
+<td>IEVTYP</td>
+<td>IQUAL</td>
+<td>ISYNTH</td>
+</tr>
+<tr><td>95</td>
+<td>I</td>
+<td>IMAGTYP</td>
+<td>IMAGSRC</td>
+<td>IBODY</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>100</td>
+<td>I</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>105</td>
+<td>L</td>
+<td>LEVEN</td>
+<td>LPSPOL</td>
+<td>LOVROK</td>
+<td>LCALDA</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>110</td>
+<td>K</td>
+<td>KSTNM</td>
+<td>KEVNM*</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>116</td>
+<td>K</td>
+<td>KHOLE</td>
+<td>KO</td>
+<td>KA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>122</td>
+<td>K</td>
+<td>KT0</td>
+<td>KT1</td>
+<td>KT2</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>128</td>
+<td>K</td>
+<td>KT3</td>
+<td>KT4</td>
+<td>KT5</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>134</td>
+<td>K</td>
+<td>KT6</td>
+<td>KT7</td>
+<td>KT8</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>140</td>
+<td>K</td>
+<td>KT9</td>
+<td>KF</td>
+<td>KUSER0</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>146</td>
+<td>K</td>
+<td>KUSER1</td>
+<td>KUSER2</td>
+<td>KCMPNM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>152</td>
+<td>K</td>
+<td>KNETWK</td>
+<td>KDATRD</td>
+<td>KINST</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>KEVNM is 16 characters (4 words, 16 bytes) long.</p>
+<p>All other K fields are 8 characters (2 words, 8 bytes) long.</p>
+</div>
+<div class="section" id="structure-of-sac-binary-data-file-for-nvhd-7">
+<h1>Structure of SAC Binary Data File for NVHD = 7</h1>
+<p>The only difference between a SAC binary data file with NVHDR = 6 and
+one with NVHDR = 7 is the addition of a &quot;footer&quot; following the data
+section(s).  The footer is comprised of 22 double-precision (64-bit)
+floating point variables: DELTA, B, E, O, A, T0 ... T9, F, EVLO, EVLA,
+STLO, STLA, SB, and SDELTA.  The names are the same as in the header;
+SAC distinguishes between the single- and double-precision variables
+in internal calculations by their location in the file.</p>
+</div>
+<div class="section" id="sac-alphanumeric-format">
+<h1>SAC Alphanumeric Format</h1>
+<p>This file is essentially the alphanumeric equivalent of the SAC binary data
+file. The header section is stored on the first 30 80-character lines. For both
+NVHDR = 6 and NVHDR = 7, this is followed by one or two data sections. The data
+are in 5G15.7 format. The following table shows the line number, formats and
+names of the variables on the header section lines.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="11%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">LINE</th>
+<th class="head">FORMAT</th>
+<th class="head">NAMES</th>
+<th class="head">o</th>
+<th class="head">o</th>
+<th class="head">o</th>
+<th class="head">o</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>01</td>
+<td>(5G15.7)</td>
+<td>DELTA</td>
+<td>DEPMIN</td>
+<td>DEPMAX</td>
+<td>UNUSED</td>
+<td>ODELTA</td>
+</tr>
+<tr><td>02</td>
+<td>(5G15.7)</td>
+<td>B</td>
+<td>E</td>
+<td>O</td>
+<td>A</td>
+<td>INTERNAL</td>
+</tr>
+<tr><td>03</td>
+<td>(5G15.7)</td>
+<td>T0</td>
+<td>T1</td>
+<td>T2</td>
+<td>T3</td>
+<td>T4</td>
+</tr>
+<tr><td>04</td>
+<td>(5G15.7)</td>
+<td>T5</td>
+<td>T6</td>
+<td>T7</td>
+<td>T8</td>
+<td>T9</td>
+</tr>
+<tr><td>05</td>
+<td>(5G15.7)</td>
+<td>F</td>
+<td>RESP0</td>
+<td>RESP1</td>
+<td>RESP2</td>
+<td>RESP3</td>
+</tr>
+<tr><td>06</td>
+<td>(5G15.7)</td>
+<td>RESP4</td>
+<td>RESP5</td>
+<td>RESP6</td>
+<td>RESP7</td>
+<td>RESP8</td>
+</tr>
+<tr><td>07</td>
+<td>(5G15.7)</td>
+<td>RESP9</td>
+<td>STLA</td>
+<td>STLO</td>
+<td>STEL</td>
+<td>STDP</td>
+</tr>
+<tr><td>08</td>
+<td>(5G15.7)</td>
+<td>EVLA</td>
+<td>EVLO</td>
+<td>EVEL</td>
+<td>EVDP</td>
+<td>MAG</td>
+</tr>
+<tr><td>09</td>
+<td>(5G15.7)</td>
+<td>USER0</td>
+<td>USER1</td>
+<td>USER2</td>
+<td>USER3</td>
+<td>USER4</td>
+</tr>
+<tr><td>10</td>
+<td>(5G15.7)</td>
+<td>USER5</td>
+<td>USER6</td>
+<td>USER7</td>
+<td>USER8</td>
+<td>USER9</td>
+</tr>
+<tr><td>11</td>
+<td>(5G15.7)</td>
+<td>DIST</td>
+<td>AZ</td>
+<td>BAZ</td>
+<td>GCARC</td>
+<td>SB</td>
+</tr>
+<tr><td>12</td>
+<td>(5G15.7)</td>
+<td>SDELTA</td>
+<td>DEPMEN</td>
+<td>CMPAZ</td>
+<td>CMPINC</td>
+<td>XMINIMUM</td>
+</tr>
+<tr><td>13</td>
+<td>(5G15.7)</td>
+<td>XMAXIMUM</td>
+<td>YMINIMUM</td>
+<td>YMAXIMUM</td>
+<td>ADJTM</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>14</td>
+<td>(5G15.7)</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>15</td>
+<td>(5I10)</td>
+<td>NZYEAR</td>
+<td>NZJDAY</td>
+<td>NZHOUR</td>
+<td>NZMIN</td>
+<td>NZSEC</td>
+</tr>
+<tr><td>16</td>
+<td>(5I10)</td>
+<td>NZMSEC</td>
+<td>NVHDR</td>
+<td>NORID</td>
+<td>NEVID</td>
+<td>NPTS</td>
+</tr>
+<tr><td>17</td>
+<td>(5I10)</td>
+<td>NSNPTS</td>
+<td>NWFID</td>
+<td>NXSIZE</td>
+<td>NYSIZE</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>18</td>
+<td>(5I10)</td>
+<td>IFTYPE</td>
+<td>IDEP</td>
+<td>IZTYPE</td>
+<td>UNUSED</td>
+<td>IINST</td>
+</tr>
+<tr><td>19</td>
+<td>(5I10)</td>
+<td>ISTREG</td>
+<td>IEVREG</td>
+<td>IEVTYP</td>
+<td>IQUAL</td>
+<td>ISYNTH</td>
+</tr>
+<tr><td>20</td>
+<td>(5I10)</td>
+<td>IMAGTYP</td>
+<td>IMAGSRC</td>
+<td>IBODY</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>21</td>
+<td>(5I10)</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>22</td>
+<td>(5I10)</td>
+<td>LEVEN</td>
+<td>LPSPOL</td>
+<td>LOVROK</td>
+<td>LCALDA</td>
+<td>UNUSED</td>
+</tr>
+<tr><td>23</td>
+<td>(A8,A16)</td>
+<td>KSTNM</td>
+<td>KEVNM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>24</td>
+<td>(3A8)</td>
+<td>KHOLE</td>
+<td>KO</td>
+<td>KA</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>25</td>
+<td>(3A8)</td>
+<td>KT0</td>
+<td>KT1</td>
+<td>KT2</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>26</td>
+<td>(3A8)</td>
+<td>KT3</td>
+<td>KT4</td>
+<td>KT5</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>27</td>
+<td>(3A8)</td>
+<td>KT6</td>
+<td>KT7</td>
+<td>KT8</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>28</td>
+<td>(3A8)</td>
+<td>KT9</td>
+<td>KF</td>
+<td>KUSER0</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>29</td>
+<td>(3A8)</td>
+<td>KUSER1</td>
+<td>KUSER2</td>
+<td>KCMPNM</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>30</td>
+<td>(3A8)</td>
+<td>KNETWK</td>
+<td>KDATRD</td>
+<td>KINST</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sac-alphanumeric-data-file-example">
+<h1>SAC Alphanumeric Data File Example</h1>
+<p>The header section and first five lines of the data section of a sample SAC
+alphanumeric data file is shown below. You can reproduce this file (with the
+entire data section) on your system by executing the following commands:</p>
+<pre class="literal-block">
+SAC&gt; FUNCGEN SEISMOGRAM
+SAC&gt; LH
+SAC&gt; CH NVDHR 7
+SAC&gt; WRITE ALPHA TEMP1
+</pre>
+<p>You can read this alphanumeric file directly into SAC with the following commands:</p>
+<pre class="literal-block">
+SAC&gt; READ TEMP1
+SAC&gt; LH
+</pre>
+<p>SAC knows the difference between an alphanumeric and binary SAC files
+and should be able to read them directly.  You can specify an ALPHA
+flag to the <a class="reference external" href="../commands/read.html">READ</a> command for backwards compatibility:</p>
+<pre class="literal-block">
+SAC&gt; READ ALPHA TEMP1
+SAC&gt; LH
+</pre>
+<p>Listed next are the first lines of TEMP1 -- header plus first 8 lines
+of data and ending with the 22 lines of the footer (one line per
+variable).:</p>
+<pre class="literal-block">
+    0.01000000      -1.569280       1.520640      -12345.00      -12345.00
+      9.459999       19.45000      -41.43000       10.46400      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+     -12345.00       48.00000      -120.0000      -12345.00      -12345.00
+      48.00000      -125.0000      -12345.00       15.00000      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+      373.0627       88.14721       271.8528       3.357465      -12345.00
+     -12345.00    -0.09854718       0.000000       0.000000      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+     -12345.00      -12345.00      -12345.00      -12345.00      -12345.00
+     1981        88        10        38        14
+        0         7         0         0      1000
+   -12345    -12345    -12345    -12345    -12345
+        1        50         9    -12345    -12345
+   -12345    -12345        42    -12345    -12345
+   -12345    -12345    -12345    -12345    -12345
+   -12345    -12345    -12345    -12345    -12345
+        1         1         1         1         0
+CDV     K8108838
+-12345  -12345  -12345
+-12345  -12345  -12345
+-12345  -12345  -12345
+-12345  -12345  -12345
+-12345  -12345  -12345
+-12345  -12345  -12345
+-12345  -12345  -12345
+   -0.09728001    -0.09728001    -0.09856002    -0.09856002    -0.09728001
+   -0.09600000    -0.09472002    -0.09344001    -0.09344001    -0.09344001
+   -0.09344001    -0.09344001    -0.09472002    -0.09472002    -0.09344001
+   -0.09344001    -0.09216000    -0.09216000    -0.09216000    -0.09216000
+   -0.09088002    -0.09088002    -0.09216000    -0.09344001    -0.09472002
+   -0.09472002    -0.09472002    -0.09472002    -0.09472002    -0.09472002
+   -0.09344001    -0.09344001    -0.09216000    -0.09088002    -0.09088002
+   -0.09216000    -0.09216000    -0.09216000    -0.09344001    -0.09472002
+   ....
+0.0099999997764825821
+9.4599990844726562
+19.449998861178756
+-41.430000305175781
+10.46399974822998
+-12345
+-12345
+-12345
+-12345
+-12345
+-12345
+-12345
+-12345
+-12345
+-12345
+-12345
+-125
+48
+-120
+48
+-12345
+-1234
+</pre>
+</div>
+<div class="section" id="sac-header-variables">
+<h1>SAC Header Variables</h1>
+<p>This table lists the header variables, their types, and descriptions. They are
+grouped by category: required fields, time fields, phase picks, instrument
+parameters, station parameters, event parameters, misc. The header types are
+defined in the second table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="7%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>NPTS</td>
+<td>N</td>
+<td>Number of points per data component. [required]</td>
+</tr>
+<tr><td>NVHDR</td>
+<td>N</td>
+<td>Header version number. Current value is the integer 7.
+Older version data (NVHDR &lt; 6) are automatically updated
+when read into sac. In SAC v102.0, one can still use
+NVHDR = 6.  To have double-precision capability,
+NVHDR = 7 [required]</td>
+</tr>
+<tr><td>B</td>
+<td>F</td>
+<td>Beginning value of the independent variable. [required]</td>
+</tr>
+<tr><td>E</td>
+<td>F</td>
+<td>Ending value of the independent variable. [required]</td>
+</tr>
+<tr><td>IFTYPE</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Type of file [required]:</dt>
+<dd><ul class="first last simple">
+<li>ITIME {Time series file}</li>
+<li>IRLIM {Spectral file---real and imaginary}</li>
+<li>IAMPH {Spectral file---amplitude and phase}</li>
+<li>IXY {General x versus y data}</li>
+<li>IXYZ {General XYZ (3-D) file}</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>LEVEN</td>
+<td>L</td>
+<td>TRUE if data is evenly spaced. [required]</td>
+</tr>
+<tr><td>DELTA</td>
+<td>F</td>
+<td>Increment between evenly spaced samples
+(nominal value). [required]</td>
+</tr>
+<tr><td>ODELTA</td>
+<td>F</td>
+<td>Observed increment if different from nominal value.</td>
+</tr>
+<tr><td>IDEP</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Type of dependent variable:</dt>
+<dd><ul class="first last simple">
+<li>IUNKN (Unknown)</li>
+<li>IDISP (Displacement in nm)</li>
+<li>IVEL (Velocity in nm/sec)</li>
+<li>IACC (Acceleration in nm/sec/sec)</li>
+<li><strong>NOTE</strong> Others use SI units for IDISP, IVEL, IACC.</li>
+<li>IVOLTS (Velocity in volts)</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>DEPMIN</td>
+<td>F</td>
+<td>Minimum value of dependent variable.</td>
+</tr>
+<tr><td>DEPMAX</td>
+<td>F</td>
+<td>Maximum value of dependent variable.</td>
+</tr>
+<tr><td>DEPMEN</td>
+<td>F</td>
+<td>Mean value of dependent variable.</td>
+</tr>
+<tr><td>NZYEAR</td>
+<td>N</td>
+<td>GMT year corresponding to reference (zero) time in file.</td>
+</tr>
+<tr><td>NZJDAY</td>
+<td>N</td>
+<td>GMT Day of the Year.</td>
+</tr>
+<tr><td>NZHOUR</td>
+<td>N</td>
+<td>GMT hour.</td>
+</tr>
+<tr><td>NZMIN</td>
+<td>N</td>
+<td>GMT minute.</td>
+</tr>
+<tr><td>NZSEC</td>
+<td>N</td>
+<td>GMT second.</td>
+</tr>
+<tr><td>NZMSEC</td>
+<td>N</td>
+<td>GMT millisecond.</td>
+</tr>
+<tr><td>NZDTTM</td>
+<td>N</td>
+<td>GMT date-time array. Six element array equivalenced to
+NZYEAR, NZJDAY,  NZHOUR, NZMIN, NZSEC, and NZMSEC.</td>
+</tr>
+<tr><td>KZDATE</td>
+<td>A</td>
+<td>Alphanumeric form of GMT reference date. Derived from
+NZYEAR and NZJDAY.</td>
+</tr>
+<tr><td>KZTIME</td>
+<td>A</td>
+<td>Alphanumeric form of GMT reference time. Derived from
+NZHOUR, NZMIN, NZSEC, and NZMSEC.</td>
+</tr>
+<tr><td>IZTYPE</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Reference time equivalence:</dt>
+<dd><ul class="first last simple">
+<li>IUNKN (Unknown)</li>
+<li>IB (Begin time)</li>
+<li>IDAY (Midnight of refernece GMT day)</li>
+<li>IO (Event origin time)</li>
+<li>IA (First arrival time)</li>
+<li>ITn (User defined time pick n, n=0,9)</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>O</td>
+<td>F</td>
+<td>Event origin time (seconds relative to reference time.)</td>
+</tr>
+<tr><td>KO</td>
+<td>A</td>
+<td>Event origin time identification.</td>
+</tr>
+<tr><td>NSNPTS</td>
+<td>I</td>
+<td>Number of points of original time series file (Stored NPTS).</td>
+</tr>
+<tr><td>SB</td>
+<td>F</td>
+<td>Begin value of orignal time series file (Stored B).</td>
+</tr>
+<tr><td>SDELTA</td>
+<td>F</td>
+<td>Time increment in original time series file (Stored DELTA).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="phase-picks">
+<h1>Phase Picks</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="7%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>A</td>
+<td>F</td>
+<td>First arrival time (seconds relative to reference time.)</td>
+</tr>
+<tr><td>KA</td>
+<td>K</td>
+<td>First arrival time identification.</td>
+</tr>
+<tr><td>F</td>
+<td>F</td>
+<td>Fini or end of event time (seconds relative to reference time.)</td>
+</tr>
+<tr><td>KF</td>
+<td>A</td>
+<td>Fini identification.</td>
+</tr>
+<tr><td>Tn</td>
+<td>F</td>
+<td>User defined time picks or markers,  n = 0 - 9
+(seconds relative to reference time).</td>
+</tr>
+<tr><td>KT{n}</td>
+<td>K</td>
+<td>A User defined time pick identifications, n = 0 - 9.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="instrument-fields">
+<h1>Instrument Fields</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="7%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>KINST</td>
+<td>K</td>
+<td>Generic name of recording instrument.</td>
+</tr>
+<tr><td>IINST</td>
+<td>I</td>
+<td>Type of recording instrument. [not currently used]</td>
+</tr>
+<tr><td>RESPn</td>
+<td>F</td>
+<td>Instrument response parameters, n=0,9. [not currently used]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="station-fields">
+<h1>Station Fields</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="7%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>KNETWK</td>
+<td>K</td>
+<td>Name of seismic network.</td>
+</tr>
+<tr><td>KSTNM</td>
+<td>K</td>
+<td>Station name.</td>
+</tr>
+<tr><td>ISTREG</td>
+<td>I</td>
+<td>Station geographic region. [not currently used]</td>
+</tr>
+<tr><td>STLA</td>
+<td>F</td>
+<td>Station latitude (degrees, north positive)</td>
+</tr>
+<tr><td>STLO</td>
+<td>F</td>
+<td>Station longitude (degrees, east positive).</td>
+</tr>
+<tr><td>STEL</td>
+<td>F</td>
+<td>Station elevation above sea level (meters). [not currently used]</td>
+</tr>
+<tr><td>STDP</td>
+<td>F</td>
+<td>Station depth below surface (meters). [not currently used]</td>
+</tr>
+<tr><td>CMPAZ</td>
+<td>F</td>
+<td>Component azimuth (degrees clockwise from north).</td>
+</tr>
+<tr><td>CMPINC</td>
+<td>F</td>
+<td>Component incident angle (degrees from upward vertical;
+SEED/MINISEED uses dip: degrees from horizontal down).</td>
+</tr>
+<tr><td>KCMPNM</td>
+<td>K</td>
+<td>Channel name.  SEED volumes use three character names, and
+the third is the component/orientation.  For horizontals,
+the current trend is to use 1 and 2 instead of N and E.</td>
+</tr>
+<tr><td>KSTCMP</td>
+<td>A</td>
+<td>Station component. Derived from KSTNM, CMPAZ, and CMPINC.</td>
+</tr>
+<tr><td>LPSPOL</td>
+<td>L</td>
+<td>TRUE if station components have a positive polarity
+(left-hand rule).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="event-fields">
+<h1>Event Fields</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="6%" />
+<col width="82%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>KEVNM</td>
+<td>K</td>
+<td>Event name.</td>
+</tr>
+<tr><td>IEVREG</td>
+<td>I</td>
+<td>Event geographic region. [not currently used]</td>
+</tr>
+<tr><td>EVLA</td>
+<td>F</td>
+<td>Event latitude (degrees, north positive).</td>
+</tr>
+<tr><td>EVLO</td>
+<td>F</td>
+<td>Event longitude (degrees, east positive).</td>
+</tr>
+<tr><td>EVEL</td>
+<td>F</td>
+<td>Event elevation (meters). [not currently used]</td>
+</tr>
+<tr><td>EVDP</td>
+<td>F</td>
+<td>Event depth below surface (kilommeters -- previously meters)</td>
+</tr>
+<tr><td>MAG</td>
+<td>F</td>
+<td>Event magnitude.</td>
+</tr>
+<tr><td>IMAGTYP</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Magnitude type:</dt>
+<dd><ul class="first last simple">
+<li>IMB (Bodywave Magnitude)</li>
+<li>IMS (Surfacewave Magnitude)</li>
+<li>IML (Local Magnitude)</li>
+<li>IMW (Moment Magnitude)</li>
+<li>IMD (Duration Magnitude)</li>
+<li>IMX (User Defined Magnitude)</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>IMAGSRC</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Source of magnitude information:</dt>
+<dd><ul class="first last simple">
+<li>INEIC (National Earthquake Information Center)</li>
+<li>IPDE (Preliminary Determination of Epicenter)</li>
+<li>IISC (Internation Seismological Centre)</li>
+<li>IREB (Reviewed Event Bulletin)</li>
+<li>IUSGS (US Geological Survey)</li>
+<li>IBRK (UC Berkeley)</li>
+<li>ICALTECH (California Institute of Technology)</li>
+<li>ILLNL (Lawrence Livermore National Laboratory)</li>
+<li>IEVLOC (Event Location (computer program) )</li>
+<li>IJSOP (Joint Seismic Observation Program)</li>
+<li>IUSER (The individual using SAC2000)</li>
+<li>IUNKNOWN (unknown)</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>IEVTYP</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Type of event:</dt>
+<dd><ul class="first last simple">
+<li>IUNKN (Unknown)</li>
+<li>INUCL (Nuclear event)</li>
+<li>IPREN (Nuclear pre-shot event)</li>
+<li>IPOSTN (Nuclear post-shot event)</li>
+<li>IQUAKE (Earthquake)</li>
+<li>IPREQ (Foreshock)</li>
+<li>IPOSTQ (Aftershock)</li>
+<li>ICHEM (Chemical explosion)</li>
+<li>IQB (Quarry or mine blast confirmed by quarry)</li>
+<li>IQB1 (Quarry/mine blast with designed shot
+info-ripple fired)</li>
+<li>IQB2 (Quarry/mine blast with observed shot
+info-ripple fired)</li>
+<li>IQBX (Quarry or mine blast - single shot)</li>
+<li>IQMT (Quarry/mining-induced events: tremors
+and rockbursts)</li>
+<li>IEQ (Earthquake)</li>
+<li>IEQ1 (Earthquakes in a swarm or aftershock sequence)</li>
+<li>IEQ2 (Felt earthquake)</li>
+<li>IME (Marine explosion)</li>
+<li>IEX (Other explosion)</li>
+<li>INU (Nuclear explosion)</li>
+<li>INC (Nuclear cavity collapse)</li>
+<li>IO (Other source of known origin)</li>
+<li>IL (Local event of unknown origin)</li>
+<li>IR (Regional event of unknown origin)</li>
+<li>IT (Teleseismic event of unknown origin)</li>
+<li>IU (Undetermined or conflicting information)</li>
+<li>IOTHER (Other)</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>NEVID</td>
+<td>N</td>
+<td>Event ID (CSS 3.0)</td>
+</tr>
+<tr><td>NORID</td>
+<td>N</td>
+<td>Origin ID (CSS 3.0)</td>
+</tr>
+<tr><td>NWFID</td>
+<td>N</td>
+<td>Waveform ID (CSS 3.0)</td>
+</tr>
+<tr><td>KHOLE</td>
+<td>K</td>
+<td>Nuclear: hole identifier; Other: location identifier (LOCID).</td>
+</tr>
+<tr><td>DIST</td>
+<td>F</td>
+<td>Station to event distance (km).</td>
+</tr>
+<tr><td>AZ</td>
+<td>F</td>
+<td>Event to station azimuth (degrees).</td>
+</tr>
+<tr><td>BAZ</td>
+<td>F</td>
+<td>Station to event azimuth (degrees).</td>
+</tr>
+<tr><td>GCARC</td>
+<td>F</td>
+<td>Station to event great circle arc length (degrees).</td>
+</tr>
+<tr><td>IBODY</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Body / Spheroid definition used in Distance Calculations</dt>
+<dd><ul class="first last simple">
+<li><dl class="first docutils">
+<dt>undef    /  -12345  Sac Historical Spheroid version</dt>
+<dd><ul class="first last">
+<li>a: 6378160.0 m</li>
+<li>f: 0.00335293</li>
+<li><strong>Important Note</strong>: For consistency with previous versions,
+it is best to leave the IBODY as undefined.
+This is <strong>not</strong> WGS-84, see IEARTH</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>ISUN     /  98      Sun  <a class="reference internal" href="#meftah2015">Meftah2015</a>  <a class="reference internal" href="#rozelot2001">Rozelot2001</a></dt>
+<dd><ul class="first last">
+<li>a: 696000000.0 m</li>
+<li>f: 8.189e-6</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IMERCURY /  99      Mercury <a class="reference internal" href="#iau2000">IAU2000</a> <a class="reference internal" href="#iau-wgccre">IAU-WGCCRE</a></dt>
+<dd><ul class="first last">
+<li>a: 2439700.0 m</li>
+<li>f: 0.0</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IVENUS   / 100      Venus <a class="reference internal" href="#iau2000">IAU2000</a> <a class="reference internal" href="#iau-wgccre">IAU-WGCCRE</a></dt>
+<dd><ul class="first last">
+<li>a: 6051800.0 m</li>
+<li>f: 0.0</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IEARTH   / 101      WGS-84, EPSG:4325</dt>
+<dd><ul class="first last">
+<li>a: 6378137.0 m</li>
+<li>f: 1.0 / 298.257223563 ( = 0.0033528106647474805)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IMOON    / 102      Moon <a class="reference internal" href="#iau2000">IAU2000</a> <a class="reference internal" href="#iau-wgccre">IAU-WGCCRE</a></dt>
+<dd><ul class="first last">
+<li>a: 1737400.0 m</li>
+<li>f: 0.0</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>IMARS    / 103      Mars <a class="reference internal" href="#iau2000">IAU2000</a> <a class="reference internal" href="#iau-wgccre">IAU-WGCCRE</a></dt>
+<dd><ul class="first last">
+<li>a: 3396190.0 m</li>
+<li>f: 1.0 / 169.89444722361179 ( = 0.005886007555525457)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="miscellaneous-fields">
+<h1>Miscellaneous Fields</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="7%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>LCALDA</td>
+<td>L</td>
+<td>TRUE if DIST, AZ, BAZ, and GCARC are to be
+calculated from station and event coordinates.</td>
+</tr>
+<tr><td>IQUAL</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Quality of data [not currently used]:</dt>
+<dd><ul class="first last simple">
+<li>IGOOD (Good data)</li>
+<li>IGLCH (Glitches)</li>
+<li>IDROP (Dropouts)</li>
+<li>ILOWSN (Low signal to noise ratio)</li>
+<li>IOTHER (Other)</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>ISYNTH</td>
+<td>I</td>
+<td><dl class="first last docutils">
+<dt>Synthetic data flag [not currently used]:</dt>
+<dd><ul class="first last simple">
+<li>IRLDTA (Real data)</li>
+<li>????? (Flags for various synthetic seismogram codes)</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr><td>KDATRD</td>
+<td>K</td>
+<td>Date data was read onto computer.</td>
+</tr>
+<tr><td>USER{n}</td>
+<td>F</td>
+<td>User defined variable storage area, n = 0,9.</td>
+</tr>
+<tr><td>KUSER{n}</td>
+<td>K</td>
+<td>User defined variable storage area,  n = 0,2.</td>
+</tr>
+<tr><td>LOVROK</td>
+<td>L</td>
+<td>TRUE if it is okay to overwrite this file on disk.</td>
+</tr>
+<tr><td>NXSIZE</td>
+<td>N</td>
+<td>Spectral Length (Spectral files only)</td>
+</tr>
+<tr><td>NYSIZE</td>
+<td>N</td>
+<td>Spectral Width (Spectral files only)</td>
+</tr>
+<tr><td>XMINIMUM</td>
+<td>F</td>
+<td>Minimum value of X (Spectral files only)</td>
+</tr>
+<tr><td>XMAXIMUM</td>
+<td>F</td>
+<td>Maximum value of X (Spectral files only)</td>
+</tr>
+<tr><td>YMINIMUM</td>
+<td>F</td>
+<td>Minimum value of Y (Spectral files only)</td>
+</tr>
+<tr><td>YMAXIMUM</td>
+<td>F</td>
+<td>Maximum value of Y (Spectral files only)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="enumerated-header-field-values">
+<h1>Enumerated Header Field Values</h1>
+<p>The enumerated header field values are stored in the header as
+integers. Their names and values are given in the table below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">ID</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>itime</td>
+<td>01</td>
+</tr>
+<tr><td>irlim</td>
+<td>02</td>
+</tr>
+<tr><td>iamph</td>
+<td>03</td>
+</tr>
+<tr><td>ixy</td>
+<td>04</td>
+</tr>
+<tr><td>iunkn</td>
+<td>05</td>
+</tr>
+<tr><td>idisp</td>
+<td>06</td>
+</tr>
+<tr><td>ivel</td>
+<td>07</td>
+</tr>
+<tr><td>iacc</td>
+<td>08</td>
+</tr>
+<tr><td>ib</td>
+<td>09</td>
+</tr>
+<tr><td>iday</td>
+<td>10</td>
+</tr>
+<tr><td>io</td>
+<td>11</td>
+</tr>
+<tr><td>ia</td>
+<td>12</td>
+</tr>
+<tr><td>it0</td>
+<td>13</td>
+</tr>
+<tr><td>it1</td>
+<td>14</td>
+</tr>
+<tr><td>it2</td>
+<td>15</td>
+</tr>
+<tr><td>it3</td>
+<td>16</td>
+</tr>
+<tr><td>it4</td>
+<td>17</td>
+</tr>
+<tr><td>it5</td>
+<td>18</td>
+</tr>
+<tr><td>it6</td>
+<td>19</td>
+</tr>
+<tr><td>it7</td>
+<td>20</td>
+</tr>
+<tr><td>it8</td>
+<td>21</td>
+</tr>
+<tr><td>it9</td>
+<td>22</td>
+</tr>
+<tr><td>iradnv</td>
+<td>23</td>
+</tr>
+<tr><td>itannv</td>
+<td>24</td>
+</tr>
+<tr><td>iradev</td>
+<td>25</td>
+</tr>
+<tr><td>itanev</td>
+<td>26</td>
+</tr>
+<tr><td>inorth</td>
+<td>27</td>
+</tr>
+<tr><td>ieast</td>
+<td>28</td>
+</tr>
+<tr><td>ihorza</td>
+<td>29</td>
+</tr>
+<tr><td>idown</td>
+<td>30</td>
+</tr>
+<tr><td>iup</td>
+<td>31</td>
+</tr>
+<tr><td>illlbb</td>
+<td>32</td>
+</tr>
+<tr><td>iwwsn1</td>
+<td>33</td>
+</tr>
+<tr><td>iwwsn2</td>
+<td>34</td>
+</tr>
+<tr><td>ihglp</td>
+<td>35</td>
+</tr>
+<tr><td>isro</td>
+<td>36</td>
+</tr>
+<tr><td>inucl</td>
+<td>37</td>
+</tr>
+<tr><td>ipren</td>
+<td>38</td>
+</tr>
+<tr><td>ipostn</td>
+<td>39</td>
+</tr>
+<tr><td>iquake</td>
+<td>40</td>
+</tr>
+<tr><td>ipreq</td>
+<td>41</td>
+</tr>
+<tr><td>ipostq</td>
+<td>42</td>
+</tr>
+<tr><td>ichem</td>
+<td>43</td>
+</tr>
+<tr><td>iother</td>
+<td>44</td>
+</tr>
+<tr><td>igood</td>
+<td>45</td>
+</tr>
+<tr><td>iglch</td>
+<td>46</td>
+</tr>
+<tr><td>idrop</td>
+<td>47</td>
+</tr>
+<tr><td>ilowsn</td>
+<td>48</td>
+</tr>
+<tr><td>irldta</td>
+<td>49</td>
+</tr>
+<tr><td>ivolts</td>
+<td>50</td>
+</tr>
+<tr><td>imb</td>
+<td>52</td>
+</tr>
+<tr><td>ims</td>
+<td>53</td>
+</tr>
+<tr><td>iml</td>
+<td>54</td>
+</tr>
+<tr><td>imw</td>
+<td>55</td>
+</tr>
+<tr><td>imd</td>
+<td>56</td>
+</tr>
+<tr><td>imx</td>
+<td>57</td>
+</tr>
+<tr><td>ineic</td>
+<td>58</td>
+</tr>
+<tr><td>ipdeq</td>
+<td>59</td>
+</tr>
+<tr><td>ipdew</td>
+<td>60</td>
+</tr>
+<tr><td>ipde</td>
+<td>61</td>
+</tr>
+<tr><td>iisc</td>
+<td>62</td>
+</tr>
+<tr><td>ireb</td>
+<td>63</td>
+</tr>
+<tr><td>iusgs</td>
+<td>64</td>
+</tr>
+<tr><td>ibrk</td>
+<td>65</td>
+</tr>
+<tr><td>icaltech</td>
+<td>66</td>
+</tr>
+<tr><td>illnl</td>
+<td>67</td>
+</tr>
+<tr><td>ievloc</td>
+<td>68</td>
+</tr>
+<tr><td>ijsop</td>
+<td>69</td>
+</tr>
+<tr><td>iuser</td>
+<td>70</td>
+</tr>
+<tr><td>iunknown</td>
+<td>71</td>
+</tr>
+<tr><td>iqb</td>
+<td>72</td>
+</tr>
+<tr><td>iqb1</td>
+<td>73</td>
+</tr>
+<tr><td>iqb2</td>
+<td>74</td>
+</tr>
+<tr><td>iqbx</td>
+<td>75</td>
+</tr>
+<tr><td>iqmt</td>
+<td>76</td>
+</tr>
+<tr><td>ieq</td>
+<td>77</td>
+</tr>
+<tr><td>ieq1</td>
+<td>78</td>
+</tr>
+<tr><td>ieq2</td>
+<td>79</td>
+</tr>
+<tr><td>ime</td>
+<td>80</td>
+</tr>
+<tr><td>iex</td>
+<td>81</td>
+</tr>
+<tr><td>inu</td>
+<td>82</td>
+</tr>
+<tr><td>inc</td>
+<td>83</td>
+</tr>
+<tr><td>io_</td>
+<td>84</td>
+</tr>
+<tr><td>il</td>
+<td>85</td>
+</tr>
+<tr><td>ir</td>
+<td>86</td>
+</tr>
+<tr><td>it</td>
+<td>87</td>
+</tr>
+<tr><td>iu</td>
+<td>88</td>
+</tr>
+<tr><td>ieq3</td>
+<td>89</td>
+</tr>
+<tr><td>ieq0</td>
+<td>90</td>
+</tr>
+<tr><td>iex0</td>
+<td>91</td>
+</tr>
+<tr><td>iqc</td>
+<td>92</td>
+</tr>
+<tr><td>iqb0</td>
+<td>93</td>
+</tr>
+<tr><td>igey</td>
+<td>94</td>
+</tr>
+<tr><td>ilit</td>
+<td>95</td>
+</tr>
+<tr><td>imet</td>
+<td>96</td>
+</tr>
+<tr><td>iodor</td>
+<td>97</td>
+</tr>
+<tr><td>isun</td>
+<td>98</td>
+</tr>
+<tr><td>imercury</td>
+<td>99</td>
+</tr>
+<tr><td>ivenus</td>
+<td>100</td>
+</tr>
+<tr><td>iearth</td>
+<td>101</td>
+</tr>
+<tr><td>imoon</td>
+<td>102</td>
+</tr>
+<tr><td>imars</td>
+<td>103</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="references">
+<h1>REFERENCES</h1>
+<blockquote>
+<p id="iau2000">[IAU2000] <a class="reference external" href="https://link.springer.com/article/10.1023/A:1013939327465">https://link.springer.com/article/10.1023/A:1013939327465</a></p>
+<blockquote>
+Seidelmann, P., V. Abalakin, M. Bursa, M. Davies, C. De Bergh, J. Lieske,
+J. Oberst, J. Simon, E. Standish, P. Stooke, et al. (2002), Report of the
+IAU/IAG working group on cartographic coordinates and rotational elements of the
+planets and satellites: 2000, Celestial Mechanics and Dynamical Astronomy, 82 (1), 83–111.</blockquote>
+<p id="iau-wgccre">[IAU-WGCCRE] <a class="reference external" href="https://astrogeology.usgs.gov/groups/IAU-WGCCRE">https://astrogeology.usgs.gov/groups/IAU-WGCCRE</a></p>
+<p id="meftah2015">[Meftah2015] <a class="reference external" href="https://link.springer.com/article/10.1007%2Fs11207-015-0655-6">https://link.springer.com/article/10.1007%2Fs11207-015-0655-6</a></p>
+<blockquote>
+<p>Meftah, M., A. Irbah, A. Hauchecorne, T. Corbard,
+S. Turck-Chi`eze, J.-F. Hochedez, P. Boumier, A. Cheva- lier,
+S. Dewitte, S. Mekaoui, et al. (2015), On the determination and
+constancy of the solar oblateness, Solar Physics, 290(3), 673–687.</p>
+<blockquote>
+<ul class="simple">
+<li>8.189e-6 (Flattening)</li>
+</ul>
+</blockquote>
+</blockquote>
+<p id="rozelot2001">[Rozelot2001] <a class="reference external" href="https://link.springer.com/article/10.1023/A:1005238718479">https://link.springer.com/article/10.1023/A:1005238718479</a></p>
+<blockquote>
+<p>Rozelot, J. P., Godier, S., &amp; Lefebvre, S. (2001).  On the theory of the
+oblateness of the Sun. Solar Physics, 198(2), 223-240.</p>
+<blockquote>
+<ul class="simple">
+<li>8.33e-6  (Flattening)</li>
+<li>6.50e-6 - 10.20e-6 (Flattening Range)</li>
+</ul>
+</blockquote>
+</blockquote>
+</blockquote>
+</div>
+<div class="section" id="latest-revision">
+<h1>LATEST REVISION</h1>
+<blockquote>
+Version 102.0</blockquote>
+</div>
+</div>
+<div class="menu">
+  <a href="../manual.html"><span class="menuitem">Using SAC</span></a>
+
+  <span class="menuspace">Commands:</span>
+  <a href="../commands/alpha_commands.html"><span class="menuitem">A - Z</span></a>
+  <a href="../commands/func_commands.html"><span class="menuitem">Functional</span></a>
+
+  <span class="menuspace">Subprocesses:</span>
+  <a href="../commands/spe.com/spe.html"><span class="menuitem">SPE</span></a>
+  <a href="../commands/sss.com/sss.html"><span class="menuitem">SSS</span></a>
+  
+  <span class="menuspace"></span>
+  <a href="http://ds.iris.edu/ds/nodes/dmc/software/downloads/sac/"><span class="menuitem">SAC/IRIS</span></a>
+  
+</div>
+</div>
+</div>
+</body>
+</html>
