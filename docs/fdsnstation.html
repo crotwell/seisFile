@@ -451,8 +451,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p><strong>fdsnstation</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>--includeavailability</strong>] [<strong>--includerestricted</strong>]
             [<strong>--matchtimeseries</strong>] [<strong>--printurl</strong>] [<strong>--raw</strong>] [<strong>--schema</strong>] [<strong>--validate</strong>]
-            [<strong>-b</strong>=<em>&lt;startTime&gt;</em>] [<strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em>] [<strong>--box</strong>=<em>&lt;boxArea&gt;</em>]
-            [<strong>--donut</strong>=<em>&lt;donut&gt;</em>] [<strong>-e</strong>=<em>&lt;endTime&gt;</em>] [<strong>--endafter</strong>=<em>&lt;endAfter&gt;</em>]
+            [<strong>-b</strong>=<em>&lt;startTime&gt;</em>] [<strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em>] [<strong>--box</strong>=<em>w/e/s/n</em>]
+            [<strong>--donut</strong>=<em>lat/lon/min/max</em>] [<strong>-e</strong>=<em>&lt;endTime&gt;</em>] [<strong>--endafter</strong>=<em>&lt;endAfter&gt;</em>]
             [<strong>--endbefore</strong>=<em>&lt;endBefore&gt;</em>] [<strong>--host</strong>=<em>&lt;host&gt;</em>] [<strong>-L</strong>=<em>&lt;level&gt;</em>]
             [<strong>--lat</strong>=<em>&lt;latitude&gt;</em>] [<strong>--lon</strong>=<em>&lt;longitude&gt;</em>] [<strong>--maxlat</strong>=<em>&lt;maxLatitude&gt;</em>]
             [<strong>--maxlon</strong>=<em>&lt;maxLongitude&gt;</em>] [<strong>--maxradius</strong>=<em>&lt;maxRadius&gt;</em>]
@@ -472,6 +472,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>example client to query a remote FDSN Station web service</p>
 </div>
 <div class="paragraph">
+<p>Times are ISO8601 formatted strings, like yyyy-MM-ddTHH:mm:ss, and may be shortened
+to include only the significant fields. The remaining fields will be filled in
+as either zero or max value depending on the use.
+For example 2006-11-19 or 2006-11-19T06:34:21.
+The special strings now and yesterday may also be used.</p>
+</div>
+<div class="paragraph">
 <p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java">View source code here.</a></p>
 </div>
 </div>
@@ -489,7 +496,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>Base URL for queries, ie everything before the '/&lt;service&gt;/&lt;version&gt;/&lt;query&gt;?'</p>
 </dd>
-<dt class="hdlist1"><strong>--box</strong>=<em>&lt;boxArea&gt;</em></dt>
+<dt class="hdlist1"><strong>--box</strong>=<em>w/e/s/n</em></dt>
 <dd>
 <p>constraining box as west/east/south/north</p>
 </dd>
@@ -497,7 +504,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>Select one or more SEED channel codes. Multiple codes are comma-separated.</p>
 </dd>
-<dt class="hdlist1"><strong>--donut</strong>=<em>&lt;donut&gt;</em></dt>
+<dt class="hdlist1"><strong>--donut</strong>=<em>lat/lon/min/max</em></dt>
 <dd>
 <p>constraining donut as lat/lon/minRadius/maxRadius</p>
 </dd>
@@ -633,11 +640,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_examples">Examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ask for station from CO or N4 in a box around South Carolina that are active in 2019.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; fdsnstation --box -83/-79/31/35 --level station -n CO,N4 -b 2019 -e 2019
+CO 1987-01-01T00:00:00 South Carolina Seismic Network (SCSN)
+    CO.BIRD 34.645/-80.4615 Birdtown, Kershaw, SC, USA 2010-08-25T00:00:00
+    CO.C1SC 32.798/-79.959 The Citadel,Charleston,SC 2012-10-08T19:00:00
+    CO.CASEE 34.993/-82.9317 Lake Jocassee, SC, USA 2009-12-07T00:00:00
+    CO.CSB 32.98698/-80.07155 Charleston Southern University, Charleston, SC, USA 2009-04-13T00:00:00
+    CO.HAW 33.3612/-81.6097 Hawthorne Fire Tower, SC, USA 2010-03-11T00:00:00
+    CO.HODGE 34.2315/-82.2586 Hodges, SC, USA 2010-03-25T00:00:00
+    CO.JSC 34.2818/-81.25966 Jenkinsville, South Carolina 2009-04-13T00:00:00
+    CO.PAULI 34.82097/-81.8144 Pauline, SC, USA 2011-04-26T00:00:00
+    CO.SUMMV 33.0658/-80.2738 Summerville Airport, SC, USA 2015-04-21T00:00:00
+    CO.TEEBA 32.8975/-80.1911 Mateeba, Summerville SC 2018-04-25T00:00:00
+N4 2013-01-01T00:00:00 Central and Eastern US Network (CEUSN)
+    N4.257A 31.9746/-81.0261 Skidaway Island, Savannah, GA, USA 2014-01-21T00:00:00
+    N4.X58A 34.5548/-79.3388 Rowland, NC, USA 2015-01-26T00:00:00
+    N4.Y57A 34.017/-80.3915 Sumter, SC, USA 2015-01-21T00:00:00
+    N4.Y58A 33.9057/-79.6665 Scranton, SC, USA 2015-01-25T00:00:00</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.0.0-SNAPSHOT_2021-03-10T145410 2021-03-10T19 54 10Z (1995 1007d13d)<br>
-Last updated 2021-03-04 09:25:33 -0500
+Version edu.sc.seis seisFile 2.0.0 2021-03-11T18 13 14Z (2008 b5dc5ef8)<br>
+Last updated 2021-03-11 13:02:17 -0500
 </div>
 </div>
 </body>

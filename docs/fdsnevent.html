@@ -451,8 +451,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p><strong>fdsnevent</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>--includeallmagnitudes</strong>] [<strong>--includeallorigins</strong>]
           [<strong>--includearrivals</strong>] [<strong>--printurl</strong>] [<strong>--raw</strong>] [<strong>--schema</strong>] [<strong>--validate</strong>]
-          [<strong>-b</strong>=<em>&lt;startTime&gt;</em>] [<strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em>] [<strong>--box</strong>=<em>&lt;boxArea&gt;</em>]
-          [<strong>-c</strong>=<em>&lt;catalog&gt;</em>] [<strong>-C</strong>=<em>&lt;contributor&gt;</em>] [<strong>--donut</strong>=<em>&lt;donut&gt;</em>] [<strong>-e</strong>=<em>&lt;endTime&gt;</em>]
+          [<strong>-b</strong>=<em>&lt;startTime&gt;</em>] [<strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em>] [<strong>--box</strong>=<em>w/e/s/n</em>] [<strong>-c</strong>=<em>&lt;catalog&gt;</em>]
+          [<strong>-C</strong>=<em>&lt;contributor&gt;</em>] [<strong>--donut</strong>=<em>lat/lon/min/max</em>] [<strong>-e</strong>=<em>&lt;endTime&gt;</em>]
           [<strong>--eventid</strong>=<em>&lt;eventid&gt;</em>] [<strong>--host</strong>=<em>&lt;host&gt;</em>] [<strong>--lat</strong>=<em>&lt;latitude&gt;</em>]
           [<strong>--limit</strong>=<em>&lt;limit&gt;</em>] [<strong>--lon</strong>=<em>&lt;longitude&gt;</em>] [<strong>--maxdepth</strong>=<em>&lt;maxDepth&gt;</em>]
           [<strong>--maxlat</strong>=<em>&lt;maxLatitude&gt;</em>] [<strong>--maxlon</strong>=<em>&lt;maxLongitude&gt;</em>]
@@ -473,6 +473,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>example client to query a remote FDSN Event web service</p>
 </div>
 <div class="paragraph">
+<p>Times are ISO8601 formatted strings, like yyyy-MM-ddTHH:mm:ss, and may be shortened
+to include only the significant fields. The remaining fields will be filled in
+as either zero or max value depending on the use.
+For example 2006-11-19 or 2006-11-19T06:34:21.
+The special strings now and yesterday may also be used.</p>
+</div>
+<div class="paragraph">
 <p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java">View source code here.</a></p>
 </div>
 </div>
@@ -490,7 +497,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>Base URL for queries, ie everything before the '/&lt;service&gt;/&lt;version&gt;/&lt;query&gt;?'</p>
 </dd>
-<dt class="hdlist1"><strong>--box</strong>=<em>&lt;boxArea&gt;</em></dt>
+<dt class="hdlist1"><strong>--box</strong>=<em>w/e/s/n</em></dt>
 <dd>
 <p>constraining box as west/east/south/north</p>
 </dd>
@@ -502,7 +509,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>Limit to events contributed by a specified contributor.</p>
 </dd>
-<dt class="hdlist1"><strong>--donut</strong>=<em>&lt;donut&gt;</em></dt>
+<dt class="hdlist1"><strong>--donut</strong>=<em>lat/lon/min/max</em></dt>
 <dd>
 <p>constraining donut as lat/lon/minRadius/maxRadius</p>
 </dd>
@@ -682,8 +689,8 @@ http://earthquake.usgs.gov:80/fdsnws/event/1/query?endtime=2021-01-31T23:59:59.9
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.0.0-SNAPSHOT_2021-03-10T145410 2021-03-10T19 54 10Z (1995 1007d13d)<br>
-Last updated 2021-03-04 09:25:22 -0500
+Version edu.sc.seis seisFile 2.0.0 2021-03-11T18 13 14Z (2008 b5dc5ef8)<br>
+Last updated 2021-03-11 13:02:14 -0500
 </div>
 </div>
 </body>

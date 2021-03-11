@@ -467,6 +467,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Example client to query a remote FDSN DataSelect web service via GET or POST</p>
 </div>
 <div class="paragraph">
+<p>Times are ISO8601 formatted strings, like yyyy-MM-ddTHH:mm:ss, and may be shortened
+to include only the significant fields. The remaining fields will be filled in
+as either zero or max value depending on the use.
+For example 2006-11-19 or 2006-11-19T06:34:21.
+The special strings now and yesterday may also be used.</p>
+</div>
+<div class="paragraph">
 <p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java">View source code here.</a></p>
 </div>
 </div>
@@ -612,8 +619,8 @@ http://service.iris.edu:80/fdsnws/dataselect/1/query?channel=LHZ,LHN,LHE&amp;end
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.0.0-SNAPSHOT_2021-03-10T145410 2021-03-10T19 54 10Z (1995 1007d13d)<br>
-Last updated 2021-03-04 09:25:06 -0500
+Version edu.sc.seis seisFile 2.0.0 2021-03-11T18 13 14Z (2008 b5dc5ef8)<br>
+Last updated 2021-03-11 13:02:07 -0500
 </div>
 </div>
 </body>
