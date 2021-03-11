@@ -148,7 +148,6 @@ tasks.check { dependsOn("clientTest") }
 
 repositories {
     mavenLocal()
-    maven { url  = uri("https://www.seis.sc.edu/software/maven2") }
     mavenCentral()
 }
 
@@ -230,10 +229,6 @@ val distFiles: CopySpec = copySpec {
         include("gradlew.bat")
         exclude("**/*.svn")
     }
-    from(".") {
-        fileMode = 755
-        include("gradlew")
-    }
     from("../seiswww/build/site") {
         include("seisFile.html")
     }
@@ -276,12 +271,6 @@ tasks.register<Tar>("tarDist") {
         with(distFiles)
     }
 }
-
-tasks.register<CreateStartScripts>("xxxfdsnevent") {
-  mainClassName = "edu.sc.seis.seisFile.fdsnws.EventClient"
-  applicationName = "fdsnevent"
-}
-
 
 tasks {
   "asciidoctor"(AsciidoctorTask::class) {
