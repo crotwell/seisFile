@@ -107,7 +107,7 @@ dependencies {
     implementation("edu.sc.seis:seedCodec:1.1.1")
     clientImplementation("info.picocli:picocli:4.6.1")
 
-    annotationProcessor("info.picocli:picocli-codegen:4.6.1")
+    annotationProcessor("info.picocli:picocli-codegen:4.6.2-SNAPSHOT")
     implementation( "org.slf4j:slf4j-api:1.7.30")
     clientImplementation( "org.slf4j:slf4j-log4j12:1.7.30")
     implementation( "com.fasterxml.woodstox:woodstox-core:6.2.4")
