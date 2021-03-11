@@ -47,6 +47,15 @@ public class StationClientTest {
     }
 
 
+    @Test
+    public void testStationBox() throws Exception {
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
+        CommandLine cmd = new CommandLine(sc);
+        String[] args = new String[] {"--box", "-83/-79/31/35"};
+        cmd.parseArgs(args);
+        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?maxlatitude=35.0&maxlongitude=-79.0&minlatitude=31.0&minlongitude=-83.0", sc.getQueryParams().formURI().toString());
+    }
+
 
     @Test
     public void testLotsOfArg() throws Exception {

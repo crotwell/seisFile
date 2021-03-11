@@ -22,3 +22,13 @@ include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-command
 include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-exit-status]
 
 include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-footer]
+
+== Examples
+
+
+Ask for station from CO or N4 in a box around South Carolina that are active in 2019.
+
+[source,bash]
+....
+include::{exampledir}/fdsnstation_ex1_out[]
+....
