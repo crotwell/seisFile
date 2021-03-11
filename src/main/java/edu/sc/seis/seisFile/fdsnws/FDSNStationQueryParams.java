@@ -528,13 +528,13 @@ public class FDSNStationQueryParams extends AbstractQueryParams implements Clone
 
     
 
-    public static final String LEVEL_NETWORK = "network";
+    public static final String LEVEL_NETWORK = QueryLevel.network.name();
 
-    public static final String LEVEL_STATION = "station";
+    public static final String LEVEL_STATION = QueryLevel.station.name();
 
-    public static final String LEVEL_CHANNEL = "channel";
+    public static final String LEVEL_CHANNEL = QueryLevel.channel.name();
 
-    public static final String LEVEL_RESPONSE = "response";
+    public static final String LEVEL_RESPONSE = QueryLevel.response.name();
 
     @Override
     public String getServiceName() {

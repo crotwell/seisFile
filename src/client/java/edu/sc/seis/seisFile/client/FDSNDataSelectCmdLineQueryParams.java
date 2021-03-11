@@ -34,7 +34,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
     /** Limit results to time series samples on or after the specified start time
      */
-    @Option(names = { "-b","--starttime","--start" }, description="Limit results to time series samples on or after the specified start time", converter=FloorISOTimeParser.class)
+    @Option(names = { "-b","--starttime","--start" }, description="Limit results to time series samples on or after the specified start time", converter=FloorISOTimeParser.class )
     public FDSNDataSelectQueryParams setStartTime(Instant value) {
         queryParams.setStartTime(value);
         return queryParams;
@@ -43,7 +43,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
     /** Limit results to time series samples on or before the specified end time
      */
-    @Option(names = { "-e","--endtime","--end" }, description="Limit results to time series samples on or before the specified end time", converter=CeilingISOTimeParser.class)
+    @Option(names = { "-e","--endtime","--end" }, description="Limit results to time series samples on or before the specified end time", converter=CeilingISOTimeParser.class )
     public FDSNDataSelectQueryParams setEndTime(Instant value) {
         queryParams.setEndTime(value);
         return queryParams;
@@ -51,7 +51,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-n","--network","--net" }, description="Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.", split = ",")
+    @Option(names = { "-n","--network","--net" }, description="Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.", split = "," )
     public FDSNDataSelectQueryParams setNetwork(String[] value) {
       queryParams.clearNetwork();
       for(String v: value) queryParams.appendToNetwork(v);
@@ -60,7 +60,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-s","--station","--sta" }, description="Select one or more SEED station codes. Multiple codes are comma-separated.", split = ",")
+    @Option(names = { "-s","--station","--sta" }, description="Select one or more SEED station codes. Multiple codes are comma-separated.", split = "," )
     public FDSNDataSelectQueryParams setStation(String[] value) {
       queryParams.clearStation();
       for(String v: value) queryParams.appendToStation(v);
@@ -69,7 +69,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-l","--location","--loc" }, description="Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.", split = ",")
+    @Option(names = { "-l","--location","--loc" }, description="Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.", split = "," )
     public FDSNDataSelectQueryParams setLocation(String[] value) {
       queryParams.clearLocation();
       for(String v: value) queryParams.appendToLocation(v);
@@ -78,7 +78,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
 
 
-    @Option(names = { "-c","--channel","--cha" }, description="Select one or more SEED channel codes. Multiple codes are comma-separated.", split = ",")
+    @Option(names = { "-c","--channel","--cha" }, description="Select one or more SEED channel codes. Multiple codes are comma-separated.", split = "," )
     public FDSNDataSelectQueryParams setChannel(String[] value) {
       queryParams.clearChannel();
       for(String v: value) queryParams.appendToChannel(v);
@@ -88,7 +88,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
     /** Select a specific SEED quality indicator, handling is data center dependent.
      */
-    @Option(names = { "--quality" }, description="Select a specific SEED quality indicator, handling is data center dependent.")
+    @Option(names = { "--quality" }, description="Select a specific SEED quality indicator, handling is data center dependent." )
     public FDSNDataSelectQueryParams setQuality(String value) {
         queryParams.setQuality(value);
         return queryParams;
@@ -97,7 +97,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
     /** Limit results to continuous data segments of a minimum length specified in seconds.
      */
-    @Option(names = { "--minimumlength" }, description="Limit results to continuous data segments of a minimum length specified in seconds.")
+    @Option(names = { "--minimumlength" }, description="Limit results to continuous data segments of a minimum length specified in seconds." )
     public FDSNDataSelectQueryParams setMinimumLength(int value) {
         queryParams.setMinimumLength(value);
         return queryParams;
@@ -106,7 +106,7 @@ public class FDSNDataSelectCmdLineQueryParams {
 
     /** Limit results to the longest continuous segment per channel.
      */
-    @Option(names = { "--longestonly" }, description="Limit results to the longest continuous segment per channel.")
+    @Option(names = { "--longestonly" }, description="Limit results to the longest continuous segment per channel." )
     public FDSNDataSelectQueryParams setLongestOnly(boolean value) {
         queryParams.setLongestOnly(value);
         return queryParams;
