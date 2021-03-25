@@ -11,12 +11,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.iris.dmc.seedcodec.CodecException;
 import edu.iris.dmc.seedcodec.DecompressedData;
 import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
+import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
@@ -140,18 +144,41 @@ public class MSeedListHeader extends AbstractClient {
                         if (dumpData) {
                             out.println("# compressed");
                             dr.printData(out);
-                            out.println("# decompressed");
                             try {
                                 DecompressedData dd = dr.decompress();
-                                int[] intData = dd.getAsInt();
-                                for (int j = 0; j < intData.length; j++) {
-                                    out.print(intData[j] + " ");
-                                    if (j % 10 == 9 || j == intData.length-1) {
-                                        out.println();
+                                out.println("# decompressed");
+                                if (dd.getType() == 4 || dd.getType() == 5) {
+                                    double[] dblData = dd.getAsDouble();
+                                    for (int j = 0; j < dblData.length; j++) {
+                                        out.print(dblData[j] + " ");
+                                        if (j % 10 == 9 || j == dblData.length-1) {
+                                            out.println();
+                                        }
+                                    }
+                                } else {
+                                    int[] intData = dd.getAsInt();
+                                    for (int j = 0; j < intData.length; j++) {
+                                        out.print(intData[j] + " ");
+                                        if (j % 10 == 9 || j == intData.length-1) {
+                                            out.println();
+                                        }
                                     }
                                 }
                             } catch(UnsupportedCompressionType e) {
-                                throw new SeedFormatException("Unable to decompress record "+i+" from "+infile.getPath(), e);
+                                Blockette1000 b1000 = (Blockette1000)dr.getUniqueBlockette(1000);
+                                if (b1000 != null && b1000.getEncodingFormat() == 0) {
+                                    // ascii text, just print it?
+                                    byte[] asciidata = dr.getData();
+                                    Charset charset = StandardCharsets.US_ASCII;
+                                    String stringData = charset.decode(ByteBuffer.wrap(asciidata))
+                                                      .toString();
+                                    // replace all non-printable chars with a \\u escape
+                                    stringData = printableChars(stringData);
+                                    out.println("# data as text");
+                                    out.println(stringData);
+                                } else {
+                                    out.println("# Unable to decompress record "+i+" from "+infile.getPath()+" "+ e.getMessage());
+                                }                            
                             } catch(CodecException e) {
                                 throw new SeedFormatException("Unable to read record "+i+" from "+infile.getPath(), e);
                             }
@@ -173,6 +200,30 @@ public class MSeedListHeader extends AbstractClient {
         }
     }
 
+    public static String printableChars(String input) {
+        StringBuilder buffer = new StringBuilder(input.length());
+        for (int i = 0; i < input.length(); i++) {
+            if ((int) input.charAt(i) > 256) {
+                buffer.append("\\u").append(Integer.toHexString((int) input.charAt(i)));
+            } else if ((int) input.charAt(i) == 0) {
+                // skip ascii zero
+            } else if ((int) input.charAt(i) < 32) {
+                if (input.charAt(i) == '\n') {
+                    // keep newlines
+                    buffer.append(input.charAt(i));
+                }else if(input.charAt(i) == '\r'){
+                    // keep returns
+                    buffer.append(input.charAt(i));
+                } else {
+                    buffer.append("\\u").append(Integer.toHexString((int) input.charAt(i)));
+                }
+            } else {
+                // printable chars
+                buffer.append(input.charAt(i));
+            }
+        }
+        return buffer.toString();
+    }
     
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new MSeedListHeader()).execute(args));
