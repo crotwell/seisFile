@@ -115,6 +115,18 @@ public class DataRecord extends SeedRecord implements Serializable {
         return data;
     }
 
+    public boolean isDecompressable() throws SeedFormatException {
+        if (getHeader().getNumSamples() == 0) {
+            return true; // no data is trivially decompressable
+        }
+        Blockette1000 b1000 = (Blockette1000)getUniqueBlockette(1000);
+        if (b1000 == null) {
+            return false; // can't decompress if we don't have a type
+        }
+        Codec codec = new Codec();
+        return codec.isDecompressable(b1000.getEncodingFormat());
+    }
+    
     /**
      * Decompress the data in this record according to the compression type in
      * the header.

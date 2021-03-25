@@ -26,7 +26,7 @@ public class RoundTripMiniSeed {
         int seq = 1;
         byte seed4096 = (byte)12;
         byte seed512 = (byte)9;
-        
+
 
         DataHeader header = new DataHeader(seq++, 'D', false);
         header.setStationIdentifier("FAKE");
@@ -37,7 +37,7 @@ public class RoundTripMiniSeed {
         header.setSampleRate(.05f);
         Btime btime = new Btime( Instant.now());
         header.setStartBtime(btime);
-        
+
         DataRecord record = new DataRecord(header);
         Blockette1000 blockette1000 = new Blockette1000();
         blockette1000.setEncodingFormat((byte)B1000Types.STEIM2);
@@ -45,18 +45,18 @@ public class RoundTripMiniSeed {
         blockette1000.setDataRecordLength(seed4096);
         record.addBlockette(blockette1000);
         SteimFrameBlock steimData = null;
-        
+
         steimData = Steim2.encode(data, 63);
         assertTrue(steimData.getNumSamples() <= data.length, "Can't fit all data into one record"+steimData.getNumSamples()+" out of "+data.length);
-        
-        
 
+
+        assertTrue(record.isDecompressable());
         int[] out = Steim2.decode(steimData.getEncodedData(), data.length, false);
         assertArrayEquals(data, out);
-        
+
         record.setData(steimData.getEncodedData());
         header.setNumSamples((short)steimData.getNumSamples());
-        
+
 
         Codec codec = new Codec();
         DecompressedData decomp = codec.decompress(B1000Types.STEIM2,
@@ -64,10 +64,10 @@ public class RoundTripMiniSeed {
                                 data.length,
                                 false);
         assertArrayEquals(data, decomp.getAsInt());
-        
+
         return record;
     }
-    
+
     @Test
     public void test() throws Exception {
         int[] data = new int[512];
@@ -79,6 +79,6 @@ public class RoundTripMiniSeed {
         DecompressedData decompData = dr.decompress();
         int[] temp = decompData.getAsInt();
         assertArrayEquals(data, temp);
-        
+
     }
 }
