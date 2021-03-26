@@ -1,8 +1,10 @@
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 import org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask
+import org.gradle.crypto.checksum.Checksum
 
 plugins {
   id("edu.sc.seis.version-class") version "1.2.0"
+  id("org.gradle.crypto.checksum") version "1.2.0"
   "java-library"
   eclipse
   `project-report`
@@ -215,8 +217,8 @@ val distFiles: CopySpec = copySpec {
         into("docs")
     }
     from("build/picocli") {
-        include("bashcompletion/**")
-        into("docs")
+        include("bash_completion/**")
+        into("docs/bash_completion.d")
     }
     from(".") {
         include("LICENSE")
@@ -272,6 +274,14 @@ tasks.register<Tar>("tarDist") {
     }
 }
 
+tasks.register<Checksum>("checksumDist") {
+  dependsOn("tarBin")
+  dependsOn("tarDist")
+  files = tasks.getByName("tarBin").outputs.files + tasks.getByName("tarDist").outputs.files
+  outputDir=File(project.buildDir, "distributions")
+  algorithm = Checksum.Algorithm.SHA256
+}
+
 tasks {
   "asciidoctor"(AsciidoctorTask::class) {
     setSourceDir( file("src/doc/man-templates"))
@@ -306,6 +316,7 @@ tasks.named("startScripts") {
 }
 
 val scriptNames = mapOf(
+  "seisfile" to "edu.sc.seis.seisFile.client.SeisFile",
   "fdsnevent" to "edu.sc.seis.seisFile.client.FDSNEventClient",
   "fdsnstation" to "edu.sc.seis.seisFile.client.FDSNStationClient",
   "fdsndataselect" to "edu.sc.seis.seisFile.client.FDSNDataSelectClient",
@@ -368,7 +379,7 @@ for (key in scriptNames.keys) {
     description = "generate picocli bash/zsh autocomplete file "+key
     classpath = sourceSets.getByName("client").runtimeClasspath
     main = "picocli.AutoComplete"
-    val outDir =  File(project.buildDir,  "picocli/bashcompletion")
+    val outDir =  File(project.buildDir,  "picocli/bash_completion")
     val outFile = File(outDir, key+"_completion")
     args = listOf(scriptNames[key], "-f", "-o", outFile.path)
     dependsOn += tasks.getByName("compileJava")
