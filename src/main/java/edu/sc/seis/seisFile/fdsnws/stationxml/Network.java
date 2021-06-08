@@ -57,7 +57,7 @@ public class Network extends BaseNodeType {
      * @return
      */
     public String getNetworkId() {
-        if (isTemporary()) {
+        if (isTemporary() && getStartDateTime() != null) {
             return getNetworkCode()+ZonedDateTime.ofInstant(getStartDateTime(), TimeUtils.TZ_UTC).getYear();
         }
         return getNetworkCode();
