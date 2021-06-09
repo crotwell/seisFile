@@ -48,7 +48,7 @@ public class WriteMiniSeed {
         Blockette1000 blockette1000 = new Blockette1000();
         blockette1000.setEncodingFormat((byte)B1000Types.STEIM2);
         blockette1000.setWordOrder(Blockette1000.SEED_BIG_ENDIAN);
-        blockette1000.setDataRecordLength(seed4096);
+        blockette1000.setDataRecordLength(seed512);
         record.addBlockette(blockette1000);
         SteimFrameBlock steimData = null;
         
