@@ -286,25 +286,25 @@ public class SeedlinkReader {
     protected String readLine() throws IOException, SeedlinkException {
         StringBuffer buf = new StringBuffer();
         int next = in.read();
-        while (next != '\r') {
-            while (next != '\r' && in.available() > 0) {
-                // only do the verbose printing when either hit end of line or
-                // no more chars available
-                buf.append((char)next);
-                next = in.read();
-                if (next == -1) {
-                    // oops, no more bytes in stream
-                    throw new SeedlinkException("read returned -1, socket closed???");
-                }
-            }
-            if (isVerbose()) {
-                verboseWriter.println(buf);
+        while (next != '\r' && next != '\n' && in.available() > 0) {
+            // only do the verbose printing when either hit end of line or
+            // no more chars available
+            buf.append((char) next);
+            next = in.read();
+            if (next == -1) {
+                // oops, no more bytes in stream
+                throw new SeedlinkException("read returned -1, socket closed??? buf="+buf);
             }
         }
+        if (isVerbose()) {
+            verboseWriter.println(buf);
+        }
+
         // next should now be a \n, so just eat it
+        // next == -1 means stream closed, so skip unread
         next = in.read();
-        if (next != '\n') {
-            throw new SeedlinkException("Got \\r but not followed by \\n buf: '"+buf.toString()+"' next: " + next);
+        if (next != '\n' && next != '\r' && next != -1 ) {
+            in.unread(next);
         }
         return buf.toString();
     }
