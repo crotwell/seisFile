@@ -1,4 +1,4 @@
-![Alt SeisFile](seisfileLogo.svg)
+![Alt SeisFile](docs/seisfileLogo.svg)
 [![Maven Central](https://img.shields.io/maven-central/v/edu.sc.seis/seisFile.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22edu.sc.seis%22%20AND%20a:%22seisFile%22)
  [![javadoc](https://javadoc.io/badge2/edu.sc.seis/seisFile/javadoc.svg)](https://javadoc.io/doc/edu.sc.seis/seisFile)
 
@@ -23,5 +23,5 @@ These are low level routines that provide basic connection to the services and b
 
 Full SEED support was also not intended. However there are cases of almost miniseed, such as one or two control records before the data records. SeisFile can handle the basic structure of these control records, allowing these mixed files to be read without crashing, but not all blockettes are parsed into fields.
 
-Significant clean up and code removal occurred between SeisFile versions 1.8 and 2.0. This included the remove of code related to PSN, LISS, CWB, Winston, Sync and GCF as I was no longer able to support development for these. If you need access to one of these, the last [version 1 release](https://search.maven.org/artifact/edu.sc.seis/seisFile/1.8.6/jar) can still be used, but no further development will occur. See the [version 1.8](https://github.com/crotwell/seisFile/wiki/version_1.8)
+Significant clean up and code removal occurred between SeisFile versions 1.8 and 2.0. This included the remove of code related to PSN, LISS, CWB, Winston, Sync and GCF as I was no longer able to support development for these. If you need access to one of these, the last [version 1 release](https://search.maven.org/artifact/edu.sc.seis/seisFile/1.8.6/jar) can still be used, but no further development will occur. See the [version 1.8](https://github.com/crotwell/seisFile/wiki/Home_1_8)
 section in the wiki.
