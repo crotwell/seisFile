@@ -242,6 +242,7 @@ val distFiles: CopySpec = copySpec {
 
 tasks.register<Sync>("explodeBin") {
   dependsOn("createRunScripts")
+    dependsOn("startScripts")
   dependsOn("clientClasses")
   dependsOn("clientJar")
   group = "dist"
@@ -299,6 +300,7 @@ tasks {
 
 tasks {
   "asciidoctorPdf"(AsciidoctorPdfTask::class) {
+      dependsOn("asciidoctor")
     setSourceDir( file("src/doc/man-templates"))
     setOutputDir( file("build/manpdf"))
     inputs.dir("build/picocli/man")
