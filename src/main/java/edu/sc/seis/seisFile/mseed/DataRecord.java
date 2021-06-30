@@ -432,16 +432,18 @@ public class DataRecord extends SeedRecord implements Serializable {
             }
             dataRec.RECORD_SIZE = recordSize;
             // read garbage between blockettes and data
-            if (header.getDataOffset() != 0) {
+            if (header.getDataOffset() > currOffset && header.getDataOffset() < recordSize) {
                 byte[] garbage = new byte[header.getDataOffset() - currOffset];
-                if (garbage.length != 0) {
-                    inStream.readFully(garbage);
-                }
+                inStream.readFully(garbage);
             }
             byte[] timeseries;
-            if (header.getDataOffset() == 0) {
+            if (header.getNumSamples() == 0) {
                 // data record with no data, so gobble up the rest of the record
-                timeseries = new byte[recordSize - currOffset];
+                if (recordSize > currOffset) {
+                    byte[] garbage = new byte[recordSize - currOffset];
+                    inStream.readFully(garbage);
+                }
+                timeseries = new byte[0];
             } else {
                 if (recordSize < header.getDataOffset()) {
                     throw new SeedFormatException("recordSize < header.getDataOffset(): " + recordSize + " < "
