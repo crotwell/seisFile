@@ -17,10 +17,13 @@ import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
+
 /**
- * Broke up the 'next' method into 'hasNext' and 'readPacket'.
- * Added 'getInfoString' methods to support getting the SeedLink information string. 
- * Added 'select' and 'startData' methods to support start and end time.
+ * Reader for the seedlink protocol in multistation mode. Protocol documentation can be found at
+ * https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html
+ *
+ * Note this implementatino assumes multistation mode. It may be possible to use this in single station mode, but
+ * this has not been tested.
  */
 public class SeedlinkReader {
 
@@ -311,8 +314,9 @@ public class SeedlinkReader {
 
     /**
      * Sends a SeedLink modifier command, generally should be limited to
+     * STATION, SELECT, FETCH, DATA and TIME.
+     *
      * @param cmd the command.
-     * STATION, SELECT FETCH, DATA and TIME.
      * @throws SeedlinkException if a SeedLink error occurs.
      * @throws IOException if an I/O Exception occurs.
      */
