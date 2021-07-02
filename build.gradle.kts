@@ -3,7 +3,7 @@ import org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask
 import org.gradle.crypto.checksum.Checksum
 
 plugins {
-  id("edu.sc.seis.version-class") version "1.2.0"
+  id("edu.sc.seis.version-class") version "1.2.2"
   id("org.gradle.crypto.checksum") version "1.2.0"
   "java-library"
   eclipse
@@ -17,7 +17,7 @@ plugins {
 
 application {
   mainClass.set("edu.sc.seis.seisFile.client.SeisFile")
-  applicationName = "seisfile"
+  applicationName = "seisfiledefaultapp"
 }
 
 group = "edu.sc.seis"
@@ -173,6 +173,7 @@ val binDistFiles: CopySpec = copySpec {
     from("build/scripts") {
         into("bin")
         include("*")
+        exclude("seisfiledefaultapp")
     }
 }
 
@@ -241,10 +242,10 @@ val distFiles: CopySpec = copySpec {
 }
 
 tasks.register<Sync>("explodeBin") {
-  dependsOn("createRunScripts")
-    dependsOn("startScripts")
   dependsOn("clientClasses")
   dependsOn("clientJar")
+  dependsOn("createRunScripts")
+  dependsOn("startScripts")
   group = "dist"
   with( binDistFiles)
   into( file("$buildDir/explode"))
@@ -332,6 +333,7 @@ val scriptNames = mapOf(
   )
 for (key in scriptNames.keys) {
   val scriptTask = tasks.register<CreateStartScripts>(key) {
+    dependsOn(tasks.named("clientJar"))
     outputDir = file("build/scripts")
     mainClassName = scriptNames[key]
     applicationName = key
