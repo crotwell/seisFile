@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>seedlinkclient(1)</title>
+<title>fdsnevent(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,10 +438,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="manpage">
 <div id="header">
-<h1>seedlinkclient(1) Manual Page</h1>
+<h1>fdsnevent(1) Manual Page</h1>
 <h2 id="_name">Name</h2>
 <div class="sectionbody">
-<p>seedlinkclient - Example client to stream miniseed over seedlink.</p>
+<p>fdsnevent - example client to query a remote FDSN Event web service</p>
 </div>
 </div>
 <div id="content">
@@ -449,11 +449,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_synopsis">Synopsis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
-               [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>] [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>]
-               [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>] [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>]
-               [<strong>-c</strong>=<em>&lt;channel&gt;</em>]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>]&#8230;&#8203;
-               [<strong>-s</strong>=<em>&lt;station&gt;</em>]&#8230;&#8203;</p>
+<p><strong>fdsnevent</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>--includeallmagnitudes</strong>] [<strong>--includeallorigins</strong>]
+          [<strong>--includearrivals</strong>] [<strong>--printurl</strong>] [<strong>--raw</strong>] [<strong>--schema</strong>] [<strong>--validate</strong>]
+          [<strong>-b</strong>=<em>&lt;startTime&gt;</em>] [<strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em>] [<strong>--box</strong>=<em>w/e/s/n</em>] [<strong>-c</strong>=<em>&lt;catalog&gt;</em>]
+          [<strong>-C</strong>=<em>&lt;contributor&gt;</em>] [<strong>--donut</strong>=<em>lat/lon/min/max</em>] [<strong>-e</strong>=<em>&lt;endTime&gt;</em>]
+          [<strong>--eventid</strong>=<em>&lt;eventid&gt;</em>] [<strong>--host</strong>=<em>&lt;host&gt;</em>] [<strong>--lat</strong>=<em>&lt;latitude&gt;</em>]
+          [<strong>--limit</strong>=<em>&lt;limit&gt;</em>] [<strong>--lon</strong>=<em>&lt;longitude&gt;</em>] [<strong>--maxdepth</strong>=<em>&lt;maxDepth&gt;</em>]
+          [<strong>--maxlat</strong>=<em>&lt;maxLatitude&gt;</em>] [<strong>--maxlon</strong>=<em>&lt;maxLongitude&gt;</em>]
+          [<strong>--maxmag</strong>=<em>&lt;maxMagnitude&gt;</em>] [<strong>--maxradius</strong>=<em>&lt;maxRadius&gt;</em>]
+          [<strong>--mindepth</strong>=<em>&lt;minDepth&gt;</em>] [<strong>--minlat</strong>=<em>&lt;minLatitude&gt;</em>]
+          [<strong>--minlon</strong>=<em>&lt;minLongitude&gt;</em>] [<strong>--minmag</strong>=<em>&lt;minMagnitude&gt;</em>]
+          [<strong>--minradius</strong>=<em>&lt;minRadius&gt;</em>] [<strong>--nodata</strong>=<em>&lt;nodata&gt;</em>] [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>]
+          [<strong>--offset</strong>=<em>&lt;offset&gt;</em>] [<strong>--orderby</strong>=<em>&lt;orderBy&gt;</em>] [<strong>--port</strong>=<em>&lt;port&gt;</em>]
+          [<strong>-t</strong>=<em>&lt;magnitudeType&gt;</em>] [<strong>--updatedafter</strong>=<em>&lt;updatedAfter&gt;</em>]
+          [<strong>-m</strong>=<em>&lt;magnitudeRange&gt;</em> [<em>&lt;magnitudeRange&gt;</em>]]&#8230;&#8203;</p>
 </div>
 </div>
 </div>
@@ -461,16 +470,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_description">Description</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Example client to stream miniseed over seedlink.</p>
+<p>example client to query a remote FDSN Event web service</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">View source code here.</a></p>
+<p>Times are ISO8601 formatted strings, like yyyy-MM-ddTHH:mm:ss, and may be shortened
+to include only the significant fields. The remaining fields will be filled in
+as either zero or max value depending on the use.
+For example 2006-11-19 or 2006-11-19T06:34:21.
+The special strings now and yesterday may also be used.</p>
 </div>
 <div class="paragraph">
-<p>Information about the Seedlink protocol can be found here
-<a href="https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html" class="bare">https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html</a>
-and information about its use at IRIS here
-<a href="http://ds.iris.edu/ds/nodes/dmc/services/seedlink/" class="bare">http://ds.iris.edu/ds/nodes/dmc/services/seedlink/</a>.</p>
+<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java">View source code here.</a></p>
 </div>
 </div>
 </div>
@@ -479,61 +489,153 @@ and information about its use at IRIS here
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><strong>-b</strong>, <strong>--start, --starttime</strong>=<em>&lt;start&gt;</em></dt>
+<dt class="hdlist1"><strong>-b</strong>, <strong>--start, --starttime</strong>=<em>&lt;startTime&gt;</em></dt>
 <dd>
-<p>Limit results to time series samples on or after the specified start time</p>
+<p>Limit to events on or after the specified start time.</p>
 </dd>
-<dt class="hdlist1"><strong>-c</strong>, <strong>--channel</strong>=<em>&lt;channel&gt;</em></dt>
+<dt class="hdlist1"><strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em></dt>
 <dd>
-<p>list of channels to search</p>
+<p>Base URL for queries, ie everything before the '/&lt;service&gt;/&lt;version&gt;/&lt;query&gt;?'</p>
 </dd>
-<dt class="hdlist1"><strong>-e</strong>, <strong>--end, --endtime</strong>=<em>&lt;end&gt;</em></dt>
+<dt class="hdlist1"><strong>--box</strong>=<em>w/e/s/n</em></dt>
 <dd>
-<p>Limit results to time series samples on or before the specified end time</p>
+<p>constraining box as west/east/south/north</p>
 </dd>
-<dt class="hdlist1"><strong>-h</strong>, <strong>--host</strong>=<em>&lt;host&gt;</em></dt>
+<dt class="hdlist1"><strong>-c</strong>, <strong>--catalog</strong>=<em>&lt;catalog&gt;</em></dt>
 <dd>
-<p>host to connect to, defaults to IRIS, rtserve.iris.washington.edu</p>
+<p>Limit to events from a specified catalog</p>
+</dd>
+<dt class="hdlist1"><strong>-C</strong>, <strong>--contributor</strong>=<em>&lt;contributor&gt;</em></dt>
+<dd>
+<p>Limit to events contributed by a specified contributor.</p>
+</dd>
+<dt class="hdlist1"><strong>--donut</strong>=<em>lat/lon/min/max</em></dt>
+<dd>
+<p>constraining donut as lat/lon/minRadius/maxRadius</p>
+</dd>
+<dt class="hdlist1"><strong>-e</strong>, <strong>--end, --endtime</strong>=<em>&lt;endTime&gt;</em></dt>
+<dd>
+<p>Limit to events on or before the specified end time.</p>
+</dd>
+<dt class="hdlist1"><strong>--eventid</strong>=<em>&lt;eventid&gt;</em></dt>
+<dd>
+<p>Select a specific event by ID; event identifiers are data center specific.</p>
 </dd>
 <dt class="hdlist1"><strong>--help</strong></dt>
 <dd>
 <p>display a help message</p>
 </dd>
-<dt class="hdlist1"><strong>--iout</strong>=<em>&lt;ioutFile&gt;</em></dt>
+<dt class="hdlist1"><strong>--host</strong>=<em>&lt;host&gt;</em></dt>
 <dd>
-<p>info out file</p>
+<p>host to connect to, defaults to earthquake.usgs.gov</p>
 </dd>
-<dt class="hdlist1"><strong>--itype</strong>=<em>&lt;infoType&gt;</em></dt>
+<dt class="hdlist1"><strong>--includeallmagnitudes</strong></dt>
 <dd>
-<p>info typ, ex STREAMS</p>
+<p>Specify if all magnitudes for the event should be included, default is data center dependent but is suggested to be the preferred magnitude only.</p>
 </dd>
-<dt class="hdlist1"><strong>-l</strong>, <strong>--location</strong>=<em>&lt;location&gt;</em></dt>
+<dt class="hdlist1"><strong>--includeallorigins</strong></dt>
 <dd>
-<p>list of locations to search</p>
+<p>Specify if all origins for the event should be included, default is data center dependent but is suggested to be the preferred origin only.</p>
 </dd>
-<dt class="hdlist1"><strong>--max</strong>=<em>&lt;maxRecords&gt;</em></dt>
+<dt class="hdlist1"><strong>--includearrivals</strong></dt>
 <dd>
-<p>number of packets to receive before ending the connection, defaults to 10</p>
+<p>Specify if phase arrivals should be included.</p>
 </dd>
-<dt class="hdlist1"><strong>-n</strong>, <strong>--network</strong>=<em>&lt;network&gt;</em></dt>
+<dt class="hdlist1"><strong>--lat, --latitude</strong>=<em>&lt;latitude&gt;</em></dt>
 <dd>
-<p>list of networks to search</p>
+<p>Specify the latitude to be used for a radius search.</p>
+</dd>
+<dt class="hdlist1"><strong>--limit</strong>=<em>&lt;limit&gt;</em></dt>
+<dd>
+<p>Limit the results to the specified number of events.</p>
+</dd>
+<dt class="hdlist1"><strong>--lon, --longitude</strong>=<em>&lt;longitude&gt;</em></dt>
+<dd>
+<p>Specify the longitude to the used for a radius search.</p>
+</dd>
+<dt class="hdlist1"><strong>-m</strong>, <strong>--magnitude</strong>=<em>&lt;magnitudeRange&gt;</em> [<em>&lt;magnitudeRange&gt;</em>]</dt>
+<dd>
+<p>The range of acceptable magnitudes, max may be omitted.</p>
+</dd>
+<dt class="hdlist1"><strong>--maxdepth</strong>=<em>&lt;maxDepth&gt;</em></dt>
+<dd>
+<p>Limit to events with depth less than the specified maximum.</p>
+</dd>
+<dt class="hdlist1"><strong>--maxlat, --maxlatitude</strong>=<em>&lt;maxLatitude&gt;</em></dt>
+<dd>
+<p>Limit to events with a latitude smaller than the specified maximum.</p>
+</dd>
+<dt class="hdlist1"><strong>--maxlon, --maxlongitude</strong>=<em>&lt;maxLongitude&gt;</em></dt>
+<dd>
+<p>Limit to events with a longitude smaller than the specified maximum.</p>
+</dd>
+<dt class="hdlist1"><strong>--maxmag, --maxmagnitude</strong>=<em>&lt;maxMagnitude&gt;</em></dt>
+<dd>
+<p>Limit to events with a magnitude smaller than the specified maximum.</p>
+</dd>
+<dt class="hdlist1"><strong>--maxradius</strong>=<em>&lt;maxRadius&gt;</em></dt>
+<dd>
+<p>Limit to events within the specified maximum number of degrees from the geographic point defined by the latitude and longitude parameters.</p>
+</dd>
+<dt class="hdlist1"><strong>--mindepth</strong>=<em>&lt;minDepth&gt;</em></dt>
+<dd>
+<p>Limit to events with depth more than the specified minimum.</p>
+</dd>
+<dt class="hdlist1"><strong>--minlat, --minlatitude</strong>=<em>&lt;minLatitude&gt;</em></dt>
+<dd>
+<p>Limit to events with a latitude larger than the specified minimum.</p>
+</dd>
+<dt class="hdlist1"><strong>--minlon, --minlongitude</strong>=<em>&lt;minLongitude&gt;</em></dt>
+<dd>
+<p>Limit to events with a longitude larger than the specified minimum.</p>
+</dd>
+<dt class="hdlist1"><strong>--minmag, --minmagnitude</strong>=<em>&lt;minMagnitude&gt;</em></dt>
+<dd>
+<p>Limit to events with a magnitude larger than the specified minimum.</p>
+</dd>
+<dt class="hdlist1"><strong>--minradius</strong>=<em>&lt;minRadius&gt;</em></dt>
+<dd>
+<p>Limit to events within the specified minimum number of degrees from the geographic point defined by the latitude and longitude parameters.</p>
+</dd>
+<dt class="hdlist1"><strong>--nodata</strong>=<em>&lt;nodata&gt;</em></dt>
+<dd>
+<p>nodata http return code</p>
 </dd>
 <dt class="hdlist1"><strong>-o</strong>, <strong>--output</strong>=<em>&lt;outputFile&gt;</em></dt>
 <dd>
-<p>Output file (default: print to console)</p>
+<p>File for outputing result</p>
 </dd>
-<dt class="hdlist1"><strong>-p</strong>, <strong>--port</strong>=<em>&lt;port&gt;</em></dt>
+<dt class="hdlist1"><strong>--offset</strong>=<em>&lt;offset&gt;</em></dt>
 <dd>
-<p>port to connect to, defaults to IRIS, 18000</p>
+<p>Return results starting at the event count specified, starting at 1.</p>
 </dd>
-<dt class="hdlist1"><strong>-s</strong>, <strong>--station</strong>=<em>&lt;station&gt;</em></dt>
+<dt class="hdlist1"><strong>--orderby</strong>=<em>&lt;orderBy&gt;</em></dt>
 <dd>
-<p>list of stations to search</p>
+<p>Order the result by time or magnitude with the following possibilities: time: order by origin descending time time-asc : order by origin ascending time magnitude: order by descending magnitude magnitude-asc : order by ascending magnitude</p>
 </dd>
-<dt class="hdlist1"><strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em></dt>
+<dt class="hdlist1"><strong>--port</strong>=<em>&lt;port&gt;</em></dt>
 <dd>
-<p>timeout seconds, defaults to 120</p>
+<p>port to connect to, defaults to 80</p>
+</dd>
+<dt class="hdlist1"><strong>--printurl</strong></dt>
+<dd>
+<p>Construct and print URL and exit</p>
+</dd>
+<dt class="hdlist1"><strong>--raw</strong></dt>
+<dd>
+<p>Output the raw data to stdout</p>
+</dd>
+<dt class="hdlist1"><strong>--schema</strong></dt>
+<dd>
+<p>prints schema</p>
+</dd>
+<dt class="hdlist1"><strong>-t</strong>, <strong>--magtype, --magnitudetype</strong>=<em>&lt;magnitudeType&gt;</em></dt>
+<dd>
+<p>Specify a magnitude type to use for testing the minimum and maximum limits.</p>
+</dd>
+<dt class="hdlist1"><strong>--updatedafter</strong>=<em>&lt;updatedAfter&gt;</em></dt>
+<dd>
+<p>Limit to events updated after the specified time.</p>
 </dd>
 <dt class="hdlist1"><strong>-v</strong>, <strong>--verbose</strong></dt>
 <dd>
@@ -543,6 +645,10 @@ and information about its use at IRIS here
 <dd>
 <p>Print version and exit</p>
 </dd>
+<dt class="hdlist1"><strong>--validate</strong></dt>
+<dd>
+<p>Validate XML against schema</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -551,37 +657,31 @@ and information about its use at IRIS here
 <h2 id="_examples">Examples</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Ask for a few packets of HHZ data from station CO.HODGE, and output to a file.</p>
+<p>Ask for magnitude 2 or larger events within 3 degrees of 32/-81 in December 2020 or January 2021.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
-send 'HELLO'
-SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-IRIS DMC RTSERVE SEA Ring Server
-line 1 :SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-line 2 :IRIS DMC RTSERVE SEA Ring Server
-send 'STATION HODGE CO'
-OK
-send 'SELECT HHZ.D'
-OK
-send 'DATA'
-OK
-send 'END'
-hasNext(): blocking read for 3 bytes, available=0
-readPacket(): blocking read for 520 bytes, available=3640
- Got a packet: C3472B  CO  HODGE  00  HHZ  2021,196,13:06:48.8000
-D CO.HODGE.00.HHZ 2021,196,13:06:48.8000  4.26 426
-hasNext(): blocking read for 3 bytes, available=3120
-readPacket(): blocking read for 520 bytes, available=3120
- Got a packet: C3472C  CO  HODGE  00  HHZ  2021,196,13:06:53.0600
-D CO.HODGE.00.HHZ 2021,196,13:06:53.0600  4.44 444
-hasNext(): blocking read for 3 bytes, available=2600
-readPacket(): blocking read for 520 bytes, available=2600
- Got a packet: C3472D  CO  HODGE  00  HHZ  2021,196,13:06:57.5000
-D CO.HODGE.00.HHZ 2021,196,13:06:57.5000  4.29 429
-send 'BYE'
-Finished: 2021-07-15T13:07:49.613Z</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; fdsnevent -b 2020-12 -e 2021-01 --donut 32/-81/0/3 -m 2
+34.031166/-80.3835  2.05 md 2021-01-18T10:52:50.750Z
+33.68667/-82.55883  2.38 md 2020-12-27T05:17:10.310Z
+34.01483/-81.02033  2.37 md 2020-12-12T01:37:34.710Z</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Only print the URL that would be accessed without connecting to the remote server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; fdsnevent -b 2020-12 -e 2021-01 --donut 32/-81/0/3 -m 2 --printurl
+http://earthquake.usgs.gov:80/fdsnws/event/1/query?endtime=2021-01-31T23:59:59.999Z&amp;latitude=32.0&amp;longitude=-81.0&amp;maxradius=3.0&amp;minmagnitude=2.0&amp;minradius=0.0&amp;starttime=2020-12-01T00:00:00.000Z</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output the raw quakeml to a file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; fdsnevent -b 2020-12 -e 2021-01 --donut 32/-81/0/3 -m 2 --raw -o events.quakeml</code></pre>
 </div>
 </div>
 </div>
@@ -590,7 +690,7 @@ Finished: 2021-07-15T13:07:49.613Z</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version edu.sc.seis seisFile 2.0.2 2021-07-15T13 55 34Z (2083 a60f217)<br>
-Last updated 2021-07-15 13:28:30 UTC
+Last updated 2021-07-15 13:51:44 UTC
 </div>
 </div>
 </body>

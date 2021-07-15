@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>seedlinkclient(1)</title>
+<title>seisfile-seedlinkclient(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,10 +438,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="manpage">
 <div id="header">
-<h1>seedlinkclient(1) Manual Page</h1>
+<h1>seisfile-seedlinkclient(1) Manual Page</h1>
 <h2 id="_name">Name</h2>
 <div class="sectionbody">
-<p>seedlinkclient - Example client to stream miniseed over seedlink.</p>
+<p>seisfile-seedlinkclient - Example client to stream miniseed over seedlink.</p>
 </div>
 </div>
 <div id="content">
@@ -449,11 +449,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_synopsis">Synopsis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
-               [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>] [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>]
-               [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>] [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>]
-               [<strong>-c</strong>=<em>&lt;channel&gt;</em>]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>]&#8230;&#8203;
-               [<strong>-s</strong>=<em>&lt;station&gt;</em>]&#8230;&#8203;</p>
+<p><strong>seisfile seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
+                        [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>]
+                        [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>] [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>]
+                        [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>] [<strong>-c</strong>=<em>&lt;channel&gt;</em>]&#8230;&#8203;
+                        [<strong>-l</strong>=<em>&lt;location&gt;</em>]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>]&#8230;&#8203; [<strong>-s</strong>=<em>&lt;station&gt;</em>]&#8230;&#8203;</p>
 </div>
 </div>
 </div>
@@ -462,15 +462,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>Example client to stream miniseed over seedlink.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">View source code here.</a></p>
-</div>
-<div class="paragraph">
-<p>Information about the Seedlink protocol can be found here
-<a href="https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html" class="bare">https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html</a>
-and information about its use at IRIS here
-<a href="http://ds.iris.edu/ds/nodes/dmc/services/seedlink/" class="bare">http://ds.iris.edu/ds/nodes/dmc/services/seedlink/</a>.</p>
 </div>
 </div>
 </div>
@@ -547,50 +538,11 @@ and information about its use at IRIS here
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_examples">Examples</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Ask for a few packets of HHZ data from station CO.HODGE, and output to a file.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
-send 'HELLO'
-SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-IRIS DMC RTSERVE SEA Ring Server
-line 1 :SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-line 2 :IRIS DMC RTSERVE SEA Ring Server
-send 'STATION HODGE CO'
-OK
-send 'SELECT HHZ.D'
-OK
-send 'DATA'
-OK
-send 'END'
-hasNext(): blocking read for 3 bytes, available=0
-readPacket(): blocking read for 520 bytes, available=3640
- Got a packet: C3472B  CO  HODGE  00  HHZ  2021,196,13:06:48.8000
-D CO.HODGE.00.HHZ 2021,196,13:06:48.8000  4.26 426
-hasNext(): blocking read for 3 bytes, available=3120
-readPacket(): blocking read for 520 bytes, available=3120
- Got a packet: C3472C  CO  HODGE  00  HHZ  2021,196,13:06:53.0600
-D CO.HODGE.00.HHZ 2021,196,13:06:53.0600  4.44 444
-hasNext(): blocking read for 3 bytes, available=2600
-readPacket(): blocking read for 520 bytes, available=2600
- Got a packet: C3472D  CO  HODGE  00  HHZ  2021,196,13:06:57.5000
-D CO.HODGE.00.HHZ 2021,196,13:06:57.5000  4.29 429
-send 'BYE'
-Finished: 2021-07-15T13:07:49.613Z</code></pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version edu.sc.seis seisFile 2.0.2 2021-07-15T13 55 34Z (2083 a60f217)<br>
-Last updated 2021-07-15 13:28:30 UTC
+Last updated 2021-07-15 13:38:31 UTC
 </div>
 </div>
 </body>

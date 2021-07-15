@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>seedlinkclient(1)</title>
+<title>fdsndataselect(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,10 +438,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="manpage">
 <div id="header">
-<h1>seedlinkclient(1) Manual Page</h1>
+<h1>fdsndataselect(1) Manual Page</h1>
 <h2 id="_name">Name</h2>
 <div class="sectionbody">
-<p>seedlinkclient - Example client to stream miniseed over seedlink.</p>
+<p>fdsndataselect - Example client to query a remote FDSN DataSelect web service via GET or POST</p>
 </div>
 </div>
 <div id="content">
@@ -449,11 +449,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_synopsis">Synopsis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
-               [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>] [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>]
-               [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>] [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>]
-               [<strong>-c</strong>=<em>&lt;channel&gt;</em>]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>]&#8230;&#8203;
-               [<strong>-s</strong>=<em>&lt;station&gt;</em>]&#8230;&#8203;</p>
+<p><strong>fdsndataselect</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>--longestonly</strong>] [<strong>--post</strong>] [<strong>--printurl</strong>] [<strong>--raw</strong>]
+               [<strong>--validate</strong>] [<strong>-b</strong>=<em>&lt;startTime&gt;</em>] [<strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em>]
+               [<strong>-e</strong>=<em>&lt;endTime&gt;</em>] [<strong>--host</strong>=<em>&lt;host&gt;</em>] [<strong>--minimumlength</strong>=<em>&lt;minimumLength&gt;</em>]
+               [<strong>--nodata</strong>=<em>&lt;nodata&gt;</em>] [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>--port</strong>=<em>&lt;port&gt;</em>]
+               [<strong>--quality</strong>=<em>&lt;quality&gt;</em>] [<strong>-c</strong>=<em>&lt;channel&gt;</em>[,<em>&lt;channel&gt;</em>&#8230;&#8203;]]&#8230;&#8203;
+               [<strong>-l</strong>=<em>&lt;location&gt;</em>[,<em>&lt;location&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>[,
+               <em>&lt;network&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-s</strong>=<em>&lt;station&gt;</em>[,<em>&lt;station&gt;</em>&#8230;&#8203;]]&#8230;&#8203;
+               [<strong>--user</strong>=<em>&lt;user&gt;</em> <strong>--password</strong>=<em>&lt;password&gt;</em>]</p>
 </div>
 </div>
 </div>
@@ -461,16 +464,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_description">Description</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Example client to stream miniseed over seedlink.</p>
+<p>Example client to query a remote FDSN DataSelect web service via GET or POST</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">View source code here.</a></p>
+<p>Times are ISO8601 formatted strings, like yyyy-MM-ddTHH:mm:ss, and may be shortened
+to include only the significant fields. The remaining fields will be filled in
+as either zero or max value depending on the use.
+For example 2006-11-19 or 2006-11-19T06:34:21.
+The special strings now and yesterday may also be used.</p>
 </div>
 <div class="paragraph">
-<p>Information about the Seedlink protocol can be found here
-<a href="https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html" class="bare">https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html</a>
-and information about its use at IRIS here
-<a href="http://ds.iris.edu/ds/nodes/dmc/services/seedlink/" class="bare">http://ds.iris.edu/ds/nodes/dmc/services/seedlink/</a>.</p>
+<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java">View source code here.</a></p>
 </div>
 </div>
 </div>
@@ -479,61 +483,85 @@ and information about its use at IRIS here
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><strong>-b</strong>, <strong>--start, --starttime</strong>=<em>&lt;start&gt;</em></dt>
+<dt class="hdlist1"><strong>-b</strong>, <strong>--start, --starttime</strong>=<em>&lt;startTime&gt;</em></dt>
 <dd>
 <p>Limit results to time series samples on or after the specified start time</p>
 </dd>
-<dt class="hdlist1"><strong>-c</strong>, <strong>--channel</strong>=<em>&lt;channel&gt;</em></dt>
+<dt class="hdlist1"><strong>--baseurl</strong>=<em>&lt;baseURL&gt;</em></dt>
 <dd>
-<p>list of channels to search</p>
+<p>Base URL for queries, ie everything before the '/&lt;service&gt;/&lt;version&gt;/&lt;query&gt;?'</p>
 </dd>
-<dt class="hdlist1"><strong>-e</strong>, <strong>--end, --endtime</strong>=<em>&lt;end&gt;</em></dt>
+<dt class="hdlist1"><strong>-c</strong>, <strong>--cha, --channel</strong>=<em>&lt;channel&gt;</em>[,<em>&lt;channel&gt;</em>&#8230;&#8203;]</dt>
+<dd>
+<p>Select one or more SEED channel codes. Multiple codes are comma-separated.</p>
+</dd>
+<dt class="hdlist1"><strong>-e</strong>, <strong>--end, --endtime</strong>=<em>&lt;endTime&gt;</em></dt>
 <dd>
 <p>Limit results to time series samples on or before the specified end time</p>
-</dd>
-<dt class="hdlist1"><strong>-h</strong>, <strong>--host</strong>=<em>&lt;host&gt;</em></dt>
-<dd>
-<p>host to connect to, defaults to IRIS, rtserve.iris.washington.edu</p>
 </dd>
 <dt class="hdlist1"><strong>--help</strong></dt>
 <dd>
 <p>display a help message</p>
 </dd>
-<dt class="hdlist1"><strong>--iout</strong>=<em>&lt;ioutFile&gt;</em></dt>
+<dt class="hdlist1"><strong>--host</strong>=<em>&lt;host&gt;</em></dt>
 <dd>
-<p>info out file</p>
+<p>host to connect to, defaults to service.iris.edu</p>
 </dd>
-<dt class="hdlist1"><strong>--itype</strong>=<em>&lt;infoType&gt;</em></dt>
+<dt class="hdlist1"><strong>-l</strong>, <strong>--loc, --location</strong>=<em>&lt;location&gt;</em>[,<em>&lt;location&gt;</em>&#8230;&#8203;]</dt>
 <dd>
-<p>info typ, ex STREAMS</p>
+<p>Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case&#8201;&#8212;&#8201;(two dashes) will be translated to a string of two space characters to match blank location IDs.</p>
 </dd>
-<dt class="hdlist1"><strong>-l</strong>, <strong>--location</strong>=<em>&lt;location&gt;</em></dt>
+<dt class="hdlist1"><strong>--longestonly</strong></dt>
 <dd>
-<p>list of locations to search</p>
+<p>Limit results to the longest continuous segment per channel.</p>
 </dd>
-<dt class="hdlist1"><strong>--max</strong>=<em>&lt;maxRecords&gt;</em></dt>
+<dt class="hdlist1"><strong>--minimumlength</strong>=<em>&lt;minimumLength&gt;</em></dt>
 <dd>
-<p>number of packets to receive before ending the connection, defaults to 10</p>
+<p>Limit results to continuous data segments of a minimum length specified in seconds.</p>
 </dd>
-<dt class="hdlist1"><strong>-n</strong>, <strong>--network</strong>=<em>&lt;network&gt;</em></dt>
+<dt class="hdlist1"><strong>-n</strong>, <strong>--net, --network</strong>=<em>&lt;network&gt;</em>[,<em>&lt;network&gt;</em>&#8230;&#8203;]</dt>
 <dd>
-<p>list of networks to search</p>
+<p>Select one or more network codes. Can be SEED network codes or data center defined codes. Multiple codes are comma-separated.</p>
+</dd>
+<dt class="hdlist1"><strong>--nodata</strong>=<em>&lt;nodata&gt;</em></dt>
+<dd>
+<p>nodata http return code</p>
 </dd>
 <dt class="hdlist1"><strong>-o</strong>, <strong>--output</strong>=<em>&lt;outputFile&gt;</em></dt>
 <dd>
-<p>Output file (default: print to console)</p>
+<p>File for outputing result</p>
 </dd>
-<dt class="hdlist1"><strong>-p</strong>, <strong>--port</strong>=<em>&lt;port&gt;</em></dt>
+<dt class="hdlist1"><strong>--password</strong>=<em>&lt;password&gt;</em></dt>
 <dd>
-<p>port to connect to, defaults to IRIS, 18000</p>
+<p>password for restricted data access</p>
 </dd>
-<dt class="hdlist1"><strong>-s</strong>, <strong>--station</strong>=<em>&lt;station&gt;</em></dt>
+<dt class="hdlist1"><strong>--port</strong>=<em>&lt;port&gt;</em></dt>
 <dd>
-<p>list of stations to search</p>
+<p>port to connect to, defaults to 80</p>
 </dd>
-<dt class="hdlist1"><strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em></dt>
+<dt class="hdlist1"><strong>--post</strong></dt>
 <dd>
-<p>timeout seconds, defaults to 120</p>
+<p>use http POST instead of GET</p>
+</dd>
+<dt class="hdlist1"><strong>--printurl</strong></dt>
+<dd>
+<p>Construct and print URL and exit</p>
+</dd>
+<dt class="hdlist1"><strong>--quality</strong>=<em>&lt;quality&gt;</em></dt>
+<dd>
+<p>Select a specific SEED quality indicator, handling is data center dependent.</p>
+</dd>
+<dt class="hdlist1"><strong>--raw</strong></dt>
+<dd>
+<p>Output the raw data to stdout</p>
+</dd>
+<dt class="hdlist1"><strong>-s</strong>, <strong>--sta, --station</strong>=<em>&lt;station&gt;</em>[,<em>&lt;station&gt;</em>&#8230;&#8203;]</dt>
+<dd>
+<p>Select one or more SEED station codes. Multiple codes are comma-separated.</p>
+</dd>
+<dt class="hdlist1"><strong>--user</strong>=<em>&lt;user&gt;</em></dt>
+<dd>
+<p>username for restricted data access</p>
 </dd>
 <dt class="hdlist1"><strong>-v</strong>, <strong>--verbose</strong></dt>
 <dd>
@@ -543,6 +571,10 @@ and information about its use at IRIS here
 <dd>
 <p>Print version and exit</p>
 </dd>
+<dt class="hdlist1"><strong>--validate</strong></dt>
+<dd>
+<p>Validate XML against schema</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -551,37 +583,35 @@ and information about its use at IRIS here
 <h2 id="_examples">Examples</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Ask for a few packets of HHZ data from station CO.HODGE, and output to a file.</p>
+<p>Ask for 2 minutes of HHZ data from station CO.JSC, and output to a file.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
-send 'HELLO'
-SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-IRIS DMC RTSERVE SEA Ring Server
-line 1 :SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-line 2 :IRIS DMC RTSERVE SEA Ring Server
-send 'STATION HODGE CO'
-OK
-send 'SELECT HHZ.D'
-OK
-send 'DATA'
-OK
-send 'END'
-hasNext(): blocking read for 3 bytes, available=0
-readPacket(): blocking read for 520 bytes, available=3640
- Got a packet: C3472B  CO  HODGE  00  HHZ  2021,196,13:06:48.8000
-D CO.HODGE.00.HHZ 2021,196,13:06:48.8000  4.26 426
-hasNext(): blocking read for 3 bytes, available=3120
-readPacket(): blocking read for 520 bytes, available=3120
- Got a packet: C3472C  CO  HODGE  00  HHZ  2021,196,13:06:53.0600
-D CO.HODGE.00.HHZ 2021,196,13:06:53.0600  4.44 444
-hasNext(): blocking read for 3 bytes, available=2600
-readPacket(): blocking read for 520 bytes, available=2600
- Got a packet: C3472D  CO  HODGE  00  HHZ  2021,196,13:06:57.5000
-D CO.HODGE.00.HHZ 2021,196,13:06:57.5000  4.29 429
-send 'BYE'
-Finished: 2021-07-15T13:07:49.613Z</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; fdsndataselect -n CO -s JSC -c LHZ -o jsc_1.mseed -b 2021-02-28T12:45:00 -e 2021-02-28T12:46:00 -v
+M CO.JSC.00.LHZ 2021,059,12:45:00.0695  57 57
+M CO.JSC.00.LHZ 2021,059,12:45:57.0695  4 4</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Multiple channels, either comma separated or using multiple flags.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; fdsndataselect -n CO -s JSC -c LHZ -c LHN,LHE -o jsc_2.mseed -b 2021-02-28T12:45:00 -e 2021-02-28T12:46:00 -v
+M CO.JSC.00.LHE 2021,059,12:45:00.0695  1 1
+M CO.JSC.00.LHE 2021,059,12:45:01.0695  60 60
+M CO.JSC.00.LHN 2021,059,12:45:00.0695  61 61
+M CO.JSC.00.LHZ 2021,059,12:45:00.0695  57 57
+M CO.JSC.00.LHZ 2021,059,12:45:57.0695  4 4</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Only print the URL that would be accessed without connecting to the remote server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; fdsndataselect -n CO -s JSC -c LHZ -c LHN,LHE -b 2021-02-28T12:45:00 -e 2021-02-28T12:46:00 --printurl
+http://service.iris.edu:80/fdsnws/dataselect/1/query?channel=LHZ,LHN,LHE&amp;endtime=2021-02-28T12:46:00.999Z&amp;network=CO&amp;starttime=2021-02-28T12:45:00.000Z&amp;station=JSC</code></pre>
 </div>
 </div>
 </div>
@@ -590,7 +620,7 @@ Finished: 2021-07-15T13:07:49.613Z</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version edu.sc.seis seisFile 2.0.2 2021-07-15T13 55 34Z (2083 a60f217)<br>
-Last updated 2021-07-15 13:28:30 UTC
+Last updated 2021-07-15 13:51:44 UTC
 </div>
 </div>
 </body>

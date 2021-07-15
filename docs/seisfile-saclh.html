@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>seedlinkclient(1)</title>
+<title>saclh(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,10 +438,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="manpage">
 <div id="header">
-<h1>seedlinkclient(1) Manual Page</h1>
+<h1>saclh(1) Manual Page</h1>
 <h2 id="_name">Name</h2>
 <div class="sectionbody">
-<p>seedlinkclient - Example client to stream miniseed over seedlink.</p>
+<p>saclh - print some or all header values from a SAC file</p>
 </div>
 </div>
 <div id="content">
@@ -449,11 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_synopsis">Synopsis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
-               [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>] [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>]
-               [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>] [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>]
-               [<strong>-c</strong>=<em>&lt;channel&gt;</em>]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>]&#8230;&#8203;
-               [<strong>-s</strong>=<em>&lt;station&gt;</em>]&#8230;&#8203;</p>
+<p><strong>saclh</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-h</strong>=<em>&lt;headerList&gt;</em>[,<em>&lt;headerList&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<em>&lt;sacfileList&gt;</em>&#8230;&#8203;]</p>
 </div>
 </div>
 </div>
@@ -461,16 +457,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_description">Description</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Example client to stream miniseed over seedlink.</p>
+<p>print some or all header values from a SAC file</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">View source code here.</a></p>
+<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java">View source code here.</a></p>
 </div>
 <div class="paragraph">
-<p>Information about the Seedlink protocol can be found here
-<a href="https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html" class="bare">https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html</a>
-and information about its use at IRIS here
-<a href="http://ds.iris.edu/ds/nodes/dmc/services/seedlink/" class="bare">http://ds.iris.edu/ds/nodes/dmc/services/seedlink/</a>.</p>
+<p><a href="http://ds.iris.edu/files/sac-manual/">SAC Manual</a></p>
+</div>
+<div class="paragraph">
+<p><a href="specs/sac/file_format.html">SAC file format</a></p>
 </div>
 </div>
 </div>
@@ -479,61 +475,13 @@ and information about its use at IRIS here
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><strong>-b</strong>, <strong>--start, --starttime</strong>=<em>&lt;start&gt;</em></dt>
+<dt class="hdlist1"><strong>-h</strong>, <strong>--headers</strong>=<em>&lt;headerList&gt;</em>[,<em>&lt;headerList&gt;</em>&#8230;&#8203;]</dt>
 <dd>
-<p>Limit results to time series samples on or after the specified start time</p>
-</dd>
-<dt class="hdlist1"><strong>-c</strong>, <strong>--channel</strong>=<em>&lt;channel&gt;</em></dt>
-<dd>
-<p>list of channels to search</p>
-</dd>
-<dt class="hdlist1"><strong>-e</strong>, <strong>--end, --endtime</strong>=<em>&lt;end&gt;</em></dt>
-<dd>
-<p>Limit results to time series samples on or before the specified end time</p>
-</dd>
-<dt class="hdlist1"><strong>-h</strong>, <strong>--host</strong>=<em>&lt;host&gt;</em></dt>
-<dd>
-<p>host to connect to, defaults to IRIS, rtserve.iris.washington.edu</p>
+<p>Headers to print</p>
 </dd>
 <dt class="hdlist1"><strong>--help</strong></dt>
 <dd>
 <p>display a help message</p>
-</dd>
-<dt class="hdlist1"><strong>--iout</strong>=<em>&lt;ioutFile&gt;</em></dt>
-<dd>
-<p>info out file</p>
-</dd>
-<dt class="hdlist1"><strong>--itype</strong>=<em>&lt;infoType&gt;</em></dt>
-<dd>
-<p>info typ, ex STREAMS</p>
-</dd>
-<dt class="hdlist1"><strong>-l</strong>, <strong>--location</strong>=<em>&lt;location&gt;</em></dt>
-<dd>
-<p>list of locations to search</p>
-</dd>
-<dt class="hdlist1"><strong>--max</strong>=<em>&lt;maxRecords&gt;</em></dt>
-<dd>
-<p>number of packets to receive before ending the connection, defaults to 10</p>
-</dd>
-<dt class="hdlist1"><strong>-n</strong>, <strong>--network</strong>=<em>&lt;network&gt;</em></dt>
-<dd>
-<p>list of networks to search</p>
-</dd>
-<dt class="hdlist1"><strong>-o</strong>, <strong>--output</strong>=<em>&lt;outputFile&gt;</em></dt>
-<dd>
-<p>Output file (default: print to console)</p>
-</dd>
-<dt class="hdlist1"><strong>-p</strong>, <strong>--port</strong>=<em>&lt;port&gt;</em></dt>
-<dd>
-<p>port to connect to, defaults to IRIS, 18000</p>
-</dd>
-<dt class="hdlist1"><strong>-s</strong>, <strong>--station</strong>=<em>&lt;station&gt;</em></dt>
-<dd>
-<p>list of stations to search</p>
-</dd>
-<dt class="hdlist1"><strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em></dt>
-<dd>
-<p>timeout seconds, defaults to 120</p>
 </dd>
 <dt class="hdlist1"><strong>-v</strong>, <strong>--verbose</strong></dt>
 <dd>
@@ -548,40 +496,68 @@ and information about its use at IRIS here
 </div>
 </div>
 <div class="sect1">
+<h2 id="_arguments">Arguments</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[<em>&lt;sacfileList&gt;</em>&#8230;&#8203;]</dt>
+<dd>
+<p>SAC files</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_examples">Examples</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Ask for a few packets of HHZ data from station CO.HODGE, and output to a file.</p>
+<p>Print the all headers for a SAC file.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
-send 'HELLO'
-SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-IRIS DMC RTSERVE SEA Ring Server
-line 1 :SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-line 2 :IRIS DMC RTSERVE SEA Ring Server
-send 'STATION HODGE CO'
-OK
-send 'SELECT HHZ.D'
-OK
-send 'DATA'
-OK
-send 'END'
-hasNext(): blocking read for 3 bytes, available=0
-readPacket(): blocking read for 520 bytes, available=3640
- Got a packet: C3472B  CO  HODGE  00  HHZ  2021,196,13:06:48.8000
-D CO.HODGE.00.HHZ 2021,196,13:06:48.8000  4.26 426
-hasNext(): blocking read for 3 bytes, available=3120
-readPacket(): blocking read for 520 bytes, available=3120
- Got a packet: C3472C  CO  HODGE  00  HHZ  2021,196,13:06:53.0600
-D CO.HODGE.00.HHZ 2021,196,13:06:53.0600  4.44 444
-hasNext(): blocking read for 3 bytes, available=2600
-readPacket(): blocking read for 520 bytes, available=2600
- Got a packet: C3472D  CO  HODGE  00  HHZ  2021,196,13:06:57.5000
-D CO.HODGE.00.HHZ 2021,196,13:06:57.5000  4.29 429
-send 'BYE'
-Finished: 2021-07-15T13:07:49.613Z</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; saclh CO.JSC.00.HHZ.M.2021.061.000000.SAC
+
+CO.JSC.00.HHZ.M.2021.061.000000.SAC
+-----------------------------------
+
+     delta =       0.01    depmin =     -12345    depmax =     -12345     scale =  503735424    odelta =     -12345
+         b =     0.0004         e =    59.9904         o =     -12345         a =     -12345       fmt =     -12345
+        t0 =     -12345        t1 =     -12345        t2 =     -12345        t3 =     -12345        t4 =     -12345
+        t5 =     -12345        t6 =     -12345        t7 =     -12345        t8 =     -12345        t9 =     -12345
+         f =     -12345     resp0 =     -12345     resp1 =     -12345     resp2 =     -12345     resp3 =     -12345
+     resp4 =     -12345     resp5 =     -12345     resp6 =     -12345     resp7 =     -12345     resp8 =     -12345
+     resp9 =     -12345      stla =    34.2818      stlo =   -81.2597      stel =        103      stdp =          0
+      evla =     -12345      evlo =     -12345      evel =     -12345      evdp =     -12345       mag =     -12345
+     user0 =     -12345     user1 =     -12345     user2 =     -12345     user3 =     -12345     user4 =     -12345
+     user5 =     -12345     user6 =     -12345     user7 =     -12345     user8 =     -12345     user9 =     -12345
+      dist =     -12345        az =     -12345       baz =     -12345     gcarc =     -12345        sb =     -12345
+    sdelta =     -12345    depmen =     -12345     cmpaz =          0    cmpinc =          0  xminimum =     -12345
+  xmaximum =     -12345  yminimum =     -12345  ymaximum =     -12345   unused6 =     -12345   unused7 =     -12345
+   unused8 =     -12345   unused9 =     -12345  unused10 =     -12345  unused11 =     -12345  unused12 =     -12345
+    nzyear =       2021    nzjday =         61    nzhour =          0     nzmin =          0     nzsec =          0
+    nzmsec =          8     nvhdr =          6     norid =     -12345     nevid =     -12345      npts =       6000
+    nsnpts =     -12345     nwfid =     -12345    nxsize =     -12345    nysize =     -12345  unused15 =     -12345
+    iftype =          1      idep =     -12345    iztype =     -12345  unused16 =     -12345     iinst =     -12345
+    istreg =     -12345    ievreg =     -12345    ievtyp =     -12345     iqual =     -12345    isynth =     -12345
+   imagtyp =     -12345   imagsrc =     -12345  unused19 =     -12345  unused20 =     -12345  unused21 =     -12345
+  unused22 =     -12345  unused23 =     -12345  unused24 =     -12345  unused25 =     -12345  unused26 =     -12345
+     leven =          1    lpspol =     -12345    lovrok =     -12345    lcalda =     -12345  unused27 =     -12345
+     kstnm =   JSC          kevnm =                -12345                 khole =   00
+        ko =   -12345       ka =  =   -12345         kt0 =   -12345         kt1 =   -12345
+       kt2 =   -12345      kt3 =  =   -12345         kt4 =   -12345         kt5 =   -12345
+       kt6 =   -12345      kt7 =  =   -12345         kt8 =   -12345         kt9 =   -12345
+        kf =   -12345   kuser0 =  =   -12345      kuser1 =   -12345      kuser2 =   -12345
+    kcmpnm =   HHZ      knetwk =  =   CO          kdatrd =   -12345       kinst =   Velocity</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Print the a and kstnm headers for a SAC file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; saclh -h b,kstnm CO.JSC.00.HHZ.M.2021.061.000000.SAC
+CO.JSC.00.HHZ.M.2021.061.000000.SAC:         b =     0.0004     kstnm =   JSC</code></pre>
 </div>
 </div>
 </div>
@@ -590,7 +566,7 @@ Finished: 2021-07-15T13:07:49.613Z</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version edu.sc.seis seisFile 2.0.2 2021-07-15T13 55 34Z (2083 a60f217)<br>
-Last updated 2021-07-15 13:28:30 UTC
+Last updated 2021-07-15 13:51:44 UTC
 </div>
 </div>
 </body>

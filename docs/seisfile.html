@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Example Clients for SeisFile</title>
+<title>seisfile(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,63 +436,85 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="manpage">
 <div id="header">
-<h1>Example Clients for SeisFile</h1>
-<div class="details">
-<span id="revnumber">version 2.0.1</span>
+<h1>seisfile(1) Manual Page</h1>
+<h2 id="_name">Name</h2>
+<div class="sectionbody">
+<p>seisfile - seisfile client example codes</p>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_synopsis">Synopsis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>SeisFile is a library, but includes as a separate jar several clients
-as examples, but are also useful in their own. They are:</p>
+<p><strong>seisfile</strong> [COMMAND]</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_example_clients">Example Clients</h2>
+<h2 id="_description">Description</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="datalinkclient.html">datalinkclient</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/DataLinkClient.java">Source</a> stream miniseed over datalink.</p>
-</li>
-<li>
-<p><a href="earthwormExportServer.html">earthwormExportServer</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormExportServer.java">Source</a> export fake TraceBuf2 packets over an earthworm export socket.</p>
-</li>
-<li>
-<p><a href="earthwormImportClient.html">earthwormImportClient</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java">Source</a> import TraceBuf2 packets over an earthworm export socket.</p>
-</li>
-<li>
-<p><a href="fdsndataselect.html">fdsndataselect</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java">Source</a> query a remote FDSN DataSelect web service</p>
-</li>
-<li>
-<p><a href="fdsnevent.html">fdsnevent</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java">Source</a> query a remote FDSN Event web service</p>
-</li>
-<li>
-<p><a href="fdsnstation.html">fdsnstation</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java">Source</a> query a remote FDSN Station web service</p>
-</li>
-<li>
-<p><a href="saclh.html">saclh</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java">Source</a> list miniseed record headers</p>
-</li>
-<li>
-<p><a href="mseedlh.html">mseedlh</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java">Source</a> print some or all header values from a SAC file</p>
-</li>
-<li>
-<p><a href="seedlinkclient.html">seedlinkclient</a> - <a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">Source</a> stream miniseed over seedlink.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>seisfile client example codes</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_commands">Commands</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>fdsndataselect</strong></dt>
+<dd>
+<p>Example client to query a remote FDSN DataSelect web service via GET or POST</p>
+</dd>
+<dt class="hdlist1"><strong>fdsnevent</strong></dt>
+<dd>
+<p>example client to query a remote FDSN Event web service</p>
+</dd>
+<dt class="hdlist1"><strong>fdsnstation</strong></dt>
+<dd>
+<p>example client to query a remote FDSN Station web service</p>
+</dd>
+<dt class="hdlist1"><strong>irisvirtnet</strong></dt>
+<dd>
+<p>example client to query the IRIS Virtual Network web service</p>
+</dd>
+<dt class="hdlist1"><strong>mseedlh</strong></dt>
+<dd>
+<p>list miniseed record headers</p>
+</dd>
+<dt class="hdlist1"><strong>saclh</strong></dt>
+<dd>
+<p>print some or all header values from a SAC file</p>
+</dd>
+<dt class="hdlist1"><strong>earthwormExportServer</strong></dt>
+<dd>
+<p>Example client to export fake TraceBuf2 packets over an earthworm export socket.</p>
+</dd>
+<dt class="hdlist1"><strong>earthwormImportClient</strong></dt>
+<dd>
+<p>Example client to import TraceBuf2 packets over an earthworm export socket.</p>
+</dd>
+<dt class="hdlist1"><strong>datalinkclient</strong></dt>
+<dd>
+<p>Example client to stream miniseed over datalink.</p>
+</dd>
+<dt class="hdlist1"><strong>seedlinkclient</strong></dt>
+<dd>
+<p>Example client to stream miniseed over seedlink.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2.0.1<br>
-Last updated 2021-03-11 15:18:47 -0500
+Version edu.sc.seis seisFile 2.0.2 2021-07-15T13 55 34Z (2083 a60f217)<br>
+Last updated 2021-07-15 13:53:00 UTC
 </div>
 </div>
 </body>
