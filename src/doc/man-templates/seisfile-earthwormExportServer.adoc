@@ -1,0 +1,24 @@
+:includedir: build/picocli/man
+:exampledir: src/doc/man-templates/example_output
+
+//include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-full-manpage]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-header]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-name]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-synopsis]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-description]
+
+link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormExportServer.java[View source code here.]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-options]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-arguments]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-commands]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-exit-status]
+
+include::{includedir}/earthwormExportServer.adoc[tag=picocli-generated-man-section-footer]

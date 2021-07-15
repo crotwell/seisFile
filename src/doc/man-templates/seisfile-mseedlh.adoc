@@ -1,0 +1,35 @@
+:includedir: build/picocli/man
+:exampledir: src/doc/man-templates/example_output
+
+//include::{includedir}/mseedlh.adoc[tag=picocli-generated-full-manpage]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-header]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-name]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-synopsis]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-description]
+
+link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[View source code here.]
+
+link:http://www.fdsn.org/pdf/SEEDManual_V2.4.pdf[SEED manual]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-options]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-arguments]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-commands]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-exit-status]
+
+include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-footer]
+
+== Examples
+
+Print headers and dump the timeseries data for a miniseed file.
+
+[source,bash]
+....
+include::{exampledir}/mseedlh_ex1_out[]
+....

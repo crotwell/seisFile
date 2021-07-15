@@ -1,0 +1,40 @@
+:includedir: build/picocli/man
+:exampledir: src/doc/man-templates/example_output
+
+//include::{includedir}/fdsnstation.adoc[tag=picocli-generated-full-manpage]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-header]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-name]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-synopsis]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-description]
+
+Times are ISO8601 formatted strings, like yyyy-MM-ddTHH:mm:ss, and may be shortened
+to include only the significant fields. The remaining fields will be filled in
+as either zero or max value depending on the use.
+For example 2006-11-19 or 2006-11-19T06:34:21.
+The special strings now and yesterday may also be used.
+
+link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java[View source code here.]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-options]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-arguments]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-commands]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-exit-status]
+
+include::{includedir}/fdsnstation.adoc[tag=picocli-generated-man-section-footer]
+
+== Examples
+
+
+Ask for station from CO or N4 in a box around South Carolina that are active in 2019.
+
+[source,bash]
+....
+include::{exampledir}/fdsnstation_ex1_out[]
+....
