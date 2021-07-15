@@ -21,7 +21,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.0.2-SNAPSHOT"
+version = "2.0.2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -173,7 +173,7 @@ val binDistFiles: CopySpec = copySpec {
     from("build/scripts") {
         into("bin")
         include("*")
-        exclude("seisfiledefaultapp")
+        exclude("seisfiledefaultapp*")
     }
 }
 
