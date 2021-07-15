@@ -3,7 +3,7 @@
  [![javadoc](https://javadoc.io/badge2/edu.sc.seis/seisFile/javadoc.svg)](https://javadoc.io/doc/edu.sc.seis/seisFile)
 
 SeisFile is a library for reading and writing seismic file formats in java.
-See the [examples](https://crotwell.github.io/seisFile/seisfile.html) for
+See the [examples](https://crotwell.github.io/seisFile/seisFileIndex.html) for
 example clients and more information. Copies of the relavent specifications, and
 some previous versions are [archived here](https://crotwell.github.io/seisFile/specs)
 for easy reference.
