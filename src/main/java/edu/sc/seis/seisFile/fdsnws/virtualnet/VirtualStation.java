@@ -12,7 +12,7 @@ public class VirtualStation {
 
     public VirtualStation(final XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StaxUtil.skipToStartElement(reader);
-        StartElement startE = StaxUtil.expectStartElement(VirtualNetTagNames.VIRTUAL_NETWORK, reader);
+        StartElement startE = StaxUtil.expectStartElement(VirtualNetTagNames.VIRTUAL_STATION, reader);
         code = StaxUtil.pullAttribute(startE, VirtualNetTagNames.CODE);
         while (reader.hasNext()) {
             XMLEvent e = reader.peek();

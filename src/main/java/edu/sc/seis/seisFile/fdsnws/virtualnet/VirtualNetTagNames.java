@@ -28,4 +28,7 @@ public class VirtualNetTagNames {
     public static final String START_YEAR = "startYear";
     public static final String END_YEAR = "endYear";
     public static final String NICKNAME = "nick_name";
+    public static final String DATA_CENTER = "dataCenter";
+    public static final String NAME = "name";
+    public static final String URL = "url";
 }
