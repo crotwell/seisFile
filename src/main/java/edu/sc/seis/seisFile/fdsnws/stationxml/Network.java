@@ -100,6 +100,10 @@ public class Network extends BaseNodeType {
 
     @Override
     public String toString() {
+        return asIdString();
+    }
+    
+    public String asIdString() {
         String out = getCode();
         if (isTemporary()) {
             out += getStartYear();

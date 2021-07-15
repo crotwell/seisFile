@@ -10,6 +10,9 @@ public class TimeUtils {
     public static final String DASH = "-";
     public static final ZoneId TZ_UTC = ZoneId.of("UTC");
     public static final String ZULU = "Z";
+    public static DateTimeFormatter getCompactDateTimeFormatter() {
+        return DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss").withZone(TZ_UTC);
+    }
     public static DateTimeFormatter getDateTimeFormatter() {
         return DateTimeFormatter.ISO_INSTANT;
     }
@@ -25,6 +28,9 @@ public class TimeUtils {
     }
     public static String toISOString(Instant time) {
         return getDateTimeFormatter().format(time);
+    }
+    public static String toCompactISOString(Instant time) {
+        return getCompactDateTimeFormatter().format(time);
     }
     public static final Duration ONE_MICROSECOND = Duration.ofNanos(1000);
     public static final Duration ONE_MILLISECOND = Duration.ofMillis(1);

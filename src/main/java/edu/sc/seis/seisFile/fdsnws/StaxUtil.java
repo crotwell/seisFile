@@ -35,7 +35,7 @@ public class StaxUtil {
             if (e.isCharacters()) {
                 outText += e.asCharacters().getData();
             } else if (e.isEndElement()) {
-                return outText;
+                return outText.trim();
             }
         }
         throw new StationXMLException("Ran out of XMLEvents before end of text element");

@@ -8,6 +8,7 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Identifier {
 
+    
 	public Identifier(String value, String type) {
 		this.value = value;
 		this.type = type;
@@ -24,7 +25,7 @@ public class Identifier {
     }
 
     void parseAttributes(StartElement startE) throws StationXMLException {
-        String typeStr = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.TYPE);
+        String typeStr = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.ATTR_TYPE);
         if (typeStr != null) {
             type = typeStr;
         }

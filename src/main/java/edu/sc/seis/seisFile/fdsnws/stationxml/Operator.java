@@ -41,8 +41,13 @@ public class Operator {
         }
     }
     
+    @Deprecated
     public List<String> getAgencyList() {
         return agencyList;
+    }
+    
+    public String getAgency() {
+        return agencyList.get(0);
     }
     
     public List<Person> getContactList() {
@@ -51,6 +56,21 @@ public class Operator {
     
     public String getWebsite() {
         return website;
+    }
+
+
+
+    public void setAgency(String agency) {
+        this.agencyList.clear();
+        this.agencyList.add(agency);
+    }
+
+    public void appendContact(Person contact) {
+        this.contactList.add(contact);
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
 

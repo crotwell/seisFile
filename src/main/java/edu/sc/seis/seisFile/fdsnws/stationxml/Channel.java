@@ -14,9 +14,9 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 public class Channel extends BaseNodeType {
 
     /** for hibernate, etc */
-    Channel() {}
+    public Channel() {}
     
-    Channel(Station station) {
+    public Channel(Station station) {
         this.station = station;
         this.stationCode = station.getStationCode();
         setLatitude(station.getLatitude());
@@ -117,15 +117,15 @@ public class Channel extends BaseNodeType {
         return calibrationUnits;
     }
 
-    public Sensor getSensor() {
+    public Equipment getSensor() {
         return sensor;
     }
 
-    public PreAmplifier getPreAmplifier() {
+    public Equipment getPreAmplifier() {
         return preAmplifier;
     }
 
-    public DataLogger getDataLogger() {
+    public Equipment getDataLogger() {
         return dataLogger;
     }
 
@@ -215,6 +215,7 @@ public class Channel extends BaseNodeType {
         return typeList;
     }
 
+    @Deprecated
     public String getStorageFormat() {
         return storageFormat;
     }
@@ -273,6 +274,10 @@ public class Channel extends BaseNodeType {
         this.sampleRate = sampleRate;
     }
 
+
+    public void setClockDrift(float clockDrift) {
+        setClockDrift(new FloatType(clockDrift, "s/s"));
+    }
     
     public void setClockDrift(FloatType clockDrift) {
         this.clockDrift = clockDrift;
@@ -289,21 +294,25 @@ public class Channel extends BaseNodeType {
     }
 
     
-    public void setSensor(Sensor sensor) {
+    public void setSensor(Equipment sensor) {
         this.sensor = sensor;
     }
 
     
-    public void setPreAmplifier(PreAmplifier preAmplifier) {
+    public void setPreAmplifier(Equipment preAmplifier) {
         this.preAmplifier = preAmplifier;
     }
 
     
-    public void setDataLogger(DataLogger dataLogger) {
+    public void setDataLogger(Equipment dataLogger) {
         this.dataLogger = dataLogger;
     }
 
     
+    public void appendEquipment(Equipment equip) {
+        equipmentList.add(equip);
+    }
+
     public void setResponse(Response response) {
         this.response = response;
     }
@@ -353,14 +362,39 @@ public class Channel extends BaseNodeType {
         this.dip = dip;
     }
 
+
+    public MeterFloatType getWaterlevel() {
+        return waterlevel;
+    }
+
+    public void setWaterlevel(MeterFloatType waterlevel) {
+        this.waterlevel = waterlevel;
+    }
+    
+    /** set waterlevel in METERS. */
+    public void setWaterlevel(float level) {
+        setWaterlevel(new MeterFloatType(level));
+    }
     
     public void setTypeList(List<String> typeList) {
         this.typeList = typeList;
     }
 
-    
+    @Deprecated
     public void setStorageFormat(String storageFormat) {
         this.storageFormat = storageFormat;
+    }
+
+    public List<ExternalReference> getExternalReferenceList() {
+        return externalReferenceList;
+    }
+
+    public void setExternalReferenceList(List<ExternalReference> externalReferenceList) {
+        this.externalReferenceList = externalReferenceList;
+    }
+
+    public void appendExternalReference(ExternalReference extRef) {
+        this.externalReferenceList.add(extRef);        
     }
 
     private Station station;
@@ -375,11 +409,11 @@ public class Channel extends BaseNodeType {
 
     private Unit calibrationUnits;
 
-    private Sensor sensor;
+    private Equipment sensor;
 
-    private PreAmplifier preAmplifier;
+    private Equipment preAmplifier;
 
-    private DataLogger dataLogger;
+    private Equipment dataLogger;
 
     private List<Equipment> equipmentList = new ArrayList<Equipment>();
 
@@ -388,12 +422,16 @@ public class Channel extends BaseNodeType {
     private String locCode, stationCode;
 
     private DegreeFloatType latitude, longitude, azimuth, dip;
+
+    private MeterFloatType waterlevel;
     
     private FloatType elevation, depth;
 
     List<String> typeList = new ArrayList<String>();
 
     String storageFormat;
+    
+    List<ExternalReference> externalReferenceList = new ArrayList<ExternalReference>();
     
     public static String fixLocCode(String locCode) {
         String out = locCode;

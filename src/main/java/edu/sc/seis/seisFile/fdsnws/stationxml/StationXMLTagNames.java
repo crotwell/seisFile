@@ -36,6 +36,8 @@ public final class StationXMLTagNames {
     public static final String DESCRIPTION = "Description";
     public static final String EPOCH = "Epoch";
 
+    public static final String STARTTIME = "starttime";
+    public static final String ENDTIME = "endtime";
 
     public static final String TOWN = "Town";
     public static final String COUNTY = "County";
@@ -187,5 +189,10 @@ public final class StationXMLTagNames {
     public static final String COEFFICIENT_DIGITAL = "DIGITAL";
     public static final String STORAGEFORMAT = "StorageFormat";
     public static final String IDENTIFIER = "Identifier";
+    public static final String WATERLEVEL = "WaterLevel";
+    public static final String SOURCEID = "sourceID";
+    public static final String SUBJECT = "subject";
+    public static final String ATTR_TYPE = "type";
+    public static final String URI = "URI";
 
     }

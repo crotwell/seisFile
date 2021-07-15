@@ -18,7 +18,7 @@ public class Station extends BaseNodeType {
         this.network = network;
         this.code = code;
     }
-    
+
     public Station(XMLEventReader reader, Network network) throws XMLStreamException, StationXMLException {
         this.network = network;
         StartElement startE = StaxUtil.expectStartElement(StationXMLTagNames.STATION, reader);
@@ -37,6 +37,8 @@ public class Station extends BaseNodeType {
                     elevation = new MeterFloatType(reader, StationXMLTagNames.ELEVATION);
                 } else if (elName.equals(StationXMLTagNames.SITE)) {
                     site = new Site(reader);
+                } else if (elName.equals(StationXMLTagNames.WATERLEVEL)) {
+                    waterlevel = new MeterFloatType(reader, StationXMLTagNames.WATERLEVEL);
                 } else if (elName.equals(StationXMLTagNames.VAULT)) {
                     vault = StaxUtil.pullText(reader, StationXMLTagNames.VAULT);
                 } else if (elName.equals(StationXMLTagNames.GEOLOGY)) {
@@ -54,7 +56,7 @@ public class Station extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.SELECTEDNUMCHANNELS)) {
                     selectedNumChannels = StaxUtil.pullInt(reader, StationXMLTagNames.SELECTEDNUMCHANNELS);
                 } else if (elName.equals(StationXMLTagNames.EXTERNALREFERENCE)) {
-                    externalReferenceList.add(StaxUtil.pullText(reader, StationXMLTagNames.EXTERNALREFERENCE));
+                    externalReferenceList.add(new ExternalReference(reader, StationXMLTagNames.EXTERNALREFERENCE));
                 } else if (elName.equals(StationXMLTagNames.CHANNEL)) {
                     channelList.add(new Channel(reader, this));
                 } else {
@@ -153,7 +155,7 @@ public class Station extends BaseNodeType {
         return operatorList;
     }
 
-    public List<String> getExternalReferenceList() {
+    public List<ExternalReference> getExternalReferenceList() {
         return externalReferenceList;
     }
 
@@ -236,17 +238,51 @@ public class Station extends BaseNodeType {
     }
 
 
+    public void appendEquipment(Equipment e) {
+        equipmentList.add(e);
+    }
+
     public void setOperatorList(List<Operator> operatorList) {
         this.operatorList = operatorList;
     }
     
+    @Deprecated
     public void addOperator(Operator operator) {
         this.operatorList.add(operator);
     }
 
     
-    public void setExternalReferenceList(List<String> externalReferenceList) {
+    public void appendOperator(Operator operator) {
+        this.operatorList.add(operator);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public MeterFloatType getWaterlevel() {
+        return waterlevel;
+    }
+
+    public void setWaterlevel(MeterFloatType waterlevel) {
+        this.waterlevel = waterlevel;
+    }
+    
+    /** set waterlevel in METERS. */
+    public void setWaterlevel(float level) {
+        setWaterlevel(new MeterFloatType(level));
+    }
+
+    public void setExternalReferenceList(List<ExternalReference> externalReferenceList) {
         this.externalReferenceList = externalReferenceList;
+    }
+
+    public void appendExternalReference(ExternalReference extRef) {
+        this.externalReferenceList.add(extRef);        
     }
 
     public void associateInDb(Station sta) {
@@ -265,6 +301,8 @@ public class Station extends BaseNodeType {
 
     String vault;
 
+    MeterFloatType waterlevel;
+
     String geology;
 
     Site site;
@@ -281,5 +319,5 @@ public class Station extends BaseNodeType {
     
     List<Operator> operatorList = new ArrayList<Operator>();
 
-    List<String> externalReferenceList = new ArrayList<String>();
+    List<ExternalReference> externalReferenceList = new ArrayList<ExternalReference>();
 }

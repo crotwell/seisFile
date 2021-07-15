@@ -12,7 +12,7 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Response {
     
-    Response() {}
+    public Response() {}
     
     public Response(List<ResponseStage> responseStageList,
                     InstrumentSensitivity instrumentSensitivity,

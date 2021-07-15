@@ -12,7 +12,7 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 
 public class Person {
-    
+
 
     public Person(XMLEventReader reader, String tagName) throws XMLStreamException, StationXMLException {
         StartElement startE = StaxUtil.expectStartElement(tagName, reader);
@@ -39,22 +39,43 @@ public class Person {
             }
         }
     }
-    
-    
+
+
+    public Person() {
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     public String getName() {
         return name;
     }
-    
+
     public List<String> getAgencyList() {
         return agencyList;
     }
-    
+
+    public void appendAgency(String agency) {
+        agencyList.add(agency);
+    }
+
     public List<String> getEmailList() {
         return emailList;
     }
-    
+
+    public void appendEmail(String email) {
+        emailList.add(email);
+    }
+
     public List<String> getPhoneList() {
         return phoneList;
+    }
+
+    public void appendPhone(String phone) {
+        phoneList.add(phone);
     }
 
     String name; // schema allows unbounded names, seems weird.

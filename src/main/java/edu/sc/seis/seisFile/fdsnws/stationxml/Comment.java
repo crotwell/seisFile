@@ -56,6 +56,27 @@ public class Comment {
 
     void parseAttributes(StartElement startE) throws StationXMLException {
         id = StaxUtil.pullIntAttribute(startE, StationXMLTagNames.ID);
+        subject = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.SUBJECT);
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setBeginEffectiveTime(String beginEffectiveTime) {
+        this.beginEffectiveTime = beginEffectiveTime;
+    }
+
+    public void setEndEffectiveTime(String endEffectiveTime) {
+        this.endEffectiveTime = endEffectiveTime;
     }
 
     public String getValue() {
@@ -78,11 +99,17 @@ public class Comment {
         return authorList;
     }
     
+    public void appendAuthor(Person p) {
+        authorList.add(p);
+    }
+
     String value;
 
     String beginEffectiveTime, endEffectiveTime;
 
     int id;
+    
+    String subject;
 
     List<Person> authorList = new ArrayList<Person>();
 

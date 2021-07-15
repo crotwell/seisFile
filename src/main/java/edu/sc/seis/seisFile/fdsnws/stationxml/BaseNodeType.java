@@ -22,6 +22,7 @@ public abstract class BaseNodeType {
         historicalCode = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.HISTORICALCODE);
         alternateCode = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.ALTERNATECODE);
         restrictedStatus = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.RESTRICTEDSTATUS);
+        sourceId = StaxUtil.pullAttributeIfExists(startE, StationXMLTagNames.SOURCEID);
     }
 
     boolean parseSubElement(String elName, final XMLEventReader reader) throws StationXMLException, XMLStreamException {
@@ -134,6 +135,10 @@ public abstract class BaseNodeType {
         commentList.add(comment);
     }
 
+    public void addIdentifier(Identifier ident) {
+        identifierList.add(ident);
+    }
+
     
     public void setDataAvailability(DataAvailability dataAvailability) {
         this.dataAvailability = dataAvailability;
@@ -191,6 +196,16 @@ public abstract class BaseNodeType {
 
     DataAvailability dataAvailability;
     
+    String sourceId;
+    
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
     public int getDbid() {
         return dbid;
     }

@@ -13,6 +13,10 @@ import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Equipment {
 
+    public Equipment() {
+        
+    }
+    
     public Equipment(XMLEventReader reader) throws XMLStreamException, StationXMLException {
         this(reader, StationXMLTagNames.EQUIPMENT);
     }
@@ -111,6 +115,54 @@ public class Equipment {
         return calibrationDate;
     }
     
+    public String getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public void setInstallationDate(String installationDate) {
+        this.installationDate = installationDate;
+    }
+
+    public void setRemovalDate(String removalDate) {
+        this.removalDate = removalDate;
+    }
+
+    public void setCalibrationDate(List<String> calibrationDate) {
+        this.calibrationDate = calibrationDate;
+    }
+
+    public void appendCalibrationDate(String o) {
+        calibrationDate.add(o);        
+    }
+
     String resourceId;
     
     protected String type, description, manufacturer, vendor, model, serialNumber, installationDate, removalDate;
