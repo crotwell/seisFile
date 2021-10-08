@@ -57,9 +57,11 @@ public class SacListHeader extends AbstractClient {
                 SacIncrementalloader loader = new SacIncrementalloader(sacFile);
                 SacHeader header = loader.getHeader();
                 String filename = sacFile.getName();
+                boolean byteOrder = header.getByteOrder();
+                String byteOrderStr = byteOrder ? "big endian" : "little endian";
                 if (headerList.size() == 0) {
                     out.println();
-                    out.println(filename);
+                    out.println(filename+" ("+byteOrderStr+")");
                     String dashLine = "";
                     for (int j = 0; j < filename.length(); j++) {
                         dashLine += "-";
