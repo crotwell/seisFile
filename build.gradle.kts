@@ -21,7 +21,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.0.3-SNAPSHOT"
+version = "2.0.3"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -424,4 +424,4 @@ tasks.get("explodeDist").dependsOn(tasks.get("docsDir"))
 tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
 tasks.get("explodeDist").dependsOn(tasks.get("asciidoctor"))
 tasks.get("explodeDist").dependsOn(tasks.get("asciidoctorPdf"))
-tasks.get("assemble").dependsOn(tasks.get("tarDist"))
+tasks.get("assemble").dependsOn(tasks.get("checksumDist"))
