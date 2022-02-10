@@ -21,7 +21,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.0.3"
+version = "2.0.4"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -335,7 +335,7 @@ for (key in scriptNames.keys) {
   val scriptTask = tasks.register<CreateStartScripts>(key) {
     dependsOn(tasks.named("clientJar"))
     outputDir = file("build/scripts")
-    mainClassName = scriptNames[key]
+      mainClass.set(scriptNames[key])
     applicationName = key
     classpath = sourceSets["client"].runtimeClasspath +
       project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files +
@@ -365,7 +365,7 @@ for (key in scriptNames.keys) {
     description = "generate picocli man pages for "+key
     group = "Documentation"
     classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
-    main = "picocli.codegen.docgen.manpage.ManPageGenerator"
+    mainClass.set("picocli.codegen.docgen.manpage.ManPageGenerator")
     val outDir =  File(project.buildDir,  "picocli/man")
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
@@ -382,7 +382,7 @@ for (key in scriptNames.keys) {
   val bashautoTask = tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
     classpath = sourceSets.getByName("client").runtimeClasspath
-    main = "picocli.AutoComplete"
+    mainClass.set("picocli.AutoComplete")
     val outDir =  File(project.buildDir,  "picocli/bash_completion")
     val outFile = File(outDir, key+"_completion")
     args = listOf(scriptNames[key], "-f", "-o", outFile.path)
