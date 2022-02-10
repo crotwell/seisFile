@@ -265,29 +265,6 @@ public class Utility {
         return out;
     }
 
-    public static void main(String[] args) {
-        int a = 256;
-        byte a1 = (byte)((a & 0xff000000) >> 24);
-        byte a2 = (byte)((a & 0x00ff0000) >> 16);
-        byte a3 = (byte)((a & 0x0000ff00) >> 8);
-        byte a4 = (byte)((a & 0x000000ff));
-        System.out.println("first byte is " + a1);
-        System.out.println("2 byte is " + a2);
-        System.out.println("3 byte is " + a3);
-        System.out.println("4  byte is " + a4);
-        byte[] source = new byte[5];
-        for(int i = 0; i < 5; i++)
-            source[i] = (byte)10;
-        byte[] output = Utility.pad(source, 5, (byte)32);
-        // for(int j = 0; j< output.length; j++)
-        // {
-        // System.out.println("byte"+j+" " + output[j]);
-        // }
-        for(int k = output.length - 1; k > -1; k--) {
-            System.out.println("byte" + k + " " + output[k]);
-        }
-    }
-
     public static void cleanDuplicatesOverlaps(List<DataRecord> drFromFileList) {
         Collections.sort(drFromFileList, new DataRecordBeginComparator());
         DataRecord prev = null;

@@ -330,7 +330,6 @@ public class TraceBuf2 {
                 }
                 double splitStartTime = startTime+(curSample )/sampleRate;
                 double splitEndTime = startTime+(curSample+splitPoints -1)/sampleRate;
-                System.out.println("start: "+splitStartTime%1000+"  end:"+splitEndTime%1000);
                 TraceBuf2 first = new TraceBuf2( pin,
                                                  splitPoints,
                                                  splitStartTime,

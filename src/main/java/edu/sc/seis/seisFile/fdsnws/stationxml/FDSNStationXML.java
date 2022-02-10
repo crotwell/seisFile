@@ -250,7 +250,6 @@ public class FDSNStationXML {
             r.nextEvent(); // eat this one
             e = r.peek(); // peek at the next
         }
-        System.out.println("StaMessage");
         FDSNStationXML fdsnStationXML = new FDSNStationXML(r);
         return fdsnStationXML;
     }

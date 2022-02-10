@@ -96,7 +96,7 @@ public class Quakeml {
         if (response != null) {
             try {
                 response.close();
-            } catch(IOException e) {
+            } catch(Exception e) {
                 // oh well
             }
         }

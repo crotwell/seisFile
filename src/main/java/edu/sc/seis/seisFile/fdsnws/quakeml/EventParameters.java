@@ -63,7 +63,6 @@ public class EventParameters {
             } else if (elName.equals(QuakeMLTagNames.comment)) {
                 commentList.add(new Comment(reader));
             } else {
-                System.out.println("In EventParameters Skipping: "+elName);
                 StaxUtil.skipToMatchingEnd(reader);
             }
         }
