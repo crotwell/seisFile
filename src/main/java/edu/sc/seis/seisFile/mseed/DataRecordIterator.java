@@ -8,7 +8,7 @@ import java.io.IOException;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
 
 
-public class DataRecordIterator {
+public class DataRecordIterator implements AutoCloseable {
 
     public DataRecordIterator(DataInput in) {
         this.in = in;
@@ -55,11 +55,6 @@ public class DataRecordIterator {
             }
             in = null;
         }
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        close();
     }
 
     DataRecord nextDr;

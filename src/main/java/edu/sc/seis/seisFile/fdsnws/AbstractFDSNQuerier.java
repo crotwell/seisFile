@@ -43,7 +43,7 @@ import org.xml.sax.SAXException;
 import edu.sc.seis.seisFile.BuildVersion;
 
 
-public abstract class AbstractFDSNQuerier {
+public abstract class AbstractFDSNQuerier implements AutoCloseable {
 
     public AbstractFDSNQuerier() {}
 
@@ -348,10 +348,6 @@ public abstract class AbstractFDSNQuerier {
 
     public void setValidate(boolean validate) {
         this.validate = validate;
-    }
-
-    public void finalize() {
-        close();
     }
 
     public void close() {
