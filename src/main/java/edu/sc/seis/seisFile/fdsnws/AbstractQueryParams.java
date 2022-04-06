@@ -18,23 +18,23 @@ public abstract class AbstractQueryParams {
         this.host = host;
     }
 
-    protected void setParam(String key, String value) {
+    public void setParam(String key, String value) {
         params.put(key, value);
     }
 
-    protected void setParam(String key, int value) {
+    public void setParam(String key, int value) {
         params.put(key, "" + value);
     }
 
-    protected void setParam(String key, float value) {
+    public void setParam(String key, float value) {
         params.put(key, "" + value);
     }
 
-    protected void setParam(String key, boolean value) {
+    public void setParam(String key, boolean value) {
         params.put(key, value ? "true" : "false");
     }
 
-    protected void appendToParam(String key, String value) {
+    public void appendToParam(String key, String value) {
         if (params.containsKey(key)) {
             if (params.get(key).equals(value) 
                     || params.get(key).startsWith(value+",") 
@@ -50,11 +50,11 @@ public abstract class AbstractQueryParams {
         params.put(key, value);
     }
 
-    protected void setParam(String key, Instant value) {
+    public void setParam(String key, Instant value) {
         setParam(key, ISOTimeParser.formatWithTimezone(value));
     }
 
-    protected void clearParam(String key) {
+    public void clearParam(String key) {
         params.remove(key);
     }
 
@@ -163,8 +163,8 @@ public abstract class AbstractQueryParams {
     public String getFdsnQueryStyle() {
         return fdsnQueryStyle;
     }
-    
-    void setFdsnQueryStyle(String queryStyle) {
+
+    public void setFdsnQueryStyle(String queryStyle) {
         fdsnQueryStyle = queryStyle;
     }
 
