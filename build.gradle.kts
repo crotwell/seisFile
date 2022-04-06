@@ -16,13 +16,15 @@ plugins {
     id("com.github.ben-manes.versions") version "0.42.0"
 }
 
+tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
+
 application {
   mainClass.set("edu.sc.seis.seisFile.client.SeisFile")
   applicationName = "seisfiledefaultapp"
 }
 
 group = "edu.sc.seis"
-version = "2.0.4"
+version = "2.0.5-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
