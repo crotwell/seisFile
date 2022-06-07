@@ -22,7 +22,7 @@ Older versions:
 
 ### Stationxml
 
-Current: [fdsn-station-1.1.xsd](stationxml/fdsn-station-1.1.xsd)
+Current: [fdsn-station-1.2.xsd](stationxml/fdsn-station-1.2.xsd)
 
 Older versions:
 
