@@ -55,22 +55,10 @@ public class MSeed3Convert {
         ms3Header.timeseriesEncodingFormat = b1000.getEncodingFormat();
         ms3Header.publicationVersion = MSeed3Record.UNKNOWN_DATA_VERSION;
         ms3Header.dataByteLength = dr.getData().length;
-        String chanCode = dr.getHeader().getChannelIdentifier().trim();
-        String band, source, subsource;
-        if (chanCode.length() == 3) {
-            band = chanCode.substring(0,1);
-            source = chanCode.substring(1,2);
-            subsource = chanCode.substring(2,3);
-        } else {
-            String[] bss = chanCode.split(FDSNSourceId.SEP);
-            band = bss[0];
-            source = bss[1];
-            subsource = bss[2];
-        }
-        ms3Header.setSourceId(new FDSNSourceId(dr.getHeader().getNetworkCode().trim(),
-                dr.getHeader().getStationIdentifier().trim(),
-                dr.getHeader().getLocationIdentifier().trim(),
-                band, source, subsource));
+        ms3Header.setSourceId(FDSNSourceId.fromNSLC(dr.getHeader().getNetworkCode(),
+                dr.getHeader().getStationIdentifier(),
+                dr.getHeader().getLocationIdentifier(),
+                dr.getHeader().getChannelIdentifier()));
 
         ms3Header.numSamples = ms2H.getNumSamples();
         ms3Header.recordCRC = 0;

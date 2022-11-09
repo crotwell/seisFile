@@ -40,6 +40,24 @@ public class FDSNSourceId {
         }
     }
 
+    public static FDSNSourceId fromNSLC(String networkCode, String stationCode, String locationCode, String channelCode ) {
+        String band, source, subsource;
+        if (channelCode.length() == 3) {
+            band = channelCode.substring(0,1);
+            source = channelCode.substring(1,2);
+            subsource = channelCode.substring(2,3);
+        } else {
+            String[] bss = channelCode.split(FDSNSourceId.SEP);
+            band = bss[0];
+            source = bss[1];
+            subsource = bss[2];
+        }
+        return new FDSNSourceId(networkCode.trim(),
+                stationCode.trim(),
+                locationCode.trim(),
+                band, source, subsource);
+    }
+
     @java.lang.Override
     public java.lang.String toString() {
         return "FDSN:" + networkCode + SEP +
