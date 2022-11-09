@@ -1,16 +1,16 @@
 package edu.sc.seis.seisFile.mseed3;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
 
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 
 public class LeapSecondTests {
@@ -27,7 +27,7 @@ public class LeapSecondTests {
     public static final int S_SEC = 59;
     public static final int S_NANO = 123000000;
     
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         // leap sec applied on 1995 Dec 31
         ZonedDateTime start = ZonedDateTime.of(S_YEAR, Month.DECEMBER.getValue(), 31, 23, 59, 59, 123000000, ZoneId.of("Z"));
@@ -74,49 +74,49 @@ public class LeapSecondTests {
         ms3.setSecond(S_SEC);
         ms3.setNanosecond(S_NANO);
         ZonedDateTime start = ms3.getStartDateTime();
-        assertEquals("year", S_YEAR, start.getYear());
-        assertEquals("day of year", S_DAY_OF_YEAR, start.getDayOfYear());
-        assertEquals("hour", S_HOUR, start.getHour());
-        assertEquals("min", S_MIN, start.getMinute());
-        assertEquals("sec", S_SEC, start.getSecond());
-        assertEquals("nano", S_NANO, start.getNano());
+        assertEquals(S_YEAR, start.getYear());
+        assertEquals(S_DAY_OF_YEAR, start.getDayOfYear());
+        assertEquals(S_HOUR, start.getHour());
+        assertEquals(S_MIN, start.getMinute());
+        assertEquals(S_SEC, start.getSecond());
+        assertEquals(S_NANO, start.getNano());
     }
 
     @Test
     public void testGetLastSampleTime() {
-        assertEquals("before", (totallyBefore.getNumSamples()-1)*totallyBefore.getSamplePeriodAsNanos(), totallyBefore.getStartDateTime().until(totallyBefore.getLastSampleTime(), ChronoUnit.NANOS));
-        assertEquals("startOnLeap", (startOnLeap.getNumSamples()-1)*startOnLeap.getSamplePeriodAsNanos() , startOnLeap.getStartDateTime().until(startOnLeap.getLastSampleTime(), ChronoUnit.NANOS));
+        assertEquals( (totallyBefore.getNumSamples()-1)*totallyBefore.getSamplePeriodAsNanos(), totallyBefore.getStartDateTime().until(totallyBefore.getLastSampleTime(), ChronoUnit.NANOS));
+        assertEquals( (startOnLeap.getNumSamples()-1)*startOnLeap.getSamplePeriodAsNanos() , startOnLeap.getStartDateTime().until(startOnLeap.getLastSampleTime(), ChronoUnit.NANOS));
      // next 3 tests, leap second starts in record time range, so coverage interval will be off by 1 sec
-        assertEquals("crossLeapStart start", 59, crossLeapStart.getLastSampleTime().getSecond());
-        assertEquals("crossLeapStart leaps", 1, crossLeapStart.getLeapSecInRecord());
-        assertEquals("crossLeapStart nanos", 23000000, crossLeapStart.getLastSampleTime().getNano());
-        assertEquals("crossLeapStart", (crossLeapStart.getNumSamples()-1)*crossLeapStart.getSamplePeriodAsNanos() -SEC, crossLeapStart.getStartDateTime().until(crossLeapStart.getLastSampleTime(), ChronoUnit.NANOS));
-        assertEquals("endOnLeap", (endOnLeap.getNumSamples()-1)*endOnLeap.getSamplePeriodAsNanos() -SEC, endOnLeap.getStartDateTime().until(endOnLeap.getLastSampleTime(), ChronoUnit.NANOS));
-        assertEquals("leapInMiddle", (leapInMiddle.getNumSamples()-1)*leapInMiddle.getSamplePeriodAsNanos()  - SEC, leapInMiddle.getStartDateTime().until(leapInMiddle.getLastSampleTime(), ChronoUnit.NANOS));
+        assertEquals( 59, crossLeapStart.getLastSampleTime().getSecond());
+        assertEquals( 1, crossLeapStart.getLeapSecInRecord());
+        assertEquals( 23000000, crossLeapStart.getLastSampleTime().getNano());
+        assertEquals( (crossLeapStart.getNumSamples()-1)*crossLeapStart.getSamplePeriodAsNanos() -SEC, crossLeapStart.getStartDateTime().until(crossLeapStart.getLastSampleTime(), ChronoUnit.NANOS));
+        assertEquals( (endOnLeap.getNumSamples()-1)*endOnLeap.getSamplePeriodAsNanos() -SEC, endOnLeap.getStartDateTime().until(endOnLeap.getLastSampleTime(), ChronoUnit.NANOS));
+        assertEquals( (leapInMiddle.getNumSamples()-1)*leapInMiddle.getSamplePeriodAsNanos()  - SEC, leapInMiddle.getStartDateTime().until(leapInMiddle.getLastSampleTime(), ChronoUnit.NANOS));
     }
 
     @Test
     public void testGetStartTimeString() {
-        assertEquals("before", "1995365T235958.123000000Z", totallyBefore.getStartTimeString());
-        assertEquals("crossLeapStart", "1995365T235959.123000000Z", crossLeapStart.getStartTimeString());
-        assertEquals("startOnLeap", "1995365T235960.123000000Z", startOnLeap.getStartTimeString());
-        assertEquals("endOnLeap", "1995365T235959.123000000Z", endOnLeap.getStartTimeString());
-        assertEquals("leapInMiddle", "1995365T235959.123000000Z", leapInMiddle.getStartTimeString());
+        assertEquals( "1995365T235958.123000000Z", totallyBefore.getStartTimeString());
+        assertEquals( "1995365T235959.123000000Z", crossLeapStart.getStartTimeString());
+        assertEquals( "1995365T235960.123000000Z", startOnLeap.getStartTimeString());
+        assertEquals( "1995365T235959.123000000Z", endOnLeap.getStartTimeString());
+        assertEquals( "1995365T235959.123000000Z", leapInMiddle.getStartTimeString());
     }
 
     @Test
     public void testGetLastSampleTimeString() {
-        assertEquals("before", "1995365T235959.023000Z", totallyBefore.getLastSampleTimeString());
-        assertEquals("crossLeapStart start", 59, crossLeapStart.getLastSampleTime().getSecond());
-        assertEquals("crossLeapStart leaps", 1, crossLeapStart.getLeapSecInRecord());
-        assertEquals("crossLeapStart nanos", 23000000, crossLeapStart.getLastSampleTime().getNano());
-        assertEquals("crossLeapStart", "1995365T235960.023000Z", crossLeapStart.getLastSampleTimeString());
+        assertEquals("1995365T235959.023000Z", totallyBefore.getLastSampleTimeString());
+        assertEquals( 59, crossLeapStart.getLastSampleTime().getSecond());
+        assertEquals( 1, crossLeapStart.getLeapSecInRecord());
+        assertEquals( 23000000, crossLeapStart.getLastSampleTime().getNano());
+        assertEquals( "1995365T235960.023000Z", crossLeapStart.getLastSampleTimeString());
         System.out.println("before "+crossLeapStart.isStartTimeInLeapSecond()+" "+crossLeapStart.getLeapSecInRecord());
-        assertEquals("startOnLeap", "1996001T000000.023000Z", startOnLeap.getLastSampleTimeString());
+        assertEquals( "1996001T000000.023000Z", startOnLeap.getLastSampleTimeString());
         System.out.println("after");
-        assertEquals("endOnLeap", "1995365T235960.023000Z", endOnLeap.getLastSampleTimeString());
-        assertTrue("leapInMiddle last sec", leapInMiddle.getSecond()+leapInMiddle.getSamplePeriodAsNanos() * (leapInMiddle.getNumSamples() - 1)/1000000000.0 < 61);
-        assertEquals("leapInMiddle", "1996001T000000.023000Z", leapInMiddle.getLastSampleTimeString());
+        assertEquals("1995365T235960.023000Z", endOnLeap.getLastSampleTimeString());
+        assertTrue( leapInMiddle.getSecond()+leapInMiddle.getSamplePeriodAsNanos() * (leapInMiddle.getNumSamples() - 1)/1000000000.0 < 61);
+        assertEquals( "1996001T000000.023000Z", leapInMiddle.getLastSampleTimeString());
     }
 
     /* can't predict next starttime due to leap seconds
@@ -131,29 +131,29 @@ public class LeapSecondTests {
 
     @Test
     public void testIsStartTimeInLeapSecond() {
-        assertFalse("totallyBefore", totallyBefore.isStartTimeInLeapSecond());
-        assertFalse("crossLeapStart", crossLeapStart.isStartTimeInLeapSecond());
-        assertTrue("startOnLeap", startOnLeap.isStartTimeInLeapSecond());
-        assertFalse("endOnLeap", endOnLeap.isStartTimeInLeapSecond());
-        assertFalse("leapInMiddle", leapInMiddle.isStartTimeInLeapSecond());
+        assertFalse( totallyBefore.isStartTimeInLeapSecond());
+        assertFalse( crossLeapStart.isStartTimeInLeapSecond());
+        assertTrue( startOnLeap.isStartTimeInLeapSecond());
+        assertFalse( endOnLeap.isStartTimeInLeapSecond());
+        assertFalse( leapInMiddle.isStartTimeInLeapSecond());
     }
 
     @Test
     public void testgetLeapSecInRecord() {
-        assertEquals("totallyBefore", 0, totallyBefore.getLeapSecInRecord());
-        assertEquals("crossLeapStart", 1, crossLeapStart.getLeapSecInRecord());
-        assertEquals("startOnLeap", 1, startOnLeap.getLeapSecInRecord());
-        assertEquals("endOnLeap", 1, endOnLeap.getLeapSecInRecord());
-        assertEquals("leapInMiddle", 1, leapInMiddle.getLeapSecInRecord());
+        assertEquals( 0, totallyBefore.getLeapSecInRecord());
+        assertEquals( 1, crossLeapStart.getLeapSecInRecord());
+        assertEquals(1, startOnLeap.getLeapSecInRecord());
+        assertEquals( 1, endOnLeap.getLeapSecInRecord());
+        assertEquals( 1, leapInMiddle.getLeapSecInRecord());
     }
     
     @Test
     public void testIsEndTimeInLeapSecond() {
-        assertFalse("totallyBefore", totallyBefore.isEndTimeInLeapSecond());
-        assertTrue("crossLeapStart", crossLeapStart.isEndTimeInLeapSecond());
-        assertFalse("startOnLeap", startOnLeap.isEndTimeInLeapSecond());
-        assertTrue("endOnLeap", endOnLeap.isEndTimeInLeapSecond());
-        assertFalse("leapInMiddle", leapInMiddle.isEndTimeInLeapSecond());
+        assertFalse(totallyBefore.isEndTimeInLeapSecond());
+        assertTrue( crossLeapStart.isEndTimeInLeapSecond());
+        assertFalse( startOnLeap.isEndTimeInLeapSecond());
+        assertTrue( endOnLeap.isEndTimeInLeapSecond());
+        assertFalse( leapInMiddle.isEndTimeInLeapSecond());
         
     }
     

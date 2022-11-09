@@ -46,7 +46,7 @@ public class MSeed3Convert {
         ms3Header.second = ms2H.getStartBtime().sec;
         ms3Header.nanosecond = ms2H.getStartBtime().tenthMilli*100000;
       // maybe can do better from factor and multiplier?
-        ms3Header.sampleRatePeriod = ms2H.getSampleRate() >= 1 ? ms2H.getSampleRate() : (-1.0 / ms2H.getSampleRate());  
+        ms3Header.sampleRatePeriod = dr.getSampleRate() >= 1 ? dr.getSampleRate() : (-1.0 / dr.getSampleRate());
         
         Blockette1000 b1000 = (Blockette1000)dr.getUniqueBlockette(1000);
         if (b1000 == null) {
@@ -55,11 +55,22 @@ public class MSeed3Convert {
         ms3Header.timeseriesEncodingFormat = b1000.getEncodingFormat();
         ms3Header.publicationVersion = MSeed3Record.UNKNOWN_DATA_VERSION;
         ms3Header.dataByteLength = dr.getData().length;
-        String locCodeStr = dr.getHeader().getLocationIdentifier().trim();
-        if (locCodeStr.length() > 0) { locCodeStr = locCodeStr +":"; }
-        ms3Header.setChannelId("FDSN:"+dr.getHeader().getNetworkCode().trim()
-                               +"."+dr.getHeader().getStationIdentifier().trim()
-                               +"."+locCodeStr+dr.getHeader().getChannelIdentifier().trim());
+        String chanCode = dr.getHeader().getChannelIdentifier().trim();
+        String band, source, subsource;
+        if (chanCode.length() == 3) {
+            band = chanCode.substring(0,1);
+            source = chanCode.substring(1,2);
+            subsource = chanCode.substring(2,3);
+        } else {
+            String[] bss = chanCode.split(FDSNSourceId.SEP);
+            band = bss[0];
+            source = bss[1];
+            subsource = bss[2];
+        }
+        ms3Header.setSourceId(new FDSNSourceId(dr.getHeader().getNetworkCode().trim(),
+                dr.getHeader().getStationIdentifier().trim(),
+                dr.getHeader().getLocationIdentifier().trim(),
+                band, source, subsource));
 
         ms3Header.numSamples = ms2H.getNumSamples();
         ms3Header.recordCRC = 0;

@@ -29,7 +29,8 @@ public class MSeed3Record {
 
     public static final String TIME_LEAP_SECOND = "TimeLeapSecond";
 
-    public static final byte UNKNOWN_DATA_VERSION = 0;
+    /** const for unknown data version, 0 */
+    public static final int UNKNOWN_DATA_VERSION = 0;
 
     protected String recordIndicator = DEFAULT_RECORD_INDICATOR;
 
@@ -37,44 +38,44 @@ public class MSeed3Record {
 
     protected byte flags = 0;
 
-    protected int year;
+    protected int year = 1970;
 
-    protected int dayOfYear;
+    protected int dayOfYear = 1;
 
-    protected int hour;
+    protected int hour = 0;
 
-    protected int minute;
+    protected int minute = 0;
 
-    protected int second;
+    protected int second = 0;
 
-    protected int nanosecond;
+    protected int nanosecond = 0;
 
-    protected double sampleRatePeriod;
-    protected double sampleRate;
+    protected double sampleRatePeriod = 1;
+    protected double sampleRate = 1;
 
     protected byte timeseriesEncodingFormat;
 
-    protected byte publicationVersion;
+    protected byte publicationVersion = UNKNOWN_DATA_VERSION;
 
-    protected int numSamples;
+    protected int numSamples = 0;
 
-    protected int recordCRC;
+    protected int recordCRC = 0;
 
-    protected byte channelIdByteLength;
+    protected byte sourceIdByteLength = 0;
     
-    protected int extraHeadersByteLength;
+    protected int extraHeadersByteLength = 0;
 
-    protected int dataByteLength;
+    protected int dataByteLength = 0;
     
-    protected String channelId;
+    protected String sourceIdStr = "";
     
-    protected String[] fdsnParsedChannelId;
+    protected FDSNSourceId sourceId;
 
-    protected String extraHeaders;
+    protected String extraHeadersStr = "";
     
-    protected JSONObject extraHeadersJSON;
+    protected JSONObject extraHeaders;
     
-    protected byte[] timeseriesBytes;
+    protected byte[] timeseriesBytes = new byte[0];
 
     /**
      * creates a DataHeader object with nothing set (ie nulls and zeros)
@@ -96,7 +97,7 @@ public class MSeed3Record {
     }
 
     public void printASCII(PrintWriter out, String indent) throws IOException {
-        out.println(indent + getChannelId());
+        out.println(indent + getSourceId());
         out.println(indent + " start = " + getStartTimeString());
         out.println(indent + " numPTS = " + getNumSamples());
         out.println();
@@ -108,10 +109,10 @@ public class MSeed3Record {
         out.println(indent + " PublicationVersion = " + getPublicationVersion());
         out.println(indent + " Numberofsamples = " + getNumSamples());
         out.println(indent + " CRC­32ofdata = " + getRecordCRC());
-        out.println(indent + " ChannelIdByteLength = " + getChannelIdByteLength());
+        out.println(indent + " ChannelIdByteLength = " + getSourceIdByteLength());
         out.println(indent + " ExtraHeadersByteLength = " + getExtraHeadersByteLength());
         out.println(indent + " TimeseriesByteLength = " + getDataByteLength());
-        out.println(indent + " ExtraHeaders = " + getExtraHeaders());
+        out.println(indent + " ExtraHeaders = " + getExtraHeadersAsString());
     }
     
     public void printData(PrintWriter out) {
@@ -144,12 +145,12 @@ public class MSeed3Record {
         in.readFully(buf);
         MSeed3Record header = new MSeed3Record();
         header.read(buf, 0);
-        buf = new byte[header.channelIdByteLength];
+        buf = new byte[header.sourceIdByteLength];
         in.readFully(buf);
-        header.channelId = new String(buf, 0, header.channelIdByteLength).trim();
+        header.sourceIdStr = new String(buf, 0, header.sourceIdByteLength).trim();
         buf = new byte[header.extraHeadersByteLength];
         in.readFully(buf);
-        header.extraHeaders = new String(buf, 0, header.extraHeadersByteLength).trim();
+        header.extraHeadersStr = new String(buf, 0, header.extraHeadersByteLength).trim();
         header.timeseriesBytes = new byte[header.dataByteLength];
         in.readFully(header.timeseriesBytes);
         return header;
@@ -201,7 +202,7 @@ public class MSeed3Record {
         offset += 4;
         recordCRC = Utility.bytesToInt(buf[offset], buf[offset + 1], buf[offset + 2], buf[offset + 3], true);
         offset += 4;
-        channelIdByteLength = buf[offset];
+        sourceIdByteLength = buf[offset];
         offset++;
         extraHeadersByteLength = Utility.bytesToInt(buf[offset], buf[offset+1], true);
         offset+=2;
@@ -231,9 +232,9 @@ public class MSeed3Record {
         dos.write(publicationVersion);
         dos.write(Utility.intToLittleEndianByteArray(numSamples));
         dos.write(Utility.intToLittleEndianByteArray(recordCRC));
-        byte[] channelIdBytes = channelId.getBytes();
+        byte[] channelIdBytes = sourceId.toString().getBytes();
         dos.write((byte)(channelIdBytes.length));
-        byte[] extraHeadersBytes = getExtraHeaders().getBytes();
+        byte[] extraHeadersBytes = getExtraHeadersAsString().getBytes();
         extraHeadersByteLength = extraHeadersBytes.length;
         dos.write(Utility.shortToLittleEndianByteArray(extraHeadersBytes.length));
         dos.write(Utility.shortToLittleEndianByteArray(timeseriesBytes.length));
@@ -257,14 +258,14 @@ public class MSeed3Record {
     }
 
     public int getLeapSecInRecord() {
-        if (getExtraHeadersJSON().has(TIME_LEAP_SECOND)) {
-            return getExtraHeadersJSON().getInt(TIME_LEAP_SECOND);
+        if (getExtraHeaders().has(TIME_LEAP_SECOND)) {
+            return getExtraHeaders().getInt(TIME_LEAP_SECOND);
         }
         return 0;
     }
     
     public void setLeapSecInRecord(int value) {
-        JSONObject eh = getExtraHeadersJSON();
+        JSONObject eh = getExtraHeaders();
         eh.put(TIME_LEAP_SECOND, value);
     }
     
@@ -440,22 +441,22 @@ public class MSeed3Record {
      * @return formatted string of object contents
      */
     public String toString() {
-        String s =  getChannelId() + "."
+        String s =  getSourceId() + "."
                 + getStartTimeString() + "  " + getSampleRate() +" "+ getNumSamples();
         return s;
     }
 
-    public JSONObject getExtraHeadersJSON() {
-        if (extraHeadersJSON == null) {
-            if (getExtraHeaders() == null || getExtraHeaders().length() < 2) {
-                extraHeadersJSON = new JSONObject("{}");
-                extraHeaders = null;
+    public JSONObject getExtraHeaders() {
+        if (extraHeaders == null) {
+            if (getExtraHeadersAsString() == null || getExtraHeadersAsString().length() < 2) {
+                extraHeaders = new JSONObject("{}");
+                extraHeadersStr = null;
             } else {
-                extraHeadersJSON = new JSONObject(getExtraHeaders());
-                extraHeaders = null;
+                extraHeaders = new JSONObject(getExtraHeadersAsString());
+                extraHeadersStr = null;
             }
         }
-        return extraHeadersJSON;
+        return extraHeaders;
     }
     
     
@@ -610,81 +611,53 @@ public class MSeed3Record {
     }
 
     
-    public String getExtraHeaders() {
+    public String getExtraHeadersAsString() {
+        String ehStr;
         if (extraHeaders == null) {
-            if (extraHeadersJSON != null) {
-                extraHeaders = extraHeadersJSON.toString();
-            } else {
-                extraHeaders = "";
+            if (extraHeadersStr == null) {
+                extraHeadersStr = "";
             }
+            ehStr = extraHeadersStr;
+        } else {
+            ehStr = extraHeaders.toString();
         }
-        return extraHeaders;
+        return ehStr;
     }
 
-    
+
     public void setExtraHeaders(String extraHeaders) {
+        this.extraHeadersStr = extraHeaders;
+        this.extraHeaders = null;
+    }
+
+    public void setExtraHeaders(JSONObject extraHeaders) {
         this.extraHeaders = extraHeaders;
-        this.extraHeadersJSON = null;
+        this.extraHeadersStr = null;
+    }
+
+
+    public FDSNSourceId getSourceId() {
+        return sourceId;
+    }
+
+
+    public void setSourceId(String sourceId) {
+        this.sourceIdStr = sourceId;
+        this.sourceIdByteLength = (byte)this.sourceIdStr.length();
+    }
+
+    public void setSourceId(FDSNSourceId sourceId) {
+        this.sourceId = sourceId;
+        this.sourceIdByteLength = 0;
     }
 
     
-    public String getChannelId() {
-        return channelId;
-    }
-    
-    public String getNetworkCode() {
-        return parseChannelId()[0];
-    }
-    
-    public String getStationCode() {
-        return parseChannelId()[1];
-    }
-    
-    public String getLocationCode() {
-        return parseChannelId()[2];
-    }
-    
-    public String getChannelCode() {
-        return parseChannelId()[3];
-    }
-    
-    public String[] parseChannelId() {
-        if (fdsnParsedChannelId != null) {
-            return fdsnParsedChannelId;
-        }
-        if (channelId.startsWith(FDSN_PREFIX)) {
-            String tmp = channelId.substring(FDSN_PREFIX.length());
-            String[] pieces = tmp.split("\\.");
-            String[] locChan;
-            if (pieces[2].contains(":")) {
-                // has loc code
-                locChan = pieces[2].split(":");
-            } else {
-                locChan = new String[] {"", pieces[2]};
-            }
-            String[] out = new String[4];
-            out[0] = pieces[0];
-            out[1] = pieces[1];
-            out[2] = locChan[0];
-            out[3] = locChan[1];
-            return out;
-        }
-        throw new RuntimeException("Unknown channel id prefix: "+channelId);
-    }
-
-    
-    public void setChannelId(String channelId) {
-        this.channelId = channelId;
-        this.channelIdByteLength = (byte)this.channelId.length();
-    }
-
-    
-    public byte getChannelIdByteLength() {
-        return channelIdByteLength;
+    public byte getSourceIdByteLength() {
+        return sourceIdByteLength;
     }
 
     public int calcExtraHeadersByteLength() {
-        return getExtraHeaders().getBytes().length;
+        return getExtraHeaders().toString().getBytes().length;
     }
     
     public int getExtraHeadersByteLength() {
@@ -730,7 +703,7 @@ public class MSeed3Record {
     }
     
     public int getSize() {
-        return FIXED_HEADER_SIZE+getChannelIdByteLength()+getExtraHeadersByteLength()+getDataByteLength();
+        return FIXED_HEADER_SIZE+ getSourceIdByteLength()+getExtraHeadersByteLength()+getDataByteLength();
     }
 
     public static final ZoneId TZ_UTC = ZoneId.of("UTC");

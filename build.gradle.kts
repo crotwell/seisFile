@@ -117,16 +117,16 @@ dependencies {
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.35")
     implementation( "com.fasterxml.woodstox:woodstox-core:6.2.8")
     implementation( "org.apache.httpcomponents:httpclient:4.5.13")
-
+    implementation("org.json:json:20220924")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
 
 }
 
@@ -329,6 +329,7 @@ val scriptNames = mapOf(
   "irisvirtnet" to "edu.sc.seis.seisFile.client.IRISVirtualNetClient",
   "saclh" to "edu.sc.seis.seisFile.client.SacListHeader",
   "mseedlh" to "edu.sc.seis.seisFile.client.MSeedListHeader",
+  "mseed3" to "edu.sc.seis.seisFile.mseed3.MSeed3Convert",
   "seedlinkclient" to "edu.sc.seis.seisFile.client.SeedLinkClient",
   "datalinkclient" to "edu.sc.seis.seisFile.client.DataLinkClient",
   "earthwormExportServer" to "edu.sc.seis.seisFile.client.EarthwormExportServer",
