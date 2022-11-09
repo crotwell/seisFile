@@ -114,7 +114,7 @@ public class MSeed3Convert {
         return ms3Header;
     }
 
-    public static void main(String[] args) throws SeedFormatException, IOException {
+    public static void main(String[] args) throws SeedFormatException, IOException, FDSNSourceIdException {
         boolean convert2to3 = false;
         boolean convert3to2 = false;
         boolean print3 = false;

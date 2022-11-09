@@ -112,7 +112,7 @@ public class MSeed3Record {
         out.println(indent + " ChannelIdByteLength = " + getSourceIdByteLength());
         out.println(indent + " ExtraHeadersByteLength = " + getExtraHeadersByteLength());
         out.println(indent + " TimeseriesByteLength = " + getDataByteLength());
-        out.println(indent + " ExtraHeaders = " + getExtraHeadersAsString());
+        out.println(indent + " ExtraHeaders = " + getExtraHeadersAsString(0));
     }
     
     public void printData(PrintWriter out) {
@@ -140,16 +140,20 @@ public class MSeed3Record {
      * @throws IOException
      * @throws SeedFormatException
      */
-    public static MSeed3Record read(DataInput in) throws IOException, SeedFormatException {
+    public static MSeed3Record read(DataInput in) throws IOException, SeedFormatException, FDSNSourceIdException {
         byte[] buf = new byte[FIXED_HEADER_SIZE];
         in.readFully(buf);
         MSeed3Record header = new MSeed3Record();
         header.read(buf, 0);
         buf = new byte[header.sourceIdByteLength];
         in.readFully(buf);
-        header.sourceIdStr = new String(buf, 0, header.sourceIdByteLength).trim();
+        System.out.println(header.sourceIdByteLength+"  "+buf.length);
+        String sourceIdStr = new String(buf, 0, header.sourceIdByteLength).trim();
+        System.out.println(sourceIdStr);
+        FDSNSourceId sid = FDSNSourceId.parse(sourceIdStr);
         buf = new byte[header.extraHeadersByteLength];
         in.readFully(buf);
+        header.sourceId = sid;
         header.extraHeadersStr = new String(buf, 0, header.extraHeadersByteLength).trim();
         header.timeseriesBytes = new byte[header.dataByteLength];
         in.readFully(header.timeseriesBytes);
@@ -171,6 +175,8 @@ public class MSeed3Record {
         offset++;
         flags = buf[offset];
         offset++;
+        nanosecond = Utility.bytesToInt(buf[offset], buf[offset+1], buf[offset+2], buf[offset+3], true);
+        offset+=4;
         year = Utility.bytesToInt(buf[offset], buf[offset+1], true);
         offset+=2;
         dayOfYear = Utility.bytesToInt(buf[offset], buf[offset+1], true);
@@ -181,8 +187,8 @@ public class MSeed3Record {
         offset++;
         second = buf[offset];
         offset++;
-        nanosecond = Utility.bytesToInt(buf[offset], buf[offset+1], buf[offset+2], buf[offset+3], true);
-        offset+=4;
+        timeseriesEncodingFormat = buf[offset];
+        offset++;
         sampleRatePeriod = Utility.bytesToDouble(buf, offset, true);
         offset+= 8;
         if (sampleRatePeriod < 0) {
@@ -190,10 +196,6 @@ public class MSeed3Record {
         } else {
             sampleRate = sampleRatePeriod;
         }
-        timeseriesEncodingFormat = buf[offset];
-        offset++;
-        publicationVersion = buf[offset];
-        offset++;
         numSamples = Utility.bytesToInt(buf[offset], // careful if negative!!!
                                         buf[offset + 1],
                                         buf[offset + 2],
@@ -202,12 +204,14 @@ public class MSeed3Record {
         offset += 4;
         recordCRC = Utility.bytesToInt(buf[offset], buf[offset + 1], buf[offset + 2], buf[offset + 3], true);
         offset += 4;
+        publicationVersion = buf[offset];
+        offset++;
         sourceIdByteLength = buf[offset];
         offset++;
         extraHeadersByteLength = Utility.bytesToInt(buf[offset], buf[offset+1], true);
         offset+=2;
-        dataByteLength = Utility.bytesToInt(buf[offset], buf[offset+1], true);
-        offset+=2;
+        dataByteLength = Utility.bytesToInt(buf[offset], buf[offset + 1], buf[offset + 2], buf[offset + 3], true);
+        offset += 4;
         return offset;
     }
 
@@ -232,13 +236,13 @@ public class MSeed3Record {
         dos.write(publicationVersion);
         dos.write(Utility.intToLittleEndianByteArray(numSamples));
         dos.write(Utility.intToLittleEndianByteArray(recordCRC));
-        byte[] channelIdBytes = sourceId.toString().getBytes();
-        dos.write((byte)(channelIdBytes.length));
-        byte[] extraHeadersBytes = getExtraHeadersAsString().getBytes();
+        byte[] sourceIdBytes = sourceId.toString().getBytes();
+        dos.write((byte)(sourceIdBytes.length));
+        byte[] extraHeadersBytes = getExtraHeadersAsString(0).getBytes();
         extraHeadersByteLength = extraHeadersBytes.length;
         dos.write(Utility.shortToLittleEndianByteArray(extraHeadersBytes.length));
         dos.write(Utility.shortToLittleEndianByteArray(timeseriesBytes.length));
-        dos.write(channelIdBytes); // might be wrong if not ascii, should check
+        dos.write(sourceIdBytes); // might be wrong if not ascii, should check
         dos.write(extraHeadersBytes); // might be wrong if not ascii, should check
         dos.write(timeseriesBytes);
     }
@@ -441,18 +445,80 @@ public class MSeed3Record {
      * @return formatted string of object contents
      */
     public String toString() {
-        String s =  getSourceId() + "."
-                + getStartTimeString() + "  " + getSampleRate() +" "+ getNumSamples();
-        return s;
+            /*
+    FDSN:CO_HODGE_00_L_H_Z, version 4, 477 bytes (format: 3)
+             start time: 2019,187,03:19:53.000000
+      number of samples: 255
+       sample rate (Hz): 1
+                  flags: [00000000] 8 bits
+                    CRC: 0x8926FFDF
+    extra header length: 31 bytes
+    data payload length: 384 bytes
+       payload encoding: STEIM-2 integer compression (val: 11)
+          extra headers:
+                "FDSN": {
+                  "Time": {
+                    "Quality": 0
+                  }
+                }
+      */
+        String encode_name = "unknown";
+
+        if (this.timeseriesEncodingFormat == 0) {
+            encode_name = "Text";
+        } else if (this.timeseriesEncodingFormat == 11) {
+            encode_name = "STEIM-2 integer compression";
+        } else if (this.timeseriesEncodingFormat == 10) {
+            encode_name = "STEIM-1 integer compression";
+        }
+        String bitFlagStr = "";
+        if ((this.flags & 0x01) > 0) {
+            bitFlagStr += "\n                     [Bit 0] Calibration signals present";
+        }
+        if ((this.flags & 0x02) > 0) {
+            bitFlagStr += "\n                         [Bit 1] Time tag is questionable";
+        }
+        if ((this.flags & 0x04) > 0) {
+            bitFlagStr += "\n                         [Bit 2] Clock locked";
+        }
+        if ((this.flags & 0x08) > 0) {
+            bitFlagStr += "\n                         [Bit 3] Undefined bit set";
+        }
+        if ((this.flags & 0x10) > 0) {
+            bitFlagStr += "\n                         [Bit 4] Undefined bit set";
+        }
+        if ((this.flags & 0x20) > 0) {
+            bitFlagStr += "\n                         [Bit 5] Undefined bit set";
+        }
+        if ((this.flags & 0x40) > 0) {
+            bitFlagStr += "\n                         [Bit 6] Undefined bit set";
+        }
+        if ((this.flags & 0x80) > 0) {
+            bitFlagStr += "\n                         [Bit 7] Undefined bit set";
+        }
+        return getSourceId()+
+      ", version "+this.publicationVersion+", "+(this.getSize() + this.timeseriesBytes.length)+
+       " bytes (format: "+this.formatVersion+")\n" +
+      "             start time: "+this.startFieldsInUtilFormat()+"\n" +
+      "      number of samples: "+this.numSamples+"\n" +
+      "       sample rate (Hz): "+this.sampleRate+"\n" +
+      "                  flags: ["+
+              Integer.toBinaryString(this.flags)+
+              "] 8 bits"+bitFlagStr+"\n" +
+      "                    CRC: "+Integer.toHexString(this.recordCRC)+"\n" +
+      "    extra header length: "+getExtraHeadersByteLength()+" bytes\n" +
+      "    data payload length: "+getDataByteLength()+" bytes\n" +
+      "       payload encoding: "+encode_name+" (val: "+this.timeseriesEncodingFormat+")"+
+              "\n          extra headers:"+getExtraHeaders().toString(2);
     }
 
     public JSONObject getExtraHeaders() {
         if (extraHeaders == null) {
-            if (getExtraHeadersAsString() == null || getExtraHeadersAsString().length() < 2) {
+            if (getExtraHeadersAsString(0) == null || getExtraHeadersAsString(0).length() < 2) {
                 extraHeaders = new JSONObject("{}");
                 extraHeadersStr = null;
             } else {
-                extraHeaders = new JSONObject(getExtraHeadersAsString());
+                extraHeaders = new JSONObject(getExtraHeadersAsString(0));
                 extraHeadersStr = null;
             }
         }
@@ -488,6 +554,15 @@ public class MSeed3Record {
     
     public void setFlags(byte flags) {
         this.flags = flags;
+    }
+    
+    public String startFieldsInUtilFormat() {
+        return this.year+","+
+                String.format("%03d", this.dayOfYear)+","+
+                String.format("%02d", this.hour)+":"+
+                String.format("%02d", this.minute)+":"+
+                String.format("%02d", this.second)+"."+
+                String.format("%06d", (int)Math.floor(this.nanosecond/1000));
     }
 
     
@@ -611,7 +686,7 @@ public class MSeed3Record {
     }
 
     
-    public String getExtraHeadersAsString() {
+    public String getExtraHeadersAsString(int indent) {
         String ehStr;
         if (extraHeaders == null) {
             if (extraHeadersStr == null) {
@@ -619,7 +694,7 @@ public class MSeed3Record {
             }
             ehStr = extraHeadersStr;
         } else {
-            ehStr = extraHeaders.toString();
+            ehStr = extraHeaders.toString(indent);
         }
         return ehStr;
     }
@@ -720,7 +795,7 @@ public class MSeed3Record {
 
     public static final int CHANNEL_CODE_LENGTH = 4;
 
-    public static final int FIXED_HEADER_SIZE = 38;
+    public static final int FIXED_HEADER_SIZE = 40;
 
     protected static final String DEFAULT_RECORD_INDICATOR = "MS";
 

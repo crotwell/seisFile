@@ -36,7 +36,7 @@ public class FDSNSourceId {
         if (m.matches()) {
             return new FDSNSourceId(m.group(1), m.group(2),m.group(3),m.group(4),m.group(5),m.group(6));
         } else {
-            throw new FDSNSourceIdException("Parse error, does not match regular expression");
+            throw new FDSNSourceIdException("Parse error, does not match regular expression: "+sourceIdUrl+"  "+sourceIdRegExString);
         }
     }
 
@@ -65,6 +65,6 @@ public class FDSNSourceId {
                 locationCode + SEP +
                 bandCode + SEP +
                 sourceCode + SEP +
-                subsourceCode + SEP;
+                subsourceCode;
     }
 }

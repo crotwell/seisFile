@@ -1,0 +1,11 @@
+FDSN:XX_TEST__L_O_G, version 1, 294 bytes (format: 3)
+             start time: 2022,156,20:32:38.123456
+      number of samples: 235
+       sample rate (Hz): 0
+                  flags: [00000000] 8 bits
+                    CRC: 0xC3204B22
+    extra header length: 0 bytes
+    data payload length: 235 bytes
+       payload encoding: Text (val: 0)
+Data:
+I've seen things you people wouldn't believe. Attack ships on fire off the shoulder of Orion. I watched C-beams glitter in the dark near the Tannhäuser Gate. All those moments will be lost in time, like tears...in...rain. Time to die.
