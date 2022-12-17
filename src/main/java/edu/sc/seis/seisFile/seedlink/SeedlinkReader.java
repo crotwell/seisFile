@@ -212,6 +212,7 @@ public class SeedlinkReader {
         byte[] bits = new byte[SeedlinkPacket.PACKET_SIZE];
         inData.readFully(bits);
         SeedlinkPacket slp = new SeedlinkPacket(bits);
+        lastSeqNum = slp.getSeqNum();
         if (isVerbose()) {
             String packetString = EMPTY;
             try {
@@ -269,12 +270,40 @@ public class SeedlinkReader {
         return socket != null && socket.isConnected();
     }
 
+    /**
+     * Does a simple reconnect, replaying the original commands and restarting data. This does
+     * not resume from the last packet, so data may be lost that arrived during the outage. See
+     * resume to reconnect and resume data flow from the last successful packet.
+     *
+     * @throws IOException
+     * @throws SeedlinkException
+     */
     public void reconnect() throws IOException, SeedlinkException {
         close();
         initConnection();
         for (String cmd : sentCommands) {
             internalSendCmd(cmd);
         }
+        endHandshake();
+    }
+
+    /**
+     * Resumes the connection at the last successful packet using the sequence number.
+     *
+     * @throws IOException
+     * @throws SeedlinkException
+     */
+    public void resume() throws IOException, SeedlinkException {
+        close();
+        initConnection();
+        for (String cmd : sentCommands) {
+            if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
+                internalSendCmd(cmd);
+            } else {
+                break;
+            }
+        }
+        internalSendCmd(DATA_COMMAND+" "+lastSeqNum);
         endHandshake();
     }
 
@@ -349,6 +378,10 @@ public class SeedlinkReader {
      * @throws IOException
      */
     public void select(String network, String station, String location, String channel, String type) throws SeedlinkException, IOException {
+        if ( network.length() == 0) {network = "*";}
+        if ( station.length() == 0) {station = "*";}
+        if ( location.length() == 0) {location = "??";}
+        if ( channel.length() == 0) {channel = "???";}
         sendCmd("STATION " + station + " " + network);
         sendCmd("SELECT " + location + channel + "." + type);
     }
@@ -461,6 +494,8 @@ public class SeedlinkReader {
     public int getPort() {
         return port;
     }
+
+    public String lastSeqNum = "";
 
 	public static final String EMPTY = "";
 
