@@ -127,6 +127,10 @@ public class SeedLinkClient extends AbstractClient {
                             out.println(dr.oneLineSummary());
                             out.flush();
                         }
+                        if (i % 10 == 9) {
+                            reader.close();
+                            reader.resume();
+                        }
                         i++;
                     }
                 } catch(EOFException e) {
