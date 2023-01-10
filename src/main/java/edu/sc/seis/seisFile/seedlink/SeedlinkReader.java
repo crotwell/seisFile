@@ -431,6 +431,12 @@ public class SeedlinkReader {
     	}
         endHandshake(); // let 'er rip
     }
+    
+    public void restartData(String seqNum) throws SeedlinkException, IOException {
+        lastSeqNum = seqNum;
+        sendCmd(DATA_COMMAND+" "+lastSeqNum);
+        endHandshake();
+    }
 
     protected void internalSendCmd(String cmd) throws IOException, SeedlinkException {
         send(cmd);
