@@ -177,7 +177,8 @@ public class FDSNStationXML {
             return false;
         }
         if (!(StationXMLTagNames.CURRENT_SCHEMA_VERSION.equals(getSchemaVersion())
-              || StationXMLTagNames.PREV_SCHEMA_VERSION.equals(getSchemaVersion()))) {
+                || StationXMLTagNames.CURRENT_SCHEMA_VERSION_ALT.equals(getSchemaVersion())
+                || StationXMLTagNames.PREV_SCHEMA_VERSION.equals(getSchemaVersion()))) {
             return false;
         }
         return true;
