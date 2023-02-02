@@ -169,10 +169,12 @@ public class FDSNStationXML {
 
     public boolean checkSchemaVersion() {
         if (!(xmlSchemaLocation.split(" ")[0].equals(StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION) ||
+              xmlSchemaLocation.split(" ")[0].equals(StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION_ALT) ||
               xmlSchemaLocation.split(" ")[0].equals(StationXMLTagNames.PREV_SCHEMALOCATION_VERSION))) {
             return false;
         }
         if (!(StationXMLTagNames.CURRENT_SCHEMA_VERSION.equals(getSchemaVersion())
+              StationXMLTagNames.CURRENT_SCHEMA_VERSION_ALT.equals(getSchemaVersion())
               || StationXMLTagNames.PREV_SCHEMA_VERSION.equals(getSchemaVersion()))) {
             return false;
         }
