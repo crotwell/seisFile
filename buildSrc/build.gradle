@@ -4,6 +4,6 @@ apply plugin: 'groovy'
 apply plugin: 'eclipse'
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
+    implementation gradleApi()
+    implementation localGroovy()
 }
