@@ -91,14 +91,14 @@ configurations {
 
 dependencies {
 //    implementation project(':seedCodec')
-    implementation "edu.sc.seis:seedCodec:1.0.11"
+    api "edu.sc.seis:seedCodec:1.0.11"
     implementation "com.martiansoftware:jsap:2.1"
     implementation "org.slf4j:slf4j-api:1.7.30"
     implementation group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.30"
 //
 //    implementation 'org.rxtx:rxtx:2.2.pre2'  ...but not in maven
     implementation 'org.rxtx:rxtx:2.1.7'
-    implementation "com.fasterxml.woodstox:woodstox-core:5.2.1"
+    api "com.fasterxml.woodstox:woodstox-core:5.2.1"
     implementation "net.java.dev.msv:msv-core:2013.6.1"
     implementation 'org.apache.httpcomponents:httpclient:4.5.12'
     runtimeOnly "mysql:mysql-connector-java:5.1.47"
