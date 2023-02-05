@@ -33,13 +33,13 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=""+SeedlinkReader.DEFAULT_PORT)
     public Integer port = SeedlinkReader.DEFAULT_PORT;
     
-    @Option(names= {"-n", "--network"}, description="list of networks to search")
+    @Option(names= {"-n", "--network"}, description="list of networks to search", defaultValue = "", split = ",")
     List<String> network = new ArrayList<String>();
-    @Option(names= {"-s", "--station"}, description="list of stations to search")
+    @Option(names= {"-s", "--station"}, description="list of stations to search", defaultValue = "*", split = ",")
     List<String> station = new ArrayList<String>();;
-    @Option(names= {"-l", "--location"}, description="list of locations to search")
+    @Option(names= {"-l", "--location"}, description="list of locations to search", defaultValue = "??", split = ",")
     List<String> location = new ArrayList<String>();;
-    @Option(names= {"-c", "--channel"}, description="list of channels to search")
+    @Option(names= {"-c", "--channel"}, description="list of channels to search", defaultValue = "???", split = ",")
     List<String> channel = new ArrayList<String>();;
     
     @Option(names = { "-b","--starttime","--start" }, description="Limit results to time series samples on or after the specified start time", converter=FloorISOTimeParser.class)
@@ -111,7 +111,17 @@ public class SeedLinkClient extends AbstractClient {
                 }
             }
             if (maxRecords != 0) {
-                reader.select(String.join(",", network), String.join(",", station), String.join(",", location), String.join(",", channel));
+                for (int n = 0; n < network.size(); n++) {
+                    for (int s = 0; s < station.size(); s++) {
+                        reader.sendStation(network.get(n), station.get(s));
+                        for (int l = 0; l < location.size(); l++) {
+                            for (int c = 0; c < channel.size(); c++) {
+                                reader.sendSelect(location.get(l)+ channel.get(c));
+                            }
+                        }
+
+                    }
+                }
                 reader.startData(start, end);
                 int i = 0;
                 try {

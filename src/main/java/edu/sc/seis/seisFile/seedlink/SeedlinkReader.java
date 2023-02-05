@@ -368,7 +368,8 @@ public class SeedlinkReader {
     }
 
     /**
-     * Select the stream.
+     * Utility function to select the stream. Calls sendStation and sendSelect internally.
+     *
      * @param network the network.
      * @param station the station.
      * @param location the location or empty if none.
@@ -378,14 +379,48 @@ public class SeedlinkReader {
      * @throws IOException
      */
     public void select(String network, String station, String location, String channel, String type) throws SeedlinkException, IOException {
-        if ( network.length() == 0) {network = "*";}
-        if ( station.length() == 0) {station = "*";}
         if ( location.length() == 0) {location = "??";}
         if ( channel.length() == 0) {channel = "???";}
-        sendCmd("STATION " + station + " " + network);
-        sendCmd("SELECT " + location + channel + "." + type);
+        sendStation(network, station);
+        sendSelect(location + channel, type);
     }
- 
+    /**
+     * Send a STATION command for the given network and station. If either is length zero, a wildcard of "*"
+     * is inserted in its place
+     *
+     * @param network the network.
+     * @param station the station.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void sendStation(String network, String station) throws SeedlinkException, IOException {
+        if ( network.length() == 0) {network = "*";}
+        if ( station.length() == 0) {station = "*";}
+        sendCmd("STATION " + station + " " + network);
+    }
+
+    /**
+     * Send a SELECT command for the given location-channel and with type of 'D'.
+     * @param locationChannel the combined location and channel, eg 00HHZ.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void sendSelect(String locationChannel) throws SeedlinkException, IOException {
+        sendSelect( locationChannel, DATA_TYPE);
+    }
+
+    /**
+     * Send a SELECT command for the given location-channel and type.
+     * @param locationChannel the combined location and channel, eg 00HHZ.
+     * @param type the data type.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void sendSelect(String locationChannel, String type) throws SeedlinkException, IOException {
+        if ( locationChannel.length() == 0) {locationChannel = "*";}
+        sendCmd("SELECT " + locationChannel + "." + type);
+    }
+
     /**
      * Start the data transfer.
      * @throws SeedlinkException if a SeedLink error occurs.
