@@ -110,9 +110,9 @@ configurations["clientTestRuntimeOnly"].extendsFrom(configurations["clientRuntim
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.1.1")
-    clientImplementation("info.picocli:picocli:4.6.3")
+    clientImplementation("info.picocli:picocli:4.7.1")
 
-    annotationProcessor("info.picocli:picocli-codegen:4.6.3")
+    annotationProcessor("info.picocli:picocli-codegen:4.7.1")
     implementation( "org.slf4j:slf4j-api:1.7.35")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.35")
     implementation( "com.fasterxml.woodstox:woodstox-core:6.2.8")
