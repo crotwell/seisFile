@@ -1,10 +1,16 @@
 ### FDSN Web Services
 
-Current: [FDSN-WS-Specifications-1.1.pdf](fdsn/FDSN-WS-Specifications-1.1.pdf)
+Current: 
+* [FDSN-WS-Specification-Commonalities-1.2.pdf](fdsn/FDSN-WS-Specification-Commonalities-1.2.pdf)
+* [fdsnws-availability-1.0.pdf](fdsn/fdsnws-availability-1.0.pdf)
+* [fdsnws-dataselect-1.1.pdf](fdsn/fdsnws-dataselect-1.1.pdf)
+* [fdsnws-event-1.2.pdf](fdsn/fdsnws-event-1.2.pdf)
+* [fdsnws-station-1.1.pdf](fdsn/fdsnws-station-1.1.pdf)
 
 Older versions:
 
 * [FDSN-WS-Specifications-1.0.pdf](fdsn/FDSN-WS-Specifications-1.0.pdf)
+* [FDSN-WS-Specifications-1.1.pdf](fdsn/FDSN-WS-Specifications-1.1.pdf)
 
 ### QuakeML
 
