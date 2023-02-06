@@ -352,10 +352,15 @@ for (key in scriptNames.keys) {
     group = "Documentation"
     classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
     main = "picocli.codegen.docgen.manpage.ManPageGenerator"
+    print("genManTemplate"+key)
     val outTemplateDir =  File(project.projectDir,  "src/doc/man-templates")
     val outDir =  File(project.buildDir,  "picocli/man")
-    args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key])
+    print(outTemplateDir)
+    print(outDir)
+    args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key], "-v")
     dependsOn += tasks.getByName("compileJava")
+    inputs.dir("src/client")
+    outputs.files(File(outTemplateDir, scriptNames[key]+".adoc"))
     doLast {
         mkdir(outTemplateDir)
         mkdir(outDir)
