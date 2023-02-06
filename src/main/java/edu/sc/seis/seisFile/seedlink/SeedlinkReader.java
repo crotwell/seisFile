@@ -355,7 +355,7 @@ public class SeedlinkReader {
     }
 
     /**
-     * Select the stream.
+     * Select the stream. This sends a STATION followed by a SELECT command.
      * @param network the network.
      * @param station the station.
      * @param location the location or empty if none.
@@ -368,7 +368,8 @@ public class SeedlinkReader {
     }
 
     /**
-     * Utility function to select the stream. Calls sendStation and sendSelect internally.
+     * Utility function to select the stream. This sends a STATION followed by a SELECT command.
+     *
      *
      * @param network the network.
      * @param station the station.
@@ -384,9 +385,12 @@ public class SeedlinkReader {
         sendStation(network, station);
         sendSelect(location + channel, type);
     }
+
     /**
      * Send a STATION command for the given network and station. If either is length zero, a wildcard of "*"
-     * is inserted in its place
+     * is inserted in its place.
+     * In the Seedlink protocol, a STATION command should be followed by one or more
+     * SELECT commands. See sendSelect().
      *
      * @param network the network.
      * @param station the station.
@@ -401,6 +405,8 @@ public class SeedlinkReader {
 
     /**
      * Send a SELECT command for the given location-channel and with type of 'D'.
+     * In the Seedlink protocol, a STATION command should be followed by one or more
+     * SELECT commands. See sendSelect().
      * @param locationChannel the combined location and channel, eg 00HHZ.
      * @throws SeedlinkException
      * @throws IOException
@@ -411,6 +417,8 @@ public class SeedlinkReader {
 
     /**
      * Send a SELECT command for the given location-channel and type.
+     * In the Seedlink protocol, one or more SELECT commands should follow a STATION command. See
+     * sendStation().
      * @param locationChannel the combined location and channel, eg 00HHZ.
      * @param type the data type.
      * @throws SeedlinkException
