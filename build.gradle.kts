@@ -4,7 +4,7 @@ import org.gradle.crypto.checksum.Checksum
 
 plugins {
   id("edu.sc.seis.version-class") version "1.2.2"
-  id("org.gradle.crypto.checksum") version "1.3.0"
+  id("org.gradle.crypto.checksum") version "1.4.0"
   "java-library"
   eclipse
   `project-report`
@@ -13,7 +13,7 @@ plugins {
   application
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
-    id("com.github.ben-manes.versions") version "0.42.0"
+  id("com.github.ben-manes.versions") version "0.45.0"
 }
 
 tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
@@ -113,20 +113,20 @@ dependencies {
     clientImplementation("info.picocli:picocli:4.7.1")
 
     annotationProcessor("info.picocli:picocli-codegen:4.7.1")
-    implementation( "org.slf4j:slf4j-api:1.7.35")
-    clientImplementation( "org.slf4j:slf4j-reload4j:1.7.35")
-    implementation( "com.fasterxml.woodstox:woodstox-core:6.2.8")
-    implementation( "org.apache.httpcomponents:httpclient:4.5.13")
+    implementation( "org.slf4j:slf4j-api:1.7.36")
+    clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
+    implementation( "com.fasterxml.woodstox:woodstox-core:6.5.0")
+    implementation( "org.apache.httpcomponents:httpclient:4.5.14")
 
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
 
 }
 
