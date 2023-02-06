@@ -33,11 +33,11 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=""+SeedlinkReader.DEFAULT_PORT)
     public Integer port = SeedlinkReader.DEFAULT_PORT;
     
-    @Option(names= {"-n", "--network"}, description="list of networks to search", defaultValue = "", split = ",")
+    @Option(names= {"-n", "--network"}, description="list of networks to search", defaultValue = "*", split = ",")
     List<String> network = new ArrayList<String>();
     @Option(names= {"-s", "--station"}, description="list of stations to search", defaultValue = "*", split = ",")
     List<String> station = new ArrayList<String>();;
-    @Option(names= {"-l", "--location"}, description="list of locations to search", defaultValue = "??", split = ",")
+    @Option(names= {"-l", "--location"}, description="list of locations to search", defaultValue = "  ,??", split = ",")
     List<String> location = new ArrayList<String>();;
     @Option(names= {"-c", "--channel"}, description="list of channels to search", defaultValue = "???", split = ",")
     List<String> channel = new ArrayList<String>();;
