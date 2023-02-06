@@ -380,7 +380,6 @@ public class SeedlinkReader {
      * @throws IOException
      */
     public void select(String network, String station, String location, String channel, String type) throws SeedlinkException, IOException {
-        if ( location.length() == 0) {location = "??";}
         if ( channel.length() == 0) {channel = "???";}
         sendStation(network, station);
         sendSelect(location + channel, type);
