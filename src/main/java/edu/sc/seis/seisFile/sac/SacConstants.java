@@ -1,6 +1,8 @@
 package edu.sc.seis.seisFile.sac;
 
-
+/**
+ * Constants useful for SAC files.
+ */
 public class SacConstants {
     
     public static boolean isUndef(float f) {

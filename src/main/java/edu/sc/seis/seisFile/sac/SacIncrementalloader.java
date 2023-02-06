@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
+/**
+ * Incrementally read data from large SAC files to avoid reading entire file into memory at once.
+ */
 public class SacIncrementalloader {
     
     public SacIncrementalloader(String filename) throws IOException {
