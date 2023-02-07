@@ -1,4 +1,4 @@
-:includedir: /home/crotwell/Code/seisFile/build/picocli/man
+:includedir: build/picocli/man
 //include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-full-manpage]
 
 include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-header]
