@@ -1,4 +1,5 @@
 :includedir: build/picocli/man
+:exampledir: src/doc/man-templates/example_output
 //include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-full-manpage]
 
 include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-header]
@@ -18,3 +19,13 @@ include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-sec
 include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-exit-status]
 
 include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-footer]
+
+== Examples
+
+Ask for a few packets of HHZ data from station CO.HODGE, and output to a file.
+
+[source,bash]
+....
+include::{exampledir}/seedlinkclient_ex1_out[]
+....
+
