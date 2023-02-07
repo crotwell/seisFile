@@ -357,7 +357,7 @@ for (key in scriptNames.keys) {
     val outDir =  File(project.buildDir,  "picocli/man")
     print(outTemplateDir)
     print(outDir)
-    args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key], "-v")
+    args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key], "-v", "--force")
     dependsOn += tasks.getByName("compileJava")
     inputs.dir("src/client")
     outputs.files(File(outTemplateDir, scriptNames[key]+".adoc"))
