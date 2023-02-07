@@ -452,8 +452,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
                [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>] [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>]
                [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>] [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>]
-               [<strong>-c</strong>=<em>&lt;channel&gt;</em>]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>]&#8230;&#8203;
-               [<strong>-s</strong>=<em>&lt;station&gt;</em>]&#8230;&#8203;</p>
+               [<strong>-c</strong>=<em>&lt;channel&gt;</em>[,<em>&lt;channel&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>[,
+               <em>&lt;location&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>[,<em>&lt;network&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-s</strong>=<em>&lt;station&gt;</em>
+               [,<em>&lt;station&gt;</em>&#8230;&#8203;]]&#8230;&#8203;</p>
 </div>
 </div>
 </div>
@@ -483,7 +484,7 @@ and information about its use at IRIS here
 <dd>
 <p>Limit results to time series samples on or after the specified start time</p>
 </dd>
-<dt class="hdlist1"><strong>-c</strong>, <strong>--channel</strong>=<em>&lt;channel&gt;</em></dt>
+<dt class="hdlist1"><strong>-c</strong>, <strong>--channel</strong>=<em>&lt;channel&gt;</em>[,<em>&lt;channel&gt;</em>&#8230;&#8203;]</dt>
 <dd>
 <p>list of channels to search</p>
 </dd>
@@ -507,7 +508,7 @@ and information about its use at IRIS here
 <dd>
 <p>info typ, ex STREAMS</p>
 </dd>
-<dt class="hdlist1"><strong>-l</strong>, <strong>--location</strong>=<em>&lt;location&gt;</em></dt>
+<dt class="hdlist1"><strong>-l</strong>, <strong>--location</strong>=<em>&lt;location&gt;</em>[,<em>&lt;location&gt;</em>&#8230;&#8203;]</dt>
 <dd>
 <p>list of locations to search</p>
 </dd>
@@ -515,7 +516,7 @@ and information about its use at IRIS here
 <dd>
 <p>number of packets to receive before ending the connection, defaults to 10</p>
 </dd>
-<dt class="hdlist1"><strong>-n</strong>, <strong>--network</strong>=<em>&lt;network&gt;</em></dt>
+<dt class="hdlist1"><strong>-n</strong>, <strong>--network</strong>=<em>&lt;network&gt;</em>[,<em>&lt;network&gt;</em>&#8230;&#8203;]</dt>
 <dd>
 <p>list of networks to search</p>
 </dd>
@@ -527,7 +528,7 @@ and information about its use at IRIS here
 <dd>
 <p>port to connect to, defaults to IRIS, 18000</p>
 </dd>
-<dt class="hdlist1"><strong>-s</strong>, <strong>--station</strong>=<em>&lt;station&gt;</em></dt>
+<dt class="hdlist1"><strong>-s</strong>, <strong>--station</strong>=<em>&lt;station&gt;</em>[,<em>&lt;station&gt;</em>&#8230;&#8203;]</dt>
 <dd>
 <p>list of stations to search</p>
 </dd>
@@ -557,31 +558,33 @@ and information about its use at IRIS here
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
 send 'HELLO'
-SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-IRIS DMC RTSERVE SEA Ring Server
-line 1 :SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-line 2 :IRIS DMC RTSERVE SEA Ring Server
+SeedLink v3.1 (2018.078 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
+IRIS DMC RTSERVE3 ADC1 Ring Server
+line 1 :SeedLink v3.1 (2018.078 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
+line 2 :IRIS DMC RTSERVE3 ADC1 Ring Server
 send 'STATION HODGE CO'
 OK
-send 'SELECT HHZ.D'
+send 'SELECT   HHZ.D'
+OK
+send 'SELECT ??HHZ.D'
 OK
 send 'DATA'
 OK
 send 'END'
 hasNext(): blocking read for 3 bytes, available=0
-readPacket(): blocking read for 520 bytes, available=2080
- Got a packet: A9E4F1  CO  HODGE  00  HHZ  2021,161,18:57:22.1400
-D CO.HODGE.00.HHZ 2021,161,18:57:22.1400  4.36 436
+readPacket(): blocking read for 520 bytes, available=4680
+ Got a packet: D00BCC  CO  HODGE  00  HHZ  2023,038,17:31:47.6700
+D CO.HODGE.00.HHZ 2023,038,17:31:47.6700  4.13 413
+hasNext(): blocking read for 3 bytes, available=4160
+readPacket(): blocking read for 520 bytes, available=4160
+ Got a packet: D00BCD  CO  HODGE  00  HHZ  2023,038,17:31:51.8000
+D CO.HODGE.00.HHZ 2023,038,17:31:51.8000  3.86 386
 hasNext(): blocking read for 3 bytes, available=3640
 readPacket(): blocking read for 520 bytes, available=3640
- Got a packet: A9E4F2  CO  HODGE  00  HHZ  2021,161,18:57:26.5000
-D CO.HODGE.00.HHZ 2021,161,18:57:26.5000  4.24 424
-hasNext(): blocking read for 3 bytes, available=3120
-readPacket(): blocking read for 520 bytes, available=3120
- Got a packet: A9E4F3  CO  HODGE  00  HHZ  2021,161,18:57:30.7400
-D CO.HODGE.00.HHZ 2021,161,18:57:30.7400  4.45 445
+ Got a packet: D00BCE  CO  HODGE  00  HHZ  2023,038,17:31:55.6600
+D CO.HODGE.00.HHZ 2023,038,17:31:55.6600  3.67 367
 send 'BYE'
-Finished: 2021-06-10T18:58:05.610995Z</code></pre>
+Finished: 2023-02-07T17:32:42.555035Z</code></pre>
 </div>
 </div>
 </div>
@@ -589,8 +592,8 @@ Finished: 2021-06-10T18:58:05.610995Z</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.0.4 2022-02-10T14 29 00Z (2097 70bc363)<br>
-Last updated 2021-07-16 12:49:46 -0400
+Version edu.sc.seis seisFile 2.0.5 2023-02-06T22 41 41Z (2126 bd40281c)<br>
+Last updated 2023-02-07 10:26:25 -0500
 </div>
 </div>
 </body>
