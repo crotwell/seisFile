@@ -15,7 +15,7 @@ public class Station extends BaseNodeType {
     public Station() {}
     
     public Station(Network network, String code) {
-        this.network = network;
+        this.setNetwork(network);
         this.code = code;
     }
 
@@ -166,6 +166,7 @@ public class Station extends BaseNodeType {
 
     public void setNetwork(Network network) {
         this.network = network;
+        this.networkId = network.getNetworkId();
     }
     
     public void setCreationDate(String creationDate) {
