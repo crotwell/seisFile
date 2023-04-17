@@ -163,7 +163,7 @@ public class Channel extends BaseNodeType {
     }
 
     public String getNetworkCode() {
-        return getNetworkId();
+        return getNetwork().getNetworkCode();
     }
 
     public String getNetworkId() {
