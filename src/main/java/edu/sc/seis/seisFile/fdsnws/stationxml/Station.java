@@ -132,9 +132,13 @@ public class Station extends BaseNodeType {
     }
 
     public String getNetworkCode() {
-        return getNetworkId();
+        return getNetwork().getNetworkCode();
     }
 
+    /**
+     * Same as getNetworkCode for 2 char permanent networks, but appends the year for temp networks.
+     * @return
+     */
     public String getNetworkId() {
         return getNetwork().getNetworkId();
     }
