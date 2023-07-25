@@ -14,8 +14,12 @@ public class WaveformStreamID {
         StartElement startE = StaxUtil.expectStartElement(elementName, reader);
         networkCode = StaxUtil.pullAttribute(startE, QuakeMLTagNames.networkCode);
         stationCode = StaxUtil.pullAttribute(startE, QuakeMLTagNames.stationCode);
-        locationCode = StaxUtil.pullAttribute(startE, QuakeMLTagNames.locationCode);
-        channelCode = StaxUtil.pullAttribute(startE, QuakeMLTagNames.channelCode);
+        locationCode = StaxUtil.pullAttributeIfExists(startE, QuakeMLTagNames.locationCode);
+        channelCode = StaxUtil.pullAttributeIfExists(startE, QuakeMLTagNames.channelCode);
+        if (channelCode != null && locationCode == null) {
+            // no chan means "station pick"? but chan without loc means empty, space space style loc code
+            locationCode = "";
+        }
         resourceReference = StaxUtil.pullContiguousText(reader); //eats the end element, ignores any sub elements
     }
     
