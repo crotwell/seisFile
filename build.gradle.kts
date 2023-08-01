@@ -73,7 +73,7 @@ publishing {
       maven {
           val releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
           val snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
-          url = uri(if ( version.toString().toLowerCase().endsWith("snapshot")) snapshotRepo else releaseRepo)
+          url = uri(if ( version.toString().lowercase().endsWith("snapshot")) snapshotRepo else releaseRepo)
           name = "ossrh"
           // credentials in gradle.properties as ossrhUsername and ossrhPassword
           credentials(PasswordCredentials::class)
@@ -350,8 +350,8 @@ for (key in scriptNames.keys) {
   tasks.register<JavaExec>("genManTemplate"+key) {
     description = "generate picocli/asciidoctor template for man pages "+key
     group = "Documentation"
-    classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
-    main = "picocli.codegen.docgen.manpage.ManPageGenerator"
+    classpath = configurations.getByName("annotationProcessor") + sourceSets.getByName("client").runtimeClasspath
+      getMainClass().set("picocli.codegen.docgen.manpage.ManPageGenerator")
     print("genManTemplate"+key)
     val outTemplateDir =  File(project.projectDir,  "src/doc/man-templates")
     val outDir =  File(project.buildDir,  "picocli/man")
@@ -372,8 +372,8 @@ for (key in scriptNames.keys) {
   val adocTask = tasks.register<JavaExec>("generateManpageAsciiDoc"+key) {
     description = "generate picocli man pages for "+key
     group = "Documentation"
-    classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
-    mainClass.set("picocli.codegen.docgen.manpage.ManPageGenerator")
+    classpath = configurations.getByName("annotationProcessor") + sourceSets.getByName("client").runtimeClasspath
+      getMainClass().set("picocli.codegen.docgen.manpage.ManPageGenerator")
     val outDir =  File(project.buildDir,  "picocli/man")
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
@@ -390,7 +390,7 @@ for (key in scriptNames.keys) {
   val bashautoTask = tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
     classpath = sourceSets.getByName("client").runtimeClasspath
-    mainClass.set("picocli.AutoComplete")
+      getMainClass().set("picocli.AutoComplete")
     val outDir =  File(project.buildDir,  "picocli/bash_completion")
     val outFile = File(outDir, key+"_completion")
     args = listOf(scriptNames[key], "-f", "-o", outFile.path)
