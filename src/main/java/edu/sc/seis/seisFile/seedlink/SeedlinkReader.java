@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.PushbackInputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.Instant;
@@ -54,7 +55,8 @@ public class SeedlinkReader {
     }
     
     private void initConnection() throws UnknownHostException, IOException {
-        socket = new Socket(host, port);
+        socket = new Socket();
+        socket.connect(new InetSocketAddress(host, port), timeoutSeconds*1000);
         socket.setSoTimeout(timeoutSeconds*1000);
         out = new BufferedOutputStream(socket.getOutputStream());
         in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
