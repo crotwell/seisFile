@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.PushbackInputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -71,7 +72,8 @@ public class DataLink {
     private void initConnection() throws DataLinkException {
         try {
             verbose("initConnection to "+host+":"+port);
-            socket = new Socket(host, port);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(host, port), this.connectTimeoutSeconds*1000);
             socket.setSoTimeout(timeoutSeconds*1000);
             out = new BufferedOutputStream(socket.getOutputStream());
             in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
@@ -422,6 +424,8 @@ public class DataLink {
     int port;
 
     int timeoutSeconds = DEFAULT_TIMEOUT_SECOND;
+
+    int connectTimeoutSeconds = DEFAULT_TIMEOUT_SECOND;
 
 
     public static final String IRIS_HOST = "rtserve.iris.washington.edu";
