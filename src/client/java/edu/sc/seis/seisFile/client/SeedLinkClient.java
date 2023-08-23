@@ -81,13 +81,10 @@ public class SeedLinkClient extends AbstractClient {
             dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
         }
         SeedlinkReader reader = new SeedlinkReader(host, port, timeoutSec, verbose);
+        reader.setVerboseWriter(out);
         try {
             if (verbose) {
-                reader.setVerboseWriter(out);
                 String[] lines = reader.sendHello();
-                out.println("line 1 :" + lines[0]);
-                out.println("line 2 :" + lines[1]);
-                out.flush();
             }
             if (infoType.length() != 0 || ioutFile.length() != 0)
             {
@@ -111,20 +108,27 @@ public class SeedLinkClient extends AbstractClient {
                 }
             }
             if (maxRecords != 0) {
-                for (int n = 0; n < network.size(); n++) {
-                    for (int s = 0; s < station.size(); s++) {
-                        reader.sendStation(network.get(n), station.get(s));
-                        for (int l = 0; l < location.size(); l++) {
-                            for (int c = 0; c < channel.size(); c++) {
-                                reader.sendSelect(location.get(l)+ channel.get(c));
-                            }
-                        }
-
+                ArrayList<String> locChanList = new ArrayList<>();
+                for (int l = 0; l < location.size(); l++) {
+                    for (int c = 0; c < channel.size(); c++) {
+                        locChanList.add(location.get(l)+ channel.get(c));
                     }
                 }
-                reader.startData(start, end);
+                for (int n = 0; n < network.size(); n++) {
+                    for (int s = 0; s < station.size(); s++) {
+                        if (start == null) {
+                            reader.selectData(network.get(n), station.get(s), locChanList);
+                        } else if (end == null) {
+                            reader.selectTime(network.get(n), station.get(s), locChanList, start);
+                        } else {
+                            reader.selectTime(network.get(n), station.get(s), locChanList, start, end);
+                        }
+                    }
+                }
+                reader.endHandshake();
                 int i = 0;
                 try {
+                    System.out.println(maxRecords+" "+((maxRecords == -1 || i < maxRecords) && reader.hasNext()));
                     while ((maxRecords == -1 || i < maxRecords) && reader.hasNext()) {
                         SeedlinkPacket slp = reader.readPacket();
                         DataRecord dr = slp.getMiniSeed();
@@ -141,6 +145,10 @@ public class SeedLinkClient extends AbstractClient {
                     }
                 } catch(EOFException e) {
                     // done I guess
+                    if (verbose) {
+                        out.println("Caught EOFException...");
+                        e.printStackTrace();
+                    }
                 }
             }
         } finally {

@@ -11,6 +11,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
+ * Implements the DataLink protocol, defined at:
+ * https://iris-edu.github.io/libdali/datalink-protocol.html
+ *
  * Philip Crotwell
  * University of South Carolina, 2019
  * http://www.seis.sc.edu
