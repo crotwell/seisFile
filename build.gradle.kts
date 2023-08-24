@@ -5,7 +5,7 @@ import org.gradle.crypto.checksum.Checksum
 plugins {
   id("edu.sc.seis.version-class") version "1.2.2"
   id("org.gradle.crypto.checksum") version "1.4.0"
-  "java-library"
+  id("java-library")
   eclipse
   `project-report`
   `maven-publish`
@@ -13,7 +13,7 @@ plugins {
   application
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
-  id("com.github.ben-manes.versions") version "0.45.0"
+  id("com.github.ben-manes.versions") version "0.47.0"
 }
 
 tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.0.7-SNAPSHOT"
+version = "2.1.0-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -115,7 +115,7 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:4.7.4")
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
-    implementation( "com.fasterxml.woodstox:woodstox-core:6.5.0")
+    implementation( "com.fasterxml.woodstox:woodstox-core:6.5.1")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
 
 
