@@ -117,7 +117,7 @@ dependencies {
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
     implementation( "com.fasterxml.woodstox:woodstox-core:6.5.1")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
-
+    implementation("org.json:json:20220924")
 
     // Use JUnit Jupiter API for testing.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
