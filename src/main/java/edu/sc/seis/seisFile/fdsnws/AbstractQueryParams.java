@@ -126,8 +126,25 @@ public abstract class AbstractQueryParams {
         return params;
     }
 
+    /** sets the scheme, usually to either http or https. If the scheme is https and the current port
+     * is 80, the port is reset to 443 and vice versa.
+     * @param scheme either http or https
+     */
     public void setScheme(String scheme) {
         this.scheme = scheme;
+        if (scheme.equalsIgnoreCase( "https") && getPort() == 80) {
+            port = 443;
+        } else if (scheme.equalsIgnoreCase("http") && getPort() == 443) {
+            port = 80;
+        }
+    }
+
+    public void useHTTPS() {
+        setScheme("https");
+    }
+
+    public void useHTTP() {
+        setScheme("http");
     }
 
     public String getScheme() {

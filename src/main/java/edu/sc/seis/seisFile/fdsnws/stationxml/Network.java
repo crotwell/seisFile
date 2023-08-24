@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.fdsnws.stationxml;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLEventReader;
@@ -38,6 +39,8 @@ public class Network extends BaseNodeType {
                 } else if (elName.equals(StationXMLTagNames.STATION)) {
                     stations = new StationIterator(reader, this);
                     break;
+                } else if (elName.equals(StationXMLTagNames.OPERATOR)) {
+                    operatorList.add(new Operator(reader));
                 } else {
                     StaxUtil.skipToMatchingEnd(reader);
                 }
@@ -131,7 +134,9 @@ public class Network extends BaseNodeType {
 
 
     int totalNumStations, selectedNumStations;
-    
+
+    List<Operator> operatorList = new ArrayList<Operator>();
+
     StationIterator stations = new ListStationIterator(new ArrayList<Station>()); // init to empty
     
 }

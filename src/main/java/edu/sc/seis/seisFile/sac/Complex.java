@@ -1,7 +1,9 @@
 package edu.sc.seis.seisFile.sac;
 
 
-
+/**
+ * Simple class to hold complex (real and imaginary) numbers.
+ */
 public class Complex {
 
     protected double real;

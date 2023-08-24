@@ -4,8 +4,8 @@ import org.gradle.crypto.checksum.Checksum
 
 plugins {
   id("edu.sc.seis.version-class") version "1.2.2"
-  id("org.gradle.crypto.checksum") version "1.3.0"
-  "java-library"
+  id("org.gradle.crypto.checksum") version "1.4.0"
+  id("java-library")
   eclipse
   `project-report`
   `maven-publish`
@@ -13,7 +13,7 @@ plugins {
   application
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
-    id("com.github.ben-manes.versions") version "0.42.0"
+  id("com.github.ben-manes.versions") version "0.47.0"
 }
 
 tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.0.5-SNAPSHOT"
+version = "2.1.0-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -73,7 +73,7 @@ publishing {
       maven {
           val releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
           val snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
-          url = uri(if ( version.toString().toLowerCase().endsWith("snapshot")) snapshotRepo else releaseRepo)
+          url = uri(if ( version.toString().lowercase().endsWith("snapshot")) snapshotRepo else releaseRepo)
           name = "ossrh"
           // credentials in gradle.properties as ossrhUsername and ossrhPassword
           credentials(PasswordCredentials::class)
@@ -110,23 +110,23 @@ configurations["clientTestRuntimeOnly"].extendsFrom(configurations["clientRuntim
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.1.1")
-    clientImplementation("info.picocli:picocli:4.6.3")
+    clientImplementation("info.picocli:picocli:4.7.4")
 
-    annotationProcessor("info.picocli:picocli-codegen:4.6.3")
-    implementation( "org.slf4j:slf4j-api:1.7.35")
-    clientImplementation( "org.slf4j:slf4j-reload4j:1.7.35")
-    implementation( "com.fasterxml.woodstox:woodstox-core:6.2.8")
-    implementation( "org.apache.httpcomponents:httpclient:4.5.13")
-    implementation("org.json:json:20220924")
+    annotationProcessor("info.picocli:picocli-codegen:4.7.4")
+    implementation( "org.slf4j:slf4j-api:1.7.36")
+    clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
+    implementation( "com.fasterxml.woodstox:woodstox-core:6.5.1")
+    implementation( "org.apache.httpcomponents:httpclient:4.5.14")
+
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
 
 }
 
@@ -351,12 +351,17 @@ for (key in scriptNames.keys) {
   tasks.register<JavaExec>("genManTemplate"+key) {
     description = "generate picocli/asciidoctor template for man pages "+key
     group = "Documentation"
-    classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
-    main = "picocli.codegen.docgen.manpage.ManPageGenerator"
+    classpath = configurations.getByName("annotationProcessor") + sourceSets.getByName("client").runtimeClasspath
+      getMainClass().set("picocli.codegen.docgen.manpage.ManPageGenerator")
+    print("genManTemplate"+key)
     val outTemplateDir =  File(project.projectDir,  "src/doc/man-templates")
     val outDir =  File(project.buildDir,  "picocli/man")
-    args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key])
+    print(outTemplateDir)
+    print(outDir)
+    args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key], "-v", "--force")
     dependsOn += tasks.getByName("compileJava")
+    inputs.dir("src/client")
+    outputs.files(File(outTemplateDir, scriptNames[key]+".adoc"))
     doLast {
         mkdir(outTemplateDir)
         mkdir(outDir)
@@ -368,8 +373,8 @@ for (key in scriptNames.keys) {
   val adocTask = tasks.register<JavaExec>("generateManpageAsciiDoc"+key) {
     description = "generate picocli man pages for "+key
     group = "Documentation"
-    classpath = configurations.annotationProcessor + sourceSets.getByName("client").runtimeClasspath
-    mainClass.set("picocli.codegen.docgen.manpage.ManPageGenerator")
+    classpath = configurations.getByName("annotationProcessor") + sourceSets.getByName("client").runtimeClasspath
+      getMainClass().set("picocli.codegen.docgen.manpage.ManPageGenerator")
     val outDir =  File(project.buildDir,  "picocli/man")
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
@@ -386,7 +391,7 @@ for (key in scriptNames.keys) {
   val bashautoTask = tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
     classpath = sourceSets.getByName("client").runtimeClasspath
-    mainClass.set("picocli.AutoComplete")
+      getMainClass().set("picocli.AutoComplete")
     val outDir =  File(project.buildDir,  "picocli/bash_completion")
     val outFile = File(outDir, key+"_completion")
     args = listOf(scriptNames[key], "-f", "-o", outFile.path)

@@ -47,6 +47,25 @@ public class QuakeMLTest {
         
         
     }
+
+
+    @Test
+    public void test_noloc() throws IOException, SeisFileException, XMLStreamException, StationXMLException {
+        String filename = "noloc_pick.qml";
+        URL url = loadResourceURL(filename);
+
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        XMLEventReader r = factory.createXMLEventReader(url.toString(), loadResource(filename));
+
+        Quakeml qml = new Quakeml(r);
+        EventParameters ep = qml.getEventParameters();
+        EventIterator it = ep.getEvents();
+        Event e = it.next();
+        for (Pick p : e.getPickList()) {
+            WaveformStreamID wid = p.getWaveformID();
+            assertEquals(wid.locationCode == null, wid.channelCode == null, "loc null only if chan is too");
+        }
+    }
     
     private void checkEvent(int num, EventIterator it, String time, float lat, float lon, float depth, float mag) throws XMLStreamException, SeisFileException {
         assertTrue(it.hasNext(), "has event");

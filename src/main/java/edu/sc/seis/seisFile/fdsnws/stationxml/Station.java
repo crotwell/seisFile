@@ -15,7 +15,7 @@ public class Station extends BaseNodeType {
     public Station() {}
     
     public Station(Network network, String code) {
-        this.network = network;
+        this.setNetwork(network);
         this.code = code;
     }
 
@@ -132,9 +132,13 @@ public class Station extends BaseNodeType {
     }
 
     public String getNetworkCode() {
-        return getNetworkId();
+        return getNetwork().getNetworkCode();
     }
 
+    /**
+     * Same as getNetworkCode for 2 char permanent networks, but appends the year for temp networks.
+     * @return
+     */
     public String getNetworkId() {
         return getNetwork().getNetworkId();
     }
@@ -166,6 +170,7 @@ public class Station extends BaseNodeType {
 
     public void setNetwork(Network network) {
         this.network = network;
+        this.networkId = network.getNetworkId();
     }
     
     public void setCreationDate(String creationDate) {

@@ -261,7 +261,7 @@ public class DataHeader extends ControlHeader {
         if (stationIdentifierString == null) {
             stationIdentifierString = new String(stationIdentifier);
         }
-        return stationIdentifierString;
+        return stationIdentifierString.trim();
     }
 
     /**
@@ -350,7 +350,7 @@ public class DataHeader extends ControlHeader {
         if (networkCodeString == null) {
             networkCodeString = new String(networkCode);
         }
-        return networkCodeString;
+        return networkCodeString.trim();
     }
 
     /**

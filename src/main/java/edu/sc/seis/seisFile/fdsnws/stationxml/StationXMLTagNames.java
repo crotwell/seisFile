@@ -7,6 +7,7 @@ public final class StationXMLTagNames {
     public static final String CURRENT_SCHEMALOCATION_VERSION = "http://www.fdsn.org/xml/station/1";
     public static final String CURRENT_SCHEMALOCATION_LOCATION = "http://www.fdsn.org/xml/station/fdsn-station-1.1.xsd";
     public static final String CURRENT_SCHEMA_VERSION = "1.1";
+    public static final String CURRENT_SCHEMA_VERSION_ALT = "1.2";
 
     public static final String PREV_SCHEMALOCATION_VERSION = "http://www.fdsn.org/xml/station/1";
     public static final String PREV_SCHEMALOCATION_LOCATION = "http://www.fdsn.org/xml/station/fdsn-station-1.0.xsd";

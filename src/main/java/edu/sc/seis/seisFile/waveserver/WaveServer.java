@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -159,7 +160,8 @@ public class WaveServer {
 
     protected Socket getSocket() throws IOException {
         if (socket == null && host != null) {
-            socket = new Socket(getHost(), getPort());
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(getHost(), getPort()), this.connectTimeoutSeconds*1000);
             socket.setSoTimeout(timeoutSeconds * 1000);
         }
         return socket;
@@ -260,6 +262,8 @@ public class WaveServer {
     DataInputStream in;
     
     int timeoutSeconds = DEFAULT_TIMEOUT_SECONDS;
+
+    int connectTimeoutSeconds = DEFAULT_TIMEOUT_SECONDS;;
 
     public static final int DEFAULT_TIMEOUT_SECONDS = 60;
 

@@ -96,6 +96,8 @@ public class Quakeml {
         if (response != null) {
             try {
                 response.close();
+            } catch(javax.net.ssl.SSLException e) {
+                // oh well
             } catch(Exception e) {
                 // oh well
             }

@@ -374,6 +374,8 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
         if (response != null) {
             try {
                 response.close();
+            } catch(javax.net.ssl.SSLException e) {
+                // oh well
             } catch(IOException e) {
                 logger.warn("can't close response", e);
             } finally {

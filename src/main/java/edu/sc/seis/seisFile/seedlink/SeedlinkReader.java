@@ -6,12 +6,14 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.PushbackInputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -31,14 +33,28 @@ public class SeedlinkReader {
     public SeedlinkReader() throws UnknownHostException, IOException {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
+
+    /** default of IRIS DMC */
+    public SeedlinkReader(boolean verbose) throws UnknownHostException, IOException {
+        this(DEFAULT_HOST, DEFAULT_PORT, verbose);
+    }
     
     /** uses the default port of 18000 */
     public SeedlinkReader(String host) throws UnknownHostException, IOException {
         this(host, DEFAULT_PORT);
     }
 
+    /** uses the default port of 18000 */
+    public SeedlinkReader(String host, boolean verbose) throws UnknownHostException, IOException {
+        this(host, DEFAULT_PORT, verbose);
+    }
+
     public SeedlinkReader(String host, int port) throws UnknownHostException, IOException {
         this(host, port, DEFAULT_TIMEOUT_SECOND);
+    }
+
+    public SeedlinkReader(String host, int port, boolean verbose) throws UnknownHostException, IOException {
+        this(host, port, DEFAULT_TIMEOUT_SECOND, verbose);
     }
 
     public SeedlinkReader(String host, int port, int timeoutSeconds) throws UnknownHostException, IOException {
@@ -46,15 +62,24 @@ public class SeedlinkReader {
     }
 
     public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose) throws UnknownHostException, IOException {
+        this(host, port, timeoutSeconds, verbose, timeoutSeconds);
+    }
+
+    public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose, int connectTimeoutSeconds) throws UnknownHostException, IOException {
         this.host = host;
         this.port = port;
-        this.verbose = verbose;
+        setVerbose(verbose);
         this.timeoutSeconds = timeoutSeconds;
+        this.connectTimeoutSeconds = connectTimeoutSeconds;
         initConnection();
     }
     
     private void initConnection() throws UnknownHostException, IOException {
-        socket = new Socket(host, port);
+        if (isVerbose()) {
+            getVerboseWriter().println("Init SeedLink to "+host+" "+port);
+        }
+        socket = new Socket();
+        socket.connect(new InetSocketAddress(host, port), this.connectTimeoutSeconds*1000);
         socket.setSoTimeout(timeoutSeconds*1000);
         out = new BufferedOutputStream(socket.getOutputStream());
         in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
@@ -75,17 +100,13 @@ public class SeedlinkReader {
             return false;
         }
         byte[] startBits = new byte[3];
-        if (isVerbose()) {
-            verboseWriter.println("hasNext(): blocking read for " + startBits.length + " bytes, available="
-                    + in.available());
-        }
         startBits[0] = (byte)in.read();
         startBits[1] = (byte)in.read();
         startBits[2] = (byte)in.read();
         String start = new String(startBits);
         if (start.equals("END")) {
             if (isVerbose()) {
-                verboseWriter.println("hasNext(): end received");
+                getVerboseWriter().println("END received");
             }
             return false;
         } else {
@@ -205,13 +226,14 @@ public class SeedlinkReader {
      */
     public SeedlinkPacket readPacket() throws IOException, SeedlinkException
     {
-        if (isVerbose()) {
-            verboseWriter.println("readPacket(): blocking read for " + SeedlinkPacket.PACKET_SIZE + " bytes, available="
+        if (debug) {
+            getVerboseWriter().println("readPacket(): blocking read for " + SeedlinkPacket.PACKET_SIZE + " bytes, available="
                     + in.available());
         }
         byte[] bits = new byte[SeedlinkPacket.PACKET_SIZE];
         inData.readFully(bits);
         SeedlinkPacket slp = new SeedlinkPacket(bits);
+        lastSeqNum = slp.getSeqNum();
         if (isVerbose()) {
             String packetString = EMPTY;
             try {
@@ -222,7 +244,7 @@ public class SeedlinkReader {
             } catch(SeedFormatException e) {
                 packetString = "SeedFormatExcpetion parsing packet: " + slp.getSeqNum() + e.getMessage();
             }
-            verboseWriter.println(packetString);
+            getVerboseWriter().println(packetString);
         }
         return slp;
     }
@@ -244,16 +266,18 @@ public class SeedlinkReader {
     }
 
     public void close() {
-        try {
-            send("BYE");
-        } catch (Throwable se) {
-            // oh well, already closed
-        }
-        try {
-            in.close();
-            out.close();
-        } catch (Throwable se) {
-            // oh well, already closed
+        if (out != null) {
+            try {
+                send("BYE");
+            } catch (Throwable se) {
+                // oh well, already closed
+            }
+            try {
+                in.close();
+                out.close();
+            } catch (Throwable se) {
+                // oh well, already closed
+            }
         }
         try {
             socket.close();
@@ -269,11 +293,94 @@ public class SeedlinkReader {
         return socket != null && socket.isConnected();
     }
 
+    /**
+     * Does a simple reconnect, replaying the original commands and restarting data. This does
+     * not resume from the last packet, so data may be lost that arrived during the outage. See
+     * resume to reconnect and resume data flow from the last successful packet.
+     *
+     * @throws IOException
+     * @throws SeedlinkException
+     */
     public void reconnect() throws IOException, SeedlinkException {
         close();
         initConnection();
         for (String cmd : sentCommands) {
             internalSendCmd(cmd);
+        }
+        endHandshake();
+    }
+
+    /**
+     * Resumes the connection at the last successful packet using the sequence number. Note that this assumes
+     * that sequence numbers are global, not per station. If the server uses per station sequence numbering,
+     * then the client must keep track of sequence numbers and use resume(Map) to supply the sequence numbers.
+     *
+     * @throws IOException
+     * @throws SeedlinkException
+     */
+    public void resume() throws IOException, SeedlinkException {
+        close();
+        initConnection();
+        for (String cmd : sentCommands) {
+            if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
+                internalSendCmd(cmd);
+            } else {
+                internalSendCmd(DATA_COMMAND+" "+lastSeqNum);
+            }
+        }
+        endHandshake();
+    }
+
+    /**
+     * Resumes the connection at the last successful packet using the sequence number. Note that this
+     * uses a supplied per station last seq number. The map key should be of the form
+     * NN.SSSSS where NN is the network code and SSSSS is the station code. It is also assumed that there is
+     * a DATA or TIME command in the original handshaking phase after each STATION command. Some servers allow
+     * multiple STATION commands before a DATA command, but this breaks restarting each station at the
+     * last sequence.
+     *
+     * @throws IOException
+     * @throws SeedlinkException
+     */
+    public void resume(PerStationLastSequence stationSeqMap) throws IOException, SeedlinkException {
+        close();
+        initConnection();
+        for (String k : stationSeqMap.keySet()) {
+            System.out.println("Resume: '"+k+"' "+stationSeqMap.containsKey(k));
+        }
+        String lastStation = null;
+        String lastNet = null;
+        for (String cmd : sentCommands) {
+            if (cmd.startsWith("STATION")) {
+                if (lastStation != null) {
+                    // repeated STATION without a DATA or TIME
+                    // try to send DATA anyway?
+                    if (stationSeqMap.contains(lastNet, lastStation)) {
+                        String staSeq = stationSeqMap.getForStation(lastNet, lastStation);
+                        internalSendCmd(DATA_COMMAND + " " + staSeq);
+                    } else {
+                        internalSendCmd(DATA_COMMAND);
+                    }
+                    lastStation = null;
+                    lastNet = null;
+                }
+                String[] splitCmd = cmd.split(" +");
+                lastStation = splitCmd[1];
+                lastNet = splitCmd[2];
+                System.out.println("Resume lastStation ="+lastNet+"."+lastStation);
+            }
+            if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
+                internalSendCmd(cmd);
+            } else {
+                if (stationSeqMap.contains(lastNet, lastStation)) {
+                    String staSeq = stationSeqMap.getForStation(lastNet, lastStation);
+                    internalSendCmd(DATA_COMMAND + " " + staSeq);
+                } else {
+                    System.out.println("Last for station not found: "+lastStation);
+                    internalSendCmd(DATA_COMMAND);
+                }
+                lastStation = null;
+            }
         }
         endHandshake();
     }
@@ -300,7 +407,7 @@ public class SeedlinkReader {
             }
         }
         if (isVerbose()) {
-            verboseWriter.println(buf);
+            getVerboseWriter().println(buf);
         }
 
         // next should now be a \n, so just eat it
@@ -326,7 +433,8 @@ public class SeedlinkReader {
     }
 
     /**
-     * Select the stream.
+     * Select the stream. This sends a STATION followed by a SELECT command.
+     * @deprecated use selectData() or selectTime() instead
      * @param network the network.
      * @param station the station.
      * @param location the location or empty if none.
@@ -334,12 +442,70 @@ public class SeedlinkReader {
      * @throws SeedlinkException if a SeedLink error occurs.
      * @throws IOException if an I/O Exception occurs.
      */
+    @Deprecated
     public void select(String network, String station, String location, String channel) throws SeedlinkException, IOException {
     	select(network, station, location, channel, DATA_TYPE);
     }
 
+    public void selectData(String network, String station, List<String> locchan) throws SeedlinkException, IOException {
+        selectDataOfType(network, station, locchan, DATA_TYPE);
+    }
+
+    public void selectDataOfType(String network, String station, List<String> locchan, String type) throws SeedlinkException, IOException {
+        sendStation(network, station);
+        if (locchan.size() == 0) {
+            sendSelect("???");
+        }
+        for(String lc : locchan) {
+            sendSelect(lc, type);
+        }
+        sendData();
+    }
+
+    public void selectData(String network, String station, List<String> locchan, String seqNum) throws SeedlinkException, IOException {
+        selectDataOfType(network, station, locchan, seqNum, DATA_TYPE);
+    }
+
+    public void selectDataOfType(String network, String station, List<String> locchan, String seqNum, String type) throws SeedlinkException, IOException {
+        sendStation(network, station);
+        for(String lc : locchan) {
+            sendSelect(lc, type);
+        }
+        sendData();
+    }
+
+    public void selectData(String network, String station, List<String> locchan, Instant start) throws SeedlinkException, IOException {
+        selectDataOfType(network, station, locchan, start, DATA_TYPE);
+    }
+
+    public void selectDataOfType(String network, String station, List<String> locchan, Instant start, String type) throws SeedlinkException, IOException {
+        sendStation(network, station);
+        for(String lc : locchan) {
+            sendSelect(lc, type);
+        }
+        sendData(start);
+    }
+
+    public void selectTime(String network, String station, List<String> locchan, Instant start) throws SeedlinkException, IOException {
+        selectTimeOfType(network, station, locchan, start, null, DATA_TYPE);
+    }
+
+    public void selectTime(String network, String station, List<String> locchan, Instant start, Instant end) throws SeedlinkException, IOException {
+        selectTimeOfType(network, station, locchan, start, end, DATA_TYPE);
+    }
+
+    public void selectTimeOfType(String network, String station, List<String> locchan, Instant start, Instant end, String type) throws SeedlinkException, IOException {
+        sendStation(network, station);
+        for(String lc : locchan) {
+            sendSelect(lc, type);
+        }
+        sendTime(start, end);
+    }
+
     /**
-     * Select the stream.
+     * Utility function to select the stream. This sends a STATION followed by a SELECT command.
+     *
+     * @deprecated use selectData() or selectTime() instead
      * @param network the network.
      * @param station the station.
      * @param location the location or empty if none.
@@ -348,16 +514,63 @@ public class SeedlinkReader {
      * @throws SeedlinkException
      * @throws IOException
      */
+    @Deprecated
     public void select(String network, String station, String location, String channel, String type) throws SeedlinkException, IOException {
-        sendCmd("STATION " + station + " " + network);
-        sendCmd("SELECT " + location + channel + "." + type);
+        if ( channel.length() == 0) {channel = "???";}
+        sendStation(network, station);
+        sendSelect(location + channel, type);
     }
- 
+
+    /**
+     * Send a STATION command for the given network and station. If either is length zero, a wildcard of "*"
+     * is inserted in its place.
+     * In the Seedlink protocol, a STATION command should be followed by one or more
+     * SELECT commands. See sendSelect().
+     *
+     * @param network the network.
+     * @param station the station.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void sendStation(String network, String station) throws SeedlinkException, IOException {
+        if ( network.length() == 0) {network = "*";}
+        if ( station.length() == 0) {station = "*";}
+        sendCmd("STATION " + station + " " + network);
+    }
+
+    /**
+     * Send a SELECT command for the given location-channel and with type of 'D'.
+     * In the Seedlink protocol, a STATION command should be followed by one or more
+     * SELECT commands. See sendStation().
+     * @param locationChannel the combined location and channel, eg 00HHZ.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void sendSelect(String locationChannel) throws SeedlinkException, IOException {
+        sendSelect( locationChannel, DATA_TYPE);
+    }
+
+    /**
+     * Send a SELECT command for the given location-channel and type.
+     * In the Seedlink protocol, one or more SELECT commands should follow a STATION command. See
+     * sendStation().
+     * @param locationChannel the combined location and channel, eg 00HHZ.
+     * @param type the data type.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void sendSelect(String locationChannel, String type) throws SeedlinkException, IOException {
+        if ( locationChannel.length() == 0) {locationChannel = "*";}
+        sendCmd("SELECT " + locationChannel + "." + type);
+    }
+
     /**
      * Start the data transfer.
+     * @deprecated use repeated selectData() or selectTime() followed by endHandshake()
      * @throws SeedlinkException if a SeedLink error occurs.
      * @throws IOException if an I/O Exception occurs.
      */
+    @Deprecated
     public void startData() throws SeedlinkException, IOException {
 		startData(EMPTY, EMPTY);
     }
@@ -367,11 +580,13 @@ public class SeedlinkReader {
      * Start the data transfer. Note the DMC only goes back 48 hours.
      * The start and end time format is year,month,day,hour,minute,second,
      * e.g. '2002,08,05,14,00'.
+     * @deprecated use repeated selectTime() followed by endHandshake()
      * @param start the start time or null if none.
      * @param end the end time or null if none (ignored if no start time.)
      * @throws SeedlinkException if a SeedLink error occurs.
      * @throws IOException if an I/O Exception occurs.
      */
+    @Deprecated
     public void startData(Instant start, Instant end) throws SeedlinkException, IOException {
         DateTimeFormatter seedlinkFormat = TimeUtils.createFormatter("yyyy,MM,dd,HH,mm,ss");
         String startStr = start == null ? "" : seedlinkFormat.format(start);
@@ -383,11 +598,13 @@ public class SeedlinkReader {
      * Start the data transfer. Note the DMC only goes back 48 hours.
      * The start and end time format is year,month,day,hour,minute,second,
      * e.g. '2002,08,05,14,00'.
+     * @deprecated use repeated selectData() followed by endHandshake()
      * @param start the start time or empty string if none.
      * @param end the end time or empty string if none (ignored if no start time.)
      * @throws SeedlinkException if a SeedLink error occurs.
      * @throws IOException if an I/O Exception occurs.
      */
+    @Deprecated
     public void startData(String start, String end) throws SeedlinkException, IOException {
     	if (start == null || start.length() == 0) {
     		sendCmd(DATA_COMMAND);
@@ -397,6 +614,49 @@ public class SeedlinkReader {
     		sendCmd(TIME_COMMAND + " " + start + " " + end);
     	}
         endHandshake(); // let 'er rip
+    }
+
+    public void sendData() throws SeedlinkException, IOException {
+        sendCmd(DATA_COMMAND);
+    }
+
+    public void sendData(String segNum) throws SeedlinkException, IOException {
+        sendCmd(DATA_COMMAND+" "+segNum);
+    }
+
+    public void sendData(Instant start) throws SeedlinkException, IOException {
+        sendData("0", start);
+    }
+
+    public void sendData(String seqNum, Instant start) throws SeedlinkException, IOException {
+        DateTimeFormatter seedlinkFormat = TimeUtils.createFormatter("yyyy,MM,dd,HH,mm,ss");
+        String startStr = start == null ? "" : seedlinkFormat.format(start);
+        sendCmd(DATA_COMMAND+" "+seqNum+" "+startStr);
+    }
+
+    public void sendTime(Instant start) throws SeedlinkException, IOException {
+        sendTime(start, null);
+    }
+
+    public void sendTime(Instant start, Instant end) throws SeedlinkException, IOException {
+        DateTimeFormatter seedlinkFormat = TimeUtils.createFormatter("yyyy,MM,dd,HH,mm,ss");
+        String startStr = start == null ? "" : seedlinkFormat.format(start);
+        String endStr = end == null ? "" : seedlinkFormat.format(end);
+        sendCmd(TIME_COMMAND+" "+startStr+" "+endStr);
+    }
+
+    /**
+     *
+     * @deprecated use repeated selectData(String network, String station, List&lt;String&gt; locchan, int seqNum) followed by endHandshake()
+     * @param seqNum
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    @Deprecated
+    public void restartData(String seqNum) throws SeedlinkException, IOException {
+        lastSeqNum = seqNum;
+        sendCmd(DATA_COMMAND+" "+lastSeqNum);
+        endHandshake();
     }
 
     protected void internalSendCmd(String cmd) throws IOException, SeedlinkException {
@@ -409,7 +669,7 @@ public class SeedlinkReader {
 
     void send(String cmd) throws IOException {
         if (isVerbose()) {
-            verboseWriter.println("send '" + cmd + "'");
+            getVerboseWriter().println("send '" + cmd + "'");
         }
         out.write((cmd + "\r").getBytes());
         out.flush();
@@ -425,11 +685,15 @@ public class SeedlinkReader {
 
     boolean verbose = false;
 
+    boolean debug = false;
+
     String host;
 
     int port;
     
     int timeoutSeconds;
+
+    int connectTimeoutSeconds;
     
     List<String> sentCommands = new ArrayList<String>();
 
@@ -442,11 +706,14 @@ public class SeedlinkReader {
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
         if (verboseWriter == null) {
-            verboseWriter = new PrintWriter(System.out);
+            verboseWriter = new PrintWriter(System.out, true);
         }
     }
 
     public PrintWriter getVerboseWriter() {
+        if (this.verbose && verboseWriter == null) {
+            verboseWriter = new PrintWriter(System.out, true);
+        }
         return verboseWriter;
     }
 
@@ -461,6 +728,8 @@ public class SeedlinkReader {
     public int getPort() {
         return port;
     }
+
+    public String lastSeqNum = "";
 
 	public static final String EMPTY = "";
 

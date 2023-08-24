@@ -1,6 +1,8 @@
 package edu.sc.seis.seisFile;
 
-
+/**
+ * Exception type for error in SeisFile.
+ */
 public class SeisFileException extends Exception {
 
     public SeisFileException() {

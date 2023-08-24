@@ -191,6 +191,7 @@ public class StaxUtil {
     }
     
     public static Instant parseDate(String text) throws StationXMLException {
+        if (text == null) { return null; }
         return TimeUtils.parseISOString(text);
     }
     

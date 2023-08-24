@@ -33,13 +33,13 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=""+SeedlinkReader.DEFAULT_PORT)
     public Integer port = SeedlinkReader.DEFAULT_PORT;
     
-    @Option(names= {"-n", "--network"}, description="list of networks to search")
+    @Option(names= {"-n", "--network"}, description="list of networks to search", defaultValue = "*", split = ",")
     List<String> network = new ArrayList<String>();
-    @Option(names= {"-s", "--station"}, description="list of stations to search")
+    @Option(names= {"-s", "--station"}, description="list of stations to search", defaultValue = "*", split = ",")
     List<String> station = new ArrayList<String>();;
-    @Option(names= {"-l", "--location"}, description="list of locations to search")
+    @Option(names= {"-l", "--location"}, description="list of locations to search", defaultValue = "  ,??", split = ",")
     List<String> location = new ArrayList<String>();;
-    @Option(names= {"-c", "--channel"}, description="list of channels to search")
+    @Option(names= {"-c", "--channel"}, description="list of channels to search", defaultValue = "???", split = ",")
     List<String> channel = new ArrayList<String>();;
     
     @Option(names = { "-b","--starttime","--start" }, description="Limit results to time series samples on or after the specified start time", converter=FloorISOTimeParser.class)
@@ -81,13 +81,10 @@ public class SeedLinkClient extends AbstractClient {
             dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
         }
         SeedlinkReader reader = new SeedlinkReader(host, port, timeoutSec, verbose);
+        reader.setVerboseWriter(out);
         try {
             if (verbose) {
-                reader.setVerboseWriter(out);
                 String[] lines = reader.sendHello();
-                out.println("line 1 :" + lines[0]);
-                out.println("line 2 :" + lines[1]);
-                out.flush();
             }
             if (infoType.length() != 0 || ioutFile.length() != 0)
             {
@@ -111,10 +108,27 @@ public class SeedLinkClient extends AbstractClient {
                 }
             }
             if (maxRecords != 0) {
-                reader.select(String.join(",", network), String.join(",", station), String.join(",", location), String.join(",", channel));
-                reader.startData(start, end);
+                ArrayList<String> locChanList = new ArrayList<>();
+                for (int l = 0; l < location.size(); l++) {
+                    for (int c = 0; c < channel.size(); c++) {
+                        locChanList.add(location.get(l)+ channel.get(c));
+                    }
+                }
+                for (int n = 0; n < network.size(); n++) {
+                    for (int s = 0; s < station.size(); s++) {
+                        if (start == null) {
+                            reader.selectData(network.get(n), station.get(s), locChanList);
+                        } else if (end == null) {
+                            reader.selectTime(network.get(n), station.get(s), locChanList, start);
+                        } else {
+                            reader.selectTime(network.get(n), station.get(s), locChanList, start, end);
+                        }
+                    }
+                }
+                reader.endHandshake();
                 int i = 0;
                 try {
+                    System.out.println(maxRecords+" "+((maxRecords == -1 || i < maxRecords) && reader.hasNext()));
                     while ((maxRecords == -1 || i < maxRecords) && reader.hasNext()) {
                         SeedlinkPacket slp = reader.readPacket();
                         DataRecord dr = slp.getMiniSeed();
@@ -131,6 +145,10 @@ public class SeedLinkClient extends AbstractClient {
                     }
                 } catch(EOFException e) {
                     // done I guess
+                    if (verbose) {
+                        out.println("Caught EOFException...");
+                        e.printStackTrace();
+                    }
                 }
             }
         } finally {
