@@ -647,7 +647,7 @@ public class SeedlinkReader {
 
     /**
      *
-     * @deprecated use repeated selectData(String network, String station, List<String> locchan, int seqNum) followed by endHandshake()
+     * @deprecated use repeated selectData(String network, String station, List&lt;String&gt; locchan, int seqNum) followed by endHandshake()
      * @param seqNum
      * @throws SeedlinkException
      * @throws IOException
