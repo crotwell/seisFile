@@ -1,5 +1,5 @@
 FDSN:XX_TEST__L_O_G, version 1, 294 bytes (format: 3)
-             start time: 2022,156,20:32:38.123456
+             start time: 2022-06-05T20:32:38.123456789Z (156)
       number of samples: 235
        sample rate (Hz): 0
                   flags: [00000000] 8 bits

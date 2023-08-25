@@ -7,7 +7,7 @@
     },
     "StartTime": "2004-07-28T20:28:09.000000000Z",
     "EncodingFormat": 0,
-    "SampleRate": 1,
+    "SampleRate": 1.0,
     "SampleCount": 0,
     "CRC": "0x7A078953",
     "PublicationVersion": 2,
