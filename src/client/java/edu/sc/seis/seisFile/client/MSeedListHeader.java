@@ -40,11 +40,11 @@ public class MSeedListHeader extends AbstractClient {
     @Option(names= {"-n", "--network"}, description="list of networks to search")
     List<String> network = new ArrayList<String>();
     @Option(names= {"-s", "--station"}, description="list of stations to search")
-    List<String> station = new ArrayList<String>();;
+    List<String> station = new ArrayList<String>();
     @Option(names= {"-l", "--location"}, description="list of locations to search")
-    List<String> location = new ArrayList<String>();;
+    List<String> location = new ArrayList<String>();
     @Option(names= {"-c", "--channel"}, description="list of channels to search")
-    List<String> channel = new ArrayList<String>();;
+    List<String> channel = new ArrayList<String>();
 
     @Option(names= { "--max"}, description="number of data records to process before ending", defaultValue="-1")
     public int maxRecords = -1;

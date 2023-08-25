@@ -33,7 +33,7 @@ public class ReferenceDataTest {
     };
 
     @Test
-    public void recordVsTextTest() throws IOException, SeedFormatException, FDSNSourceIdException {
+    public void recordVsJsonTest() throws IOException, SeedFormatException, FDSNSourceIdException {
         for (String f: fileList) {
             System.out.println(f);
             DataInputStream dis = new DataInputStream(new BufferedInputStream(ReferenceDataTest.class.getClassLoader()
@@ -63,20 +63,12 @@ public class ReferenceDataTest {
             assertEquals(jsonRec.getInt("ExtraLength"), record.getExtraHeadersByteLength());
             assertEquals(jsonRec.getInt("DataLength"), record.getDataByteLength());
 
-
-            // eh don't compare well as text due to ordering
-/*
-            String textFile = f.replaceAll(".mseed3", ".txt");
-            BufferedReader textReader = new BufferedReader(new InputStreamReader(ReferenceDataTest.class.getClassLoader()
-                    .getResourceAsStream("edu/sc/seis/seisFile/mseed3/"+textFile)));
-            StringBuilder sb = new StringBuilder(512);
-            int c=0;
-            while((c= textReader.read()) != -1) {
-                sb.append((char)c);
+            assertEquals(jsonRec.has("ExtraHeaders"), record.getExtraHeadersByteLength()>2);
+            if (jsonRec.has("ExtraHeaders")) {
+                JSONObject refEH = jsonRec.getJSONObject("ExtraHeaders");
+                JSONObject eh = record.getExtraHeaders();
+                assertTrue(refEH.similar(eh));
             }
-            String recordText = sb.toString();
-            assertEquals(recordText, record.toString());
- */
         }
     }
 }

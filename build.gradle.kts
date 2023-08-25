@@ -329,7 +329,7 @@ val scriptNames = mapOf(
   "irisvirtnet" to "edu.sc.seis.seisFile.client.IRISVirtualNetClient",
   "saclh" to "edu.sc.seis.seisFile.client.SacListHeader",
   "mseedlh" to "edu.sc.seis.seisFile.client.MSeedListHeader",
-  "mseed3" to "edu.sc.seis.seisFile.mseed3.MSeed3Convert",
+  "mseed3" to "edu.sc.seis.seisFile.client.MSeed3Client",
   "seedlinkclient" to "edu.sc.seis.seisFile.client.SeedLinkClient",
   "datalinkclient" to "edu.sc.seis.seisFile.client.DataLinkClient",
   "earthwormExportServer" to "edu.sc.seis.seisFile.client.EarthwormExportServer",

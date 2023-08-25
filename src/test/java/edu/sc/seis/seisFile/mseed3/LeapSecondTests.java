@@ -97,35 +97,35 @@ public class LeapSecondTests {
 
     @Test
     public void testGetStartTimeString() {
-        assertEquals( "1995365T235958.123000000Z", totallyBefore.getStartTimeString());
-        assertEquals( "1995365T235959.123000000Z", crossLeapStart.getStartTimeString());
-        assertEquals( "1995365T235960.123000000Z", startOnLeap.getStartTimeString());
-        assertEquals( "1995365T235959.123000000Z", endOnLeap.getStartTimeString());
-        assertEquals( "1995365T235959.123000000Z", leapInMiddle.getStartTimeString());
+        assertEquals( "1995-365T23:59:58.123Z", totallyBefore.getStartTimeString());
+        assertEquals( "1995-365T23:59:59.123Z", crossLeapStart.getStartTimeString());
+        assertEquals( "1995-365T23:59:60.123Z", startOnLeap.getStartTimeString());
+        assertEquals( "1995-365T23:59:59.123Z", endOnLeap.getStartTimeString());
+        assertEquals( "1995-365T23:59:59.123Z", leapInMiddle.getStartTimeString());
     }
 
     @Test
     public void testGetLastSampleTimeString() {
-        assertEquals("1995365T235959.023000Z", totallyBefore.getLastSampleTimeString());
+        assertEquals("1995-365T23:59:59.023Z", totallyBefore.getLastSampleTimeString());
         assertEquals( 59, crossLeapStart.getLastSampleTime().getSecond());
         assertEquals( 1, crossLeapStart.getLeapSecInRecord());
         assertEquals( 23000000, crossLeapStart.getLastSampleTime().getNano());
-        assertEquals( "1995365T235960.023000Z", crossLeapStart.getLastSampleTimeString());
+        assertEquals( "1995-365T23:59:60.023Z", crossLeapStart.getLastSampleTimeString());
         System.out.println("before "+crossLeapStart.isStartTimeInLeapSecond()+" "+crossLeapStart.getLeapSecInRecord());
-        assertEquals( "1996001T000000.023000Z", startOnLeap.getLastSampleTimeString());
+        assertEquals( "1996-001T00:00:00.023Z", startOnLeap.getLastSampleTimeString());
         System.out.println("after");
-        assertEquals("1995365T235960.023000Z", endOnLeap.getLastSampleTimeString());
+        assertEquals("1995-365T23:59:60.023Z", endOnLeap.getLastSampleTimeString());
         assertTrue( leapInMiddle.getSecond()+leapInMiddle.getSamplePeriodAsNanos() * (leapInMiddle.getNumSamples() - 1)/1000000000.0 < 61);
-        assertEquals( "1996001T000000.023000Z", leapInMiddle.getLastSampleTimeString());
+        assertEquals( "1996-001T00:00:00.023Z", leapInMiddle.getLastSampleTimeString());
     }
 
     /* can't predict next starttime due to leap seconds
     @Test
     public void testGetPredictedNextStartTimeString() {
-        assertEquals("before", "19951231T235959.123000", before.getPredictedNextStartTimeString());
-        assertEquals("startOnLeap", "19960101T000000.123000", startOnLeap.getPredictedNextStartTimeString());
-        assertEquals("endOnLeap", "19951231T235960.123000", endOnLeap.getPredictedNextStartTimeString());
-        assertEquals("leapInMiddle", "19951231T235960.623000", leapInMiddle.getPredictedNextStartTimeString());
+        assertEquals("before", "1995-1231T23:59:59.123000", before.getPredictedNextStartTimeString());
+        assertEquals("startOnLeap", "1996-0101T00:00:00.123000", startOnLeap.getPredictedNextStartTimeString());
+        assertEquals("endOnLeap", "1995-1231T23:59:60.123000", endOnLeap.getPredictedNextStartTimeString());
+        assertEquals("leapInMiddle", "1995-1231T23:59:60.623000", leapInMiddle.getPredictedNextStartTimeString());
     }
     */
 
