@@ -12,6 +12,7 @@ import picocli.CommandLine.Command;
                  FDSNStationClient.class,
                  IRISVirtualNetClient.class,
                  MSeedListHeader.class,
+                 MSeed3Client.class,
                  SacListHeader.class,
                  EarthwormExportServer.class,
                  EarthwormImportClient.class,

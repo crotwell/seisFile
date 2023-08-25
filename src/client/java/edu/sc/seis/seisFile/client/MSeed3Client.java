@@ -19,8 +19,8 @@ import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParseResult;
 
-@Command(name = "mseedlh",
-        description = "list miniseed record headers",
+@Command(name = "mseed3",
+        description = "list miniseed3 records and convert from ver 2 records",
         versionProvider = edu.sc.seis.seisFile.client.VersionProvider.class)
 public class MSeed3Client extends AbstractClient {
 
