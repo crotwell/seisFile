@@ -1,24 +1,32 @@
 :includedir: build/picocli/man
 :exampledir: src/doc/man-templates/example_output
-//include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-full-manpage]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-header]
+//include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-full-manpage]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-name]
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-header]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-synopsis]
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-name]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-description]
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-synopsis]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-options]
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-description]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-arguments]
+link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java[View source code here.]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-commands]
+Information about the Seedlink protocol can be found here
+https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html
+and information about its use at IRIS here
+http://ds.iris.edu/ds/nodes/dmc/services/seedlink/.
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-exit-status]
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-options]
 
-include::{includedir}/seisfile-seedlinkclient.adoc[tag=picocli-generated-man-section-footer]
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-arguments]
+
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-commands]
+
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-exit-status]
+
+include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-footer]
 
 == Examples
 
@@ -28,4 +36,3 @@ Ask for a few packets of HHZ data from station CO.HODGE, and output to a file.
 ....
 include::{exampledir}/seedlinkclient_ex1_out[]
 ....
-

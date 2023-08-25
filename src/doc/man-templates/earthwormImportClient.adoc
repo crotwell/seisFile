@@ -11,7 +11,7 @@ include::{includedir}/earthwormImportClient.adoc[tag=picocli-generated-man-secti
 
 include::{includedir}/earthwormImportClient.adoc[tag=picocli-generated-man-section-description]
 
-link:https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java[View source code here.]
+link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java[View source code here.]
 
 include::{includedir}/earthwormImportClient.adoc[tag=picocli-generated-man-section-options]
 
