@@ -378,6 +378,7 @@ for (key in scriptNames.keys) {
     val outDir =  File(project.buildDir,  "picocli/man")
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
+      dependsOn += tasks.getByName("genManTemplate"+key)
     inputs.dir("src/client")
     outputs.files(File(outDir, scriptNames[key]+".adoc"))
     doLast {
