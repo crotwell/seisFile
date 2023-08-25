@@ -321,6 +321,12 @@ tasks.named("startScripts") {
     dependsOn("createRunScripts")
 }
 
+/*
+genManTemplate generates documentation from picocli into src/doc/man-templates, but
+these files usually need hand modification to fix paths and add other links and info,
+so this should be run independently of the actual assemble for release.
+ */
+
 val scriptNames = mapOf(
   "seisfile" to "edu.sc.seis.seisFile.client.SeisFile",
   "fdsnevent" to "edu.sc.seis.seisFile.client.FDSNEventClient",
@@ -378,7 +384,7 @@ for (key in scriptNames.keys) {
     val outDir =  File(project.buildDir,  "picocli/man")
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
-      dependsOn += tasks.getByName("genManTemplate"+key)
+      //dependsOn += tasks.getByName("genManTemplate"+key)
     inputs.dir("src/client")
     outputs.files(File(outDir, scriptNames[key]+".adoc"))
     doLast {
