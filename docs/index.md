@@ -10,10 +10,13 @@ for easy reference.
 
 Currently support exists for:
   * SAC
-  * MiniSEED with limited support for full SEED
+  * MiniSEED2 with limited support for full SEED
+  * Miniseed3
+  * StationXML
   * FDSN Station web service, which returns FDSN StationXML
+  * QuakeML
   * FDSN Event web service, which returns QuakeML
-  * FDSN DataSelect web service, which returns miniseed
+  * FDSN DataSelect web service, which returns miniseed 2 or 3
   * IRIS Virtual Network web service
   * SeedLink
   * Datalink

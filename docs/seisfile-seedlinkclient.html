@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>seisfile-seedlinkclient(1)</title>
+<title>seedlinkclient(1)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,10 +438,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="manpage">
 <div id="header">
-<h1>seisfile-seedlinkclient(1) Manual Page</h1>
+<h1>seedlinkclient(1) Manual Page</h1>
 <h2 id="_name">Name</h2>
 <div class="sectionbody">
-<p>seisfile-seedlinkclient - Example client to stream miniseed over seedlink.</p>
+<p>seedlinkclient - Example client to stream miniseed over seedlink.</p>
 </div>
 </div>
 <div id="content">
@@ -449,13 +449,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_synopsis">Synopsis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>seisfile seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
-                        [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>]
-                        [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>] [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>]
-                        [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>] [<strong>-c</strong>=<em>&lt;channel&gt;</em>[,
-                        <em>&lt;channel&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>[,<em>&lt;location&gt;</em>&#8230;&#8203;]]&#8230;&#8203;
-                        [<strong>-n</strong>=<em>&lt;network&gt;</em>[,<em>&lt;network&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-s</strong>=<em>&lt;station&gt;</em>[,
-                        <em>&lt;station&gt;</em>&#8230;&#8203;]]&#8230;&#8203;</p>
+<p><strong>seedlinkclient</strong> [<strong>-vV</strong>] [<strong>--help</strong>] [<strong>-b</strong>=<em>&lt;start&gt;</em>] [<strong>-e</strong>=<em>&lt;end&gt;</em>] [<strong>-h</strong>=<em>&lt;host&gt;</em>]
+               [<strong>--iout</strong>=<em>&lt;ioutFile&gt;</em>] [<strong>--itype</strong>=<em>&lt;infoType&gt;</em>] [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>]
+               [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>] [<strong>-p</strong>=<em>&lt;port&gt;</em>] [<strong>--timeout</strong>=<em>&lt;timeoutSec&gt;</em>]
+               [<strong>-c</strong>=<em>&lt;channel&gt;</em>[,<em>&lt;channel&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-l</strong>=<em>&lt;location&gt;</em>[,
+               <em>&lt;location&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-n</strong>=<em>&lt;network&gt;</em>[,<em>&lt;network&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [<strong>-s</strong>=<em>&lt;station&gt;</em>
+               [,<em>&lt;station&gt;</em>&#8230;&#8203;]]&#8230;&#8203;</p>
 </div>
 </div>
 </div>
@@ -464,6 +463,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>Example client to stream miniseed over seedlink.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">View source code here.</a></p>
+</div>
+<div class="paragraph">
+<p>Information about the Seedlink protocol can be found here
+<a href="https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html" class="bare">https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html</a>
+and information about its use at IRIS here
+<a href="http://ds.iris.edu/ds/nodes/dmc/services/seedlink/" class="bare">http://ds.iris.edu/ds/nodes/dmc/services/seedlink/</a>.</p>
 </div>
 </div>
 </div>
@@ -549,11 +557,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
+Init SeedLink to rtserve.iris.washington.edu 18000
 send 'HELLO'
 SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
 IRIS DMC RTSERVE2 SEA Ring Server
-line 1 :SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-line 2 :IRIS DMC RTSERVE2 SEA Ring Server
 send 'STATION HODGE CO'
 OK
 send 'SELECT   HHZ.D'
@@ -563,20 +570,8 @@ OK
 send 'DATA'
 OK
 send 'END'
-hasNext(): blocking read for 3 bytes, available=0
-readPacket(): blocking read for 520 bytes, available=520
- Got a packet: ADAF2A  CO  HODGE  00  HHZ  2023,213,15:41:12.2800
-D CO.HODGE.00.HHZ 2023,213,15:41:12.2800  4.15 415
-hasNext(): blocking read for 3 bytes, available=4160
-readPacket(): blocking read for 520 bytes, available=4160
- Got a packet: ADAF2B  CO  HODGE  00  HHZ  2023,213,15:41:16.4300
-D CO.HODGE.00.HHZ 2023,213,15:41:16.4300  4.19 419
-hasNext(): blocking read for 3 bytes, available=3640
-readPacket(): blocking read for 520 bytes, available=3640
- Got a packet: ADAF2C  CO  HODGE  00  HHZ  2023,213,15:41:20.6200
-D CO.HODGE.00.HHZ 2023,213,15:41:20.6200  4.04 404
 send 'BYE'
-Finished: 2023-08-01T15:42:00.331186Z</code></pre>
+Finished: 2023-08-25T20:12:44.144109Z</code></pre>
 </div>
 </div>
 </div>
@@ -584,8 +579,8 @@ Finished: 2023-08-01T15:42:00.331186Z</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.0.6 2023-08-01T15 59 50Z (2140 782102fc)<br>
-Last updated 2023-02-07 12:53:07 -0500
+Version edu.sc.seis seisFile 2.1.0-SNAPSHOT_2023-08-25T164420 2023-08-25T20 44 20Z (2191 bcd4256)<br>
+Last updated 2023-08-25 17:10:53 -0400
 </div>
 </div>
 </body>

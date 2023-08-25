@@ -465,7 +465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Example client to stream miniseed over seedlink.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.0/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">View source code here.</a></p>
+<p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java">View source code here.</a></p>
 </div>
 <div class="paragraph">
 <p>Information about the Seedlink protocol can be found here
@@ -557,11 +557,10 @@ and information about its use at IRIS here
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
+Init SeedLink to rtserve.iris.washington.edu 18000
 send 'HELLO'
 SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
 IRIS DMC RTSERVE2 SEA Ring Server
-line 1 :SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-line 2 :IRIS DMC RTSERVE2 SEA Ring Server
 send 'STATION HODGE CO'
 OK
 send 'SELECT   HHZ.D'
@@ -571,20 +570,8 @@ OK
 send 'DATA'
 OK
 send 'END'
-hasNext(): blocking read for 3 bytes, available=0
-readPacket(): blocking read for 520 bytes, available=520
- Got a packet: ADAF2A  CO  HODGE  00  HHZ  2023,213,15:41:12.2800
-D CO.HODGE.00.HHZ 2023,213,15:41:12.2800  4.15 415
-hasNext(): blocking read for 3 bytes, available=4160
-readPacket(): blocking read for 520 bytes, available=4160
- Got a packet: ADAF2B  CO  HODGE  00  HHZ  2023,213,15:41:16.4300
-D CO.HODGE.00.HHZ 2023,213,15:41:16.4300  4.19 419
-hasNext(): blocking read for 3 bytes, available=3640
-readPacket(): blocking read for 520 bytes, available=3640
- Got a packet: ADAF2C  CO  HODGE  00  HHZ  2023,213,15:41:20.6200
-D CO.HODGE.00.HHZ 2023,213,15:41:20.6200  4.04 404
 send 'BYE'
-Finished: 2023-08-01T15:42:00.331186Z</code></pre>
+Finished: 2023-08-25T20:12:44.144109Z</code></pre>
 </div>
 </div>
 </div>
@@ -592,8 +579,8 @@ Finished: 2023-08-01T15:42:00.331186Z</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.0.6 2023-08-01T15 59 50Z (2140 782102fc)<br>
-Last updated 2023-02-07 10:26:25 -0500
+Version edu.sc.seis seisFile 2.1.0-SNAPSHOT_2023-08-25T164420 2023-08-25T20 44 20Z (2191 bcd4256)<br>
+Last updated 2023-08-25 17:07:47 -0400
 </div>
 </div>
 </body>
