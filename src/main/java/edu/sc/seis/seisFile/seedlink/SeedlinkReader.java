@@ -361,7 +361,8 @@ public class SeedlinkReader {
      * sequence is replaced with 'DATA seq' to restart with the last received sequence number,
      * which should work with wildcards..
      * If the server uses per station sequence numbering
-     * then the client must keep track of sequence numbers and use resume(SeedlinkState) to supply the sequence numbers.
+     * then the client must keep track of sequence numbers and use resume(SeedlinkState) to supply the sequence numbers,
+     * possibly with custom commands to handle wildcards.
      *
      *
      * @throws IOException
