@@ -13,7 +13,6 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.DataRecord;
@@ -66,20 +65,31 @@ public class SeedlinkReader {
     }
 
     public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose, int connectTimeoutSeconds) throws UnknownHostException, IOException {
-        this.host = host;
-        this.port = port;
         setVerbose(verbose);
         this.timeoutSeconds = timeoutSeconds;
         this.connectTimeoutSeconds = connectTimeoutSeconds;
+        this.seedlinkState = new SeedlinkState(host, port, sentCommands);
         initConnection();
+    }
+    public SeedlinkReader(SeedlinkState state) {
+        this(state, DEFAULT_TIMEOUT_SECOND, false, DEFAULT_TIMEOUT_SECOND);
+    }
+
+    public SeedlinkReader(SeedlinkState state, int timeoutSeconds, boolean verbose, int connectTimeoutSeconds) {
+        setVerbose(verbose);
+        this.timeoutSeconds = timeoutSeconds;
+        this.connectTimeoutSeconds = connectTimeoutSeconds;
+        this.sentCommands = state.getCommandList();
+        this.lastSeqNum = state.getGlobalLastSequence();
+        this.seedlinkState = state;
     }
     
     private void initConnection() throws UnknownHostException, IOException {
         if (isVerbose()) {
-            getVerboseWriter().println("Init SeedLink to "+host+" "+port);
+            getVerboseWriter().println("Init SeedLink to "+getHost()+" "+getPort());
         }
         socket = new Socket();
-        socket.connect(new InetSocketAddress(host, port), this.connectTimeoutSeconds*1000);
+        socket.connect(new InetSocketAddress(getHost(), getPort()), this.connectTimeoutSeconds*1000);
         socket.setSoTimeout(timeoutSeconds*1000);
         out = new BufferedOutputStream(socket.getOutputStream());
         in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
@@ -234,6 +244,7 @@ public class SeedlinkReader {
         inData.readFully(bits);
         SeedlinkPacket slp = new SeedlinkPacket(bits);
         lastSeqNum = slp.getSeqNum();
+        seedlinkState.updateGlobalSequence(lastSeqNum);
         if (isVerbose()) {
             String packetString = EMPTY;
             try {
@@ -261,6 +272,10 @@ public class SeedlinkReader {
         send("INFO " + level);
     }
 
+    /**
+     * Ends the handshaking phase and starts data flowing.
+     * @throws IOException
+     */
     public void endHandshake() throws IOException {
         send("END");
     }
@@ -311,55 +326,105 @@ public class SeedlinkReader {
     }
 
     /**
-     * Resumes the connection at the last successful packet using the sequence number. Note that this assumes
-     * that sequence numbers are global, not per station. If the server uses per station sequence numbering,
-     * then the client must keep track of sequence numbers and use resume(Map) to supply the sequence numbers.
+     * Resumes the connection at the last successful packet using the global last sequence number. Note that this assumes
+     * that sequence numbers are global, not per station. Each DATA or TIME command in the original command
+     * sequence is replaced with 'DATA seq' to restart with the last received sequence number.
+     * If the server uses per station sequence numbering
+     * then the client must keep track of sequence numbers and use resume(SeedlinkState) to supply the sequence numbers.
      *
+     * @deprecated use resumeGlobalSequence
      * @throws IOException
      * @throws SeedlinkException
      */
+    @Deprecated
     public void resume() throws IOException, SeedlinkException {
         close();
         initConnection();
+        String nextSeqCmd = DATA_COMMAND + " " + nextSeq(seedlinkState.getGlobalLastSequence());
         for (String cmd : sentCommands) {
             if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
                 internalSendCmd(cmd);
             } else {
-                internalSendCmd(DATA_COMMAND+" "+lastSeqNum);
+                internalSendCmd(nextSeqCmd);
             }
         }
         endHandshake();
     }
 
+    public static SeedlinkReader resumeGlobalSequence(SeedlinkState seedlinkState) throws IOException, SeedlinkException {
+        return resumeGlobalSequence(seedlinkState, false);
+    }
+
     /**
-     * Resumes the connection at the last successful packet using the sequence number. Note that this
-     * uses a supplied per station last seq number. The map key should be of the form
-     * NN.SSSSS where NN is the network code and SSSSS is the station code. It is also assumed that there is
-     * a DATA or TIME command in the original handshaking phase after each STATION command. Some servers allow
-     * multiple STATION commands before a DATA command, but this breaks restarting each station at the
-     * last sequence.
+     * Resumes the connection at the last successful packet using the global last sequence number. Note that this assumes
+     * that sequence numbers are global, not per station. Each DATA or TIME command in the original command
+     * sequence is replaced with 'DATA seq' to restart with the last received sequence number,
+     * which should work with wildcards..
+     * If the server uses per station sequence numbering
+     * then the client must keep track of sequence numbers and use resume(SeedlinkState) to supply the sequence numbers.
+     *
      *
      * @throws IOException
      * @throws SeedlinkException
      */
-    public void resume(PerStationLastSequence stationSeqMap) throws IOException, SeedlinkException {
-        close();
-        initConnection();
-        for (String k : stationSeqMap.keySet()) {
-            System.out.println("Resume: '"+k+"' "+stationSeqMap.containsKey(k));
+    public static SeedlinkReader resumeGlobalSequence(SeedlinkState seedlinkState, boolean verbose) throws IOException, SeedlinkException {
+        SeedlinkReader reader = new SeedlinkReader(seedlinkState);
+        reader.setVerbose(verbose);
+        reader.initConnection();
+        String nextSeqCmd = DATA_COMMAND + " " + nextSeq(seedlinkState.getGlobalLastSequence());
+        for (String cmd : seedlinkState.getCommandList()) {
+            if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
+                reader.internalSendCmd(cmd);
+            } else {
+                reader.internalSendCmd(nextSeqCmd);
+            }
+        }
+        return reader;
+    }
+
+    /**
+     * Resumes the connection at the last successful packet using the sequence number. Note that this
+     * uses a supplied per station last seq number. The map key is of the form
+     * NN.SSSSS where NN is the network code and SSSSS is the station code. It is also assumed that there is
+     * a DATA or TIME command in the original handshaking phase after each STATION command. Some servers allow
+     * multiple STATION commands before a DATA command, but this breaks restarting each station at the
+     * last sequence. The caller should call endHandshake() after creationg in order to begin data flow.
+     *
+     * This does not function correctly if wildcards have been used in the original request as there is no
+     * guarantee that all stations/channels that might match the wildcards have actually been seen before the
+     * interruption, and so the wildcard commands may need to be repeated. Resuming after STATION comamnds with wildcards
+     * should be handled externally by the client.
+     *
+     * @throws IOException
+     * @throws SeedlinkException
+     */
+    public static SeedlinkReader resume(SeedlinkState seedlinkState, boolean verbose) throws IOException, SeedlinkException {
+        for (String cmd : seedlinkState.getCommandList()) {
+            if (cmd.startsWith("STATION") && containsWildcard(cmd)) {
+                throw new SeedlinkException("Unable to resume from per-station sequence numbers when using STATION wildcards:" +
+                        cmd);
+            }
+        }
+        SeedlinkReader reader = new SeedlinkReader(seedlinkState);
+        reader.setVerbose(verbose);
+        reader.initConnection();
+        if (reader.isVerbose()) {
+            for (String k : seedlinkState.keySet()) {
+                reader.getVerboseWriter().println("Resume: '" + k + "' after " + seedlinkState.getMap().get(k));
+            }
         }
         String lastStation = null;
         String lastNet = null;
-        for (String cmd : sentCommands) {
+        for (String cmd : seedlinkState.getCommandList()) {
             if (cmd.startsWith("STATION")) {
                 if (lastStation != null) {
                     // repeated STATION without a DATA or TIME
                     // try to send DATA anyway?
-                    if (stationSeqMap.contains(lastNet, lastStation)) {
-                        String staSeq = stationSeqMap.getForStation(lastNet, lastStation);
-                        internalSendCmd(DATA_COMMAND + " " + staSeq);
+                    if (seedlinkState.contains(lastNet, lastStation)) {
+                        String resumeCmd = createResumeDataCommand( lastNet,  lastStation, seedlinkState);
+                        reader.internalSendCmd(resumeCmd);
                     } else {
-                        internalSendCmd(DATA_COMMAND);
+                        reader.internalSendCmd(DATA_COMMAND);
                     }
                     lastStation = null;
                     lastNet = null;
@@ -367,22 +432,40 @@ public class SeedlinkReader {
                 String[] splitCmd = cmd.split(" +");
                 lastStation = splitCmd[1];
                 lastNet = splitCmd[2];
-                System.out.println("Resume lastStation ="+lastNet+"."+lastStation);
             }
             if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
-                internalSendCmd(cmd);
+                reader.internalSendCmd(cmd);
             } else {
-                if (stationSeqMap.contains(lastNet, lastStation)) {
-                    String staSeq = stationSeqMap.getForStation(lastNet, lastStation);
-                    internalSendCmd(DATA_COMMAND + " " + staSeq);
+                if (seedlinkState.contains(lastNet, lastStation)) {
+                    String resumeCmd = createResumeDataCommand( lastNet,  lastStation, seedlinkState);
+                    reader.internalSendCmd(resumeCmd);
                 } else {
                     System.out.println("Last for station not found: "+lastStation);
-                    internalSendCmd(DATA_COMMAND);
+                    reader.internalSendCmd(DATA_COMMAND);
                 }
                 lastStation = null;
             }
         }
-        endHandshake();
+        return reader;
+    }
+
+    public static String createResumeDataCommand(String lastNet, String lastStation, SeedlinkState state) {
+        if (state.contains(lastNet, lastStation)) {
+            String staSeq = state.getForStation(lastNet, lastStation);
+            return DATA_COMMAND + " " + nextSeq(staSeq);
+        } else {
+            System.out.println("Last for station not found: "+lastStation);
+            return DATA_COMMAND;
+        }
+    }
+    public static String nextSeq(String seq) {
+        String next = Integer.toHexString(Integer.parseInt(seq, 16) +1).toUpperCase();
+        while (next.length()<6) { next = "0"+next;}
+        return next;
+    }
+
+    public static boolean containsWildcard(String cmd) {
+        return cmd.contains("*") || cmd.contains("?");
     }
 
     public String[] sendHello() throws IOException, SeedlinkException {
@@ -455,6 +538,7 @@ public class SeedlinkReader {
         sendStation(network, station);
         if (locchan.size() == 0) {
             sendSelect("???");
+            sendSelect("?????");
         }
         for(String lc : locchan) {
             sendSelect(lc, type);
@@ -471,7 +555,10 @@ public class SeedlinkReader {
         for(String lc : locchan) {
             sendSelect(lc, type);
         }
-        sendData();
+        sendData(seqNum);
+        if ( ! (containsWildcard(network) || containsWildcard(station))) {
+            seedlinkState.put(network, station, seqNum);
+        }
     }
 
     public void selectData(String network, String station, List<String> locchan, Instant start) throws SeedlinkException, IOException {
@@ -620,12 +707,12 @@ public class SeedlinkReader {
         sendCmd(DATA_COMMAND);
     }
 
-    public void sendData(String segNum) throws SeedlinkException, IOException {
-        sendCmd(DATA_COMMAND+" "+segNum);
+    public void sendData(String seqNum) throws SeedlinkException, IOException {
+        sendCmd(DATA_COMMAND+" "+seqNum);
     }
 
     public void sendData(Instant start) throws SeedlinkException, IOException {
-        sendData("0", start);
+        sendData("000000", start);
     }
 
     public void sendData(String seqNum, Instant start) throws SeedlinkException, IOException {
@@ -655,6 +742,7 @@ public class SeedlinkReader {
     @Deprecated
     public void restartData(String seqNum) throws SeedlinkException, IOException {
         lastSeqNum = seqNum;
+        seedlinkState.updateGlobalSequence(seqNum);
         sendCmd(DATA_COMMAND+" "+lastSeqNum);
         endHandshake();
     }
@@ -686,16 +774,14 @@ public class SeedlinkReader {
     boolean verbose = false;
 
     boolean debug = false;
-
-    String host;
-
-    int port;
     
     int timeoutSeconds;
 
     int connectTimeoutSeconds;
     
     List<String> sentCommands = new ArrayList<String>();
+
+    SeedlinkState seedlinkState;
 
     private PrintWriter verboseWriter;
 
@@ -722,11 +808,22 @@ public class SeedlinkReader {
     }
 
     public String getHost() {
-        return host;
+        return seedlinkState.getHost();
     }
 
     public int getPort() {
-        return port;
+        return seedlinkState.getPort();
+    }
+
+    /**
+     * SeedlinkState is a utility
+     * object to allow the client to keep track of the last sequence number for each station and the sequence
+     * of commands that affect data that were sent to the server. SeedlinkReader does not automatically
+     * keep track of these per station sequence numbers as it requires parsing the miniseed records. Clients that
+     * desire this should call SeedlinkState.update(SeedlinkPacket) to update the per station sequence number.
+     */
+    public SeedlinkState getState() {
+        return seedlinkState;
     }
 
     public String lastSeqNum = "";
