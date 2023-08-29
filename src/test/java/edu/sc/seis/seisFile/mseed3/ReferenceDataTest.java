@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.sac.TestSacFileData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.json.JSONObject;
@@ -41,15 +42,9 @@ public class ReferenceDataTest {
             MSeed3Record record = MSeed3Record.read(dis);
 
             String jsontextFile = f.replaceAll(".mseed3", ".json");
-            BufferedReader jsontextReader = new BufferedReader(new InputStreamReader(ReferenceDataTest.class.getClassLoader()
-                    .getResourceAsStream("edu/sc/seis/seisFile/mseed3/"+jsontextFile)));
-            StringBuilder sb = new StringBuilder(512);
-            int c=0;
-            while((c= jsontextReader.read()) != -1) {
-                sb.append((char)c);
-            }
+            String jsonText = loadTextFile(jsontextFile);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnnX").withZone(ZoneId.of("UTC"));
-            JSONObject jsonRec = new JSONArray(sb.toString()).getJSONObject(0);
+            JSONObject jsonRec = new JSONArray(jsonText).getJSONObject(0);
             assertEquals(jsonRec.getString("SID"), record.getSourceId().toString());
             assertEquals(jsonRec.getInt("RecordLength"), record.getSize());
             assertEquals(jsonRec.getInt("FormatVersion"), record.getFormatVersion());
@@ -70,5 +65,16 @@ public class ReferenceDataTest {
                 assertTrue(refEH.similar(eh));
             }
         }
+    }
+    
+    public String loadTextFile(String textFile) throws IOException {
+        BufferedReader jsontextReader = new BufferedReader(new InputStreamReader(ReferenceDataTest.class.getClassLoader()
+                .getResourceAsStream("edu/sc/seis/seisFile/mseed3/"+textFile)));
+        StringBuilder sb = new StringBuilder(512);
+        int c=0;
+        while((c= jsontextReader.read()) != -1) {
+            sb.append((char)c);
+        }
+        return sb.toString();
     }
 }
