@@ -1,10 +1,6 @@
 package edu.sc.seis.seisFile.mseed3;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -278,15 +274,12 @@ public class MSeed3Record {
      * @throws SeedFormatException
      */
     public static MSeed3Record read(DataInput in) throws IOException, SeedFormatException, FDSNSourceIdException {
-        System.err.println("Attemt to read " + FIXED_HEADER_SIZE + " bytes");
         byte[] buf = new byte[FIXED_HEADER_SIZE];
         in.readFully(buf);
-        System.err.println("finish read " + FIXED_HEADER_SIZE);
         MSeed3Record header = new MSeed3Record();
         header.read(buf, 0);
         buf = new byte[header.sourceIdByteLength];
         in.readFully(buf);
-        System.err.println("finish read sid" + header.sourceIdByteLength);
         String sourceIdStr = new String(buf, 0, header.sourceIdByteLength).trim();
         if (sourceIdStr.startsWith(FDSNSourceId.FDSN_PREFIX)) {
             FDSNSourceId sid = FDSNSourceId.parse(sourceIdStr);
@@ -297,11 +290,9 @@ public class MSeed3Record {
         }
         buf = new byte[header.extraHeadersByteLength];
         in.readFully(buf);
-        System.err.println("finish read eh" + header.extraHeadersByteLength);
         header.extraHeadersStr = new String(buf, 0, header.extraHeadersByteLength).trim();
         header.timeseriesBytes = new byte[header.dataByteLength];
         in.readFully(header.timeseriesBytes);
-        System.err.println("finish read ts" + header.timeseriesBytes);
         return header;
     }
 
@@ -607,71 +598,14 @@ public class MSeed3Record {
      * @return formatted string of object contents
      */
     public String toString() {
-            /*
-    FDSN:CO_HODGE_00_L_H_Z, version 4, 477 bytes (format: 3)
-             start time: 2019,187,03:19:53.000000
-      number of samples: 255
-       sample rate (Hz): 1
-                  flags: [00000000] 8 bits
-                    CRC: 0x8926FFDF
-    extra header length: 31 bytes
-    data payload length: 384 bytes
-       payload encoding: STEIM-2 integer compression (val: 11)
-          extra headers:
-                "FDSN": {
-                  "Time": {
-                    "Quality": 0
-                  }
-                }
-      */
-        String encode_name = "unknown";
+        StringWriter buf = new StringWriter();
+        PrintWriter out = new PrintWriter(buf);
+        try {
+            printASCII(out, "  ", false);
+        } catch (IOException e) {
 
-        if (this.timeseriesEncodingFormat == 0) {
-            encode_name = "Text";
-        } else if (this.timeseriesEncodingFormat == 11) {
-            encode_name = "STEIM-2 integer compression";
-        } else if (this.timeseriesEncodingFormat == 10) {
-            encode_name = "STEIM-1 integer compression";
         }
-        String bitFlagStr = "";
-        if ((this.flags & 0x01) > 0) {
-            bitFlagStr += "\n                     [Bit 0] Calibration signals present";
-        }
-        if ((this.flags & 0x02) > 0) {
-            bitFlagStr += "\n                         [Bit 1] Time tag is questionable";
-        }
-        if ((this.flags & 0x04) > 0) {
-            bitFlagStr += "\n                         [Bit 2] Clock locked";
-        }
-        if ((this.flags & 0x08) > 0) {
-            bitFlagStr += "\n                         [Bit 3] Undefined bit set";
-        }
-        if ((this.flags & 0x10) > 0) {
-            bitFlagStr += "\n                         [Bit 4] Undefined bit set";
-        }
-        if ((this.flags & 0x20) > 0) {
-            bitFlagStr += "\n                         [Bit 5] Undefined bit set";
-        }
-        if ((this.flags & 0x40) > 0) {
-            bitFlagStr += "\n                         [Bit 6] Undefined bit set";
-        }
-        if ((this.flags & 0x80) > 0) {
-            bitFlagStr += "\n                         [Bit 7] Undefined bit set";
-        }
-        return getSourceId() +
-                ", version " + this.publicationVersion + ", " + (this.getSize() + this.timeseriesBytes.length) +
-                " bytes (format: " + this.formatVersion + ")\n" +
-                "             start time: " + this.startFieldsInUtilFormat() + "\n" +
-                "      number of samples: " + this.numSamples + "\n" +
-                "       sample rate (Hz): " + this.sampleRate + "\n" +
-                "                  flags: [" +
-                Integer.toBinaryString(this.flags) +
-                "] 8 bits" + bitFlagStr + "\n" +
-                "                    CRC: " + Integer.toHexString(this.recordCRC) + "\n" +
-                "    extra header length: " + getExtraHeadersByteLength() + " bytes\n" +
-                "    data payload length: " + getDataByteLength() + " bytes\n" +
-                "       payload encoding: " + encode_name + " (val: " + this.timeseriesEncodingFormat + ")" +
-                "\n          extra headers:" + getExtraHeaders().toString(2);
+        return buf.toString();
     }
 
     public JSONObject getExtraHeaders() {
