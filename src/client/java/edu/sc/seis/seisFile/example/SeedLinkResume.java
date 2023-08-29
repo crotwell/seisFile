@@ -7,6 +7,11 @@ import org.json.JSONObject;
 
 import java.util.*;
 
+/**
+ * An example of making a Seedlink connection, receiving data and then restarting the connection as if there was
+ * a disconnect. Two examples, if the server uses globally unique sequence numbers, and then if sequence numbers
+ * are per station.
+ */
 public class SeedLinkResume {
 
     public static void main(String[] args) throws Exception {
@@ -24,7 +29,6 @@ public class SeedLinkResume {
         while (n<20 && reader.hasNext()) {
             SeedlinkPacket slp = reader.readPacket();
             n++;
-            System.out.println(slp.getMiniSeed().getHeader().getStationIdentifier()+", "+slp.getMiniSeed().getHeader().getChannelIdentifier()+", "+slp.getMiniSeed().getHeader().getLocationIdentifier());
         }
         reader.close();
 
@@ -45,7 +49,6 @@ public class SeedLinkResume {
         while (n<25 && reader.hasNext()) {
             SeedlinkPacket slp = reader.readPacket();
             n++;
-            System.out.println(slp.getMiniSeed().getHeader().getStationIdentifier()+", "+slp.getMiniSeed().getHeader().getChannelIdentifier()+", "+slp.getMiniSeed().getHeader().getLocationIdentifier());
             // update state so can resume later with per station sequence numbers
             // this must be done manually by the client if desired
             state.update(slp);
@@ -71,7 +74,6 @@ public class SeedLinkResume {
         while (n<20 && reader.hasNext()) {
             SeedlinkPacket slp = reader.readPacket();
             n++;
-            System.out.println(slp.getMiniSeed().getHeader().getStationIdentifier()+", "+slp.getMiniSeed().getHeader().getChannelIdentifier()+", "+slp.getMiniSeed().getHeader().getLocationIdentifier());
             state.update(slp);
         }
         reader.close();

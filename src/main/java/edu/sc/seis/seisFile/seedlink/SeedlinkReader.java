@@ -491,7 +491,7 @@ public class SeedlinkReader {
             }
         }
         if (isVerbose()) {
-            getVerboseWriter().println(buf);
+            getVerboseWriter().println("recv '"+buf+"'");
         }
 
         // next should now be a \n, so just eat it
