@@ -146,7 +146,7 @@ public class MSeed3Record {
         }
         if (withData) {
             out.println(indent+"Data:");
-            printDataASCII(out,indent);
+            printDataASCII(out, indent);
         }
     }
 
@@ -601,7 +601,7 @@ public class MSeed3Record {
         StringWriter buf = new StringWriter();
         PrintWriter out = new PrintWriter(buf);
         try {
-            printASCII(out, "  ", false);
+            printASCII(out, "", false);
         } catch (IOException e) {
 
         }
