@@ -110,7 +110,7 @@ configurations["clientTestRuntimeOnly"].extendsFrom(configurations["clientRuntim
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.1.1")
-    clientImplementation("info.picocli:picocli:4.7.4")
+    clientImplementation("info.picocli:picocli:4.7.5")
 
     annotationProcessor("info.picocli:picocli-codegen:4.7.4")
     implementation( "org.slf4j:slf4j-api:1.7.36")
