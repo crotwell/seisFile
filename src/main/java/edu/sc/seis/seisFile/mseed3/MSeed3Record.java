@@ -1,27 +1,20 @@
 package edu.sc.seis.seisFile.mseed3;
 
+import edu.iris.dmc.seedcodec.*;
+import edu.sc.seis.seisFile.mseed.SeedFormatException;
+import edu.sc.seis.seisFile.mseed.Utility;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.TimeZone;
-
-import org.json.JSONObject;
-
-import edu.iris.dmc.seedcodec.Codec;
-import edu.iris.dmc.seedcodec.CodecException;
-import edu.iris.dmc.seedcodec.DecompressedData;
-import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
-import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.mseed.Utility;
 
 public class MSeed3Record {
+
+    public static final String MINISEED_THREE_MIME = "application/vnd.fdsn.mseed3";
 
     public static final String TIME_LEAP_SECOND = "TimeLeapSecond";
 
@@ -911,6 +904,71 @@ public class MSeed3Record {
 
     public void setTimeseriesBytes(byte[] timeseriesBytes) {
         this.timeseriesBytes = timeseriesBytes;
+    }
+
+    public void setTimeseries(short[] data) {
+        Codec codec = new Codec();
+        byte[] bData = codec.encodeAsBytes(data);
+        setTimeseriesBytes(bData);
+        setTimeseriesEncodingFormat((byte) Codec.SHORT);
+    }
+    public void setTimeseries(int[] data) {
+        Codec codec = new Codec();
+        byte[] bData = codec.encodeAsBytes(data);
+        setTimeseriesBytes(bData);
+        setTimeseriesEncodingFormat((byte) Codec.INTEGER);
+    }
+
+    public int steim1Timeseries(int[] data) throws SteimException, IOException {
+        return steim1Timeseries(data, 0);
+    }
+    /**
+     * Encodes data via Steim1, up to maxFrames number of 64 byte frames. If maxFrames is zero, encodes
+     * all samples.
+     * @param data
+     * @param maxFrames
+     * @return
+     * @throws SteimException
+     * @throws IOException
+     */
+    public int steim1Timeseries(int[] data, int maxFrames) throws SteimException, IOException {
+        SteimFrameBlock sfb = Steim1.encode(data, maxFrames);
+        byte[] bData = sfb.getEncodedData();
+        setTimeseriesBytes(bData);
+        setTimeseriesEncodingFormat((byte) Codec.STEIM1);
+        return sfb.getNumSamples();
+    }
+
+    public int steim2Timeseries(int[] data) throws SteimException, IOException {
+        return steim2Timeseries(data, 0);
+    }
+    /**
+     * Encodes data via Steim2, up to maxFrames number of 64 byte frames. If maxFrames is zero, encodes
+     * all samples.
+     * @param data
+     * @param maxFrames
+     * @return
+     * @throws SteimException
+     * @throws IOException
+     */
+    public int steim2Timeseries(int[] data, int maxFrames) throws SteimException, IOException {
+        SteimFrameBlock sfb = Steim2.encode(data, maxFrames);
+        byte[] bData = sfb.getEncodedData();
+        setTimeseriesBytes(bData);
+        setTimeseriesEncodingFormat((byte) Codec.STEIM2);
+        return sfb.getNumSamples();
+    }
+    public void setTimeseries(float[] data) {
+        Codec codec = new Codec();
+        byte[] bData = codec.encodeAsBytes(data);
+        setTimeseriesBytes(bData);
+        setTimeseriesEncodingFormat((byte) Codec.FLOAT);
+    }
+    public void setTimeseries(double[] data) {
+        Codec codec = new Codec();
+        byte[] bData = codec.encodeAsBytes(data);
+        setTimeseriesBytes(bData);
+        setTimeseriesEncodingFormat((byte) Codec.DOUBLE);
     }
 
     /**
