@@ -6,6 +6,8 @@ import edu.sc.seis.seisFile.mseed.Utility;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.nio.*;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.ZoneId;
@@ -284,6 +286,10 @@ public class MSeed3Record {
         buf = new byte[header.extraHeadersByteLength];
         in.readFully(buf);
         header.extraHeadersStr = new String(buf, 0, header.extraHeadersByteLength).trim();
+        if (MAX_DATA_SIZE > 0 && header.dataByteLength > MAX_DATA_SIZE) {
+            // maybe careful if dataByteLength is too big???
+            throw new RuntimeException("Miniseed3 data too big: "+header.dataByteLength+" > "+MAX_DATA_SIZE);
+        }
         header.timeseriesBytes = new byte[header.dataByteLength];
         in.readFully(header.timeseriesBytes);
         return header;
@@ -351,28 +357,124 @@ public class MSeed3Record {
         dos.write(recordIndicator.getBytes("ASCII"));
         dos.write(formatVersion);
         dos.write(flags);
+        dos.write(Utility.intToLittleEndianByteArray(nanosecond));
         dos.write(Utility.shortToLittleEndianByteArray(year));
         dos.write(Utility.shortToLittleEndianByteArray(dayOfYear));
         dos.write(hour);
         dos.write(minute);
         dos.write(second);
-        dos.write(Utility.intToLittleEndianByteArray(nanosecond));
-        dos.write(Utility.doubleToLittleEndianByteArray(sampleRatePeriod));
         dos.write(timeseriesEncodingFormat);
-        dos.write(publicationVersion);
+        dos.write(Utility.doubleToLittleEndianByteArray(sampleRatePeriod));
         dos.write(Utility.intToLittleEndianByteArray(numSamples));
         dos.write(Utility.intToLittleEndianByteArray(recordCRC));
-        byte[] sourceIdBytes = sourceId.toString().getBytes();
+        dos.write(publicationVersion);
+        byte[] sourceIdBytes = getSourceIdStr().getBytes();
         dos.write((byte) (sourceIdBytes.length));
         byte[] extraHeadersBytes = getExtraHeadersAsString(0).getBytes();
         extraHeadersByteLength = extraHeadersBytes.length;
         dos.write(Utility.shortToLittleEndianByteArray(extraHeadersBytes.length));
-        dos.write(Utility.shortToLittleEndianByteArray(timeseriesBytes.length));
+        byte[] tsBytes = getTimeseriesBytes();
+        dos.write(Utility.intToLittleEndianByteArray(tsBytes.length));
         dos.write(sourceIdBytes); // might be wrong if not ascii, should check
         dos.write(extraHeadersBytes); // might be wrong if not ascii, should check
-        dos.write(timeseriesBytes);
+        dos.write(tsBytes);
     }
 
+    // default to 2Gb pre record, which seems crazy big, but...
+    public static long MAX_DATA_SIZE = 2*1000*1000*1000;
+    static {
+        long freeMemory = Runtime.getRuntime().freeMemory();
+        if (MAX_DATA_SIZE > freeMemory) {
+            MAX_DATA_SIZE = freeMemory/2;
+        }
+    }
+
+    /**
+     * read record contents from a ByteBuffer
+     *
+     */
+    public static MSeed3Record fromByteBuffer(ByteBuffer buf) throws IOException, SeedFormatException {
+        if (buf.order() != ByteOrder.LITTLE_ENDIAN) {
+            throw new SeedFormatException("Miniseed3 buffer should be little endian, was "+buf.order());
+        }
+        byte format_m = buf.get();
+        byte format_s = buf.get();
+        if (buf.get(0) != 77 || buf.get(1) !=  83) {
+            throw new SeedFormatException("Miniseed3 record must start with 'MS', but was "+buf.get(0)+" "+buf.get(1));
+        }
+        if (buf.get(2) !=  3) {
+            throw new SeedFormatException("Miniseed3 record version was not 3, was "+buf.get(2));
+        }
+        MSeed3Record rec = new MSeed3Record();
+        rec.formatVersion = buf.get(2);       // 2
+        rec.flags = buf.get(3);               // 3
+        rec.nanosecond = buf.getInt(4); // 4
+        rec.year = buf.getShort(8);
+        rec.dayOfYear = buf.getShort(10);
+        rec.hour = buf.get(12);
+        rec.minute = buf.get(13);
+        rec.second = buf.get(14);
+        rec.timeseriesEncodingFormat = buf.get(15);
+        rec.sampleRatePeriod = buf.getDouble(16);
+        rec.numSamples = buf.getInt(24);
+        rec.recordCRC = buf.getInt(28);
+        rec.publicationVersion = buf.get(32);
+        rec.sourceIdByteLength = buf.get(33);
+        rec.extraHeadersByteLength = buf.getShort(34);
+        rec.dataByteLength = buf.getInt(36);
+        buf.position(40);
+        byte[] sidBytes = new byte[rec.sourceIdByteLength];
+        buf.get(sidBytes);
+        rec.sourceIdStr = new String(sidBytes, StandardCharsets.US_ASCII);
+        //rec.sourceId = FDSNSourceId.parse(rec.sourceIdStr);
+        byte[] ehBytes = new byte[rec.extraHeadersByteLength];
+        buf.position(40+sidBytes.length);
+        buf.get(ehBytes);
+        rec.extraHeadersStr = new String(ehBytes, StandardCharsets.UTF_8);
+        buf.position(40+sidBytes.length+ehBytes.length);
+        if (MAX_DATA_SIZE > 0 && rec.dataByteLength > MAX_DATA_SIZE) {
+            // maybe careful if dataByteLength is too big???
+            throw new RuntimeException("Miniseed3 data too big: "+rec.dataByteLength+" > "+MAX_DATA_SIZE);
+        }
+        rec.timeseriesBytes = new byte[rec.dataByteLength];
+        buf.get(rec.timeseriesBytes);
+        return rec;
+    }
+
+    /**
+     * write DataHeader contents as a ByteBuffer
+     *
+     */
+    public ByteBuffer asByteBuffer() throws IOException {
+        byte[] extraHeadersBytes = getExtraHeadersAsString(0).getBytes();
+        extraHeadersByteLength = extraHeadersBytes.length;
+        byte[] sourceIdBytes = getSourceId().toString().getBytes();
+        sourceIdByteLength = (byte) sourceIdBytes.length;
+        dataByteLength = timeseriesBytes.length;
+        ByteBuffer buf = ByteBuffer.allocate(getSize());
+        buf.order( ByteOrder.LITTLE_ENDIAN);
+        buf.put(recordIndicator.getBytes("ASCII"));
+        buf.put(formatVersion);
+        buf.put(flags);
+        buf.put(Utility.intToLittleEndianByteArray(nanosecond));
+        buf.put(Utility.shortToLittleEndianByteArray(year));
+        buf.put(Utility.shortToLittleEndianByteArray(dayOfYear));
+        buf.put((byte) hour);
+        buf.put((byte) minute);
+        buf.put((byte) second);
+        buf.put(timeseriesEncodingFormat);
+        buf.put(Utility.doubleToLittleEndianByteArray(sampleRatePeriod));
+        buf.put(Utility.intToLittleEndianByteArray(numSamples));
+        buf.put(Utility.intToLittleEndianByteArray(recordCRC));
+        buf.put(publicationVersion);
+        buf.put((byte) (sourceIdBytes.length));
+        buf.put(Utility.shortToLittleEndianByteArray(extraHeadersBytes.length));
+        buf.put(Utility.intToLittleEndianByteArray(timeseriesBytes.length));
+        buf.put(sourceIdBytes); // might be wrong if not ascii, should check
+        buf.put(extraHeadersBytes); // might be wrong if not ascii, should check
+        buf.put(timeseriesBytes);
+        return buf;
+    }
 
     public byte[] toByteArray() {
         try {
@@ -851,6 +953,16 @@ public class MSeed3Record {
      * @return
      */
     public FDSNSourceId getSourceId() {
+        if (sourceId != null) {
+            return sourceId;
+        }
+        if (sourceIdStr != null) {
+            try {
+                sourceId = FDSNSourceId.parse(sourceIdStr);
+            } catch (FDSNSourceIdException e) {
+                throw new RuntimeException("bad sourceid: "+sourceIdStr, e);
+            }
+        }
         return sourceId;
     }
 
@@ -904,19 +1016,26 @@ public class MSeed3Record {
 
     public void setTimeseriesBytes(byte[] timeseriesBytes) {
         this.timeseriesBytes = timeseriesBytes;
+        this.dataByteLength = timeseriesBytes.length;
     }
 
     public void setTimeseries(short[] data) {
-        Codec codec = new Codec();
-        byte[] bData = codec.encodeAsBytes(data);
-        setTimeseriesBytes(bData);
+        ByteBuffer buf = ByteBuffer.allocate(4*data.length);
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        ShortBuffer fbuf = buf.asShortBuffer();
+        fbuf.put(data);
+        setTimeseriesBytes(buf.array());
         setTimeseriesEncodingFormat((byte) Codec.SHORT);
+        setNumSamples(data.length);
     }
     public void setTimeseries(int[] data) {
-        Codec codec = new Codec();
-        byte[] bData = codec.encodeAsBytes(data);
-        setTimeseriesBytes(bData);
+        ByteBuffer buf = ByteBuffer.allocate(4*data.length);
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        IntBuffer fbuf = buf.asIntBuffer();
+        fbuf.put(data);
+        setTimeseriesBytes(buf.array());
         setTimeseriesEncodingFormat((byte) Codec.INTEGER);
+        setNumSamples(data.length);
     }
 
     public int steim1Timeseries(int[] data) throws SteimException, IOException {
@@ -936,6 +1055,7 @@ public class MSeed3Record {
         byte[] bData = sfb.getEncodedData();
         setTimeseriesBytes(bData);
         setTimeseriesEncodingFormat((byte) Codec.STEIM1);
+        setNumSamples(sfb.getNumSamples());
         return sfb.getNumSamples();
     }
 
@@ -956,19 +1076,26 @@ public class MSeed3Record {
         byte[] bData = sfb.getEncodedData();
         setTimeseriesBytes(bData);
         setTimeseriesEncodingFormat((byte) Codec.STEIM2);
+        setNumSamples(sfb.getNumSamples());
         return sfb.getNumSamples();
     }
     public void setTimeseries(float[] data) {
-        Codec codec = new Codec();
-        byte[] bData = codec.encodeAsBytes(data);
-        setTimeseriesBytes(bData);
+        ByteBuffer buf = ByteBuffer.allocate(4*data.length);
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        FloatBuffer fbuf = buf.asFloatBuffer();
+        fbuf.put(data);
+        setTimeseriesBytes(buf.array());
         setTimeseriesEncodingFormat((byte) Codec.FLOAT);
+        setNumSamples(data.length);
     }
     public void setTimeseries(double[] data) {
-        Codec codec = new Codec();
-        byte[] bData = codec.encodeAsBytes(data);
-        setTimeseriesBytes(bData);
+        ByteBuffer buf = ByteBuffer.allocate(4*data.length);
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        DoubleBuffer fbuf = buf.asDoubleBuffer();
+        fbuf.put(data);
+        setTimeseriesBytes(buf.array());
         setTimeseriesEncodingFormat((byte) Codec.DOUBLE);
+        setNumSamples(data.length);
     }
 
     /**
