@@ -31,20 +31,19 @@ public class MSeed3Record {
 
     protected byte flags = 0;
 
-    protected int year = 1970;
+    protected int year = DEFAULT_START_YEAR;
 
-    protected int dayOfYear = 1;
+    protected int dayOfYear = DEFAULT_START_DAY_OF_YEAR;
 
-    protected int hour = 0;
+    protected int hour = DEFAULT_START_HOUR;
 
-    protected int minute = 0;
+    protected int minute = DEFAULT_START_MINUTE;
 
-    protected int second = 0;
+    protected int second = DEFAULT_START_SECOND;
 
-    protected int nanosecond = 0;
+    protected int nanosecond = DEFAULT_START_NANOSECOND;
 
     protected double sampleRatePeriod = 1;
-    protected double sampleRate = 1;
 
     protected byte timeseriesEncodingFormat;
 
@@ -97,7 +96,7 @@ public class MSeed3Record {
                 getSourceId(), getPublicationVersion(), getSize(), getFormatVersion());
         out.println(indent + "             start time: " + getStartTimeString());
         out.println(indent + "      number of samples: " + getNumSamples());
-        String srateStr = String.format("%.10g", getSampleRate());
+        String srateStr = String.format("%.10g", samplingAsRate());
         while (srateStr.endsWith("00")) { srateStr = srateStr.substring(0, srateStr.length()-1);}
         out.format(indent + "       sample rate (Hz): %s%n", srateStr);
         byte b = getFlags();
@@ -322,13 +321,8 @@ public class MSeed3Record {
         offset++;
         timeseriesEncodingFormat = buf[offset];
         offset++;
-        sampleRatePeriod = Utility.bytesToDouble(buf, offset, true);
+        setSampleRatePeriod( Utility.bytesToDouble(buf, offset, true));
         offset += 8;
-        if (sampleRatePeriod < 0) {
-            sampleRate = -1.0 / sampleRatePeriod;
-        } else {
-            sampleRate = sampleRatePeriod;
-        }
         numSamples = Utility.bytesToInt(buf[offset], // careful if negative!!!
                 buf[offset + 1],
                 buf[offset + 2],
@@ -415,7 +409,7 @@ public class MSeed3Record {
         rec.minute = buf.get(13);
         rec.second = buf.get(14);
         rec.timeseriesEncodingFormat = buf.get(15);
-        rec.sampleRatePeriod = buf.getDouble(16);
+        rec.setSampleRatePeriod( buf.getDouble(16));
         rec.numSamples = buf.getInt(24);
         rec.recordCRC = buf.getInt(28);
         rec.publicationVersion = buf.get(32);
@@ -634,12 +628,12 @@ public class MSeed3Record {
     }
 
     public long getSamplePeriodAsNanos() {
-        if (getSampleRate() < 0) {
+        if (samplingAsRate() < 0) {
             // period in seconds
-            return Math.round(-1 * ((double) getSampleRate()) * SEC_NANOS);
+            return Math.round(-1 * ((double) samplingAsRate()) * SEC_NANOS);
         } else {
             // rate in hertz
-            return Math.round(SEC_NANOS / ((double) getSampleRate()));
+            return Math.round(SEC_NANOS / ((double) samplingAsRate()));
         }
     }
 
@@ -815,26 +809,47 @@ public class MSeed3Record {
         this.nanosecond = nanosecond;
     }
 
-
+    /**
+     * Gets sample rate/period value from header. Is rate if positive, period if negative.
+     * @return
+     */
     public double getSampleRatePeriod() {
         return sampleRatePeriod;
     }
 
 
+    /**
+     * Sets sample rate/period value in header. Is rate if positive, period if negative.
+     */
     public void setSampleRatePeriod(double sampleRatePeriod) {
         this.sampleRatePeriod = sampleRatePeriod;
     }
 
 
-    public double getSampleRate() {
-        return sampleRate;
+    /**
+     * Calculate sample rate value from header. This is always positive, even if value is negative,
+     * indicating a period in the header.
+     * @return sample rate as a non-negative number (Hz)
+     */
+    public double samplingAsRate() {
+        if (sampleRatePeriod < 0) {
+            return -1.0 / sampleRatePeriod;
+        } else {
+            return sampleRatePeriod;
+        }
     }
-
-
-    public void setSampleRate(double sampleRate) {
-        this.sampleRate = sampleRate;
+    /**
+     * Calculate sample period value from header. This is always positive, even if value is negative,
+     * indicating a period in the header.
+     * @return sample period as a non-negative number (seconds)
+     */
+    public double samplingAsPeriod() {
+        if (sampleRatePeriod < 0) {
+            return -1.0 * sampleRatePeriod;
+        } else {
+            return 1.0/ sampleRatePeriod;
+        }
     }
-
 
     public byte getTimeseriesEncodingFormat() {
         return timeseriesEncodingFormat;
@@ -1150,5 +1165,20 @@ public class MSeed3Record {
     public static final long DAY_NANOS = 86400 * SEC_NANOS;
 
     public static final long LAST_SEC_NANOS = DAY_NANOS - SEC_NANOS;
+
+    public static final int DEFAULT_START_YEAR = 1970;
+    public static final int DEFAULT_START_DAY_OF_YEAR = 1;
+    public static final int DEFAULT_START_HOUR = 0;
+    public static final int DEFAULT_START_MINUTE = 0;
+    public static final int DEFAULT_START_SECOND = 0;
+    public static final int DEFAULT_START_NANOSECOND = 0;
+
+    public static final ZonedDateTime getDefaultStartTime() {
+        ZonedDateTime out = ZonedDateTime.of(DEFAULT_START_YEAR, 1, 1, DEFAULT_START_HOUR,
+                DEFAULT_START_MINUTE, DEFAULT_START_SECOND, DEFAULT_START_NANOSECOND, TZ_UTC);
+        out = out.plusDays(DEFAULT_START_DAY_OF_YEAR - 1);
+        return out;
+
+    }
 
 }
