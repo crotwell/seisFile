@@ -70,7 +70,7 @@ public class MSeed3Convert {
         Blockette[] blockettes = dr.getBlockettes(100);
         if (blockettes.length != 0) {
             Blockette100 b100 = (Blockette100)blockettes[0];
-            ms3Header.setSampleRate(b100.getActualSampleRate());
+            ms3Header.setSampleRatePeriod(b100.getActualSampleRate());
         }
         blockettes = dr.getBlockettes(100);
         if (blockettes.length != 0) {

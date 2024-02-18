@@ -26,41 +26,41 @@ public class LeapSecondTests {
     public static final int S_MIN = 59;
     public static final int S_SEC = 59;
     public static final int S_NANO = 123000000;
-    
+
     @BeforeAll
     public static void setup() {
         // leap sec applied on 1995 Dec 31
         ZonedDateTime start = ZonedDateTime.of(S_YEAR, Month.DECEMBER.getValue(), 31, 23, 59, 59, 123000000, ZoneId.of("Z"));
-        
-        
+
+
         totallyBefore = new MSeed3Record();
         totallyBefore.setStartDateTime(start.minusSeconds(1));
-        totallyBefore.setSampleRate(10);
+        totallyBefore.setSampleRatePeriod(10);
         totallyBefore.setNumSamples(10);
 
         crossLeapStart = new MSeed3Record();
         crossLeapStart.setStartDateTime(start);
         crossLeapStart.setLeapSecInRecord(1);
-        crossLeapStart.setSampleRate(10);
+        crossLeapStart.setSampleRatePeriod(10);
         crossLeapStart.setNumSamples(10);
-        
+
         startOnLeap = new MSeed3Record();
         startOnLeap.setStartDateTime(start);
         startOnLeap.setSecond(60);
         startOnLeap.setLeapSecInRecord(1);
-        startOnLeap.setSampleRate(10);
+        startOnLeap.setSampleRatePeriod(10);
         startOnLeap.setNumSamples(10);
-        
+
         endOnLeap = new MSeed3Record();
         endOnLeap.setStartDateTime(start);
         endOnLeap.setLeapSecInRecord(1);
-        endOnLeap.setSampleRate(10);
+        endOnLeap.setSampleRatePeriod(10);
         endOnLeap.setNumSamples(10);
-        
+
         leapInMiddle = new MSeed3Record();
         leapInMiddle.setStartDateTime(start);
         leapInMiddle.setLeapSecInRecord(1);
-        leapInMiddle.setSampleRate(10);
+        leapInMiddle.setSampleRatePeriod(10);
         leapInMiddle.setNumSamples(20);
     }
 
@@ -146,7 +146,7 @@ public class LeapSecondTests {
         assertEquals( 1, endOnLeap.getLeapSecInRecord());
         assertEquals( 1, leapInMiddle.getLeapSecInRecord());
     }
-    
+
     @Test
     public void testIsEndTimeInLeapSecond() {
         assertFalse(totallyBefore.isEndTimeInLeapSecond());
@@ -154,8 +154,8 @@ public class LeapSecondTests {
         assertFalse( startOnLeap.isEndTimeInLeapSecond());
         assertTrue( endOnLeap.isEndTimeInLeapSecond());
         assertFalse( leapInMiddle.isEndTimeInLeapSecond());
-        
+
     }
-    
+
     public static final long SEC = 1000000000;
 }

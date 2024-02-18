@@ -5,15 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.sac.TestSacFileData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -51,7 +48,7 @@ public class ReferenceDataTest {
             assertEquals(jsonRec.getString("StartTime"), formatter.format(record.getStartDateTime()));
 //            assertEquals(jsonRec.getString("StartTime"), DateTimeFormatter.ISO_INSTANT.format(record.getStartDateTime()));
             assertEquals(jsonRec.getInt("EncodingFormat"), record.getTimeseriesEncodingFormat());
-            assertEquals(jsonRec.getDouble("SampleRate"), record.getSampleRate());
+            assertEquals(jsonRec.getDouble("SampleRate"), record.samplingAsRate());
             assertEquals(jsonRec.getInt("SampleCount"), record.getNumSamples());
             assertEquals(jsonRec.getString("CRC"), "0x"+Integer.toHexString(record.getRecordCRC()).toUpperCase());
             assertEquals(jsonRec.getInt("PublicationVersion"), record.getPublicationVersion());
