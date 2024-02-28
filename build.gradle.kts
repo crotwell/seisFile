@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.1.0-SNAPSHOT"
+version = "2.1.0-SNAPSHOT2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -73,7 +73,7 @@ publishing {
       maven {
           val releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
           val snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
-          url = uri(if ( version.toString().lowercase().endsWith("snapshot")) snapshotRepo else releaseRepo)
+          url = uri(if ( version.toString().lowercase().contains("snapshot")) snapshotRepo else releaseRepo)
           name = "ossrh"
           // credentials in gradle.properties as ossrhUsername and ossrhPassword
           credentials(PasswordCredentials::class)
