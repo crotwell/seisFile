@@ -11,6 +11,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
@@ -156,6 +157,13 @@ public class Origin {
 
     public RealQuantity getLongitude() {
         return longitude;
+    }
+
+    public Location asLocation() {
+        return new Location(
+                getLatitude().getValue().floatValue(),
+                getLongitude().getValue().floatValue(),
+                getDepth().getValue().floatValue());
     }
 
     public String getMethodID() {

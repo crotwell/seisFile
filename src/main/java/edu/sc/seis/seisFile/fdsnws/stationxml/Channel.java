@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Channel extends BaseNodeType {
@@ -200,6 +201,10 @@ public class Channel extends BaseNodeType {
     
     public float getDepthFloat() {
         return getDepth().getValue();
+    }
+
+    public Location asLocation() {
+        return new Location(getLatitudeFloat(), getLongitudeFloat(), getDepthFloat());
     }
 
     public DegreeFloatType getAzimuth() {

@@ -8,6 +8,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 public class Station extends BaseNodeType {
@@ -85,6 +86,10 @@ public class Station extends BaseNodeType {
 
     public DegreeFloatType getLongitude() {
         return longitude;
+    }
+
+    public Location asLocation() {
+        return new Location(getLatitudeFloat(), getLongitudeFloat());
     }
 
     public FloatType getElevation() {
