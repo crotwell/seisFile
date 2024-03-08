@@ -6,7 +6,10 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+
+import java.time.Instant;
 
 public class Time {
 
@@ -58,6 +61,9 @@ public class Time {
         return value;
     }
 
+    public Instant asInstant() {
+        return TimeUtils.parseISOString(getValue());
+    }
     public void setConfidenceLevel(Float confidenceLevel) {
         this.confidenceLevel = confidenceLevel;
     }
