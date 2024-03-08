@@ -9,6 +9,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -122,6 +126,24 @@ public class FDSNStationXML {
             };
         }
         return networks;
+    }
+
+    public Map<Network, List<Station>> extractAllNetworks() throws XMLStreamException, StationXMLException {
+        NetworkIterator nIt = getNetworks();
+        List<Network> networkList = new ArrayList<>();
+        Map<Network, List<Station>> netToSta = new HashMap<>();
+        while (nIt.hasNext()) {
+            Network n = nIt.next();
+            networkList.add(n);
+            List<Station> stationList = new ArrayList<>();
+            netToSta.put(n, stationList);
+            StationIterator sIt = n.getStations();
+            while (sIt.hasNext()) {
+                Station s = sIt.next();
+                stationList.add(s);
+            }
+        }
+        return netToSta;
     }
 
     public void closeReader() {

@@ -1,10 +1,9 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -78,6 +77,26 @@ public class Quakeml {
                 e = reader.nextEvent();
             }
         }
+    }
+    public static Quakeml loadQuakeML(Reader streamReader) throws XMLStreamException, IOException, SeisFileException {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        XMLEventReader r = factory.createXMLEventReader(streamReader);
+        XMLEvent e = r.peek();
+        while (!e.isStartElement()) {
+            r.nextEvent(); // eat this one
+            e = r.peek(); // peek at the next
+        }
+        Quakeml quakeml = new Quakeml(r);
+        return quakeml;
+    }
+
+    public List<Event> extractAllEvents() throws SeisFileException, XMLStreamException {
+        List<Event> quakes = new ArrayList<>();
+        EventIterator eIt = getEventParameters().getEvents();
+        while (eIt.hasNext()) {
+            quakes.add(eIt.next());
+        }
+        return quakes;
     }
 
     public boolean checkSchemaVersion() {
