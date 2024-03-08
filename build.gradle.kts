@@ -27,8 +27,8 @@ group = "edu.sc.seis"
 version = "2.1.0-SNAPSHOT2"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
 }
