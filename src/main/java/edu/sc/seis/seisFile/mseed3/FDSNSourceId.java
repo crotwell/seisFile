@@ -58,6 +58,41 @@ public class FDSNSourceId {
                 band, source, subsource);
     }
 
+    public String getNetworkCode() {
+        return networkCode;
+    }
+
+    public String getStationCode() {
+        return stationCode;
+    }
+
+    public String getLocationCode() {
+        return locationCode;
+    }
+
+    public String getBandCode() {
+        return bandCode;
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public String getSubsourceCode() {
+        return subsourceCode;
+    }
+
+    /**
+     * If band, source and subsource are all length 1, returns a 3-char channel code like BHZ.
+     * Otherwise, return separated by '_' like B_XY_Z.
+     * @return combination of band, source and subsource code
+     */
+    public String getChannelCode() {
+        if (bandCode.length()==1 && sourceCode.length()==1&&subsourceCode.length()==1) {
+            return bandCode+sourceCode+subsourceCode;
+        }
+        return bandCode+"_"+sourceCode+"_"+subsourceCode;
+    }
     @java.lang.Override
     public java.lang.String toString() {
         return "FDSN:" + networkCode + SEP +
