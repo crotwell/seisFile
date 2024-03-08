@@ -35,4 +35,9 @@ public class Location {
     public float getDepthKm() {
         return depth_meter /1000;
     }
+
+    @Override
+    public String toString() {
+        return "(" + latitude +", " + longitude + ") at " + depth_meter+" m";
+    }
 }

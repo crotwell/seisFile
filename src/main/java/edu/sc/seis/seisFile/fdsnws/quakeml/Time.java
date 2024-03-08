@@ -41,6 +41,10 @@ public class Time {
         }
     }
 
+    public Time(Instant t) {
+        this.value = TimeUtils.toISOString(t);
+    }
+
     public Float getConfidenceLevel() {
         return confidenceLevel;
     }

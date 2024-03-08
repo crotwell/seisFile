@@ -25,7 +25,7 @@ public class Origin {
 	}
 
     public Origin(Instant originTime, float lat, float lon) {
-		datetime = originTime;
+        time = new Time(originTime);
 		latitude = new RealQuantity(lat);
 		longitude = new RealQuantity(lon);
 	}
@@ -109,14 +109,6 @@ public class Origin {
 
     public CreationInfo getCreationInfo() {
         return creationInfo;
-    }
-
-    public Instant getDatetime() {
-        return datetime;
-    }
-    
-    public Instant getDateTime() {
-    	 	return TimeUtils.parseISOString(getTime().value);
     }
 
     public Integer getDbid() {
@@ -223,10 +215,6 @@ public class Origin {
 		this.creationInfo = creationInfo;
 	}
 
-	public void setDatetime(Instant datetime) {
-        this.datetime = datetime;
-    }
-
 	public void setDbid(Integer dbid) {
 		this.dbid = dbid;
 	}
@@ -314,8 +302,6 @@ public class Origin {
 	public String toString() {
         return time.getValue() + " (" + latitude.getValue() + ", " + longitude.getValue() + ") " + depth.getValue();
     }
-
-	Instant datetime = null;
 
 	Time time;
 
