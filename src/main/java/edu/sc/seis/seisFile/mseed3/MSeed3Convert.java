@@ -72,7 +72,7 @@ public class MSeed3Convert {
             Blockette100 b100 = (Blockette100)blockettes[0];
             ms3Header.setSampleRatePeriod(b100.getActualSampleRate());
         }
-        blockettes = dr.getBlockettes(100);
+        blockettes = dr.getBlockettes(1001);
         if (blockettes.length != 0) {
             Blockette1001 b1001 = (Blockette1001)blockettes[0];
             nanos = 1000 * b1001.getMicrosecond();
