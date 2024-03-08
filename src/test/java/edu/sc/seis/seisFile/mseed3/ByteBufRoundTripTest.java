@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.mseed3;
 
+import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 public class ByteBufRoundTripTest {
 
@@ -25,6 +28,17 @@ public class ByteBufRoundTripTest {
         buf.position(0);
         MSeed3Record read_ms3 = MSeed3Record.fromByteBuffer(buf);
         compareRecords(ms3, read_ms3);
+    }
+
+    @Test
+    public void startTimeTest() {
+        MSeed3Record ms3 = createRecord();
+        Instant st = TimeUtils.parseISOString("2024-02-29T13:47:59.9876543Z");
+        ms3.setStartDateTime(st);
+        ZonedDateTime zdt = ms3.getStartDateTime();
+        assertEquals(st, zdt.toInstant());
+        ms3.setStartDateTime(zdt);
+        assertEquals(st, ms3.getStartInstant());
     }
 
     public void compareRecords(MSeed3Record ms3, MSeed3Record read_ms3) {

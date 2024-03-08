@@ -10,9 +10,12 @@ import java.nio.*;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.util.zip.CRC32C;
 
 public class MSeed3Record {
 
@@ -348,31 +351,49 @@ public class MSeed3Record {
      * @param dos DataOutput stream to write to
      */
     public void write(OutputStream dos) throws IOException {
-        dos.write(recordIndicator.getBytes("ASCII"));
-        dos.write(formatVersion);
-        dos.write(flags);
-        dos.write(Utility.intToLittleEndianByteArray(nanosecond));
-        dos.write(Utility.shortToLittleEndianByteArray(year));
-        dos.write(Utility.shortToLittleEndianByteArray(dayOfYear));
-        dos.write(hour);
-        dos.write(minute);
-        dos.write(second);
-        dos.write(timeseriesEncodingFormat);
-        dos.write(Utility.doubleToLittleEndianByteArray(sampleRatePeriod));
-        dos.write(Utility.intToLittleEndianByteArray(numSamples));
-        dos.write(Utility.intToLittleEndianByteArray(recordCRC));
-        dos.write(publicationVersion);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(recordIndicator.getBytes("ASCII"));
+        out.write(formatVersion);
+        out.write(flags);
+        out.write(Utility.intToLittleEndianByteArray(nanosecond));
+        out.write(Utility.shortToLittleEndianByteArray(year));
+        out.write(Utility.shortToLittleEndianByteArray(dayOfYear));
+        out.write(hour);
+        out.write(minute);
+        out.write(second);
+        out.write(timeseriesEncodingFormat);
+        out.write(Utility.doubleToLittleEndianByteArray(sampleRatePeriod));
+        out.write(Utility.intToLittleEndianByteArray(numSamples));
+        //out.write(Utility.intToLittleEndianByteArray(recordCRC));
+        out.write(Utility.intToLittleEndianByteArray(0));
+        out.write(publicationVersion);
         byte[] sourceIdBytes = getSourceIdStr().getBytes();
-        dos.write((byte) (sourceIdBytes.length));
+        out.write((byte) (sourceIdBytes.length));
         byte[] extraHeadersBytes = getExtraHeadersAsString(0).getBytes();
         extraHeadersByteLength = extraHeadersBytes.length;
-        dos.write(Utility.shortToLittleEndianByteArray(extraHeadersBytes.length));
+        out.write(Utility.shortToLittleEndianByteArray(extraHeadersBytes.length));
         byte[] tsBytes = getTimeseriesBytes();
-        dos.write(Utility.intToLittleEndianByteArray(tsBytes.length));
-        dos.write(sourceIdBytes); // might be wrong if not ascii, should check
-        dos.write(extraHeadersBytes); // might be wrong if not ascii, should check
-        dos.write(tsBytes);
+        out.write(Utility.intToLittleEndianByteArray(tsBytes.length));
+        out.write(sourceIdBytes); // might be wrong if not ascii, should check
+        out.write(extraHeadersBytes); // might be wrong if not ascii, should check
+        extraHeadersBytes = null; // memory
+        out.write(tsBytes);
+        tsBytes = null; // memory
+
+        CRC32C crc32c = new CRC32C();
+        byte[] outbytes = out.toByteArray();
+        crc32c.update(out.toByteArray());
+
+        recordCRC = (int)crc32c.getValue();
+        byte[] crcBytes = Utility.intToLittleEndianByteArray(recordCRC);
+        outbytes[CRC_OFFSET] = crcBytes[0];
+        outbytes[CRC_OFFSET+1] = crcBytes[1];
+        outbytes[CRC_OFFSET+2] = crcBytes[2];
+        outbytes[CRC_OFFSET+3] = crcBytes[3];
+        dos.write(outbytes);
     }
+
+    public static final int CRC_OFFSET = 28;
 
     // default to 2Gb pre record, which seems crazy big, but...
     public static long MAX_DATA_SIZE = 2*1000*1000*1000;
@@ -503,6 +524,10 @@ public class MSeed3Record {
         setNanosecond(start.getNano());
     }
 
+    public void setStartDateTime(Instant start) {
+        setStartDateTime(start.atZone(TZ_UTC));
+    }
+
     /**
      * Start time as a Date. This adjusts for possible leap seconds, but will be wrong during a leap second.
      * In particular, the returned value is the same if the seconds field is 59 or 60, as if the 59th
@@ -515,9 +540,15 @@ public class MSeed3Record {
             leaps = sec - 59;
             sec = 59;
         }
-        ZonedDateTime out = ZonedDateTime.of(getYear(), 1, 1, getHour(), getMinute(), sec, getNanosecond(), TZ_UTC);
+        ZonedDateTime out = ZonedDateTime.of(getYear(), 1, 1,
+                getHour(), getMinute(), sec, getNanosecond(),
+                TZ_UTC);
         out = out.plusDays(getDayOfYear() - 1);
         return out;
+    }
+
+    public Instant getStartInstant() {
+        return getStartDateTime().toInstant();
     }
 
     /**

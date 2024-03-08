@@ -63,8 +63,9 @@ public class MSeed3Convert {
         ms3Header.numSamples = ms2H.getNumSamples();
         ms3Header.recordCRC = 0;
         JSONObject ms3Extras = new JSONObject();
+        JSONObject fdsnExtras = new JSONObject();
         if (ms2H.getTypeCode() != 0 && ms2H.getTypeCode() != 'D') {
-          ms3Extras.put("QI", ms2H.getTypeCode());
+            fdsnExtras.put("DataQuality", ms2H.getTypeCode());
         }
         int nanos = 0;
         Blockette[] blockettes = dr.getBlockettes(100);
