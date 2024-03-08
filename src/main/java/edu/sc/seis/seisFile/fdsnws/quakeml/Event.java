@@ -115,6 +115,9 @@ public class Event {
      * @return preferred magnitude
      */
     public Magnitude getPreferredMagnitude() {
+        if (getPreferredMagnitudeID() == null || getPreferredMagnitudeID().isEmpty()) {
+            return null;
+        }
         for (Magnitude mag : getMagnitudeList()) {
             if (mag.getPublicId().equals(getPreferredMagnitudeID())) {
                 return mag;
@@ -125,6 +128,22 @@ public class Event {
 
     public String getPreferredMagnitudeID() {
         return preferredMagnitudeID;
+    }
+
+    /** Finds the preferred origin, returns null if no origin
+     * matches the preferredOriginID
+     * @return preferred origin
+     */
+    public Origin getPreferredOrigin() {
+        if (getPreferredOriginID() == null || getPreferredOriginID().isEmpty()) {
+            return null;
+        }
+        for (Origin origin : getOriginList()) {
+            if (origin.getPublicId().equals(getPreferredOriginID())) {
+                return origin;
+            }
+        }
+        return null;
     }
 
     public String getPreferredOriginID() {
