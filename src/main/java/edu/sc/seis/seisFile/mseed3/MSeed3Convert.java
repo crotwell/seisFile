@@ -12,7 +12,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.time.Instant;
 
+import edu.sc.seis.seisFile.sac.SacConstants;
+import edu.sc.seis.seisFile.sac.SacHeader;
+import edu.sc.seis.seisFile.sac.SacTimeSeries;
 import org.json.JSONObject;
 
 import edu.sc.seis.seisFile.mseed.Blockette;
@@ -28,6 +32,25 @@ import edu.sc.seis.seisFile.mseed.SeedRecord;
 public class MSeed3Convert {
 
     public MSeed3Convert() {
+    }
+
+    public static MSeed3Record convertSacTo3(SacTimeSeries sac) throws SeedFormatException {
+        MSeed3Record ms3 = new MSeed3Record();
+        SacHeader sacHeader = sac.getHeader();
+        ms3.year = sacHeader.getNzyear();
+        ms3.dayOfYear = sacHeader.getNzjday();
+        ms3.hour = sacHeader.getNzhour();
+        ms3.minute = sacHeader.getNzmin();
+        ms3.second = sacHeader.getNzsec();
+        ms3.nanosecond = sacHeader.getNzmsec()*1000000;
+        Instant start = ms3.getStartInstant();
+        ms3.setStartDateTime(start.plusMillis(Math.round(sacHeader.getB()*1000)));
+        if (sacHeader.getIftype() == SacConstants.ITIME) {
+            ms3.setTimeseries(sac.getY());
+        } else {
+            throw new SeedFormatException("Sac file is not ITIME: "+sacHeader.getIftype());
+        }
+        return ms3;
     }
 
     public static MSeed3Record convert2to3(DataRecord dr) throws SeedFormatException {
