@@ -441,7 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>mseed3(1) Manual Page</h1>
 <h2 id="_name">Name</h2>
 <div class="sectionbody">
-<p>mseed3 - list miniseed3 records and convert from ver 2 records</p>
+<p>mseed3 - list miniseed3 records, or convert from ver 2 records, or set extra headers from StationXML, QuakeML</p>
 </div>
 </div>
 <div id="content">
@@ -450,7 +450,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>mseed3</strong> [<strong>-vV</strong>] [<strong>--2to3</strong>] [<strong>--data</strong>] [<strong>--help</strong>] [<strong>--max</strong>=<em>&lt;maxRecords&gt;</em>] [<strong>-o</strong>=<em>&lt;outputFile&gt;</em>]
-       [<strong>-r</strong>=<em>&lt;sourceIdPattern&gt;</em>] [<em>&lt;inputFileList&gt;</em>&#8230;&#8203;]</p>
+       [<strong>--quakeml</strong>=<em>&lt;quakemlFile&gt;</em>] [<strong>-r</strong>=<em>&lt;sourceIdPattern&gt;</em>] [<strong>--staxml</strong>=<em>&lt;staxmlFile&gt;</em>]
+       [<em>&lt;inputFileList&gt;</em>&#8230;&#8203;]</p>
 </div>
 </div>
 </div>
@@ -458,7 +459,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_description">Description</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>list miniseed3 records and convert from ver 2 records</p>
+<p>list miniseed3 records, or convert from ver 2 records, or set extra headers from StationXML, QuakeML</p>
 </div>
 <div class="paragraph">
 <p><a href="https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/MSeed3Client.java">View source code here.</a></p>
@@ -493,9 +494,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>Output file (default: print to console)</p>
 </dd>
+<dt class="hdlist1"><strong>--quakeml</strong>=<em>&lt;quakemlFile&gt;</em></dt>
+<dd>
+<p>Set standard extra headers for event from quakeml file</p>
+</dd>
 <dt class="hdlist1"><strong>-r</strong>, <strong>--regex</strong>=<em>&lt;sourceIdPattern&gt;</em></dt>
 <dd>
 <p>regular expression of sourceids to search</p>
+</dd>
+<dt class="hdlist1"><strong>--staxml</strong>=<em>&lt;staxmlFile&gt;</em></dt>
+<dd>
+<p>Set standard extra headers for station from stationxml file</p>
 </dd>
 <dt class="hdlist1"><strong>-v</strong>, <strong>--verbose</strong></dt>
 <dd>
@@ -629,8 +638,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.1.0-SNAPSHOT_2023-08-25T164420 2023-08-25T20 44 20Z (2191 bcd4256)<br>
-Last updated 2023-08-25 17:08:18 -0400
+Version edu.sc.seis seisFile 2.1.0-SNAPSHOT2 2024-03-15T15 19 25Z (2221 52500352)<br>
+Last updated 2024-03-14 13:11:27 -0400
 </div>
 </div>
 </body>

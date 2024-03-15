@@ -559,19 +559,26 @@ and information about its use at IRIS here
 <pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
 Init SeedLink to rtserve.iris.washington.edu 18000
 send 'HELLO'
-SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-IRIS DMC RTSERVE2 SEA Ring Server
+recv 'SeedLink v3.1 (2020.075 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13'
+recv 'IRIS DMC RTSERVE2 SEA Ring Server'
 send 'STATION HODGE CO'
-OK
+recv 'OK'
 send 'SELECT   HHZ.D'
-OK
+recv 'OK'
 send 'SELECT ??HHZ.D'
-OK
+recv 'OK'
 send 'DATA'
-OK
+recv 'OK'
 send 'END'
+3 true
+ Got a packet: 1E615A  CO  HODGE  00  HHZ  2023,249,17:33:18.8000
+D CO.HODGE.00.HHZ 2023,249,17:33:18.8000  4.72 472
+ Got a packet: 1E615B  CO  HODGE  00  HHZ  2023,249,17:33:23.5200
+D CO.HODGE.00.HHZ 2023,249,17:33:23.5200  4.62 462
+ Got a packet: 1E617F  CO  HODGE  00  HHZ  2023,249,17:33:28.1400
+D CO.HODGE.00.HHZ 2023,249,17:33:28.1400  4.72 472
 send 'BYE'
-Finished: 2023-08-25T20:12:44.144109Z</code></pre>
+Finished: 2023-09-06T17:34:30.853081Z</code></pre>
 </div>
 </div>
 </div>
@@ -579,8 +586,8 @@ Finished: 2023-08-25T20:12:44.144109Z</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.1.0-SNAPSHOT_2023-08-25T164420 2023-08-25T20 44 20Z (2191 bcd4256)<br>
-Last updated 2023-08-25 17:07:47 -0400
+Version edu.sc.seis seisFile 2.1.0-SNAPSHOT2 2024-03-15T15 19 25Z (2221 52500352)<br>
+Last updated 2024-03-14 13:11:27 -0400
 </div>
 </div>
 </body>
