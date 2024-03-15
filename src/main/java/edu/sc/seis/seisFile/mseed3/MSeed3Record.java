@@ -1167,6 +1167,10 @@ public class MSeed3Record {
                 true);
     }
 
+    /**
+     * Gets the number of bytes for this record.
+     * @return
+     */
     public int getSize() {
         return FIXED_HEADER_SIZE + getSourceIdByteLength() + getExtraHeadersByteLength() + getDataByteLength();
     }

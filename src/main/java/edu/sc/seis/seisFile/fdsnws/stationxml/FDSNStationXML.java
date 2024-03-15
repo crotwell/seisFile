@@ -1,14 +1,8 @@
 package edu.sc.seis.seisFile.fdsnws.stationxml;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +16,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.mseed3.FDSNSourceId;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import edu.sc.seis.seisFile.SeisFileException;
@@ -144,6 +139,35 @@ public class FDSNStationXML {
             }
         }
         return netToSta;
+    }
+
+    /**
+     * Finds the channel with the given FDSN SourceId that was active at the given time. Usually the networks
+     * Map comes from extractAllNetworks().
+     *
+     * @param networks map of network to list of stations to search.
+     * @param sid FDSN SourceId to match
+     * @param time time to overlap
+     * @return Channel if found or null if not
+     */
+    public static Channel findChannelBySID(Map<Network, List<Station>> networks, FDSNSourceId sid, Instant time) {
+        if (networks == null || sid == null) { return null;}
+        for(Network n : networks.keySet()) {
+            if (n.getNetworkCode().equals(sid.getNetworkCode())) {
+                for (Station s : networks.get(n)) {
+                    if (s.getStationCode().equals(sid.getStationCode())) {
+                        for (Channel c : s.getChannelList()) {
+                            if (c.getLocCode().equals(sid.getLocationCode()) && c.getChannelCode().equals(sid.getChannelCode())) {
+                                if (c.getStartDateTime().isBefore(time) && (c.getEndDateTime() == null || c.getEndDateTime().isAfter(time))) {
+                                    return c;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public void closeReader() {
@@ -282,6 +306,10 @@ public class FDSNStationXML {
     }
 
     public static FDSNStationXML loadStationXML(String filename) throws XMLStreamException, IOException, SeisFileException {
+        return loadStationXML(new FileInputStream(filename));
+    }
+
+    public static FDSNStationXML loadStationXML(File filename) throws XMLStreamException, IOException, SeisFileException {
         return loadStationXML(new FileInputStream(filename));
     }
 

@@ -1,5 +1,9 @@
 package edu.sc.seis.seisFile;
 
+import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
+
 /**
  * Simple class to hold a lat/lon pair, with optional depth.
  */
@@ -19,6 +23,19 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
         this.depth_meter = depth;
+    }
+
+    public Location(Channel chan) {
+        this.latitude = chan.getLatitudeFloat();
+        this.longitude = chan.getLongitudeFloat();
+        this.depth_meter = chan.getDepthFloat();
+    }
+
+    public Location(Event ev) {
+        Origin o = ev.getPreferredOrigin();
+        this.latitude = o.getLatitude().getValue();
+        this.longitude = o.getLongitude().getValue();
+        this.depth_meter = o.getDepth().getValue();
     }
 
     public float getLatitude() {

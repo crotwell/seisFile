@@ -1,15 +1,27 @@
 package edu.sc.seis.seisFile.client;
 
+import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Quakeml;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
+import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Network;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 import edu.sc.seis.seisFile.mseed3.FDSNSourceIdException;
 import edu.sc.seis.seisFile.mseed3.MSeed3Convert;
+import edu.sc.seis.seisFile.mseed3.MSeed3EH;
 import edu.sc.seis.seisFile.mseed3.MSeed3Record;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import picocli.CommandLine;
@@ -20,7 +32,7 @@ import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParseResult;
 
 @Command(name = "mseed3",
-        description = "list miniseed3 records and convert from ver 2 records",
+        description = "list miniseed3 records, or convert from ver 2 records, or set extra headers from StationXML, QuakeML",
         versionProvider = edu.sc.seis.seisFile.client.VersionProvider.class)
 public class MSeed3Client extends AbstractClient {
 
@@ -39,6 +51,13 @@ public class MSeed3Client extends AbstractClient {
     @Option(names = {"-o", "--out"}, description = "Output file (default: print to console)")
     private File outputFile;
 
+    @Option(names = {"--staxml"}, description = "Set standard extra headers for station from stationxml file")
+    File staxmlFile;
+
+    @Option(names = {"--quakeml"}, description = "Set standard extra headers for event from quakeml file")
+    File quakemlFile;
+
+    Duration eventSearchTol = Duration.ofHours(1);
     @Parameters
     List<File> inputFileList;
 
@@ -51,6 +70,63 @@ public class MSeed3Client extends AbstractClient {
         }
         if (convert2to3) {
             return doConvertTo3();
+        } else if (staxmlFile != null || quakemlFile != null) {
+            int retVal = 0;
+            Map<Network, List<Station>> netList = new HashMap<>();
+            if (staxmlFile != null) {
+                netList= FDSNStationXML.loadStationXML(staxmlFile).extractAllNetworks();
+            }
+            List<Event> events = new ArrayList<>();
+            if (quakemlFile != null) {
+                BufferedReader buf = new BufferedReader(new FileReader(quakemlFile));
+                Quakeml qml = Quakeml.loadQuakeML(buf);
+                events = qml.extractAllEvents();
+            }
+            for (File infile : inputFileList) {
+                if (verbose) {
+                    System.out.println("Read from " + infile.toString());
+                }
+                DataInputStream dis = null;
+                File tempFile = File.createTempFile("seisFile", "ms3");
+                DataOutputStream dos = null;
+                try {
+                    int fileBytes = (int) infile.length();
+                    int bytesRead = 0;
+                    MSeed3Record dr3;
+                    dis = new DataInputStream(new BufferedInputStream(new FileInputStream(infile)));
+                    dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(tempFile)));
+                    while (bytesRead < fileBytes && (dr3 = MSeed3Record.read(dis)) != null) {
+                        bytesRead += dr3.getSize();
+                        if (sourceIdPattern == null || sourceIdPattern.matcher(dr3.getSourceIdStr()).matches()) {
+                            Channel chan = FDSNStationXML.findChannelBySID(netList, dr3.getSourceId(), dr3.getStartInstant());
+                            MSeed3EH ms3eh = new MSeed3EH(dr3.getExtraHeaders());
+                            ms3eh.addToBag(chan);
+                            Event ev = findQuakeInTime(events, dr3.getStartInstant(), eventSearchTol);
+                            if (ev != null) {
+                                ms3eh.addToBag(ev);
+                            }
+                        }
+                        dr3.write(dos);
+                    }
+                    if (dos != null) {
+                        dos.close();
+                        tempFile.renameTo(infile);
+                        dos = null;
+                    }
+                } catch (EOFException e) {
+                    System.err.println(e);
+                    e.printStackTrace();
+                    // done...
+                } finally {
+                    if (dis != null) {
+                        dis.close();
+                    }
+                    if (dos != null) {
+                        dos.close();
+                    }
+                }
+            }
+            return retVal;
         } else {
             return printMSeed3();
         }
@@ -139,6 +215,28 @@ public class MSeed3Client extends AbstractClient {
             dos.close();
         }
         return 0;
+    }
+
+    /**
+     * Finds the first Event in a list that is within +- the tolerance of the given time.
+     * @param quakes
+     * @param time
+     * @param tol
+     * @return
+     */
+    public static Event findQuakeInTime(List<Event> quakes, Instant time, Duration tol) {
+        Instant early = time.minus(tol);
+        Instant late = time.plus(tol);
+        for (Event e : quakes) {
+            Origin o = e.getPreferredOrigin();
+            if (o != null) {
+                Instant otime = o.getTime().asInstant();
+                if (otime.isAfter(early) && otime.isBefore(late)) {
+                    return e;
+                }
+            }
+        }
+        return null;
     }
 
     public static void main(String... args) { // bootstrap the application

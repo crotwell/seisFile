@@ -2,6 +2,9 @@ package edu.sc.seis.seisFile.mseed3;
 
 import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.TimeUtils;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
+import edu.sc.seis.seisFile.fdsnws.quakeml.Magnitude;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import org.json.JSONObject;
 
 import java.time.Instant;
@@ -27,6 +30,23 @@ public class MSeed3EH {
         return bag;
     }
 
+    public void insertLocation(JSONObject json, Location loc) {
+        json.put("la", loc.getLatitude());
+        json.put("lo", loc.getLongitude());
+        json.put("dp", loc.getDepthMeter());
+    }
+
+    public void addToBag(Channel chan) {
+        if (chan == null) { return; }
+        JSONObject bagEh = getBagEH();
+        JSONObject ch = new JSONObject();
+        insertLocation(ch, new Location(chan));
+        ch.put("el", chan.getElevation().getValue());
+        ch.put("az", chan.getAzimuth());
+        ch.put("dip", chan.getDip());
+        bagEh.put("ch", ch);
+    }
+
     public Location channelLocation() {
         Location loc = null;
         if (bag != null) {
@@ -41,6 +61,27 @@ public class MSeed3EH {
         }
         return loc;
     }
+
+    public void addToBag(Event q) {
+        if (q == null) { return; }
+        JSONObject bagEh = getBagEH();
+        JSONObject ev = new JSONObject();
+        ev.put("id", q.getPublicId());
+        JSONObject o = new JSONObject();
+        if (q.getPreferredOrigin() != null) {
+            insertLocation(o, new Location(q));
+            ev.put("or", o);
+        }
+        if (q.getPreferredMagnitude() != null) {
+            Magnitude m = q.getPreferredMagnitude();
+            JSONObject mag = new JSONObject();
+            mag.put("v", m.getMag().getValue());
+            mag.put("t", m.getType());
+            ev.put("mag", mag);
+        }
+        bagEh.put("ev", ev);
+    }
+
     public Location quakeLocation() {
         Location loc = null;
         if (bag != null) {
