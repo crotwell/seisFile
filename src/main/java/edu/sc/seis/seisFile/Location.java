@@ -5,21 +5,21 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 
 /**
- * Simple class to hold a lat/lon pair, with optional depth.
+ * Simple class to hold a lat/lon pair, with optional depth, defaults to 0.
  */
 public class Location {
 
-    float latitude = 0;
-    float longitude = 0;
+    double latitude = 0;
+    double longitude = 0;
 
-    float depth_meter = 0;
+    double depth_meter = 0;
 
-    public Location(float latitude, float longitude) {
+    public Location(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public Location(float latitude, float longitude, float depth) {
+    public Location(double latitude, double longitude, double depth) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.depth_meter = depth;
@@ -38,18 +38,18 @@ public class Location {
         this.depth_meter = o.getDepth().getValue();
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public float getDepthMeter() {
+    public double getDepthMeter() {
         return depth_meter;
     }
-    public float getDepthKm() {
+    public double getDepthKm() {
         return depth_meter /1000;
     }
 
