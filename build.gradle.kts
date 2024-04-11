@@ -115,7 +115,7 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:4.7.5")
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
-    implementation( "com.fasterxml.woodstox:woodstox-core:6.6.1")
+    implementation( "com.fasterxml.woodstox:woodstox-core:6.6.2")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.json:json:20240303")
 
