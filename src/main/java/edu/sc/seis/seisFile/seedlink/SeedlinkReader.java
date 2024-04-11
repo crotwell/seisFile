@@ -251,7 +251,8 @@ public class SeedlinkReader {
                 DataRecord dr = slp.getMiniSeed();
                 packetString = " Got a packet: " + slp.getSeqNum() + "  " + dr.getHeader().getNetworkCode() + "  "
                         + dr.getHeader().getStationIdentifier() + "  " + dr.getHeader().getLocationIdentifier() + "  "
-                        + dr.getHeader().getChannelIdentifier() + "  " + dr.getHeader().getStartTime();
+                        + dr.getHeader().getChannelIdentifier() + "  " + dr.getHeader().getStartTime()
+                        +" "+dr.getHeader().getNumSamples();
             } catch(SeedFormatException e) {
                 packetString = "SeedFormatExcpetion parsing packet: " + slp.getSeqNum() + e.getMessage();
             }
@@ -262,11 +263,12 @@ public class SeedlinkReader {
 
     /**
      * send an INFO command. The resulting packets can be retrieved with calls
-     * to next(), although it seems there is no good way to determine how many
-     * packets will be returned or when they have all arrived without parsing
-     * the xml. This appears to be a shortcoming of the seedlink protocol. INFO
+     * to next(), checking isInfoContinuesPacket() to see if more packets will
+     * be returned. INFO
      * requests should probably not be sent after the end of the handshake as
-     * real data packets may arrive causing confusion.
+     * real data packets may arrive causing confusion. GetInfoString() is
+     * preferred as it iterates over all returned packets and
+     * returns the result as a single String.
      */
     public void info(String level) throws IOException {
         send("INFO " + level);
@@ -535,15 +537,31 @@ public class SeedlinkReader {
         selectDataOfType(network, station, locchan, DATA_TYPE);
     }
 
-    public void selectDataOfType(String network, String station, List<String> locchan, String type) throws SeedlinkException, IOException {
+
+    /**
+     * Utility function to select the stream. This sends a STATION followed by a SELECT command.
+     *
+     * @deprecated use selectData() or selectTime() instead
+     * @param network the network.
+     * @param station the station.
+     * @param locchan list of location channel.
+     * @param type the data type.
+     * @throws SeedlinkException
+     * @throws IOException
+     */
+    public void selectOfType(String network, String station, List<String> locchan, String type) throws SeedlinkException, IOException {
         sendStation(network, station);
         if (locchan.size() == 0) {
             sendSelect("???");
             sendSelect("?????");
         }
-        for(String lc : locchan) {
+        for (String lc : locchan) {
             sendSelect(lc, type);
         }
+    }
+
+    public void selectDataOfType(String network, String station, List<String> locchan, String type) throws SeedlinkException, IOException {
+        selectOfType(network, station, locchan, type);
         sendData();
     }
 
@@ -552,10 +570,7 @@ public class SeedlinkReader {
     }
 
     public void selectDataOfType(String network, String station, List<String> locchan, String seqNum, String type) throws SeedlinkException, IOException {
-        sendStation(network, station);
-        for(String lc : locchan) {
-            sendSelect(lc, type);
-        }
+        selectOfType(network, station, locchan, type);
         sendData(seqNum);
         if ( ! (containsWildcard(network) || containsWildcard(station))) {
             seedlinkState.put(network, station, seqNum);
@@ -567,10 +582,7 @@ public class SeedlinkReader {
     }
 
     public void selectDataOfType(String network, String station, List<String> locchan, Instant start, String type) throws SeedlinkException, IOException {
-        sendStation(network, station);
-        for(String lc : locchan) {
-            sendSelect(lc, type);
-        }
+        selectOfType(network, station, locchan, type);
         sendData(start);
     }
 
@@ -583,10 +595,7 @@ public class SeedlinkReader {
     }
 
     public void selectTimeOfType(String network, String station, List<String> locchan, Instant start, Instant end, String type) throws SeedlinkException, IOException {
-        sendStation(network, station);
-        for(String lc : locchan) {
-            sendSelect(lc, type);
-        }
+        selectOfType(network, station, locchan, type);
         sendTime(start, end);
     }
 

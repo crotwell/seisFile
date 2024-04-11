@@ -48,7 +48,8 @@ public class SeedLinkClient extends AbstractClient {
     Instant end;
 
     
-    @Option(names= {"--itype"}, description="info typ, ex "+SeedlinkReader.INFO_STREAMS)
+    @Option(names= {"--itype"}, description="info typ, ex "+SeedlinkReader.INFO_STREAMS,
+    defaultValue=SeedlinkReader.INFO_STREAMS)
     String infoType = SeedlinkReader.EMPTY;
     @Option(names= { "--iout"}, description="info out file")
     String ioutFile = SeedlinkReader.EMPTY;
@@ -85,6 +86,9 @@ public class SeedLinkClient extends AbstractClient {
         try {
             if (verbose) {
                 String[] lines = reader.sendHello();
+                for (String l : lines) {
+                    out.println(l);
+                }
             }
             if (infoType.length() != 0 || ioutFile.length() != 0)
             {
@@ -102,26 +106,26 @@ public class SeedLinkClient extends AbstractClient {
                     }
                     finally {
                         if (pw != null) {
+                            pw.println();
                             pw.close();
                         }
                     }
                 }
-            }
-            if (maxRecords != 0) {
+            } else if (maxRecords != 0) {
                 ArrayList<String> locChanList = new ArrayList<>();
                 for (int l = 0; l < location.size(); l++) {
                     for (int c = 0; c < channel.size(); c++) {
-                        locChanList.add(location.get(l)+ channel.get(c));
+                        locChanList.add(location.get(l) + channel.get(c));
                     }
                 }
-                for (int n = 0; n < network.size(); n++) {
-                    for (int s = 0; s < station.size(); s++) {
+                for (String n : network) {
+                    for (String s : station) {
                         if (start == null) {
-                            reader.selectData(network.get(n), station.get(s), locChanList);
+                            reader.selectData(n, s, locChanList);
                         } else if (end == null) {
-                            reader.selectTime(network.get(n), station.get(s), locChanList, start);
+                            reader.selectTime(n, s, locChanList, start);
                         } else {
-                            reader.selectTime(network.get(n), station.get(s), locChanList, start, end);
+                            reader.selectTime(n, s, locChanList, start, end);
                         }
                     }
                 }
