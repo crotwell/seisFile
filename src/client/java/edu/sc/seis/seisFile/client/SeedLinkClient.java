@@ -92,8 +92,8 @@ public class SeedLinkClient extends AbstractClient {
                     infoType = SeedlinkReader.INFO_STREAMS;
                 }
                 String infoString = reader.getInfoString(infoType);
-                if (ioutFile == null) {
-                    out.print(infoString);
+                if (ioutFile == null || ioutFile.length() == 0) {
+                    out.println(infoString);
                 } else {
                     PrintWriter pw = null;
                     try {
