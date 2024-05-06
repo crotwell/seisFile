@@ -25,7 +25,6 @@ public class ByteBufRoundTripTest {
             }
         }
         assertEquals(ms3.getSize(), buf.array().length);
-        buf.position(0);
         MSeed3Record read_ms3 = MSeed3Record.fromByteBuffer(buf);
         compareRecords(ms3, read_ms3);
     }
