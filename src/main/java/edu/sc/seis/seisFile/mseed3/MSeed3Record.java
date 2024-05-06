@@ -488,6 +488,7 @@ public class MSeed3Record {
         buf.put(sourceIdBytes); // might be wrong if not ascii, should check
         buf.put(extraHeadersBytes); // might be wrong if not ascii, should check
         buf.put(timeseriesBytes);
+        buf.position(0);
         return buf;
     }
 
