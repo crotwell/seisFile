@@ -21,7 +21,7 @@ public class Origin {
 	public static final String ELEMENT_NAME = QuakeMLTagNames.origin;
 	
 	public Origin() {
-		
+		this.publicId = "autogen"+Long.toHexString(Double.doubleToLongBits(Math.random()));
 	}
 
     public Origin(Instant originTime, float lat, float lon) {

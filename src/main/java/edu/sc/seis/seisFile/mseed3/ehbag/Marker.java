@@ -43,4 +43,8 @@ public class Marker {
         }
         return m;
     }
+
+    public static final String MARKER_PICK = "pk";
+    public static final String MARKER_PREDIC_MODEL = "md";
+
 }

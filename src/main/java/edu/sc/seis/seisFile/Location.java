@@ -32,7 +32,11 @@ public class Location {
     }
 
     public Location(Event ev) {
-        Origin o = ev.getPreferredOrigin();
+        this(ev.getPreferredOrigin() != null ? ev.getPreferredOrigin() :
+                (ev.getOriginList().size() > 0 ? ev.getOriginList().get(0) : null));
+    }
+
+    public Location(Origin o) {
         this.latitude = o.getLatitude().getValue();
         this.longitude = o.getLongitude().getValue();
         this.depth_meter = o.getDepth().getValue();

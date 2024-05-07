@@ -15,6 +15,10 @@ public class Magnitude {
 
     public static final String ELEMENT_NAME = QuakeMLTagNames.magnitude;
 
+    public Magnitude() {
+        this.publicId = "autogen"+Long.toHexString(Double.doubleToLongBits(Math.random()));
+    }
+
     public Magnitude(XMLEventReader reader) throws XMLStreamException, SeisFileException {
         StartElement startE = StaxUtil.expectStartElement(ELEMENT_NAME, reader);
         publicId = StaxUtil.pullAttribute(startE, QuakeMLTagNames.publicId);
