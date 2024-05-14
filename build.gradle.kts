@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.1.0-SNAPSHOT4"
+version = "2.1.0-SNAPSHOT4" // 4
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -68,7 +68,7 @@ publishing {
     repositories {
       maven {
         name = "TestDeploy"
-        url = uri("$buildDir/repos/test-deploy")
+        url = uri(layout.buildDirectory.dir("repos/test-deploy"))
       }
       maven {
           val releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -251,7 +251,7 @@ tasks.register<Sync>("explodeBin") {
   dependsOn("startScripts")
   group = "dist"
   with( binDistFiles)
-  into( file("$buildDir/explode"))
+  into( layout.buildDirectory.dir("explode"))
 }
 
 tasks.register<Sync>("explodeDist") {
@@ -259,7 +259,7 @@ tasks.register<Sync>("explodeDist") {
   dependsOn("javadoc")
   group = "dist"
   with( distFiles)
-  into( file("$buildDir/explode"))
+  into( layout.buildDirectory.dir("explode"))
 }
 
 
@@ -282,8 +282,8 @@ tasks.register<Tar>("tarDist") {
 tasks.register<Checksum>("checksumDist") {
   dependsOn("tarBin")
   dependsOn("tarDist")
-  files = tasks.getByName("tarBin").outputs.files + tasks.getByName("tarDist").outputs.files
-  outputDir=File(project.buildDir, "distributions")
+  inputFiles.setFrom( tasks.getByName("tarBin").outputs.files + tasks.getByName("tarDist").outputs.files)
+  outputDirectory.set(file(layout.buildDirectory.dir("distributions")))
   algorithm = Checksum.Algorithm.SHA256
 }
 
@@ -361,7 +361,7 @@ for (key in scriptNames.keys) {
       getMainClass().set("picocli.codegen.docgen.manpage.ManPageGenerator")
     print("genManTemplate"+key)
     val outTemplateDir =  File(project.projectDir,  "src/doc/man-templates")
-    val outDir =  File(project.buildDir,  "picocli/man")
+    val outDir =  file(layout.buildDirectory.dir("picocli/man"))
     print(outTemplateDir)
     print(outDir)
     args = listOf("-d", outDir.path, "--template-dir", outTemplateDir.path, scriptNames[key], "-v", "--force")
@@ -381,7 +381,7 @@ for (key in scriptNames.keys) {
     group = "Documentation"
     classpath = configurations.getByName("annotationProcessor") + sourceSets.getByName("client").runtimeClasspath
       getMainClass().set("picocli.codegen.docgen.manpage.ManPageGenerator")
-    val outDir =  File(project.buildDir,  "picocli/man")
+    val outDir =  file(layout.buildDirectory.dir(  "picocli/man"))
     args = listOf("-f", "-d", outDir.path, scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
       //dependsOn += tasks.getByName("genManTemplate"+key)
@@ -393,13 +393,13 @@ for (key in scriptNames.keys) {
   }
   tasks.named("asciidoctor") {
       dependsOn(adocTask)
-      inputs.property(key+".adoc", File(project.buildDir,  "picocli/man/"+scriptNames[key]+".adoc"))
+      inputs.property(key+".adoc", file(layout.buildDirectory.file( "picocli/man/"+scriptNames[key]+".adoc")))
   }
   val bashautoTask = tasks.register<JavaExec>("genAutocomplete"+key) {
     description = "generate picocli bash/zsh autocomplete file "+key
     classpath = sourceSets.getByName("client").runtimeClasspath
       getMainClass().set("picocli.AutoComplete")
-    val outDir =  File(project.buildDir,  "picocli/bash_completion")
+    val outDir =  file(layout.buildDirectory.dir(  "picocli/bash_completion"))
     val outFile = File(outDir, key+"_completion")
     args = listOf(scriptNames[key], "-f", "-o", outFile.path)
     dependsOn += tasks.getByName("compileJava")
