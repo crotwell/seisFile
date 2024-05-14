@@ -15,7 +15,7 @@ example output from src/doc/man-example with run_examples.sh
 ./gradlew dependencyUpdates
 
 # wrapper upgrade
-./gradlew wrapper --gradle-version 8.6 --distribution-type bin
+./gradlew wrapper --gradle-version 8.7 --distribution-type bin
 
 # SNAPSHOT publish,
 # version must end with -SNAPSHOT
