@@ -24,8 +24,8 @@ public class MSeed3EH {
 
     public MSeed3EH(JSONObject eh) {
         this.eh = eh;
-        if (eh.has("bag")) {
-            bag = eh.getJSONObject("bag");
+        if (eh.has(BAG)) {
+            bag = eh.getJSONObject(BAG);
         }
     }
 
@@ -36,15 +36,15 @@ public class MSeed3EH {
     public JSONObject getBagEH() {
         if (bag == null) {
             bag = new JSONObject();
-            eh.put("bag", bag);
+            eh.put(BAG, bag);
         }
         return bag;
     }
 
     public void insertLocation(JSONObject json, Location loc) {
-        json.put("la", loc.getLatitude());
-        json.put("lo", loc.getLongitude());
-        json.put("dp", loc.getDepthMeter());
+        json.put(LATITUDE, loc.getLatitude());
+        json.put(LONGITUDE, loc.getLongitude());
+        json.put(DEPTH, loc.getDepthMeter());
     }
 
     public void addToBag(Channel chan) {
@@ -55,9 +55,9 @@ public class MSeed3EH {
         JSONObject bagEh = getBagEH();
         JSONObject ch = new JSONObject();
         insertLocation(ch, new Location(chan));
-        ch.put("el", chan.getElevation().getValue());
-        ch.put("az", chan.getAzimuth());
-        ch.put("dip", chan.getDip());
+        ch.put(ELEVATION, chan.getElevation().getValue());
+        ch.put(AZ, chan.getAzimuth());
+        ch.put(DIP, chan.getDip());
         bagEh.put(CHANNEL, ch);
     }
 
@@ -82,16 +82,34 @@ public class MSeed3EH {
         markers.put(marker.asJSON());
     }
 
+    public void setTimeseriesUnit(String siUnit) {
+        JSONObject bagEh = getBagEH();
+        if (! bagEh.has(Y)) {
+            bagEh.put(Y, new JSONObject());
+        }
+        JSONObject y = bagEh.getJSONObject(Y);
+        y.put(SI, siUnit);
+    }
+
+    public String getTimeseriesUnit() {
+        JSONObject bagEh = getBagEH();
+        if (bagEh.has(Y)) {
+            JSONObject y = bagEh.getJSONObject(Y);
+            return y.optString(SI);
+        }
+        return null;
+    }
+
     public Location channelLocation() {
         Location loc = null;
         if (bag != null) {
             if (bag.has(CHANNEL)) {
                 JSONObject ch = bag.getJSONObject(CHANNEL);
                 float depth = 0;
-                if (ch.has("dp")) {
-                    depth = ch.getFloat("dp");
+                if (ch.has(DEPTH)) {
+                    depth = ch.getFloat(DEPTH);
                 }
-                loc = new Location(ch.getFloat("la"), ch.getFloat("lo"), depth);
+                loc = new Location(ch.getFloat(LATITUDE), ch.getFloat(LONGITUDE), depth);
             }
         }
         return loc;
@@ -106,7 +124,7 @@ public class MSeed3EH {
         Origin origin = null;
         if (q.getPreferredOrigin() != null) {
             origin = q.getPreferredOrigin();
-        } else if (q.getOriginList().size() > 0) {
+        } else if (!q.getOriginList().isEmpty()) {
             origin = q.getOriginList().get(0);
         }
         if (origin != null) {
@@ -117,9 +135,9 @@ public class MSeed3EH {
         if (q.getPreferredMagnitude() != null) {
             Magnitude m = q.getPreferredMagnitude();
             JSONObject mag = new JSONObject();
-            mag.put("v", m.getMag().getValue());
-            mag.put("t", m.getType());
-            ev.put("mag", mag);
+            mag.put(MAGVALUE, m.getMag().getValue());
+            mag.put(MAGTYPE, m.getType());
+            ev.put(MAGNITUDE, mag);
         }
         bagEh.put(EVENT, ev);
     }
@@ -127,15 +145,15 @@ public class MSeed3EH {
     public Location quakeLocation() {
         Location loc = null;
         if (bag != null) {
-            if (bag.has("ev")) {
-                JSONObject ev = bag.getJSONObject("ev");
-                if (ev.has("or")) {
-                    JSONObject or = ev.getJSONObject("or");
+            if (bag.has(EVENT)) {
+                JSONObject ev = bag.getJSONObject(EVENT);
+                if (ev.has(ORIGIN)) {
+                    JSONObject or = ev.getJSONObject(ORIGIN);
                     float depth = 0;
-                    if (or.has("dp")) {
-                        depth = or.getFloat("dp");
+                    if (or.has(DEPTH)) {
+                        depth = or.getFloat(DEPTH);
                     }
-                    loc = new Location(or.getFloat("la"), or.getFloat("lo"), depth);
+                    loc = new Location(or.getFloat(LATITUDE), or.getFloat(LONGITUDE), depth);
                 }
             }
         }
@@ -144,11 +162,11 @@ public class MSeed3EH {
     public Instant quakeTime() {
         Instant time = null;
         if (bag != null) {
-            if (bag.has("ev")) {
-                JSONObject ev = bag.getJSONObject("ev");
-                if (ev.has("or")) {
-                    JSONObject or = ev.getJSONObject("or");
-                    return TimeUtils.parseISOString(or.getString("tm"));
+            if (bag.has(EVENT)) {
+                JSONObject ev = bag.getJSONObject(EVENT);
+                if (ev.has(ORIGIN)) {
+                    JSONObject or = ev.getJSONObject(ORIGIN);
+                    return TimeUtils.parseISOString(or.getString(TIME));
                 }
             }
         }
@@ -172,8 +190,8 @@ public class MSeed3EH {
         if (bag != null) {
             if (bag.has(PATH)) {
                 JSONObject path = bag.getJSONObject(PATH);
-                if (path.has("gcarc")) {
-                    return path.getFloat("gcarc");
+                if (path.has(GCARC)) {
+                    return path.getFloat(GCARC);
                 }
             }
         }
@@ -196,9 +214,20 @@ public class MSeed3EH {
     public static final String EVENT = "ev";
     public static final String ORIGIN = "or";
     public static final String TIME = "tm";
+    public static final String DEPTH = "dp";
+    public static final String ELEVATION = "el";
+    public static final String LATITUDE = "la";
+    public static final String LONGITUDE = "lo";
+    public static final String MAGNITUDE = "mag";
+    public static final String MAGVALUE = "v";
+    public static final String MAGTYPE = "t";
     public static final String MARKERS = "mark";
     public static final String PATH = "path";
     public static final String GCARC = "gcarc";
     public static final String AZ = "az";
     public static final String BAZ = "baz";
+    public static final String DIP = "dip";
+    public static final String Y = "y";
+    public static final String SI = "si";
+    public static final String PROC = "proc";
 }
