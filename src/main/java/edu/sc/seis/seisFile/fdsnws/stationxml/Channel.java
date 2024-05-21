@@ -92,7 +92,7 @@ public class Channel extends BaseNodeType {
                 reader.nextEvent();
                 return;
             } else {
-                e = reader.nextEvent();
+                reader.nextEvent();
             }
         }
     }
@@ -420,7 +420,7 @@ public class Channel extends BaseNodeType {
 
     private Equipment dataLogger;
 
-    private List<Equipment> equipmentList = new ArrayList<Equipment>();
+    private List<Equipment> equipmentList = new ArrayList<>();
 
     private Response response;
 
@@ -432,7 +432,7 @@ public class Channel extends BaseNodeType {
     
     private FloatType elevation, depth;
 
-    List<String> typeList = new ArrayList<String>();
+    List<String> typeList = new ArrayList<>();
 
     String storageFormat;
     
@@ -444,7 +444,7 @@ public class Channel extends BaseNodeType {
             out = EMPTY_LOC_CODE; 
         } else {
             out = out.trim();
-            if (out.length() == 0 || out.equals("--")) { out = EMPTY_LOC_CODE; }
+            if (out.isEmpty() || out.equals("--")) { out = EMPTY_LOC_CODE; }
         }
         return out;
     }

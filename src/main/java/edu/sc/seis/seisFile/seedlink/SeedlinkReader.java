@@ -21,50 +21,49 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
 /**
  * Reader for the seedlink protocol in multistation mode. Protocol documentation can be found at
- * https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html
- *
+ * <a href="https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html">seedlink</a>
  * Note this implementatino assumes multistation mode. It may be possible to use this in single station mode, but
  * this has not been tested.
  */
 public class SeedlinkReader {
 
     /** default of IRIS DMC */
-    public SeedlinkReader() throws UnknownHostException, IOException {
+    public SeedlinkReader() throws IOException {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
 
     /** default of IRIS DMC */
-    public SeedlinkReader(boolean verbose) throws UnknownHostException, IOException {
+    public SeedlinkReader(boolean verbose) throws IOException {
         this(DEFAULT_HOST, DEFAULT_PORT, verbose);
     }
     
     /** uses the default port of 18000 */
-    public SeedlinkReader(String host) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host) throws IOException {
         this(host, DEFAULT_PORT);
     }
 
     /** uses the default port of 18000 */
-    public SeedlinkReader(String host, boolean verbose) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host, boolean verbose) throws IOException {
         this(host, DEFAULT_PORT, verbose);
     }
 
-    public SeedlinkReader(String host, int port) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host, int port) throws IOException {
         this(host, port, DEFAULT_TIMEOUT_SECOND);
     }
 
-    public SeedlinkReader(String host, int port, boolean verbose) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host, int port, boolean verbose) throws IOException {
         this(host, port, DEFAULT_TIMEOUT_SECOND, verbose);
     }
 
-    public SeedlinkReader(String host, int port, int timeoutSeconds) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host, int port, int timeoutSeconds) throws IOException {
         this(host, port, timeoutSeconds, false);
     }
 
-    public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose) throws IOException {
         this(host, port, timeoutSeconds, verbose, timeoutSeconds);
     }
 
-    public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose, int connectTimeoutSeconds) throws UnknownHostException, IOException {
+    public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose, int connectTimeoutSeconds) throws IOException {
         setVerbose(verbose);
         this.timeoutSeconds = timeoutSeconds;
         this.connectTimeoutSeconds = connectTimeoutSeconds;
@@ -84,7 +83,7 @@ public class SeedlinkReader {
         this.seedlinkState = state;
     }
     
-    private void initConnection() throws UnknownHostException, IOException {
+    private void initConnection() throws IOException {
         if (isVerbose()) {
             getVerboseWriter().println("Init SeedLink to "+getHost()+" "+getPort());
         }
@@ -146,7 +145,6 @@ public class SeedlinkReader {
     
 	/**
 	 * Get the SeedLink information string for streams.
-	 * @return the SeedLink information string.
 	 * 
 	 * @return the SeedLink information string or null if error.
      * @throws IOException if an I/O Exception occurs.
@@ -161,7 +159,6 @@ public class SeedlinkReader {
 	/**
 	 * Get the SeedLink information string.
 	 * @param infoType the information type.
-	 * @return the SeedLink information string.
 	 * 
 	 * @return the SeedLink information string or null if error.
      * @throws IOException if an I/O Exception occurs.
@@ -177,7 +174,6 @@ public class SeedlinkReader {
 	 * Get the SeedLink information string.
 	 * @param infoType the information type.
 	 * @param addNewlines true to add newlines to support XML parsing, false otherwise.
-	 * @return the SeedLink information string.
 	 * 
 	 * @return the SeedLink information string or null if error.
      * @throws IOException if an I/O Exception occurs.
@@ -392,7 +388,6 @@ public class SeedlinkReader {
      * a DATA or TIME command in the original handshaking phase after each STATION command. Some servers allow
      * multiple STATION commands before a DATA command, but this breaks restarting each station at the
      * last sequence. The caller should call endHandshake() after creationg in order to begin data flow.
-     *
      * This does not function correctly if wildcards have been used in the original request as there is no
      * guarantee that all stations/channels that might match the wildcards have actually been seen before the
      * interruption, and so the wildcard commands may need to be repeated. Resuming after STATION comamnds with wildcards
@@ -551,7 +546,7 @@ public class SeedlinkReader {
      */
     public void selectOfType(String network, String station, List<String> locchan, String type) throws SeedlinkException, IOException {
         sendStation(network, station);
-        if (locchan.size() == 0) {
+        if (locchan.isEmpty()) {
             sendSelect("???");
             sendSelect("?????");
         }
@@ -613,7 +608,7 @@ public class SeedlinkReader {
      */
     @Deprecated
     public void select(String network, String station, String location, String channel, String type) throws SeedlinkException, IOException {
-        if ( channel.length() == 0) {channel = "???";}
+        if (channel.isEmpty()) {channel = "???";}
         sendStation(network, station);
         sendSelect(location + channel, type);
     }
@@ -630,8 +625,8 @@ public class SeedlinkReader {
      * @throws IOException
      */
     public void sendStation(String network, String station) throws SeedlinkException, IOException {
-        if ( network.length() == 0) {network = "*";}
-        if ( station.length() == 0) {station = "*";}
+        if (network.isEmpty()) {network = "*";}
+        if (station.isEmpty()) {station = "*";}
         sendCmd("STATION " + station + " " + network);
     }
 
@@ -657,7 +652,7 @@ public class SeedlinkReader {
      * @throws IOException
      */
     public void sendSelect(String locationChannel, String type) throws SeedlinkException, IOException {
-        if ( locationChannel.length() == 0) {locationChannel = "*";}
+        if (locationChannel.isEmpty()) {locationChannel = "*";}
         sendCmd("SELECT " + locationChannel + "." + type);
     }
 
@@ -703,9 +698,9 @@ public class SeedlinkReader {
      */
     @Deprecated
     public void startData(String start, String end) throws SeedlinkException, IOException {
-    	if (start == null || start.length() == 0) {
+    	if (start == null || start.isEmpty()) {
     		sendCmd(DATA_COMMAND);
-    	} else if (end == null || end.length() == 0) {
+    	} else if (end == null || end.isEmpty()) {
     		sendCmd(TIME_COMMAND + " " + start);
     	} else {
     		sendCmd(TIME_COMMAND + " " + start + " " + end);
@@ -789,7 +784,7 @@ public class SeedlinkReader {
 
     int connectTimeoutSeconds;
     
-    List<String> sentCommands = new ArrayList<String>();
+    List<String> sentCommands = new ArrayList<>();
 
     SeedlinkState seedlinkState;
 

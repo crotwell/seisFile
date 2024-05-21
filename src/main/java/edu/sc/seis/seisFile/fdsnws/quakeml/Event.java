@@ -61,7 +61,7 @@ public class Event {
                 reader.nextEvent();
                 return;
             } else {
-                e = reader.nextEvent();
+                reader.nextEvent();
             }
         }
     }
@@ -231,17 +231,17 @@ public class Event {
 
     private String publicId;
 
-    private List<EventDescription> descriptionList = new ArrayList<EventDescription>();
+    private List<EventDescription> descriptionList = new ArrayList<>();
 
-    private List<Magnitude> magnitudeList = new ArrayList<Magnitude>();
+    private List<Magnitude> magnitudeList = new ArrayList<>();
 
-    private List<StationMagnitude> stationMagnitudeList = new ArrayList<StationMagnitude>();
+    private List<StationMagnitude> stationMagnitudeList = new ArrayList<>();
 
-    private List<Amplitude> amplitudeList = new ArrayList<Amplitude>();
+    private List<Amplitude> amplitudeList = new ArrayList<>();
 
-    private List<Comment> commentList = new ArrayList<Comment>();
+    private List<Comment> commentList = new ArrayList<>();
 
-    private List<Pick> pickList = new ArrayList<Pick>();
+    private List<Pick> pickList = new ArrayList<>();
 
     private String type;
 
@@ -251,9 +251,9 @@ public class Event {
      * List<StationMagnitude> stationMagnitudeList = new
      * ArrayList<StationMagnitude>();
      */
-    private List<Origin> originList = new ArrayList<Origin>();
+    private List<Origin> originList = new ArrayList<>();
 
-    private List<FocalMechanism> focalMechanismList = new ArrayList<FocalMechanism>();
+    private List<FocalMechanism> focalMechanismList = new ArrayList<>();
 
     private CreationInfo creationInfo;
 

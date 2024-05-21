@@ -36,7 +36,7 @@ public class Time {
                 reader.nextEvent();
                 return;
             } else {
-                e = reader.nextEvent();
+                reader.nextEvent();
             }
         }
     }

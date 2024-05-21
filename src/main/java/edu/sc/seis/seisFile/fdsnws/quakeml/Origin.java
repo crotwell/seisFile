@@ -1,8 +1,8 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import edu.sc.seis.seisFile.Location;
+import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -10,11 +10,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import edu.sc.seis.seisFile.Location;
-import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.TimeUtils;
-import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Origin {
 
@@ -94,7 +92,7 @@ public class Origin {
                 reader.nextEvent();
                 return;
             } else {
-                e = reader.nextEvent();
+                reader.nextEvent();
             }
         }
     }
@@ -153,9 +151,9 @@ public class Origin {
 
     public Location asLocation() {
         return new Location(
-                getLatitude().getValue().floatValue(),
-                getLongitude().getValue().floatValue(),
-                getDepth().getValue().floatValue());
+                getLatitude().getValue(),
+                getLongitude().getValue(),
+                getDepth().getValue());
     }
 
     public String getMethodID() {
@@ -320,9 +318,9 @@ public class Origin {
 
     String earthModelID;
 
-    List<Comment> commentList = new ArrayList<Comment>();
+    List<Comment> commentList = new ArrayList<>();
 
-    List<Arrival> arrivalList = new ArrayList<Arrival>();
+    List<Arrival> arrivalList = new ArrayList<>();
 
     String waveformID;
 

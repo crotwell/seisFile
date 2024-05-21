@@ -9,8 +9,8 @@ import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
  */
 public class Location {
 
-    double latitude = 0;
-    double longitude = 0;
+    double latitude;
+    double longitude;
 
     double depth_meter = 0;
 
@@ -33,7 +33,7 @@ public class Location {
 
     public Location(Event ev) {
         this(ev.getPreferredOrigin() != null ? ev.getPreferredOrigin() :
-                (ev.getOriginList().size() > 0 ? ev.getOriginList().get(0) : null));
+                (!ev.getOriginList().isEmpty() ? ev.getOriginList().get(0) : null));
     }
 
     public Location(Origin o) {
