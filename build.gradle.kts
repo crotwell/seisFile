@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.1.0-SNAPSHOT4" // 4
+version = "2.1.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -439,6 +439,13 @@ tasks.register<Sync>("docsDir") {
 tasks.named("sourcesJar") {
     dependsOn("makeVersionClass")
 }
+
+tasks.register("versionToVersionFile") {
+  inputs.files("build.gradle.kts")
+  outputs.files("VERSION")
+  File("VERSION").writeText(""+version)
+}
+tasks.get("explodeBin").dependsOn("versionToVersionFile")
 
 tasks.get("explodeDist").dependsOn(tasks.get("docsDir"))
 tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
