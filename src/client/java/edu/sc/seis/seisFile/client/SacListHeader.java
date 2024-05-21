@@ -25,22 +25,22 @@ import picocli.CommandLine.ParseResult;
 public class SacListHeader extends AbstractClient {
     
     @Option(names={"-h","--headers"}, description="Headers to print", split = ",")
-    public List<String> headerList = new ArrayList<String>();
+    public List<String> headerList = new ArrayList<>();
 
     @Parameters( description="SAC files")
-    public List<File> sacfileList = new ArrayList<File>();
+    public List<File> sacfileList = new ArrayList<>();
     
 
     @Override
     public Integer call() throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         // check to see if headers are correct
 
         Class<SacHeader> headerClass = SacHeader.class;
-        Map<String, Method> fieldMap = new HashMap<String, Method>();
+        Map<String, Method> fieldMap = new HashMap<>();
         for (String h : headerList) {
             try {
                 String getterName = "get"+h.substring(0,1).toUpperCase()+h.substring(1);
@@ -59,7 +59,7 @@ public class SacListHeader extends AbstractClient {
                 String filename = sacFile.getName();
                 boolean byteOrder = header.getByteOrder();
                 String byteOrderStr = byteOrder ? "big endian" : "little endian";
-                if (headerList.size() == 0) {
+                if (headerList.isEmpty()) {
                     out.println();
                     out.println(filename+" ("+byteOrderStr+")");
                     String dashLine = "";

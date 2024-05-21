@@ -1,25 +1,14 @@
 package edu.sc.seis.seisFile.earthworm;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.UnknownHostException;
+import edu.sc.seis.seisFile.SeisFileException;
+import edu.sc.seis.seisFile.TimeUtils;
+
+import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import edu.sc.seis.seisFile.SeisFileException;
-import edu.sc.seis.seisFile.TimeUtils;
 
 
 public class FileBufferingEarthwormExport extends BufferingEarthwormExport {
@@ -31,7 +20,7 @@ public class FileBufferingEarthwormExport extends BufferingEarthwormExport {
                                         int heartbeatSeconds,
                                         int bufferSize,
                                         int sleepMillis,
-                                        String bufferDirPath) throws UnknownHostException, IOException, SeisFileException {
+                                        String bufferDirPath) throws IOException, SeisFileException {
         super(port, module, institution, heartbeatMessage, heartbeatSeconds, bufferSize, sleepMillis);
         if (bufferDirPath != null) {
             this.bufferDir = new File(bufferDirPath);
@@ -110,7 +99,7 @@ public class FileBufferingEarthwormExport extends BufferingEarthwormExport {
 
     @Override
     public TraceBuf2 pop() {
-        while(popBuffer.size() == 0 && fileBuffers.size() != 0) {
+        while(popBuffer.isEmpty() && !fileBuffers.isEmpty()) {
             File next = fileBuffers.remove(0);
             DataInputStream in;
             try {

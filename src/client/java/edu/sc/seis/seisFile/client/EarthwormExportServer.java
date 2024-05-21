@@ -34,7 +34,7 @@ public class EarthwormExportServer extends AbstractClient {
         for (int i = 0; i < data.length; i++) {
             data[i] = i%100;
         }
-        long Y1970_TO_Y2000_SECONDS = 946728000l;
+        long Y1970_TO_Y2000_SECONDS = 946728000L;
         int pin = 1;
         double sampleRate = 1;
         TraceBuf2 tb = new TraceBuf2(pin,

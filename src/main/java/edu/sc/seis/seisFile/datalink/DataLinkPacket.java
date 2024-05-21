@@ -19,7 +19,7 @@ public class DataLinkPacket extends DataLinkResponse {
         this.dataSize = Integer.parseInt(this.headerSplit(6));
         this.rawData = rawData;
         if (rawData.length < this.dataSize) {
-            throw new Error("not enough bytes in raw data for packet: " + this.dataSize);
+            throw new DataLinkException("not enough bytes in raw data for packet: " + this.dataSize);
         }
     }
 

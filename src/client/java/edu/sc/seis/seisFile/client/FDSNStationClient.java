@@ -48,7 +48,7 @@ public class FDSNStationClient extends AbstractFDSNClient {
     @Override
     public Integer call() {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         try {
@@ -80,7 +80,7 @@ public class FDSNStationClient extends AbstractFDSNClient {
                 } else {
                     FDSNStationXML stationXml = querier.getFDSNStationXML();
                     if (!stationXml.checkSchemaVersion()) {
-                        System.out.println("");
+                        System.out.println();
                         System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
                         System.out.println("XmlSchema (code): " + StationXMLTagNames.CURRENT_SCHEMA_VERSION);
                         System.out.println("XmlSchema (doc): " + stationXml.getSchemaVersion());

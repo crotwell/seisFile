@@ -1,7 +1,6 @@
 package edu.sc.seis.seisFile.earthworm;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,12 +13,12 @@ public class BufferingEarthwormExport {
                                     final String heartbeatMessage,
                                     final int heartbeatSeconds,
                                     int bufferSize,
-                                    int sleepMillis) throws UnknownHostException, IOException {
+                                    int sleepMillis) throws IOException {
         export = new EarthwormExport(port, module, institution, heartbeatMessage, heartbeatSeconds);
         export.setVerbose(true);
         maxSize = bufferSize;
         this.sleepMillis = sleepMillis;
-        buffer = Collections.synchronizedList(new ArrayList<TraceBuf2>(maxSize));
+        buffer = Collections.synchronizedList(new ArrayList<>(maxSize));
         exportThread = new Thread(new Runnable() {
 
             @Override

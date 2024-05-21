@@ -43,7 +43,7 @@ public class FDSNDataSelectClient extends AbstractFDSNClient {
     @Override
     public Integer call() {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         try {

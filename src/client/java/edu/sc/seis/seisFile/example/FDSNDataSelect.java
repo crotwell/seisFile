@@ -47,14 +47,14 @@ public class FDSNDataSelect {
         try {
             // A simple request using POST
             FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
-            List<ChannelTimeWindow> request = new ArrayList<ChannelTimeWindow>();
+            List<ChannelTimeWindow> request = new ArrayList<>();
             Instant start = TimeUtils.parseISOString("2013-03-15T12:34:21");
             int durationSecs = 60;
             String[] staCodes = new String[] {"BIRD", "JSC", "CASEE"};
             String[] chanCodes = new String[] {"HHZ", "HHN", "HHE"};
-            for (int s = 0; s < staCodes.length; s++) {
-                for (int c = 0; c < chanCodes.length; c++) {
-                    request.add(new ChannelTimeWindow("CO", staCodes[s], "00", chanCodes[c], start, durationSecs));
+            for (String staCode : staCodes) {
+                for (String chanCode : chanCodes) {
+                    request.add(new ChannelTimeWindow("CO", staCode, "00", chanCode, start, durationSecs));
                 }
             }
             FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams, request);

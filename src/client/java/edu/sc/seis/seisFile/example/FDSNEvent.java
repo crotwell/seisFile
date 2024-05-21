@@ -25,7 +25,7 @@ public class FDSNEvent {
             FDSNEventQuerier querier = new FDSNEventQuerier(queryParams); 
             quakeml = querier.getQuakeML();
             if (!quakeml.checkSchemaVersion()) {
-                System.out.println("");
+                System.out.println();
                 System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
                 System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
                 System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());

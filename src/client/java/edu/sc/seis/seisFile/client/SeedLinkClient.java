@@ -34,13 +34,13 @@ public class SeedLinkClient extends AbstractClient {
     public Integer port = SeedlinkReader.DEFAULT_PORT;
     
     @Option(names= {"-n", "--network"}, description="list of networks to search", defaultValue = "*", split = ",")
-    List<String> network = new ArrayList<String>();
+    List<String> network = new ArrayList<>();
     @Option(names= {"-s", "--station"}, description="list of stations to search", defaultValue = "*", split = ",")
-    List<String> station = new ArrayList<String>();;
+    List<String> station = new ArrayList<>();
     @Option(names= {"-l", "--location"}, description="list of locations to search", defaultValue = "  ,??", split = ",")
-    List<String> location = new ArrayList<String>();;
+    List<String> location = new ArrayList<>();
     @Option(names= {"-c", "--channel"}, description="list of channels to search", defaultValue = "???", split = ",")
-    List<String> channel = new ArrayList<String>();;
+    List<String> channel = new ArrayList<>();
     
     @Option(names = { "-b","--starttime","--start" }, description="Limit results to time series samples on or after the specified start time", converter=FloorISOTimeParser.class)
     Instant start;
@@ -58,7 +58,7 @@ public class SeedLinkClient extends AbstractClient {
     public int maxRecords = 10;
 
     @Option(names={"-o","--output"}, description = "Output file (default: print to console)")
-    private File outputFile;
+    private File outputFile = null;
 
     @Option(names= {"--timeout"}, description="timeout seconds, defaults to ${DEFAULT-VALUE}", defaultValue = ""+SeedlinkReader.DEFAULT_TIMEOUT_SECOND)
     public Integer timeoutSec = SeedlinkReader.DEFAULT_TIMEOUT_SECOND;
@@ -70,7 +70,7 @@ public class SeedLinkClient extends AbstractClient {
     @Override
     public Integer call() throws Exception {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         DataOutputStream dos = null;
@@ -90,13 +90,13 @@ public class SeedLinkClient extends AbstractClient {
                     out.println(l);
                 }
             }
-            if (infoType.length() != 0 || ioutFile.length() != 0)
+            if (!infoType.isEmpty() || !ioutFile.isEmpty())
             {
-                if (infoType.length() == 0) {
+                if (infoType.isEmpty()) {
                     infoType = SeedlinkReader.INFO_STREAMS;
                 }
                 String infoString = reader.getInfoString(infoType);
-                if (ioutFile == null || ioutFile.length() == 0) {
+                if (ioutFile == null || ioutFile.isEmpty()) {
                     out.println(infoString);
                 } else {
                     PrintWriter pw = null;
@@ -113,9 +113,9 @@ public class SeedLinkClient extends AbstractClient {
                 }
             } else if (maxRecords != 0) {
                 ArrayList<String> locChanList = new ArrayList<>();
-                for (int l = 0; l < location.size(); l++) {
-                    for (int c = 0; c < channel.size(); c++) {
-                        locChanList.add(location.get(l) + channel.get(c));
+                for (String loc : location) {
+                    for (String chan : channel) {
+                        locChanList.add(loc + chan);
                     }
                 }
                 for (String n : network) {

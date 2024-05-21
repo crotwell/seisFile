@@ -9,6 +9,7 @@ import java.io.PushbackInputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Objects;
 
 /**
  * Implements the DataLink protocol, defined at:
@@ -161,7 +162,7 @@ public class DataLink {
     }
 
     public void match(String matchRegEx) throws DataLinkException {
-        if (this.mode == STREAM_MODE) {
+        if (Objects.equals(this.mode, STREAM_MODE)) {
             endStream();
         }
         this.matchRegEx = matchRegEx;
@@ -169,7 +170,7 @@ public class DataLink {
     }
 
     public void reject(String rejectRegEx) throws DataLinkException {
-        if (this.mode == STREAM_MODE) {
+        if (Objects.equals(this.mode, STREAM_MODE)) {
             endStream();
         }
         this.rejectRegEx = rejectRegEx;
@@ -238,10 +239,9 @@ public class DataLink {
     /**
      * Would be really nice to keep state and reconnect plus backfill, but...
      *
-     * @throws IOException from underlying socket
      * @throws DataLinkException if error with datalink protocol
      */
-    public void reconnect() throws IOException, DataLinkException {
+    public void reconnect() throws DataLinkException {
         String prevMode = mode;
         close();
         initConnection();
@@ -251,7 +251,7 @@ public class DataLink {
         if (rejectRegEx != null) {
             sendDLCommand(REJECT, rejectRegEx);
         }
-        if (prevMode == STREAM_MODE) {
+        if (Objects.equals(prevMode, STREAM_MODE)) {
             stream();
         }
     }
@@ -272,7 +272,7 @@ public class DataLink {
     int cmdLen = command.length();
     int len = 3+command.length();
     String lenStr = "";
-    if (dataString != null && dataString.length() > 0) {
+    if (dataString != null && !dataString.isEmpty()) {
       lenStr = ""+dataString.length();
       len+=lenStr.length()+1;
       cmdLen += lenStr.length()+1;
@@ -288,7 +288,7 @@ public class DataLink {
     System.arraycopy(commandBytes, 0, packet, 3, commandBytes.length);
     int i = 3+commandBytes.length;
     byte SPACE = ' ';
-    if (dataString != null && dataString.length() > 0) {
+    if (dataString != null && !dataString.isEmpty()) {
       packet[i] =  SPACE; // ascii space
       i++;
       byte[] lenStrBytes = lenStr.getBytes();

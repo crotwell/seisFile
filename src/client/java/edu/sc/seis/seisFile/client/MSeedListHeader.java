@@ -38,13 +38,13 @@ public class MSeedListHeader extends AbstractClient {
 
 
     @Option(names= {"-n", "--network"}, description="list of networks to search")
-    List<String> network = new ArrayList<String>();
+    List<String> network = new ArrayList<>();
     @Option(names= {"-s", "--station"}, description="list of stations to search")
-    List<String> station = new ArrayList<String>();
+    List<String> station = new ArrayList<>();
     @Option(names= {"-l", "--location"}, description="list of locations to search")
-    List<String> location = new ArrayList<String>();
+    List<String> location = new ArrayList<>();
     @Option(names= {"-c", "--channel"}, description="list of channels to search")
-    List<String> channel = new ArrayList<String>();
+    List<String> channel = new ArrayList<>();
 
     @Option(names= { "--max"}, description="number of data records to process before ending", defaultValue="-1")
     public int maxRecords = -1;
@@ -66,7 +66,7 @@ public class MSeedListHeader extends AbstractClient {
     @Override
     public Integer call() throws Exception {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         DataOutputStream dos = null;
@@ -126,10 +126,10 @@ public class MSeedListHeader extends AbstractClient {
                 SeedRecord sr = SeedRecord.read(dataInStream, defaultRecordSize);
                 if (sr instanceof DataRecord) {
                     DataRecord dr = (DataRecord)sr;
-                    if ((network == null || network.size() == 0 || network.contains(dr.getHeader().getNetworkCode()))
-                            && (station == null || station.size() == 0 || station.contains(dr.getHeader().getStationIdentifier()))
-                            && (location == null || location.size() == 0 || location.contains(dr.getHeader().getLocationIdentifier()))
-                            && (channel == null || channel.size() == 0 || channel.contains(dr.getHeader().getChannelIdentifier()))) {
+                    if ((network == null || network.isEmpty() || network.contains(dr.getHeader().getNetworkCode()))
+                            && (station == null || station.isEmpty() || station.contains(dr.getHeader().getStationIdentifier()))
+                            && (location == null || location.isEmpty() || location.contains(dr.getHeader().getLocationIdentifier()))
+                            && (channel == null || channel.isEmpty() || channel.contains(dr.getHeader().getChannelIdentifier()))) {
 
                         i++;
                         if (dos != null) {
@@ -204,7 +204,7 @@ public class MSeedListHeader extends AbstractClient {
         StringBuilder buffer = new StringBuilder(input.length());
         for (int i = 0; i < input.length(); i++) {
             if ((int) input.charAt(i) > 256) {
-                buffer.append("\\u").append(Integer.toHexString((int) input.charAt(i)));
+                buffer.append("\\u").append(Integer.toHexString(input.charAt(i)));
             } else if ((int) input.charAt(i) == 0) {
                 // skip ascii zero
             } else if ((int) input.charAt(i) < 32) {
@@ -215,7 +215,7 @@ public class MSeedListHeader extends AbstractClient {
                     // keep returns
                     buffer.append(input.charAt(i));
                 } else {
-                    buffer.append("\\u").append(Integer.toHexString((int) input.charAt(i)));
+                    buffer.append("\\u").append(Integer.toHexString(input.charAt(i)));
                 }
             } else {
                 // printable chars

@@ -39,8 +39,8 @@ public class EarthwormImportClient extends AbstractClient {
         final int heartbeatSeconds = 10;
         final int institution = 2;
         final int module = 99;
-        HashMap<String, Double> lastStartTimeMap = new HashMap<String, Double>();
-        HashMap<String, Double> lastEndTimeMap = new HashMap<String, Double>();
+        HashMap<String, Double> lastStartTimeMap = new HashMap<>();
+        HashMap<String, Double> lastEndTimeMap = new HashMap<>();
         try {
             Socket s = new Socket(host, port);
             final BufferedInputStream in = new BufferedInputStream(s.getInputStream());

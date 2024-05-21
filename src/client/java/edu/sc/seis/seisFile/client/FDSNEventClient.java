@@ -28,7 +28,7 @@ import picocli.CommandLine.ParseResult;
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class FDSNEventClient extends AbstractFDSNClient {
 
-    FDSNEventQueryParams queryParams = new FDSNEventQueryParams();
+    FDSNEventQueryParams queryParams;
 
     @Option(names= { "--schema"}, description="prints schema")
     public boolean isPrintSchema = false;
@@ -77,7 +77,7 @@ public class FDSNEventClient extends AbstractFDSNClient {
                 } else {
                     quakeml = querier.getQuakeML();
                     if (!quakeml.checkSchemaVersion()) {
-                        System.out.println("");
+                        System.out.println();
                         System.out.println("WARNING: XmlSchema of this document does not match this code, results may be incorrect.");
                         System.out.println("XmlSchema (code): " + QuakeMLTagNames.CODE_MAIN_SCHEMA_VERSION);
                         System.out.println("XmlSchema (doc): " + quakeml.getSchemaVersion());
@@ -103,13 +103,13 @@ public class FDSNEventClient extends AbstractFDSNClient {
             Event e = eIt.next();
             String oString = NO_ORIGIN;
             String timeString = "";
-            if (e.getOriginList().size() > 0) {
+            if (!e.getOriginList().isEmpty()) {
                 Origin o = e.getOriginList().get(0);
                 oString = o.getLatitude() + "/" + o.getLongitude() + " ";
                 timeString = o.getTime().getValue();
             }
             String magString = NO_MAGNITUDE;
-            if (e.getMagnitudeList().size() > 0) {
+            if (!e.getMagnitudeList().isEmpty()) {
                 Magnitude m = e.getMagnitudeList().get(0);
                 magString = m.getMag().getValue() + " " + m.getType();
             }

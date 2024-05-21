@@ -7,7 +7,7 @@ import picocli.CommandLine.ITypeConverter;
 
 public class DonutParser extends PatternParser implements ITypeConverter<DonutArea> {
 
-    public DonutArea convert(String value) throws Exception {
+    public DonutArea convert(String value) {
         Map<String, String> m = parse(value);
         DonutArea donut = new  DonutArea();
         donut.latitude = Float.parseFloat(m.get("lat"));

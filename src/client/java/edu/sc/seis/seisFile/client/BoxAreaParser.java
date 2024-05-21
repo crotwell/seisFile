@@ -7,7 +7,7 @@ import picocli.CommandLine.ITypeConverter;
 
 public class BoxAreaParser extends PatternParser implements ITypeConverter<BoxArea> {
 
-    public BoxArea convert(String value) throws Exception {
+    public BoxArea convert(String value) {
         Map<String, String> m = parse(value);
         BoxArea box = new  BoxArea();
         box.west = Float.parseFloat(m.get("west"));

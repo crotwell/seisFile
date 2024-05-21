@@ -191,7 +191,7 @@ public class FocalMechanism {
 
     String triggeringOriginID;
 
-    List<Comment> commentList = new ArrayList<Comment>();
+    List<Comment> commentList = new ArrayList<>();
 
     CreationInfo creationInfo;
 }

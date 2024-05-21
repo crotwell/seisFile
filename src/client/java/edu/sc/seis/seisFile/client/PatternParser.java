@@ -19,7 +19,7 @@ public abstract class PatternParser {
         if(!m.matches()) {
             throw new java.lang.IllegalArgumentException(getErrorMessage(arg));
         }
-        Map<String,String> box = new HashMap<String,String>();
+        Map<String,String> box = new HashMap<>();
         for(int i = 0; i < fields.length; i++) {
             box.put(fields[i], m.group(i + 1));
         }

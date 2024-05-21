@@ -12,7 +12,7 @@ public abstract class ISOTimeConverter extends ISOTimeParser implements ITypeCon
         super(ceiling);
     }
 
-    public Instant convert(String value) throws Exception {
+    public Instant convert(String value) {
         return getDate(value);
     }
     

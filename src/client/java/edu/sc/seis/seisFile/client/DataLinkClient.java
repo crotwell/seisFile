@@ -35,7 +35,7 @@ public class DataLinkClient extends AbstractClient {
     public int maxRecords = 10;
 
     @Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")
-    private File outputFile;
+    private File outputFile = null;
     
     @Option(names= {"--timeout"}, description="timeout seconds, defaults to ${DEFAULT-VALUE}", defaultValue = ""+DataLink.DEFAULT_TIMEOUT_SECOND)
     public Integer timeoutSec = DataLink.DEFAULT_TIMEOUT_SECOND;
@@ -47,7 +47,7 @@ public class DataLinkClient extends AbstractClient {
     @Override
     public Integer call() throws IOException, DataLinkException {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         DataLink dl = new DataLink(host, port, timeoutSec, verbose);
@@ -58,7 +58,7 @@ public class DataLinkClient extends AbstractClient {
             if (outputFile != null) {
                 dataout = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
             }
-            DataLinkResponse response = null;
+            DataLinkResponse response;
             for(int i=0; maxRecords==-1 || i<maxRecords; i++) {
                 response = dl.readPacket();
                 if (response instanceof DataLinkPacket) {
@@ -69,7 +69,7 @@ public class DataLinkClient extends AbstractClient {
             }
             dl.endStream();
             response = dl.readPacket();
-            while (response != null && response instanceof DataLinkPacket) {
+            while (response instanceof DataLinkPacket) {
                 handlePacket((DataLinkPacket)response);
                 response = dl.readPacket();
             }

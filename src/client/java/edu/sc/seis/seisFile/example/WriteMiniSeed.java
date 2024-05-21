@@ -50,7 +50,7 @@ public class WriteMiniSeed {
         blockette1000.setWordOrder(Blockette1000.SEED_BIG_ENDIAN);
         blockette1000.setDataRecordLength(seed512);
         record.addBlockette(blockette1000);
-        SteimFrameBlock steimData = null;
+        SteimFrameBlock steimData;
         
         steimData = Steim2.encode(data, 63);
         if (steimData.getNumSamples() < data.length) {

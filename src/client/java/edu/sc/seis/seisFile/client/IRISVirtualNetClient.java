@@ -55,7 +55,7 @@ public class IRISVirtualNetClient extends AbstractClient {
     @Override
     public Integer call() {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         PrintStream out = System.out;
@@ -92,7 +92,7 @@ public class IRISVirtualNetClient extends AbstractClient {
         return 0;
     }
 
-    public void handleResults(VirtualNetworkList virtNetList) throws XMLStreamException, SeisFileException { 
+    public void handleResults(VirtualNetworkList virtNetList) {
         PrintStream out = System.out;
         for (VirtualNetwork vnet:virtNetList.getVirtualNetworks()) {
             out.println(vnet.getCode()+" "+vnet.getStart() + " " + vnet.getDescription());

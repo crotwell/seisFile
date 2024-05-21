@@ -20,7 +20,7 @@ import edu.sc.seis.seisFile.mseed.SeedRecord;
 public class MiniSeedToFloatArray {
 
     public List<DataRecord> readFile(String filename) throws IOException, SeedFormatException {
-        List<DataRecord> drList = new ArrayList<DataRecord>();
+        List<DataRecord> drList = new ArrayList<>();
         DataInput dis = new DataInputStream(new BufferedInputStream(new FileInputStream(filename)));
         PrintWriter out = new PrintWriter(System.out, true);
         try {
@@ -64,7 +64,7 @@ public class MiniSeedToFloatArray {
         return data;
     }
 
-    public static void main(String[] args) throws SeedFormatException, IOException, UnsupportedCompressionType, CodecException {
+    public static void main(String[] args) throws SeedFormatException, IOException, CodecException {
         MiniSeedToFloatArray msfa = new MiniSeedToFloatArray();
         List<DataRecord> drList = msfa.readFile(args[0]);
         float[] data = msfa.extract(drList);

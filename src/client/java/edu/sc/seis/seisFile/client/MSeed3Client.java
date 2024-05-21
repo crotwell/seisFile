@@ -49,7 +49,7 @@ public class MSeed3Client extends AbstractClient {
     boolean dumpData = false;
 
     @Option(names = {"-o", "--out"}, description = "Output file (default: print to console)")
-    private File outputFile;
+    private File outputFile = null;
 
     @Option(names = {"--staxml"}, description = "Set standard extra headers for station from stationxml file")
     File staxmlFile;
@@ -65,7 +65,7 @@ public class MSeed3Client extends AbstractClient {
     @Override
     public Integer call() throws Exception {
         ParseResult parsedArgs = spec.commandLine().getParseResult();
-        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
+        if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().isEmpty()) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         if (convert2to3) {

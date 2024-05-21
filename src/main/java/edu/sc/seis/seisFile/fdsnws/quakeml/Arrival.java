@@ -46,8 +46,6 @@ public class Arrival {
                     timeCorrection = StaxUtil.pullFloat(reader, QuakeMLTagNames.timeCorrection);
                 } else if (elName.equals(QuakeMLTagNames.earthModelID)) {
                     earthModelID = StaxUtil.pullText(reader, QuakeMLTagNames.earthModelID);
-                } else if (elName.equals(QuakeMLTagNames.phase)) {
-                    phase = StaxUtil.pullText(reader, QuakeMLTagNames.phase);
                 } else if (elName.equals(QuakeMLTagNames.pickID)) {
                     pickID = StaxUtil.pullText(reader, QuakeMLTagNames.pickID);
                 } else if (elName.equals(QuakeMLTagNames.creationInfo)) {
