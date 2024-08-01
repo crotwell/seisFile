@@ -68,8 +68,15 @@ public class MSeed3Convert {
         if (path.notAllNull()) {
             ms3eh.addToBag(path);
         }
+        if ( ! SacConstants.isUndef(sacHeader.getA())) {
+            ZonedDateTime mTime = start.plusMillis(Math.round(sacHeader.getA()*1000)).atZone(ZoneId.of("UTC"));
+            String desc = sacHeader.getKa();
+            desc = SacConstants.isUndef(desc) ? "" : desc;
+            Marker mark = new Marker("A", mTime, "", desc);
+            ms3eh.addToBag(mark);
+        }
         for (int i = 0; i < 9; i++) {
-            if (checkUndef(sacHeader.getTHeader(i)) != null) {
+            if ( ! SacConstants.isUndef(sacHeader.getTHeader(i))) {
                 ZonedDateTime mTime = start.plusMillis(Math.round(sacHeader.getTHeader(i)*1000)).atZone(ZoneId.of("UTC"));
                 String desc = sacHeader.getKTHeader(i);
                 desc = desc.equals(SacConstants.STRING8_UNDEF) ? "" : desc;
@@ -77,7 +84,7 @@ public class MSeed3Convert {
                 ms3eh.addToBag(mark);
             }
         }
-        if (sacHeader.getEvla() != FLOAT_UNDEF && sacHeader.getEvlo() != FLOAT_UNDEF) {
+        if ( ! SacConstants.isUndef(sacHeader.getEvla()) &&  ! SacConstants.isUndef(sacHeader.getEvlo())) {
             float depth = sacHeader.getEvdp()!= FLOAT_UNDEF ? sacHeader.getEvdp() : 0;
             Instant otime = start.plusMillis(Math.round(sacHeader.getO()*1000));
             ms3eh.addOriginToBag(sacHeader.getEvla(), sacHeader.getEvlo(), depth, otime);
