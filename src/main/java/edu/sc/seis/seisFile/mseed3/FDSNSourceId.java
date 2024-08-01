@@ -40,22 +40,32 @@ public class FDSNSourceId {
         }
     }
 
-    public static FDSNSourceId fromNSLC(String networkCode, String stationCode, String locationCode, String channelCode ) {
-        String band, source, subsource;
-        if (channelCode.length() == 3) {
+    public static FDSNSourceId fromNSLC(String networkCode, String stationCode, String locationCode, String channelCode ) throws FDSNSourceIdException {
+        String band = "", source = "", subsource = "";
+        if (channelCode.length() == 0) {
+            throw new FDSNSourceIdException("Channel code is empty");
+        } else if (channelCode.length() <= 3) {
             band = channelCode.substring(0,1);
-            source = channelCode.substring(1,2);
-            subsource = channelCode.substring(2,3);
-        } else {
-            String[] bss = channelCode.split(FDSNSourceId.SEP);
+            if (channelCode.length() > 1) {
+                source = channelCode.substring(1, 2);
+                if (channelCode.length() > 2) {
+                    subsource = channelCode.substring(2, 3);
+                }
+            }
+        } else if (channelCode.contains("_")) {
+            String[] bss = channelCode.split(FDSNSourceId.SEP, 3);
             band = bss[0];
             source = bss[1];
-            subsource = bss[2];
+            if (bss.length > 2) {
+                subsource = bss[2];
+            }
+        } else {
+            throw new FDSNSourceIdException("Unable to parse channel code into band, source, subsource");
         }
         return new FDSNSourceId(networkCode.trim(),
                 stationCode.trim(),
                 locationCode.trim(),
-                band, source, subsource);
+                band.trim(), source.trim(), subsource.trim());
     }
 
     public String getNetworkCode() {
@@ -101,5 +111,80 @@ public class FDSNSourceId {
                 bandCode + SEP +
                 sourceCode + SEP +
                 subsourceCode;
+    }
+
+    /**
+     * Calculates the band code for the given sample rate. Optionally taking into
+     *     account the lower bound of the response, response_lb, to distinguish
+     *     broadband from short period in the higher sample rates, where
+     *     0.1 hertz is the boundary.
+     *
+     *     See http://docs.fdsn.org/projects/source-identifiers/en/v1.0/channel-codes.html#band-code
+     *
+     * @param sampRate  sample rate, Hz
+     * @param response_lb response lower bound in Hz
+     * @return
+     */
+    public static String bandCodeForRate(Double sampRate, Double response_lb) throws FDSNSourceIdException {
+        if (sampRate == null)
+            return "I";
+
+        if (sampRate >= 5000) {
+            return "J";
+        }
+        if (1000 <= sampRate && sampRate < 5000) {
+            if (response_lb != null && response_lb <0.1){
+                return "F";
+            }
+            return "G";
+        }
+        if (250 <= sampRate && sampRate < 1000) {
+            if (response_lb != null && response_lb <0.1){
+                return "C";
+            }
+            return "D";
+        }
+        if (80 <= sampRate && sampRate < 250) {
+            if (response_lb != null && response_lb < 0.1) {
+                return "H";
+            }
+            return "E";
+        }
+        if (10 <= sampRate && sampRate < 80) {
+            if (response_lb != null && response_lb < 0.1) {
+                return "B";
+            }
+            return "S";
+        }
+        if (1 < sampRate && sampRate < 10) {
+            return "M";
+        }
+        if (0.5 < sampRate && sampRate < 1.5) {
+            // spec not clear about how far from 1 is L
+            return "L";
+        }
+        if (0.1 <= sampRate && sampRate < 1) {
+            return "V";
+        }
+        if (0.01 <= sampRate && sampRate < 0.1) {
+            return "U";
+        }
+        if (0.001 <= sampRate && sampRate < 0.01) {
+            return "W";
+        }
+        if (0.0001 <= sampRate && sampRate < 0.001) {
+            return "R";
+        }
+        if (0.00001 <= sampRate && sampRate < 0.0001) {
+            return "P";
+        }
+        if (0.000001 <= sampRate && sampRate < 0.00001) {
+            return "T";
+        }
+        if (sampRate < 0.000001) {
+            return "Q";
+        }
+        throw new FDSNSourceIdException(
+                "Unable to calc band code for: "+sampRate+" "+response_lb);
     }
 }
