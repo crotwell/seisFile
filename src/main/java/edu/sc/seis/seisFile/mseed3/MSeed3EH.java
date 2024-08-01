@@ -119,7 +119,7 @@ public class MSeed3EH {
         if (q == null) { return; }
         JSONObject bagEh = getBagEH();
         JSONObject ev = new JSONObject();
-        ev.put("id", q.getPublicId());
+        ev.put(ID, q.getPublicId());
         JSONObject o = new JSONObject();
         Origin origin = null;
         if (q.getPreferredOrigin() != null) {
@@ -140,6 +140,28 @@ public class MSeed3EH {
             ev.put(MAGNITUDE, mag);
         }
         bagEh.put(EVENT, ev);
+    }
+
+    public void addOriginToBag(float lat, float lon, float depthMeter, Instant originTime) {
+        JSONObject bagEh = getBagEH();
+        JSONObject ev = bagEh.has(EVENT) ? bagEh.getJSONObject(EVENT) : new JSONObject();
+        bagEh.put(EVENT, ev);
+        JSONObject o = ev.has(ORIGIN) ? ev.getJSONObject(ORIGIN) : new JSONObject();
+        ev.put(ORIGIN, o);
+        o.put(LATITUDE, lat);
+        o.put(LONGITUDE, lon);
+        o.put(DEPTH, depthMeter);
+        o.put(TIME, TimeUtils.toISOString(originTime));
+    }
+
+    public void addMagnitudeToBag(float magVal, String magType) {
+        JSONObject bagEh = getBagEH();
+        JSONObject ev = bagEh.has(EVENT) ? bagEh.getJSONObject(EVENT) : new JSONObject();
+        bagEh.put(EVENT, ev);
+        JSONObject mag = new JSONObject();
+        mag.put(MAGVALUE, magVal);
+        mag.put(MAGTYPE, magType);
+        ev.put(MAGNITUDE, mag);
     }
 
     public Location quakeLocation() {
@@ -212,6 +234,7 @@ public class MSeed3EH {
     public static final String BAG = "bag";
     public static final String CHANNEL = "ch";
     public static final String EVENT = "ev";
+    public static final String ID = "id";
     public static final String ORIGIN = "or";
     public static final String TIME = "tm";
     public static final String DEPTH = "dp";

@@ -1,17 +1,5 @@
 package edu.sc.seis.seisFile.sac;
 
-import static edu.sc.seis.seisFile.sac.SacConstants.DEFAULT_NVHDR;
-import static edu.sc.seis.seisFile.sac.SacConstants.FLOAT_UNDEF;
-import static edu.sc.seis.seisFile.sac.SacConstants.INT_UNDEF;
-import static edu.sc.seis.seisFile.sac.SacConstants.ITIME;
-import static edu.sc.seis.seisFile.sac.SacConstants.IntelByteOrder;
-import static edu.sc.seis.seisFile.sac.SacConstants.NVHDR_OFFSET;
-import static edu.sc.seis.seisFile.sac.SacConstants.STRING16_UNDEF;
-import static edu.sc.seis.seisFile.sac.SacConstants.STRING8_UNDEF;
-import static edu.sc.seis.seisFile.sac.SacConstants.SunByteOrder;
-import static edu.sc.seis.seisFile.sac.SacConstants.TRUE;
-import static edu.sc.seis.seisFile.sac.SacConstants.data_offset;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -28,6 +16,8 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+
+import static edu.sc.seis.seisFile.sac.SacConstants.*;
 
 
 /**
@@ -2244,6 +2234,23 @@ public class SacHeader {
         this.imagtyp = imagtyp;
     }
 
+    public String getMagnitudeType() {
+        switch (getImagtyp()) {
+            case IMB:
+                return "mb";
+            case IMS:
+                return "Ms";
+            case IML:
+                return "ml";
+            case IMD:
+                return "md";
+            case IMW:
+                return "Mw";
+            case IMX:
+            default:
+                return "m";
+        }
+    }
     
     public int getImagsrc() {
         return imagsrc;

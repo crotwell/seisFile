@@ -8,9 +8,9 @@ public class Path {
         this(null, null, null);
     }
     public Path(Float gcarc, Float az, Float baz) {
-        this.gcarc = Float.isFinite(gcarc) ? gcarc : null;
-        this.az = Float.isFinite(az) ? az : null;
-        this.baz = Float.isFinite(baz) ? baz : null;
+        this.gcarc = (gcarc != null && Float.isFinite(gcarc)) ? gcarc : null;
+        this.az = (az != null && Float.isFinite(az)) ? az : null;
+        this.baz = (baz != null && Float.isFinite(baz)) ? baz : null;
     }
 
     public JSONObject asJSON() {
@@ -43,6 +43,10 @@ public class Path {
 
     public String toString() {
         return "gcarc: "+gcarc+" az: "+az+" baz: "+baz;
+    }
+
+    public boolean notAllNull() {
+        return gcarc != null || az != null || baz != null;
     }
 
     Float gcarc;

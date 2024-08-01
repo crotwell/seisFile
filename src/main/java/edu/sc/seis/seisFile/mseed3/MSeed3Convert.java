@@ -13,7 +13,13 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
+import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
+import edu.sc.seis.seisFile.mseed3.ehbag.Marker;
+import edu.sc.seis.seisFile.mseed3.ehbag.Path;
 import edu.sc.seis.seisFile.sac.SacConstants;
 import edu.sc.seis.seisFile.sac.SacHeader;
 import edu.sc.seis.seisFile.sac.SacTimeSeries;
@@ -29,12 +35,14 @@ import edu.sc.seis.seisFile.mseed.MissingBlockette1000;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import edu.sc.seis.seisFile.mseed.SeedRecord;
 
+import static edu.sc.seis.seisFile.sac.SacConstants.FLOAT_UNDEF;
+
 public class MSeed3Convert {
 
     public MSeed3Convert() {
     }
 
-    public static MSeed3Record convertSacTo3(SacTimeSeries sac) throws SeedFormatException {
+    public static MSeed3Record convertSacTo3(SacTimeSeries sac) throws SeedFormatException, FDSNSourceIdException {
         MSeed3Record ms3 = new MSeed3Record();
         SacHeader sacHeader = sac.getHeader();
         ms3.year = sacHeader.getNzyear();
@@ -44,16 +52,90 @@ public class MSeed3Convert {
         ms3.second = sacHeader.getNzsec();
         ms3.nanosecond = sacHeader.getNzmsec()*1000000;
         Instant start = ms3.getStartInstant();
+        String cmpName = sacHeader.getKcmpnm();
+        FDSNSourceId sid = FDSNSourceId.fromNSLC(sacHeader.getKnetwk(), sacHeader.getKstnm(), sacHeader.getKhole(), cmpName);
+        ms3.setSourceId(sid);
         ms3.setStartDateTime(start.plusMillis(Math.round(sacHeader.getB()*1000)));
         if (sacHeader.getIftype() == SacConstants.ITIME) {
             ms3.setTimeseries(sac.getY());
         } else {
             throw new SeedFormatException("Sac file is not ITIME: "+sacHeader.getIftype());
         }
+        MSeed3EH ms3eh = new MSeed3EH();
+        Path path = new Path(checkUndef(sacHeader.getGcarc()),
+                            checkUndef(sacHeader.getAz()),
+                            checkUndef(sacHeader.getBaz()));
+        if (path.notAllNull()) {
+            ms3eh.addToBag(path);
+        }
+        for (int i = 0; i < 9; i++) {
+            if (checkUndef(sacHeader.getTHeader(i)) != null) {
+                ZonedDateTime mTime = start.plusMillis(Math.round(sacHeader.getTHeader(i)*1000)).atZone(ZoneId.of("UTC"));
+                String desc = sacHeader.getKTHeader(i);
+                desc = desc.equals(SacConstants.STRING8_UNDEF) ? "" : desc;
+                Marker mark = new Marker("T"+i, mTime, "", desc);
+                ms3eh.addToBag(mark);
+            }
+        }
+        if (sacHeader.getEvla() != FLOAT_UNDEF && sacHeader.getEvlo() != FLOAT_UNDEF) {
+            float depth = sacHeader.getEvdp()!= FLOAT_UNDEF ? sacHeader.getEvdp() : 0;
+            Instant otime = start.plusMillis(Math.round(sacHeader.getO()*1000));
+            ms3eh.addOriginToBag(sacHeader.getEvla(), sacHeader.getEvlo(), depth, otime);
+            if ( ! SacConstants.isUndef(sacHeader.getKevnm())) {
+                ms3eh.getBagEH().getJSONObject(MSeed3EH.EVENT).put(MSeed3EH.ID, sacHeader.getKevnm());
+            }
+        }
+        if (sacHeader.getMag() != FLOAT_UNDEF) {
+            ms3eh.addMagnitudeToBag(sacHeader.getMag(), sacHeader.getMagnitudeType());
+        }
+        if (sacHeader.getStla() != FLOAT_UNDEF && sacHeader.getStlo() != FLOAT_UNDEF) {
+            Station sta = new Station();
+            sta.setLatitude(sacHeader.getStla());
+            sta.setLongitude(sacHeader.getStlo());
+            Channel chan  = new Channel(sta);
+            if (sacHeader.getStel() != FLOAT_UNDEF) {
+                chan.setElevation(sacHeader.getStel());
+            }
+            if (sacHeader.getStdp() != FLOAT_UNDEF) {
+                chan.setDepth(sacHeader.getStdp());
+            }
+            if (sacHeader.getCmpaz() != FLOAT_UNDEF) {
+                chan.setAzimuth(sacHeader.getCmpaz());
+            }
+            if (sacHeader.getCmpinc() != FLOAT_UNDEF) {
+                chan.setDip(90-sacHeader.getCmpinc());
+            }
+            ms3eh.addToBag(chan);
+        }
+        if (sacHeader.getIdep() != SacConstants.INT_UNDEF) {
+            switch (sacHeader.getIdep()) {
+                case SacConstants.IDISP:
+                    ms3eh.setTimeseriesUnit("nm");
+                    break;
+                case SacConstants.IVEL:
+                    ms3eh.setTimeseriesUnit("nm/s");
+                    break;
+                case SacConstants.IACC:
+                    ms3eh.setTimeseriesUnit("nm/s2");
+                    break;
+                case SacConstants.IVOLTS:
+                    ms3eh.setTimeseriesUnit("V");
+                    break;
+            }
+        }
+        ms3.setExtraHeaders(ms3eh.getEH());
         return ms3;
     }
 
-    public static MSeed3Record convert2to3(DataRecord dr) throws SeedFormatException {
+    public static Float checkUndef(Float sacVal) {
+        if (sacVal != FLOAT_UNDEF) {
+            return sacVal;
+        } else {
+            return null;
+        }
+    }
+
+    public static MSeed3Record convert2to3(DataRecord dr) throws SeedFormatException, FDSNSourceIdException {
         MSeed3Record ms3Header = new MSeed3Record();
         
         DataHeader ms2H = dr.getHeader();
