@@ -68,7 +68,6 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
             HttpGet request = new HttpGet(connectionUri);
             request.setHeader("User-Agent", getUserAgent());
             request.setHeader("Accept", getAcceptHeader());
-            request.setHeader("Accept-Encoding", "gzip, deflate");
             TimeQueryLog.add(connectionUri);
             response = httpClient.execute(request);
             processConnection(response);
@@ -94,12 +93,7 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
             throw new FDSNWSException(errorMessage, connectionUri, responseCode);
         }
         HttpEntity entity = response.getEntity();
-        // likely not an error in the http layer, so content is returned
-        if ("gzip".equals(entity.getContentEncoding())) {
-            inputStream = new GZIPInputStream(new BufferedInputStream(entity.getContent(), 64*1024));
-        } else {
-            inputStream = new BufferedInputStream(entity.getContent(), 64*1024);
-        }
+        inputStream = new BufferedInputStream(entity.getContent(), 64*1024);
     }
 
     public static void validate(XMLStreamReader reader, URL schemaURL) throws SAXException, IOException {
@@ -132,11 +126,13 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
 
     public String getRawXML() throws IOException {
         StringWriter out = new StringWriter();
+        checkConnectionInitiated();
         BufferedReader in = new BufferedReader(new InputStreamReader(getInputStream()));
         char[] buf = new char[1024];
         int numRead = in.read(buf);
         while (numRead != -1) {
             out.write(buf, 0, numRead);
+            numRead = in.read(buf);
         }
         in.close();
         out.close();
@@ -297,6 +293,10 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
 
     public int getResponseCode() {
         return responseCode;
+    }
+
+    public HttpResponse getHttpResponse() {
+        return response;
     }
 
     /** set the HttpConnection connectionTimeout in milliseconds. */

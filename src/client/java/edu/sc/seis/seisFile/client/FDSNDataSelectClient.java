@@ -1,9 +1,6 @@
 package edu.sc.seis.seisFile.client;
 
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
@@ -76,7 +73,9 @@ public class FDSNDataSelectClient extends AbstractFDSNClient {
                     }
                     System.out.println("Valid");
                 } else if (isRaw) {
-                    querier.outputRaw(System.out);
+                    OutputStream os = new BufferedOutputStream(new FileOutputStream(outputFile));
+                    querier.outputRaw(os);
+                    os.close();
                 } else {
                     DataRecordIterator it = querier.getDataRecordIterator();
                     try {
