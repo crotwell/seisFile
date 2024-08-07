@@ -3,6 +3,8 @@ package edu.sc.seis.seisFile.earthworm;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import edu.iris.dmc.seedcodec.SteimFrameBlock;
 import org.junit.jupiter.api.Test;
 
 
@@ -110,6 +112,27 @@ public class TraceBuf2Test {
         TraceBuf2 tb = createTraceBuf(numSamples, start);
         List<TraceBuf2> splitList = tb.split(TraceBuf2.MAX_TRACEBUF_SIZE);
         checkSplit(numSamples, tb, splitList);
+    }
+
+    @Test
+    public void testEncodeSteim1Zeros() throws SeedFormatException {
+        int maxFrams = 7;
+        int recLenExp = 9; // 512 => 7 frames
+        int numSamples = 60*maxFrams-8; // first,last take up 8 bytes, all other one byte/sample except 4 byte nibbles
+        int[] data = new int[numSamples+1]; // one more than will fit, all zeros
+        Instant start = Instant.now();
+        TraceBuf2 tb = new TraceBuf2(1,
+                data.length,
+                TimeUtils.instantToEpochSeconds(start),
+                100,
+                "JSC",
+                "CO",
+                "HHZ",
+                "00",
+                data);
+        SteimFrameBlock sfb = tb.encodeSteim1(recLenExp);
+        assertEquals(maxFrams, sfb.getNumFrames());
+        assertEquals(numSamples, sfb.getNumSamples());
     }
 
     @Test

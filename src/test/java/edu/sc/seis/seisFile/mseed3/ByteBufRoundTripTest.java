@@ -4,6 +4,7 @@ import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -14,7 +15,7 @@ import java.time.ZonedDateTime;
 public class ByteBufRoundTripTest {
 
     @Test
-    public void roundTripTest() throws IOException, SeedFormatException {
+    public void roundTripTest() throws IOException, SeedFormatException, FDSNSourceIdException {
         MSeed3Record ms3 = createRecord();
         assertEquals((byte) 4, ms3.timeseriesEncodingFormat);
         ByteBuffer buf = ms3.asByteBuffer();
@@ -30,7 +31,7 @@ public class ByteBufRoundTripTest {
     }
 
     @Test
-    public void startTimeTest() {
+    public void startTimeTest() throws FDSNSourceIdException {
         MSeed3Record ms3 = createRecord();
         Instant st = TimeUtils.parseISOString("2024-02-29T13:47:59.9876543Z");
         ms3.setStartDateTime(st);
@@ -99,8 +100,30 @@ public class ByteBufRoundTripTest {
 
     }
 
-    public MSeed3Record createRecord() {
+    @Test
+    public void largeRecordTest() throws FDSNSourceIdException, IOException, SeedFormatException {
+        float[] data = new float[10000];
+        float s = 0;
+        int neg = 1;
+        for (int i = 0; i < data.length; i++) {
+            s = (i % 1000)*neg + s;
+            data[i] = s;
+            neg *= -1;
+        }
+        MSeed3Record ms3 = createRecord(data);
+        byte[] bytes = ms3.asByteBuffer().array();
+        ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
+        DataInputStream din = new DataInputStream(bi);
+        MSeed3Record read_ms3 = MSeed3Record.read(din);
+        compareRecords(ms3, read_ms3);
+        assertTrue(bytes.length > 4096);
+    }
+
+    public MSeed3Record createRecord() throws FDSNSourceIdException {
         float[] data = new float[100];
+        return createRecord(data);
+    }
+    public MSeed3Record createRecord(float[] data) throws FDSNSourceIdException {
         MSeed3Record ms3 = new MSeed3Record();
         ms3.nanosecond=1;
         ms3.dayOfYear=55;
@@ -109,7 +132,7 @@ public class ByteBufRoundTripTest {
         ms3.minute = 2;
         ms3.second = 3;
         ms3.setTimeseries(data);
-        ms3.sourceIdStr = "FDSN:XX_ABC_00_H_H_Z";
+        ms3.setSourceId(FDSNSourceId.createUnknown(ms3.sampleRatePeriod));
         return ms3;
     }
 }
