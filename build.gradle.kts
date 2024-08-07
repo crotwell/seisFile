@@ -1,3 +1,4 @@
+import java.util.Date
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 import org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask
 import org.gradle.crypto.checksum.Checksum
@@ -31,6 +32,18 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
+}
+
+tasks {
+  jar {
+      manifest {
+        attributes(
+            mapOf("Automatic-Module-Name" to "edu.sc.seis.seisFile",
+                  "Implementation-Title" to project.name,
+                  "Implementation-Version" to archiveVersion,
+                  "SeisFile-Compile-Date" to Date()))
+      }
+  }
 }
 
 publishing {
