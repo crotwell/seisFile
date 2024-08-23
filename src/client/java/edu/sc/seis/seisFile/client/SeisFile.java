@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.client;
 
+import picocli.AutoComplete;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
@@ -17,7 +18,9 @@ import picocli.CommandLine.Command;
                  EarthwormExportServer.class,
                  EarthwormImportClient.class,
                  DataLinkClient.class,
-                 SeedLinkClient.class
+                 SeedLinkClient.class,
+                 AutoComplete.GenerateCompletion.class,
+                 CommandLine.HelpCommand.class
 })
 public class SeisFile {
 
