@@ -122,24 +122,24 @@ configurations["clientTestRuntimeOnly"].extendsFrom(configurations["clientRuntim
 
 dependencies {
 //    compile project(":seedCodec")
-    implementation("edu.sc.seis:seedCodec:1.1.1")
+    implementation("edu.sc.seis:seedCodec:1.2.0")
     clientImplementation("info.picocli:picocli:4.7.6")
 
     annotationProcessor("info.picocli:picocli-codegen:4.7.6")
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
-    implementation( "com.fasterxml.woodstox:woodstox-core:6.6.2")
+    implementation( "com.fasterxml.woodstox:woodstox-core:7.0.0")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.json:json:20240303")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
 
 }
 
