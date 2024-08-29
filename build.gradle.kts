@@ -137,6 +137,7 @@ dependencies {
 
     // Use JUnit Jupiter API for testing.
     clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.0")
 
 }
 
