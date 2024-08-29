@@ -4,7 +4,7 @@
 
 SeisFile is a library for reading and writing seismic file formats in java.
 See the [examples](https://crotwell.github.io/seisFile/seisFileIndex.html) for
-example clients and more information. Copies of the relavent specifications, and
+example clients and more information. Copies of the relevant specifications, and
 some previous versions are [archived here](https://crotwell.github.io/seisFile/specs)
 for easy reference.
 

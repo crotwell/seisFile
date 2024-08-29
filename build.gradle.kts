@@ -7,7 +7,6 @@ plugins {
   id("edu.sc.seis.version-class") version "1.3.0"
   id("org.gradle.crypto.checksum") version "1.4.0"
   id("java-library")
-  eclipse
   `project-report`
   `maven-publish`
   signing
@@ -110,15 +109,13 @@ sourceSets {
         runtimeClasspath += sourceSets.main.get().output + sourceSets["client"].output
     }
 }
+
 val clientImplementation by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
-configurations["clientRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 val clientTestImplementation by configurations.getting {
     extendsFrom(clientImplementation)
 }
-configurations["clientTestRuntimeOnly"].extendsFrom(configurations["clientRuntimeOnly"]).extendsFrom(configurations["testRuntimeOnly"])
-
 
 dependencies {
 //    compile project(":seedCodec")
@@ -176,6 +173,12 @@ tasks.register<Jar>("clientJar") {
   archiveBaseName.set("seisFileclient")
 }
 
+tasks.register("versionToVersionFile") {
+  inputs.files("build.gradle.kts")
+  outputs.files("VERSION")
+  File("VERSION").writeText(""+version)
+}
+
 val binDistFiles: CopySpec = copySpec {
     from(configurations["clientCompileClasspath"]) {
        into("lib")
@@ -208,96 +211,82 @@ val specFiles: CopySpec = copySpec {
   }
 }
 
-val specFilesCopy: CopySpec = copySpec {
-  with(specFiles)
-}
-val distFiles: CopySpec = copySpec {
-    with(binDistFiles)
-    with(specFilesCopy) {
-      into("docs")
-      include("*")
-    }
-    from("build/docs") {
-        include("javadoc/**")
-        into("docs")
-    }
-    from("build/manhtml") {
-        include("manpage/**")
-        into("docs")
-    }
-    from("build/manhtml/html5") {
-        include("**")
-        into("docs/manhtml")
-    }
-    from("build") {
-        include("manpdf/**")
-        into("docs")
-    }
-    from("build/picocli") {
-        include("bash_completion/**")
-        into("docs/bash_completion.d")
-    }
-    from(".") {
-        include("LICENSE")
-        include("README.md")
-        include("build.gradle.kts")
-        include("settings.gradle.kts")
-        include("src/**")
-        include("gradle/**")
-        include("gradlew")
-        include("gradlew.bat")
-        exclude("**/*.svn")
-    }
-    from("../seiswww/build/site") {
-        include("seisFile.html")
-    }
-    from("build/generated-src/modVersion") {
-        include("java/**")
-        into("src/main")
-    }
-}
-
-tasks.register<Sync>("explodeBin") {
-  dependsOn("clientClasses")
+tasks.register<Sync>("installBin") {
   dependsOn("clientJar")
   dependsOn("createRunScripts")
   dependsOn("startScripts")
   group = "dist"
   with( binDistFiles)
-  into( layout.buildDirectory.dir("explode"))
+  into( layout.buildDirectory.dir("install/seisFile"))
 }
 
-tasks.register<Sync>("explodeDist") {
-  dependsOn("explodeBin")
-  dependsOn("javadoc")
-  group = "dist"
-  with( distFiles)
-  into( layout.buildDirectory.dir("explode"))
-}
+distributions {
+  main {
+    distributionBaseName = "seisFile"
+    contents {
+      from(configurations["clientCompileClasspath"]) {
+         into("lib")
+         duplicatesStrategy =  DuplicatesStrategy.EXCLUDE
+      }
 
+      from(tasks.named("clientJar")) {
+        into("lib")
+      }
 
-tasks.register<Tar>("tarBin") {
-  dependsOn("explodeBin" )
-    compression = Compression.GZIP
-    into(project.name+"-"+archiveVersion.get()+"-bin") {
-        with(binDistFiles)
+      from("src/doc") {
+        include("specs/**")
+        exclude("man-*")
+        into("docs")
+      }
+      from("src/main/resources/edu/sc/seis/seisFile/quakeml/1.2") {
+        include("*.xsd")
+        into("docs/specs/quakeml")
+      }
+      from("src/main/resources/edu/sc/seis/seisFile/stationxml") {
+        include("*.xsd")
+        into("docs/specs/stationxml")
+      }
+      from(tasks.named("javadoc")) {
+          into("docs/javadoc")
+      }
+      from(tasks.named("asciidoctor")) {
+        include("**.html")
+        into("docs/manhtml")
+      }
+      from(tasks.named("asciidoctor")) {
+        include("manpage/**")
+        into("docs")
+      }
+      from(tasks.named("asciidoctorPdf")) {
+        into("docs/manpdf")
+      }
+      from(tasks.named("versionToVersionFile")) {
+        into(".")
+      }
+
+      from("build/picocli") {
+          include("bash_completion/**")
+          into("docs/bash_completion.d")
+      }
+      from(".") {
+          include("LICENSE")
+          include("README.md")
+          include("build.gradle.kts")
+          include("settings.gradle.kts")
+          include("src/**")
+          include("gradle/**")
+          include("gradlew")
+          include("gradlew.bat")
+      }
+      from("../seiswww/build/site") {
+          include("seisFile.html")
+      }
+      from("build/generated-src/modVersion") {
+          include("java/**")
+          into("src/main")
+      }
     }
-}
-
-tasks.register<Tar>("tarDist") {
-  dependsOn("explodeDist" )
-    compression = Compression.GZIP
-    into(project.name+"-"+archiveVersion.get()) {
-        with(distFiles)
-    }
-}
-
-tasks.register<Checksum>("checksumDist") {
-  dependsOn("tarBin")
-  dependsOn("tarDist")
-  inputFiles.setFrom( tasks.getByName("tarBin").outputs.files + tasks.getByName("tarDist").outputs.files)
-  outputDirectory.set(file(layout.buildDirectory.dir("distributions")))
-  algorithm = Checksum.Algorithm.SHA256
+  }
 }
 
 tasks {
@@ -453,15 +442,8 @@ tasks.named("sourcesJar") {
     dependsOn("makeVersionClass")
 }
 
-tasks.register("versionToVersionFile") {
-  inputs.files("build.gradle.kts")
-  outputs.files("VERSION")
-  File("VERSION").writeText(""+version)
-}
-tasks.get("explodeBin").dependsOn("versionToVersionFile")
+tasks.get("installDist").dependsOn("versionToVersionFile")
 
-tasks.get("explodeDist").dependsOn(tasks.get("docsDir"))
-tasks.get("explodeDist").dependsOn(tasks.get("genAutocomplete"))
-tasks.get("explodeDist").dependsOn(tasks.get("asciidoctor"))
-tasks.get("explodeDist").dependsOn(tasks.get("asciidoctorPdf"))
-tasks.get("assemble").dependsOn(tasks.get("checksumDist"))
+tasks.get("installDist").dependsOn(tasks.get("docsDir"))
+tasks.get("installDist").dependsOn(tasks.get("genAutocomplete"))
+tasks.get("assemble").dependsOn(tasks.get("versionToVersionFile"))

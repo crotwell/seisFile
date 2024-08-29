@@ -4,7 +4,7 @@ generate in build, copied to src and docs
 example output from src/doc/man-example with run_examples.sh
 
 
-./gradlew clean eB test clientTest assemble
+./gradlew clean installDist check assemble
 
 # if client code has changed, may need to rerun man templates for picocli
 #
@@ -15,7 +15,7 @@ example output from src/doc/man-example with run_examples.sh
 ./gradlew dependencyUpdates
 
 # wrapper upgrade
-./gradlew wrapper --gradle-version 8.7 --distribution-type bin
+./gradlew wrapper --gradle-version 8.10 --distribution-type bin
 
 # SNAPSHOT publish,
 # version must end with -SNAPSHOT
