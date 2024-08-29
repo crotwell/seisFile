@@ -79,6 +79,10 @@ public class MSeed3Convert {
                 String mName = sacHeader.getKTHeader(i);
                 mName = mName.equals(SacConstants.STRING8_UNDEF) ? "" : mName.trim();
                 String mDesc = "T"+i;
+                if (mName.isEmpty()) {
+                    mName = mDesc;
+                    mDesc = "";
+                }
                 Marker mark = new Marker(mName, mTime, "", mDesc);
                 ms3eh.addToBag(mark);
             }
