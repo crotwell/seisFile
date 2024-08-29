@@ -81,7 +81,6 @@ public class MSeed3Convert {
                 String mDesc = "T"+i;
                 if (mName.isEmpty()) {
                     mName = mDesc;
-                    mDesc = "";
                 }
                 Marker mark = new Marker(mName, mTime, "", mDesc);
                 ms3eh.addToBag(mark);
