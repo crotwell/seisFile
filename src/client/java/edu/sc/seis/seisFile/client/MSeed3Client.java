@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import edu.sc.seis.seisFile.sac.SacTimeSeries;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -44,6 +45,9 @@ public class MSeed3Client extends AbstractClient {
 
     @Option(names = {"--2to3"}, description = "convert miniseed2 to miniseed3")
     public boolean convert2to3 = false;
+
+    @Option(names = {"--sacto3"}, description = "convert SAC to miniseed3")
+    public boolean convertSacto3 = false;
 
     @Option(names = {"--data"}, description = "dump timeseries samples, default is to just print headers", defaultValue = "false")
     boolean dumpData = false;
@@ -70,6 +74,8 @@ public class MSeed3Client extends AbstractClient {
         }
         if (convert2to3) {
             return doConvertTo3();
+        } else if (convertSacto3) {
+                return doConvertSacTo3();
         } else if (staxmlFile != null || quakemlFile != null) {
             int retVal = 0;
             Map<Network, List<Station>> netList = new HashMap<>();
@@ -202,6 +208,40 @@ public class MSeed3Client extends AbstractClient {
                 }
             } catch (EOFException e) {
                 // done...
+            } finally {
+                if (dos != null && outputFile == null) {
+                    // file per file, close, otherwise leave open for next input file
+                    dos.close();
+                    dos = null;
+                }
+            }
+
+        }
+        if (dos != null) {
+            dos.close();
+        }
+        return 0;
+    }
+
+
+    public Integer doConvertSacTo3() throws Exception {
+        DataOutputStream dos = null;
+        if (outputFile != null) {
+            dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+        }
+        for (File infile : inputFileList) {
+            DataInputStream dis = new DataInputStream(new BufferedInputStream(new FileInputStream(infile)));
+
+            SacTimeSeries sac;
+            if (dos == null) {
+                File outFile = new File(infile.getName() + ".ms3");
+                dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
+            }
+
+            try {
+                sac = SacTimeSeries.read(dis);
+                MSeed3Record ms3 = MSeed3Convert.convertSacTo3(sac);
+                ms3.write(dos);
             } finally {
                 if (dos != null && outputFile == null) {
                     // file per file, close, otherwise leave open for next input file

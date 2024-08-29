@@ -1,5 +1,8 @@
 package edu.sc.seis.seisFile.sac;
 
+import edu.sc.seis.seisFile.mseed3.FDSNSourceId;
+import edu.sc.seis.seisFile.mseed3.FDSNSourceIdException;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -438,6 +441,32 @@ public class SacHeader {
         dos.writeBytes(trimLen(kinst, 8));
     }
 
+
+    /**
+     * Create source id from knetwk, kstnm, khole and kcmpnm header values. Default values for
+     * network "XX" station "ABC" and location "" are used if the corresponding header is empty.
+     *
+     * @return Channel identifier as an FDSN SourceId.
+     */
+    public FDSNSourceId getSourceId() throws FDSNSourceIdException {
+        String net = getKnetwk().trim();
+        if (net.isEmpty()) {
+            net = FDSNSourceId.DEFAULT_NETWORK_CODE;
+        }
+        String sta = getKstnm().trim();
+        if (sta.isEmpty()) {
+            sta = FDSNSourceId.DEFAULT_STATION_CODE;
+        }
+        String loc = getKhole().trim();
+        if (loc.isEmpty()) {
+            loc = FDSNSourceId.DEFAULT_LOCATION_CODE;
+        }
+        FDSNSourceId sid = FDSNSourceId.fromNSLC(net,
+                sta,
+                loc,
+                getKcmpnm().trim());
+        return sid;
+    }
 
     /**
      * Sets the byte order when writing to output. Does not change the internal

@@ -15,6 +15,11 @@ public class FDSNSourceId {
             +"([A-Z0-9]+)";                 // subsource
     public static final Pattern sourceIdRegEx = Pattern.compile(sourceIdRegExString);
 
+    public static final String DEFAULT_SOURCE_CODE = "H";
+    public static final String DEFAULT_NETWORK_CODE = "XX";
+    public static final String DEFAULT_STATION_CODE = "ABC";
+    public static final String DEFAULT_LOCATION_CODE = "";
+
     protected String networkCode;
     protected String stationCode;
     protected String locationCode;
@@ -60,7 +65,7 @@ public class FDSNSourceId {
                 subsource = bss[2];
             }
         } else {
-            throw new FDSNSourceIdException("Unable to parse channel code into band, source, subsource");
+            throw new FDSNSourceIdException("Unable to parse channel code into band, source, subsource: "+channelCode);
         }
         return new FDSNSourceId(networkCode.trim(),
                 stationCode.trim(),
@@ -70,12 +75,9 @@ public class FDSNSourceId {
 
     public static FDSNSourceId createUnknown(double sampleRate) throws FDSNSourceIdException {
         String sourceCode = "H";
-        String networkCode = "XX";
-        String stationCode = "ABC";
-        String locationCode = "";
         String subsourceCode = "U";
         String bandCode = bandCodeForRate(sampleRate, 0.01);
-        return new FDSNSourceId(networkCode, stationCode, locationCode, bandCode, sourceCode, subsourceCode);
+        return new FDSNSourceId(DEFAULT_NETWORK_CODE, DEFAULT_STATION_CODE, DEFAULT_LOCATION_CODE, bandCode, sourceCode, subsourceCode);
     }
 
     public String getNetworkCode() {

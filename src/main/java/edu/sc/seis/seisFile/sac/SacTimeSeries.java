@@ -17,6 +17,9 @@
 // package edu.sc.seis.TauP;
 package edu.sc.seis.seisFile.sac;
 
+import edu.sc.seis.seisFile.mseed3.FDSNSourceId;
+import edu.sc.seis.seisFile.mseed3.FDSNSourceIdException;
+
 import static edu.sc.seis.seisFile.sac.SacConstants.FALSE;
 import static edu.sc.seis.seisFile.sac.SacConstants.IAMPH;
 import static edu.sc.seis.seisFile.sac.SacConstants.IRLIM;
@@ -136,6 +139,15 @@ public class SacTimeSeries {
 
     public SacHeader getHeader() {
         return header;
+    }
+
+    /**
+     * Create source id from knetwk, kstnm, khole and kcmpnm header values.
+     *
+     * @return Channel identifier as an FDSN SourceId.
+     */
+    public FDSNSourceId getSourceId() throws FDSNSourceIdException {
+        return getHeader().getSourceId();
     }
 
     public void printHeader(PrintWriter out) {

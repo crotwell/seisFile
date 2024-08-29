@@ -52,9 +52,7 @@ public class MSeed3Convert {
         ms3.second = sacHeader.getNzsec();
         ms3.nanosecond = sacHeader.getNzmsec()*1000000;
         Instant start = ms3.getStartInstant();
-        String cmpName = sacHeader.getKcmpnm();
-        FDSNSourceId sid = FDSNSourceId.fromNSLC(sacHeader.getKnetwk(), sacHeader.getKstnm(), sacHeader.getKhole(), cmpName);
-        ms3.setSourceId(sid);
+        ms3.setSourceId(sac.getSourceId());
         ms3.setStartDateTime(start.plusMillis(Math.round(sacHeader.getB()*1000)));
         if (sacHeader.getIftype() == SacConstants.ITIME) {
             ms3.setTimeseries(sac.getY());
@@ -78,9 +76,10 @@ public class MSeed3Convert {
         for (int i = 0; i < 9; i++) {
             if ( ! SacConstants.isUndef(sacHeader.getTHeader(i))) {
                 ZonedDateTime mTime = start.plusMillis(Math.round(sacHeader.getTHeader(i)*1000)).atZone(ZoneId.of("UTC"));
-                String desc = sacHeader.getKTHeader(i);
-                desc = desc.equals(SacConstants.STRING8_UNDEF) ? "" : desc;
-                Marker mark = new Marker("T"+i, mTime, "", desc);
+                String mName = sacHeader.getKTHeader(i);
+                mName = mName.equals(SacConstants.STRING8_UNDEF) ? "" : mName.trim();
+                String mDesc = "T"+i;
+                Marker mark = new Marker(mName, mTime, "", mDesc);
                 ms3eh.addToBag(mark);
             }
         }
