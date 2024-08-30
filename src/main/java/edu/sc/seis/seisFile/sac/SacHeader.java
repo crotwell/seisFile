@@ -18,8 +18,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 
+import static edu.sc.seis.seisFile.TimeUtils.TZ_UTC;
 import static edu.sc.seis.seisFile.sac.SacConstants.*;
 
 
@@ -74,7 +77,8 @@ public class SacHeader {
         header.iftype = ITIME;
         header.npts   = 0;
         header.b      = 0.0f;
-        header.e      = 0.0f;   
+        header.e      = 0.0f;
+        header.delta  = 1.0f;
         header.idep   = SacConstants.IUNKN;
         return header;
     }
@@ -466,6 +470,25 @@ public class SacHeader {
                 loc,
                 getKcmpnm().trim());
         return sid;
+    }
+
+    /**
+     * Sets the knetwk, kstnm, khole and kcmpnm header values using the given source id.
+     * @param sid
+     */
+    public void setSourceId(FDSNSourceId sid) {
+        if ( ! sid.getNetworkCode().isEmpty()) {
+            setKnetwk(sid.getNetworkCode());
+        }
+        if ( ! sid.getStationCode().isEmpty()) {
+            setKstnm(sid.getStationCode());
+        }
+        if ( ! sid.getLocationCode().isEmpty()) {
+            setKhole(sid.getLocationCode());
+        }
+        if ( ! sid.getChannelCode().isEmpty()) {
+            setKcmpnm(sid.getChannelCode());
+        }
     }
 
     /**
@@ -1071,6 +1094,22 @@ public class SacHeader {
         this.delta = delta;
     }
 
+    /**
+     * Gets the sample rate in hertz, 1/delta.
+     * @return 1/delta
+     */
+    public float getSampleRate() {
+        return 1/getDelta();
+    }
+
+    /**
+     * Gets the sample period, eg the delta header.
+     * @return delta
+     */
+    public float getSamplePeriod() {
+        return getDelta();
+    }
+
     
     public float getDepmin() {
         return depmin;
@@ -1630,6 +1669,19 @@ public class SacHeader {
         this.evdp = evdp;
     }
 
+    /**
+     * Gets event depth in kilometers. Default unit for header is meters.
+     * @return
+     */
+    public float getEvdpkm() { return getEvdp()/1000;}
+
+    /**
+     * Sets evdp in kilometers. Default unit for header is meters.
+     * @param evdpkm  event depth in kilometers
+     */
+    public void setEvdpkm(float evdpkm) {
+        setEvdp(evdpkm * 1000);
+    }
     
     public float getMag() {
         return mag;
@@ -2063,7 +2115,18 @@ public class SacHeader {
         this.nzmsec = nzmsec;
     }
 
-    
+    public void setNzTime(ZonedDateTime start) {
+        setNzyear(start.getYear());
+        setNzjday(start.getDayOfYear());
+        setNzhour(start.getHour());
+        setNzmin(start.getMinute());
+        setNzsec(start.getSecond());
+        setNzmsec(start.getNano()/1000000);
+    }
+
+    public void setNzTime(Instant start) {
+        setNzTime(start.atZone(TZ_UTC));
+    }
     public int getNvhdr() {
         return nvhdr;
     }

@@ -54,10 +54,20 @@ public class MSeed3EH {
         }
         JSONObject bagEh = getBagEH();
         JSONObject ch = new JSONObject();
-        insertLocation(ch, new Location(chan));
-        ch.put(ELEVATION, chan.getElevation().getValue());
-        ch.put(AZ, chan.getAzimuth());
-        ch.put(DIP, chan.getDip());
+        if (chan.getLatitude() != null && chan.getLongitude() != null && chan.getDepth() != null) {
+            insertLocation(ch, new Location(chan));
+        }
+        if (chan.getElevation() != null) {
+            ch.put(ELEVATION, chan.getElevation().getValue());
+        } else if (chan.getStation().getElevation() != null) {
+            ch.put(ELEVATION, chan.getStation().getElevation().getValue());
+        }
+        if (chan.getAzimuth() != null) {
+            ch.put(AZ, chan.getAzimuth());
+        }
+        if (chan.getDip() != null) {
+            ch.put(DIP, chan.getDip());
+        }
         bagEh.put(CHANNEL, ch);
     }
 
