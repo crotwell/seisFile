@@ -1,20 +1,3 @@
-/*
- * The TauP Toolkit: Flexible Seismic Travel-Time and Raypath Utilities.
- * Copyright (C) 1998-2000 University of South Carolina This program is free
- * software; you can redistribute it and/or modify it under the terms of the GNU
- * General Public License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version. This program
- * is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE. See the GNU General Public License for more details. You
- * should have received a copy of the GNU General Public License along with this
- * program; if not, write to the Free Software Foundation, Inc., 59 Temple Place
- * - Suite 330, Boston, MA 02111-1307, USA. The current version can be found at
- * <A HREF="www.seis.sc.edu">http://www.seis.sc.edu </A> Bug reports and
- * comments should be directed to H. Philip Crotwell, crotwell@seis.sc.edu or
- * Tom Owens, owens@seis.sc.edu
- */
-// package edu.sc.seis.TauP;
 package edu.sc.seis.seisFile.sac;
 
 import edu.sc.seis.seisFile.mseed3.FDSNSourceId;
@@ -47,16 +30,16 @@ import java.io.RandomAccessFile;
  * Class that represents a sac file. All headers are have the same names as
  * within the Sac program. Can read the whole file or just the header as well as
  * write a file.
- * 
+ *
  * This reflects the sac header as of version 101.4 in utils/sac.h
- * 
+ *
  * Notes: Key to comment flags describing each field: Column 1: R required by
  * SAC (blank) optional Column 2: A = settable from a priori knowledge D =
  * available in data F = available in or derivable from SEED fixed data header T
  * = available in SEED header tables (blank) = not directly available from SEED
  * data, header tables, or elsewhere
- * 
- * 
+ *
+ *
  * @version 1.1 Wed Feb 2 20:40:49 GMT 2000
  * @author H. Philip Crotwell
  */
@@ -177,7 +160,7 @@ public class SacTimeSeries {
     /**
      * reads the sac file specified by the filename. Only a very simple check is
      * made to be sure the file really is a sac file.
-     * 
+     *
      * @throws FileNotFoundException
      *             if the file cannot be found
      * @throws IOException
@@ -252,7 +235,7 @@ public class SacTimeSeries {
      * reads data.length floats. It is up to the caller to insure that the type
      * of SAC file (iftype = LEVEN, IRLIM, IAMPH) and how many data points
      * remain are compatible with the size of the float array to be read.
-     * 
+     *
      * @throws IOException
      */
     public static void readSomeData(DataInput dataIn, float[] data, boolean byteOrder) throws IOException {
@@ -263,7 +246,7 @@ public class SacTimeSeries {
      * skips samplesToSkip data points. It is up to the caller to insure that
      * the type of SAC file (iftype = LEVEN, IRLIM, IAMPH) and how many data
      * points remain are compatible with the size of the float array to be read.
-     * 
+     *
      * @throws IOException
      */
     public static int skipSamples(DataInput dataIn, int samplesToSkip) throws IOException {

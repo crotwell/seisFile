@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.1.1-SNAPSHOT"
+version = "2.2.0-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -267,7 +267,7 @@ distributions {
 
       from("build/picocli") {
           include("bash_completion/**")
-          into("docs/bash_completion.d")
+          into("bash_completion.d")
       }
       from(".") {
           include("LICENSE")
@@ -444,7 +444,9 @@ tasks.named("sourcesJar") {
 }
 
 tasks.get("installDist").dependsOn("versionToVersionFile")
-
 tasks.get("installDist").dependsOn(tasks.get("docsDir"))
 tasks.get("installDist").dependsOn(tasks.get("genAutocomplete"))
+tasks.get("distTar").dependsOn(tasks.get("genAutocomplete"))
+tasks.get("distZip").dependsOn(tasks.get("genAutocomplete"))
 tasks.get("assemble").dependsOn(tasks.get("versionToVersionFile"))
+tasks.get("assemble").dependsOn(tasks.get("docsDir"))

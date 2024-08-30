@@ -13,7 +13,7 @@ import java.util.Objects;
 
 /**
  * Implements the DataLink protocol, defined at:
- * https://iris-edu.github.io/libdali/datalink-protocol.html
+ * <a href="https://earthscope.github.io/libdali/datalink-protocol.html">https://earthscope.github.io/libdali/datalink-protocol.html</a>
  *
  * Philip Crotwell
  * University of South Carolina, 2019
