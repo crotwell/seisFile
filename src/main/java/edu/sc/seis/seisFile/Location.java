@@ -13,7 +13,7 @@ public class Location {
     double latitude;
     double longitude;
 
-    double depth_meter = 0;
+    Double depth_meter = null;
 
     public Location(double latitude, double longitude) {
         this.latitude = latitude;
@@ -29,13 +29,15 @@ public class Location {
     public Location(Station sta) {
         this.latitude = sta.getLatitudeFloat();
         this.longitude = sta.getLongitudeFloat();
-        this.depth_meter = 0;
+        this.depth_meter = null;
     }
 
     public Location(Channel chan) {
         this.latitude = chan.getLatitudeFloat();
         this.longitude = chan.getLongitudeFloat();
-        this.depth_meter = chan.getDepthFloat();
+        if (chan.getDepth() != null) {
+            this.depth_meter = Double.valueOf(chan.getDepthFloat());
+        }
     }
 
     public Location(Event ev) {
@@ -46,7 +48,9 @@ public class Location {
     public Location(Origin o) {
         this.latitude = o.getLatitude().getValue();
         this.longitude = o.getLongitude().getValue();
-        this.depth_meter = o.getDepth().getValue();
+        if (o.getDepth() != null) {
+            this.depth_meter = Double.valueOf(o.getDepth().getValue());
+        }
     }
 
     public double getLatitude() {
@@ -57,15 +61,34 @@ public class Location {
         return longitude;
     }
 
-    public double getDepthMeter() {
+    /**
+     *
+     * @return true if this Location has a depth set.
+     */
+    public boolean hasDepth() {
+        return getDepthMeter() != null;
+    }
+
+    /**
+     *
+     * @return depth in meters if set, otherwise null
+     */
+    public Double getDepthMeter() {
         return depth_meter;
     }
-    public double getDepthKm() {
-        return depth_meter /1000;
+    /**
+     *
+     * @return depth in kilometers if set, otherwise null
+     */
+    public Double getDepthKm() {
+
+        return hasDepth() ? getDepthMeter() /1000 : null;
     }
 
     @Override
     public String toString() {
-        return "(" + latitude +", " + longitude + ") at " + depth_meter+" m";
+        String out = "(" + latitude +", " + longitude + ")";
+        out += hasDepth() ? " at " + depth_meter+" m" : "";
+        return out;
     }
 }
