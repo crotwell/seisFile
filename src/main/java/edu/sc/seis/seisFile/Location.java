@@ -3,6 +3,7 @@ package edu.sc.seis.seisFile;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Event;
 import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
+import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 
 /**
  * Simple class to hold a lat/lon pair, with optional depth, defaults to 0.
@@ -23,6 +24,12 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
         this.depth_meter = depth;
+    }
+
+    public Location(Station sta) {
+        this.latitude = sta.getLatitudeFloat();
+        this.longitude = sta.getLongitudeFloat();
+        this.depth_meter = 0;
     }
 
     public Location(Channel chan) {
