@@ -5,6 +5,8 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 
+import java.util.Objects;
+
 /**
  * Simple class to hold a lat/lon pair, with optional depth, defaults to 0.
  */
@@ -90,5 +92,18 @@ public class Location {
         String out = "(" + latitude +", " + longitude + ")";
         out += hasDepth() ? " at " + depth_meter+" m" : "";
         return out;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Location)) return false;
+        Location location = (Location) o;
+        return Double.compare(latitude, location.latitude) == 0 && Double.compare(longitude, location.longitude) == 0 && Objects.equals(depth_meter, location.depth_meter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(latitude, longitude, depth_meter);
     }
 }
