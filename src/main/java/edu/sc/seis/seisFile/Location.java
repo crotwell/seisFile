@@ -17,6 +17,8 @@ public class Location {
 
     Double depth_meter = null;
 
+    String description = null;
+
     public Location(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
@@ -85,6 +87,25 @@ public class Location {
     public Double getDepthKm() {
 
         return hasDepth() ? getDepthMeter() /1000 : null;
+    }
+
+    /**
+     *
+     * @return true if this Location has an optional description.
+     */
+    public boolean hasDescription() {
+        return description != null && ! description.isEmpty();
+    }
+
+    /**
+     *
+     * @return an optional description, like event time or station code.
+     */
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String desc) {
+        this.description = desc;
     }
 
     @Override

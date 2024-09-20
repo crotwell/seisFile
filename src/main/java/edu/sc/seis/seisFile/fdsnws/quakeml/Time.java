@@ -10,6 +10,8 @@ import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class Time {
 
@@ -67,6 +69,10 @@ public class Time {
 
     public Instant asInstant() {
         return TimeUtils.parseISOString(getValue());
+    }
+
+    public ZonedDateTime asUTCDateTime() {
+        return asInstant().atZone(ZoneId.of("UTC"));
     }
     public void setConfidenceLevel(Float confidenceLevel) {
         this.confidenceLevel = confidenceLevel;
