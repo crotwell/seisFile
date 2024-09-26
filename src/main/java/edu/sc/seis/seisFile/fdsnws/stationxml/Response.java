@@ -50,6 +50,7 @@ public class Response {
     /**
      * @deprecated Use {@link InstrumentSensitivity#isValid(InstrumentSensitivity)} instead
      */
+    @Deprecated
     public static boolean isValid(InstrumentSensitivity sens) {
         return InstrumentSensitivity.isValid(sens);
     }

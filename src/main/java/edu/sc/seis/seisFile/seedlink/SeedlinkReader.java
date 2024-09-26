@@ -544,6 +544,7 @@ public class SeedlinkReader {
      * @throws SeedlinkException
      * @throws IOException
      */
+    @Deprecated
     public void selectOfType(String network, String station, List<String> locchan, String type) throws SeedlinkException, IOException {
         sendStation(network, station);
         if (locchan.isEmpty()) {

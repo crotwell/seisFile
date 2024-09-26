@@ -65,7 +65,7 @@ public class WriteMiniSeed {
         DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outFilename)));
         record.write(out);
         out.close();
-        System.out.println("Wrote miniseed to "+outFilename+", "+(steimData.getNumSamples()*4)+" compressed to "+steimData.numNonEmptyFrames()*64
+        System.out.println("Wrote miniseed to "+outFilename+", "+(steimData.getNumSamples()*4)+" compressed to "+steimData.getNumFrames()*64
                            +" record size="+record.getRecordSize());
     }
     

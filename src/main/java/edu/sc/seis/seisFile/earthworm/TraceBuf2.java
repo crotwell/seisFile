@@ -691,7 +691,6 @@ public class TraceBuf2 {
                 } else if (compressionType == B1000Types.STEIM2) {
                     sfb = encodeSteim2(recLenExp, offset);
                 }
-                sfb.trimEmptyFrames(); // remove all empties
                 try {
                     out.add(toMiniSeedWithCompressedData(recLenExp, compressionType, sfb.getEncodedData(), sfb.getNumSamples(), offset));
                 } catch(IOException e) {
