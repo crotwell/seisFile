@@ -4,7 +4,7 @@ import org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask
 import org.gradle.crypto.checksum.Checksum
 
 plugins {
-  id("edu.sc.seis.version-class") version "1.3.0"
+  id("edu.sc.seis.version-class") version "1.4.0"
   id("org.gradle.crypto.checksum") version "1.4.0"
   id("java-library")
   `project-report`
@@ -130,14 +130,14 @@ dependencies {
     implementation("org.json:json:20240303")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.1")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.1")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.0")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.1")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.1")
 
 }
 
