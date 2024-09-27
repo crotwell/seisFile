@@ -112,6 +112,9 @@ public class Location {
     public String toString() {
         String out = "(" + latitude +", " + longitude + ")";
         out += hasDepth() ? " at " + depth_meter+" m" : "";
+        if (hasDescription()) {
+            out += " "+getDescription();
+        }
         return out;
     }
 
