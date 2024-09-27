@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.2.0-SNAPSHOT"
+version = "2.2.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
