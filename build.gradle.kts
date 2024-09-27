@@ -4,8 +4,9 @@ import org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask
 import org.gradle.crypto.checksum.Checksum
 
 plugins {
+  id("edu.sc.seis.version-class") version "1.4.1"
   id("org.gradle.crypto.checksum") version "1.4.0"
-  id("java-library")
+  `java-library`
   `project-report`
   `maven-publish`
   signing
