@@ -1,11 +1,14 @@
 package edu.sc.seis.seisFile.mseed3.ehbag;
 
 import edu.sc.seis.seisFile.TimeUtils;
+import edu.sc.seis.seisFile.mseed3.MSeed3EHKeys;
 import org.json.JSONObject;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+
+import static edu.sc.seis.seisFile.mseed3.MSeed3EHKeys.*;
 
 public class Marker {
     String name;
@@ -26,25 +29,23 @@ public class Marker {
 
     public JSONObject asJSON() {
         JSONObject j = new JSONObject();
-        j.put("n", name);
-        j.put("tm", TimeUtils.toISOString(time.toInstant()));
-        if (type.length() > 0) {j.put("mtype", type);}
-        if (description.length() > 0) {j.put("desc", description);}
+        j.put(MARKER_NAME, name);
+        j.put(TIME, TimeUtils.toISOString(time.toInstant()));
+        if (type.length() > 0) {j.put(MARKER_TYPE, type);}
+        if (description.length() > 0) {j.put(MARKER_DESC, description);}
         return j;
     }
 
     public static Marker fromJSON(JSONObject j) {
         Marker m = null;
-        if (j.has("tm") && j.has("n")) {
-            ZonedDateTime time = TimeUtils.parseISOString(j.getString("tm")).atZone(ZoneId.of("UTC"));
-            m = new Marker(j.getString("n"), time);
-            if (j.has("desc")) {m.description = j.getString("desc");}
-            if (j.has("mtype")) {m.type = j.getString("mtype");}
+        if (j.has(TIME) && j.has(MARKER_NAME)) {
+            ZonedDateTime time = TimeUtils.parseISOString(j.getString(TIME)).atZone(ZoneId.of("UTC"));
+            m = new Marker(j.getString(MARKER_NAME), time);
+            if (j.has(MARKER_DESC)) {m.description = j.getString(MARKER_DESC);}
+            if (j.has(MARKER_TYPE)) {m.type = j.getString(MARKER_TYPE);}
         }
         return m;
     }
 
-    public static final String MARKER_PICK = "pk";
-    public static final String MARKER_PREDIC_MODEL = "md";
 
 }

@@ -1,7 +1,8 @@
 package edu.sc.seis.seisFile.mseed3.ehbag;
 
-import edu.sc.seis.seisFile.mseed3.MSeed3EH;
 import org.json.JSONObject;
+
+import static edu.sc.seis.seisFile.mseed3.MSeed3EHKeys.*;
 
 public class Path {
     public Path() {
@@ -16,27 +17,27 @@ public class Path {
     public JSONObject asJSON() {
         JSONObject j = new JSONObject();
         if (gcarc != null) {
-            j.put(MSeed3EH.GCARC, gcarc.floatValue());
+            j.put(GCARC, gcarc.floatValue());
         }
         if (az != null) {
-            j.put(MSeed3EH.AZ, az.floatValue());
+            j.put(AZ, az.floatValue());
         }
         if (baz != null) {
-            j.put(MSeed3EH.BAZ, baz.floatValue());
+            j.put(BAZ, baz.floatValue());
         }
         return j;
     }
 
     public static Path fromJSON(JSONObject j) {
         Path path = new Path();
-        if (j.has(MSeed3EH.GCARC)) {
-            path.gcarc = j.getFloat(MSeed3EH.GCARC);
+        if (j.has(GCARC)) {
+            path.gcarc = j.getFloat(GCARC);
         }
-        if (j.has(MSeed3EH.AZ)) {
-            path.az = j.getFloat(MSeed3EH.AZ);
+        if (j.has(AZ)) {
+            path.az = j.getFloat(AZ);
         }
-        if (j.has(MSeed3EH.BAZ)) {
-            path.baz = j.getFloat(MSeed3EH.BAZ);
+        if (j.has(BAZ)) {
+            path.baz = j.getFloat(BAZ);
         }
         return path;
     }

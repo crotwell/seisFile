@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.time.Instant;
 
-public class MSeed3EH {
+public class MSeed3EH implements MSeed3EHKeys {
 
     /**
      * Creates a new empty extra header.
@@ -241,26 +241,5 @@ public class MSeed3EH {
     JSONObject eh;
     JSONObject bag = null;
 
-    public static final String BAG = "bag";
-    public static final String CHANNEL = "ch";
-    public static final String EVENT = "ev";
-    public static final String ID = "id";
-    public static final String ORIGIN = "or";
-    public static final String TIME = "tm";
-    public static final String DEPTH = "dp";
-    public static final String ELEVATION = "el";
-    public static final String LATITUDE = "la";
-    public static final String LONGITUDE = "lo";
-    public static final String MAGNITUDE = "mag";
-    public static final String MAGVALUE = "v";
-    public static final String MAGTYPE = "t";
-    public static final String MARKERS = "mark";
-    public static final String PATH = "path";
-    public static final String GCARC = "gcarc";
-    public static final String AZ = "az";
-    public static final String BAZ = "baz";
-    public static final String DIP = "dip";
-    public static final String Y = "y";
-    public static final String SI = "si";
-    public static final String PROC = "proc";
+
 }
