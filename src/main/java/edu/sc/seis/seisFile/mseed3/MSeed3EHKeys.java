@@ -23,6 +23,11 @@ public interface MSeed3EHKeys {
     String Y = "y";
     String SI = "si";
     String PROC = "proc";
+    String REQUEST = "req";
+    String DATACENTER = "dc";
+    String STARTTIME = "sttm";
+    String ENDTIME = "endtm";
+    String REQUESTTIME = "reqtm";
     String MARKER_PICK = "pk";
     String MARKER_MODELED = "md";
     String MARKER_NAME = "n";

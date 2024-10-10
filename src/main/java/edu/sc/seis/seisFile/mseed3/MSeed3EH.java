@@ -238,6 +238,20 @@ public class MSeed3EH implements MSeed3EHKeys {
         bag.getJSONObject(PATH).put(GCARC, gcarc);
     }
 
+    public void addRequestToBag(String datacenter, Instant reqStartTime, Instant reqEndTime, Instant timeOfRequest) {
+        JSONObject bag = getBagEH();
+        JSONObject req = new JSONObject();
+        req.put(DATACENTER, datacenter);
+        req.put(STARTTIME, TimeUtils.toISOString(reqStartTime));
+        req.put(ENDTIME, TimeUtils.toISOString(reqEndTime));
+        req.put(REQUESTTIME, TimeUtils.toISOString(timeOfRequest));
+        if (! bag.has(Y)) {
+            bag.put(Y, new JSONObject());
+        }
+        JSONObject y = bag.getJSONObject(Y);
+        y.put(REQUEST, req);
+    }
+
     JSONObject eh;
     JSONObject bag = null;
 
