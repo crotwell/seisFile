@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.util.List;
 
 public class MSeed3EH implements MSeed3EHKeys {
 
@@ -78,6 +79,18 @@ public class MSeed3EH implements MSeed3EHKeys {
         }
         JSONObject bagEh = getBagEH();
         bagEh.put(PATH, path.asJSON());
+    }
+
+    public void addToBag(List<Marker> markerList) {
+        if (markerList.isEmpty()) { return; }
+        JSONObject bagEh = getBagEH();
+        if ( ! bagEh.has(MARKERS)) {
+            bagEh.put(MARKERS, new JSONArray());
+        }
+        JSONArray markers = bagEh.getJSONArray(MARKERS);
+        for (Marker m : markerList) {
+            markers.put(m.asJSON());
+        }
     }
 
     public void addToBag(Marker marker) {
