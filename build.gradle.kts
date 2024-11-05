@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.2.1"
+version = "2.2.2-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -125,7 +125,7 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:4.7.6")
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
-    implementation( "com.fasterxml.woodstox:woodstox-core:7.0.0")
+    implementation( "com.fasterxml.woodstox:woodstox-core:7.1.0")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.json:json:20240303")
 
