@@ -130,14 +130,14 @@ dependencies {
     implementation("org.json:json:20240303")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.3")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.2")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.3")
 
 }
 
