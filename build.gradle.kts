@@ -13,7 +13,7 @@ plugins {
   application
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
-  id("com.github.ben-manes.versions") version "0.51.0"
+  id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
@@ -127,17 +127,17 @@ dependencies {
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
     implementation( "com.fasterxml.woodstox:woodstox-core:7.1.0")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
-    implementation("org.json:json:20240303")
+    implementation("org.json:json:20250107")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.0")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.3")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.0")
 
 }
 
