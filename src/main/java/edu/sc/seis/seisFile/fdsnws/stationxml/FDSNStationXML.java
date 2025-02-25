@@ -224,7 +224,8 @@ public class FDSNStationXML {
         }
         if (!(StationXMLTagNames.CURRENT_SCHEMA_VERSION.equals(getSchemaVersion())
                 || StationXMLTagNames.CURRENT_SCHEMA_VERSION_ALT.equals(getSchemaVersion())
-                || StationXMLTagNames.PREV_SCHEMA_VERSION.equals(getSchemaVersion()))) {
+                || StationXMLTagNames.PREV_SCHEMA_VERSION.equals(getSchemaVersion())
+                || "1".equals(getSchemaVersion()))) { // dumb NZ server
             return false;
         }
         return true;
