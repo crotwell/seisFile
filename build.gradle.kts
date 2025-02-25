@@ -134,10 +134,12 @@ dependencies {
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Use JUnit Jupiter API for testing.
     clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
     clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.0")
+    clientTestImplementation("org.junit.platform:junit-platform-launcher")
 
 }
 
@@ -151,7 +153,7 @@ tasks.withType<JavaCompile> {
 tasks.named<Test>("test") {
     useJUnitPlatform()
 }
-task<Test>("clientTest") {
+tasks.register<Test>("clientTest") {
     description = "Runs the separate client jar tests"
     group = "verification"
     testClassesDirs = sourceSets["clientTest"].output.classesDirs
