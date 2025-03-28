@@ -45,8 +45,6 @@ public class IRISWSVirtualNetworkQueryParams extends AbstractQueryParams  {
         return this;
     }
 
-    public static final String FORMAT = "format";
-
     /** Specify a magnitude type to use for testing the minimum and maximum limits.
      */
     public IRISWSVirtualNetworkQueryParams setFormat(String value) {
