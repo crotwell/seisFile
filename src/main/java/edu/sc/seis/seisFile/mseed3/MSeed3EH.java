@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MSeed3EH implements MSeed3EHKeys {
@@ -103,6 +104,19 @@ public class MSeed3EH implements MSeed3EHKeys {
         }
         JSONArray markers = bagEh.getJSONArray(MARKERS);
         markers.put(marker.asJSON());
+    }
+
+    public List<Marker> getMarkers() {
+        JSONObject bagEh = getBagEH();
+        if ( ! bagEh.has(MARKERS)) {
+            return List.of();
+        }
+        JSONArray markers = bagEh.getJSONArray(MARKERS);
+        List<Marker> out = new ArrayList<>();
+        for (int i = 0; i < markers.length(); i++) {
+            out.add(Marker.fromJSON(markers.getJSONObject(i)));
+        }
+        return out;
     }
 
     public void setTimeseriesUnit(String siUnit) {
