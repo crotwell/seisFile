@@ -2,6 +2,7 @@ package edu.sc.seis.seisFile.fdsnws;
 
 import java.time.Instant;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLEventReader;
@@ -12,7 +13,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.TimeUtils;
+import edu.sc.seis.seisFile.fdsnws.quakeml.QuakeMLTagNames;
 import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLException;
+import edu.sc.seis.seisFile.fdsnws.stationxml.StationXMLTagNames;
 
 public class StaxUtil {
 
@@ -75,11 +78,18 @@ public class StaxUtil {
             count++;
             reader.nextEvent(); // pop this one
             if (true) {
-            Exception justForStackTrace = new Exception();
-            System.out.println("Warning: Skipping: '"+cur.asStartElement().getName().getLocalPart()
-                               +"' at line "+cur.getLocation().getLineNumber()+", "+cur.getLocation().getColumnNumber()
-                               +" in or after '"+parent+"' in class "+justForStackTrace.getStackTrace()[1]);
-            } 
+                Exception justForStackTrace = new Exception();
+                StartElement startEl = cur.asStartElement();
+                String namespace = startEl.getName().getNamespaceURI();
+                if (Objects.equals(QuakeMLTagNames.CODE_BED_SCHEMA_VERSION, namespace)
+                        || Objects.equals(StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION, namespace)
+                ) {
+
+                    System.out.println("Warning: Skipping: '" + startEl.getName().getPrefix() + ":" + cur.asStartElement().getName().getLocalPart()
+                            + "' at line " + cur.getLocation().getLineNumber() + ", " + cur.getLocation().getColumnNumber()
+                            + " in or after '" + parent + "' in class " + justForStackTrace.getStackTrace()[1]);
+                }
+            }
         }
         while (count > 0 && reader.hasNext()) {
             cur = reader.peek();

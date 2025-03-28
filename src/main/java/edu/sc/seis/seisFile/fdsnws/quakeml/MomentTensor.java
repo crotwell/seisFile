@@ -40,10 +40,14 @@ public class MomentTensor {
                     scalarMoment = new RealQuantity(reader, QuakeMLTagNames.scalarMoment);
                 } else if (elName.equals(QuakeMLTagNames.tensor)) {
                     tensor = new Tensor(reader);
+                } else if (elName.equals(QuakeMLTagNames.varianceReduction)) {
+                    varianceReduction = StaxUtil.pullFloat(reader, QuakeMLTagNames.varianceReduction);
                 } else if (elName.equals(QuakeMLTagNames.doubleCouple)) {
                     doubleCouple = StaxUtil.pullFloat(reader, QuakeMLTagNames.doubleCouple);
                 } else if (elName.equals(QuakeMLTagNames.clvd)) {
                     clvd = StaxUtil.pullFloat(reader, QuakeMLTagNames.clvd);
+                } else if (elName.equals(QuakeMLTagNames.sourceTimeFunction)) {
+                    sourceTimeFunction = new SourceTimeFunction(reader);
                 } else if (elName.equals(QuakeMLTagNames.methodID)) {
                     methodID = StaxUtil.pullText(reader, QuakeMLTagNames.methodID);
                 } else if (elName.equals(QuakeMLTagNames.category)) {
@@ -159,13 +163,25 @@ public class MomentTensor {
         this.tensor = tensor;
     }
 
+    public SourceTimeFunction getSourceTimeFunction() {
+        return sourceTimeFunction;
+    }
+
+    public void setSourceTimeFunction(SourceTimeFunction sourceTimeFunction) {
+        this.sourceTimeFunction = sourceTimeFunction;
+    }
+
     String publicId;
 
     String derivedOriginID;
 
     String momentMagnitudeID;
 
+    SourceTimeFunction sourceTimeFunction;
+
     RealQuantity scalarMoment;
+
+    Float varianceReduction;
 
     Tensor tensor;
 
