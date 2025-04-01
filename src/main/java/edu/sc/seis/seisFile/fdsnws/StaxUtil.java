@@ -85,7 +85,7 @@ public class StaxUtil {
                         || Objects.equals(StationXMLTagNames.CURRENT_SCHEMALOCATION_VERSION, namespace)
                 ) {
 
-                    System.out.println("Warning: Skipping: '" + startEl.getName().getPrefix() + ":" + cur.asStartElement().getName().getLocalPart()
+                    System.err.println("Warning: Skipping: '" + startEl.getName().getPrefix() + ":" + cur.asStartElement().getName().getLocalPart()
                             + "' at line " + cur.getLocation().getLineNumber() + ", " + cur.getLocation().getColumnNumber()
                             + " in or after '" + parent + "' in class " + justForStackTrace.getStackTrace()[1]);
                 }

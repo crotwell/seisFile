@@ -2127,6 +2127,14 @@ public class SacHeader {
     public void setNzTime(Instant start) {
         setNzTime(start.atZone(TZ_UTC));
     }
+
+    public ZonedDateTime getNzTime() {
+        ZonedDateTime nz = ZonedDateTime.of(getNzyear(), 1, 1,
+                getNzhour(), getNzmin(), getNzsec(), getNzmsec()*1000000,
+                TZ_UTC);
+        return nz.plusDays(getNzjday()-1);
+    }
+
     public int getNvhdr() {
         return nvhdr;
     }
