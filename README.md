@@ -1,6 +1,9 @@
 ![Alt SeisFile](https://crotwell.github.io/seisFile/seisfileLogo.svg)
 [![Maven Central](https://img.shields.io/maven-central/v/edu.sc.seis/seisFile.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22edu.sc.seis%22%20AND%20a:%22seisFile%22)
  [![javadoc](https://javadoc.io/badge2/edu.sc.seis/seisFile/javadoc.svg)](https://javadoc.io/doc/edu.sc.seis/seisFile)
+  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15122735.svg)](https://doi.org/10.5281/zenodo.15122735)
+
+
 
 SeisFile is a library for reading and writing seismic file formats in java.
 See the [examples](https://crotwell.github.io/seisFile/seisFileIndex.html) for
