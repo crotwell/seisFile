@@ -10,3 +10,6 @@
 
 # Release
 move the curr_release branch, github pages builds from this branch
+
+# Zenodo
+# auto from github release, include the tarball

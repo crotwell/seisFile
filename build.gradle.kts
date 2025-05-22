@@ -24,7 +24,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.3.0"
+version = "2.3.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -148,6 +148,9 @@ tasks.withType<JavaCompile> {
 	val compilerArgs = options.compilerArgs
 	compilerArgs.add("-Aproject=${project.group}/${project.name}")
 }
+tasks.register("genAutocomplete"){
+  outputs.files(fileTree("build/autocomplete"))
+}
 
 // for junit
 tasks.named<Test>("test") {
@@ -266,7 +269,9 @@ distributions {
       from(tasks.named("versionToVersionFile")) {
         into(".")
       }
-
+      from(tasks.named("genAutocomplete")) {
+        into("docs/bash_completion.d")
+      }
       from("build/picocli") {
           include("bash_completion/**")
           into("bash_completion.d")
@@ -320,7 +325,6 @@ tasks {
 
 
 tasks.register("genManTemplate"){}
-tasks.register("genAutocomplete"){}
 tasks.register("createRunScripts"){}
 tasks.named("startScripts") {
     dependsOn("createRunScripts")
@@ -400,21 +404,19 @@ for (key in scriptNames.keys) {
       dependsOn(adocTask)
       inputs.property(key+".adoc", file(layout.buildDirectory.file( "picocli/man/"+scriptNames[key]+".adoc")))
   }
-  val bashautoTask = tasks.register<JavaExec>("genAutocomplete"+key) {
-    description = "generate picocli bash/zsh autocomplete file "+key
-    classpath = sourceSets.getByName("client").runtimeClasspath
-      getMainClass().set("picocli.AutoComplete")
-    val outDir =  file(layout.buildDirectory.dir(  "picocli/bash_completion"))
-    val outFile = File(outDir, key+"_completion")
-    args = listOf(scriptNames[key], "-f", "-o", outFile.path)
+
+  val genAutoComTask = tasks.register<JavaExec>("genAutocomplete"+key) {
+    description = "generate seisFile cmd line help output files"
+    dependsOn += tasks.getByName("classes")
+    classpath = configurations.getByName("annotationProcessor") + sourceSets.getByName("client").runtimeClasspath
+    getMainClass().set("picocli.AutoComplete")
+    args = listOf("--force", scriptNames[key])
     dependsOn += tasks.getByName("compileJava")
-    outputs.files(outFile)
-    doLast {
-        mkdir(outDir)
-    }
+    workingDir = File("build/autocomplete")
+    outputs.file(File("build/autocomplete/"+scriptNames[key]+"_completion"))
   }
   tasks.named("genAutocomplete") {
-      dependsOn(bashautoTask)
+    dependsOn(genAutoComTask)
   }
 }
 
@@ -447,8 +449,5 @@ tasks.named("sourcesJar") {
 
 tasks.get("installDist").dependsOn("versionToVersionFile")
 tasks.get("installDist").dependsOn(tasks.get("docsDir"))
-tasks.get("installDist").dependsOn(tasks.get("genAutocomplete"))
-tasks.get("distTar").dependsOn(tasks.get("genAutocomplete"))
-tasks.get("distZip").dependsOn(tasks.get("genAutocomplete"))
 tasks.get("assemble").dependsOn(tasks.get("versionToVersionFile"))
 tasks.get("assemble").dependsOn(tasks.get("docsDir"))
