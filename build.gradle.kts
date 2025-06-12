@@ -125,20 +125,20 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:4.7.6")
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
-    implementation( "com.fasterxml.woodstox:woodstox-core:7.1.0")
+    implementation( "com.fasterxml.woodstox:woodstox-core:7.1.1")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
-    implementation("org.json:json:20250107")
+    implementation("org.json:json:20250517")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.1")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.13.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.0")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.13.1")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.13.1")
     clientTestImplementation("org.junit.platform:junit-platform-launcher")
 
 }
