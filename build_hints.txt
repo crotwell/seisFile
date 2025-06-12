@@ -7,6 +7,11 @@
 ./gradlew genManTemplate
 # and check git diff on src/doc/man-templates
 
+# check for dep updates
+./gradlew dependencyUpdates
+
+# wrapper
+./gradlew wrapper --gradle-version 8.14.2 --distribution-type bin
 
 # Release
 move the curr_release branch, github pages builds from this branch
