@@ -4,7 +4,7 @@ import picocli.AutoComplete;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-@Command(name="seisfile", 
+@Command(name="seisfile",
          description="seisfile client example codes",
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class,
          subcommands = {
@@ -24,7 +24,13 @@ import picocli.CommandLine.Command;
 })
 public class SeisFile {
 
-    
+    @CommandLine.Option(names = {"-V", "--version"}, versionHelp = true, description = "display version info")
+    boolean versionInfoRequested;
+
+    @CommandLine.Option(names = {"--help"}, usageHelp = true, description = "display this help message")
+    boolean usageHelpRequested;
+
+
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new SeisFile()).execute(args));
     }
