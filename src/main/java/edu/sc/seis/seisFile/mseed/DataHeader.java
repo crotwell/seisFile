@@ -143,7 +143,8 @@ public class DataHeader extends ControlHeader {
         DataHeader data = new DataHeader(sequenceNum,
                                          typeCode,
                                          continuationCode);
-        data.read(buf, 0);
+        boolean byteSwapFlag = Btime.shouldSwapBytes(buf, 12);
+        data.read(buf, 0, byteSwapFlag);
         return data;
     }
 
@@ -159,6 +160,8 @@ public class DataHeader extends ControlHeader {
      * populates this object with Fixed Section Data Header info. this routine
      * modified to include byte offset, should the station identifier start at a
      * byte offset (such as 8 from the beginning of a data record).
+     *
+     *
      * 
      * @param buf
      *            data buffer containing FSDH information
@@ -166,6 +169,11 @@ public class DataHeader extends ControlHeader {
      *            byte offset to begin reading buf
      */
     protected void read(byte[] buf, int offset) {
+        boolean byteSwapFlag = Btime.shouldSwapBytes(buf, offset+12);
+        read(buf, offset, byteSwapFlag);
+    }
+
+    protected void read(byte[] buf, int offset, boolean byteSwapFlag) {
         System.arraycopy(buf,
                          offset + 0,
                          stationIdentifier,
@@ -183,7 +191,6 @@ public class DataHeader extends ControlHeader {
                          channelIdentifier.length);
         System.arraycopy(buf, offset + 10, networkCode, 0, networkCode.length);
         System.arraycopy(buf, offset + 12, startTime, 0, startTime.length);
-        boolean byteSwapFlag = flagByteSwap();
         numSamples = Utility.uBytesToInt(buf[offset + 22],
                                          buf[offset + 23],
                                          byteSwapFlag);

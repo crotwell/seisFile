@@ -50,7 +50,10 @@ public class Btime {
     }
 
     public Btime(byte[] bytes, int offset) {
-        boolean byteSwapFlag = shouldSwapBytes(bytes, offset);
+        this(bytes, offset, shouldSwapBytes(bytes, offset));
+    }
+
+    public Btime(byte[] bytes, int offset, boolean byteSwapFlag) {
         year = Utility.uBytesToInt(bytes[offset],
                                    bytes[offset + 1],
                                    byteSwapFlag);
@@ -185,6 +188,18 @@ public class Btime {
         return shouldSwapBytes(btime, 0);
     }
 
+    public static int MIN_YEAR = 1802;
+    public static int MAX_YEAR = 2310;
+    public static int MIN_JDAY = 1;
+    public static int MAX_JDAY = 366;
+
+    /*
+    Python code to print byte-swap pairs between 1800 and 2500:
+        for i in range(1800, 2500):
+          bs = (i-i%256)/256 + (i % 256)*256
+          if 1800 <= bs <= 2500:
+            print(f"{i}  {bs}")
+     */
     /**
      * Expects btime to be a byte array pointing at the beginning of a btime
      * segment.
@@ -192,19 +207,53 @@ public class Btime {
      * Time capsule: note that year 2056 as a short byte swaps to itself, so whomever
      * is maintaining this code off in the distant future, 49 years from now as
      * I write this in 2007, should find some other header to use for byte swap checking!
-     * 
-     * Using the jday or tenthmilli doesn't help much as 1 byte swaps to 256, 256 to 1 and 257 to itself.
+     *
+     * Also, 1800 swaps to 2055, so careful on the low end as well.
+     * Other swaps that overlap (in 1800 to 2500 range) are:
+     * 1800  2055
+     * 1801  2311
+     * 2055  1800
+     * 2056  2056
+     * 2057  2312
+     * 2311  1801
+     * 2312  2057
+     * 2313  2313
+     *
+     * So, 1802 to 2310 are a safe "good" year range, with the exception of 2056
+     *
+     * Using the jday helps but isn't definitive as 1 byte swaps to 256,
+     * 256 to 1 and 257 to itself.
+     * Similar tenthmilli has same as jday as well as 3 swaps to 768
      * 
      * If mseed was going to support little endian headers they should have put in a damn flag!
      *  - HPC
      * 
-     * @return - true if the bytes need to be swapped to get a valid year
+     * @return - true if the bytes need to be swapped to get a valid year/jday, false if
+     *           not needed or if it is not determinable (year 2056).
      */
     public static boolean shouldSwapBytes(byte[] btime, int offset) {
         int year = Utility.uBytesToInt(btime[0 + offset],
                                        btime[1 + offset],
                                        false);
-        return year < 1960 || year > 2055;
+        int jday = Utility.uBytesToInt(btime[offset + 2],
+                btime[offset + 3],
+                false);
+        boolean validYearDay = year >= MIN_YEAR && year <= MAX_YEAR
+                            && jday >= MIN_JDAY && jday <= MAX_JDAY;
+        if ( ! validYearDay) {
+            // year, jday invalid, try swap and see if it helps
+            year = Utility.uBytesToInt(btime[0 + offset],
+                    btime[1 + offset],
+                    true);
+            jday = Utility.uBytesToInt(btime[offset + 2],
+                    btime[offset + 3],
+                    true);
+            // if swapped looks valid, return true, otherwise leave as false???
+            if (year >= MIN_YEAR && year <= MAX_YEAR && jday >= MIN_JDAY && jday <= MAX_JDAY) {
+                return true;
+            }
+        }
+        return false;
     }
     
     private static BtimeComparator comparator = new BtimeComparator();
