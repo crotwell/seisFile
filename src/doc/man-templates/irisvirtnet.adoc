@@ -11,7 +11,7 @@ include::{includedir}/irisvirtnet.adoc[tag=picocli-generated-man-section-synopsi
 
 include::{includedir}/irisvirtnet.adoc[tag=picocli-generated-man-section-description]
 
-link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/IRISVirtualNetClient.java[View source code here.]
+link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/IRISVirtualNetClient.java[View source code here.]
 
 include::{includedir}/irisvirtnet.adoc[tag=picocli-generated-man-section-options]
 

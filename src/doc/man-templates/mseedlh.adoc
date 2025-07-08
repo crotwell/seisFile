@@ -11,7 +11,7 @@ include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-synopsis]
 
 include::{includedir}/mseedlh.adoc[tag=picocli-generated-man-section-description]
 
-link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[View source code here.]
+link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[View source code here.]
 
 link:http://www.fdsn.org/pdf/SEEDManual_V2.4.pdf[SEED manual]
 

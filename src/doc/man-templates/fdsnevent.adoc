@@ -17,7 +17,7 @@ as either zero or max value depending on the use.
 For example 2006-11-19 or 2006-11-19T06:34:21.
 The special strings now and yesterday may also be used.
 
-link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java[View source code here.]
+link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java[View source code here.]
 
 include::{includedir}/fdsnevent.adoc[tag=picocli-generated-man-section-options]
 

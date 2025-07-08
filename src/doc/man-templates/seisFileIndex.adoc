@@ -7,13 +7,13 @@ as examples, but are also useful in their own. They are:
 
 == Example Clients
 
-* xref:datalinkclient.adoc[datalinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/DataLinkClient.java[Source] stream miniseed over datalink.
-* xref:earthwormExportServer.adoc[earthwormExportServer] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/EarthwormExportServer.java[Source] export fake TraceBuf2 packets over an earthworm export socket.
-* xref:earthwormImportClient.adoc[earthwormImportClient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java[Source] import TraceBuf2 packets over an earthworm export socket.
-* xref:fdsndataselect.adoc[fdsndataselect] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java[Source] query a remote FDSN DataSelect web service
-* xref:fdsnevent.adoc[fdsnevent] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java[Source] query a remote FDSN Event web service
-* xref:fdsnstation.adoc[fdsnstation] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java[Source] query a remote FDSN Station web service
-* xref:saclh.adoc[saclh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java[Source] list miniseed record headers
-* xref:mseedlh.adoc[mseedlh] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[Source] print some or all header values from a Miniseed2 file
-* xref:mseed3.adoc[mseed3] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/MSeed3Client.java[Source] list miniseed3 records, or convert from ver 2 records, or set extra headers from StationXML, QuakeML
-* xref:seedlinkclient.adoc[seedlinkclient] - link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java[Source] stream miniseed over seedlink.
+* xref:datalinkclient.adoc[datalinkclient] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/DataLinkClient.java[Source] stream miniseed over datalink.
+* xref:earthwormExportServer.adoc[earthwormExportServer] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/EarthwormExportServer.java[Source] export fake TraceBuf2 packets over an earthworm export socket.
+* xref:earthwormImportClient.adoc[earthwormImportClient] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/EarthwormImportClient.java[Source] import TraceBuf2 packets over an earthworm export socket.
+* xref:fdsndataselect.adoc[fdsndataselect] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/FDSNDataSelectClient.java[Source] query a remote FDSN DataSelect web service
+* xref:fdsnevent.adoc[fdsnevent] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/FDSNEventClient.java[Source] query a remote FDSN Event web service
+* xref:fdsnstation.adoc[fdsnstation] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/FDSNStationClient.java[Source] query a remote FDSN Station web service
+* xref:saclh.adoc[saclh] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/SacListHeader.java[Source] list miniseed record headers
+* xref:mseedlh.adoc[mseedlh] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/MSeedListHeader.java[Source] print some or all header values from a Miniseed2 file
+* xref:mseed3.adoc[mseed3] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/MSeed3Client.java[Source] list miniseed3 records, or convert from ver 2 records, or set extra headers from StationXML, QuakeML
+* xref:seedlinkclient.adoc[seedlinkclient] - link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/SeedLinkClient.java[Source] stream miniseed over seedlink.

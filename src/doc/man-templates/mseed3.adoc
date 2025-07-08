@@ -11,7 +11,7 @@ include::{includedir}/mseed3.adoc[tag=picocli-generated-man-section-synopsis]
 
 include::{includedir}/mseed3.adoc[tag=picocli-generated-man-section-description]
 
-link:https://github.com/crotwell/seisFile/blob/seisfile2.1/src/client/java/edu/sc/seis/seisFile/client/MSeed3Client.java[View source code here.]
+link:https://github.com/crotwell/seisFile/blob/curr_release/src/client/java/edu/sc/seis/seisFile/client/MSeed3Client.java[View source code here.]
 
 link:http://docs.fdsn.org/projects/miniseed3/en/latest/[miniseed3 specification]
 
