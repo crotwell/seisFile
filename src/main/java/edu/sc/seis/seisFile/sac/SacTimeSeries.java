@@ -279,11 +279,15 @@ public class SacTimeSeries {
     public void write(File file) throws FileNotFoundException, IOException {
         DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
         try {
-            header.writeHeader(dos);
-            writeData(dos);
+            write(dos);
         } finally {
             dos.close();
         }
+    }
+
+    public void write(DataOutputStream dos) throws IOException {
+        header.writeHeader(dos);
+        writeData(dos);
     }
 
     public void writeData(DataOutput dos) throws IOException {

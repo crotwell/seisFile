@@ -454,21 +454,32 @@ public class SacHeader {
      */
     public FDSNSourceId getSourceId() throws FDSNSourceIdException {
         String net = getKnetwk().trim();
-        if (net.isEmpty()) {
+        if (net.isEmpty() || SacConstants.isUndef(getKnetwk())) {
             net = FDSNSourceId.DEFAULT_NETWORK_CODE;
         }
         String sta = getKstnm().trim();
-        if (sta.isEmpty()) {
+        if (sta.isEmpty() || SacConstants.isUndef(getKstnm())) {
             sta = FDSNSourceId.DEFAULT_STATION_CODE;
         }
         String loc = getKhole().trim();
-        if (loc.isEmpty()) {
+        if (SacConstants.isUndef(getKhole())) {
             loc = FDSNSourceId.DEFAULT_LOCATION_CODE;
+        }
+        String cmp = getKcmpnm().trim();
+        if (SacConstants.isUndef(getKcmpnm())) {
+            float sampleRate = getSampleRate();
+            if (getSampleRate() == FLOAT_UNDEF) {
+                sampleRate = 10;
+            }
+            cmp = FDSNSourceId.bandCodeForRate((double) sampleRate, 0.0)
+                    + FDSNSourceId.DEFAULT_SOURCE_CODE
+                    + FDSNSourceId.DEFAULT_SUBSOURCE_CODE;
+
         }
         FDSNSourceId sid = FDSNSourceId.fromNSLC(net,
                 sta,
                 loc,
-                getKcmpnm().trim());
+                cmp);
         return sid;
     }
 

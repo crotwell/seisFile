@@ -31,6 +31,7 @@ public interface MSeed3EHKeys {
     String MARKER_PICK = "pk";
     String MARKER_MODELED = "md";
     String MARKER_NAME = "n";
+    String MARKER_NAME_ORIGIN = "origin";
     String MARKER_DESC = "desc";
     String MARKER_TYPE = "mtype";
 }
