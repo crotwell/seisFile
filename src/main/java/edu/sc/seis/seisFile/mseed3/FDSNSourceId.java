@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.mseed3;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -123,6 +124,24 @@ public class FDSNSourceId {
                 bandCode + SEP +
                 sourceCode + SEP +
                 subsourceCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof FDSNSourceId)) return false;
+        FDSNSourceId that = (FDSNSourceId) o;
+        return Objects.equals(networkCode, that.networkCode)
+                && Objects.equals(stationCode, that.stationCode)
+                && Objects.equals(locationCode, that.locationCode)
+                && Objects.equals(bandCode, that.bandCode)
+                && Objects.equals(sourceCode, that.sourceCode)
+                && Objects.equals(subsourceCode, that.subsourceCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(networkCode, stationCode, locationCode,
+                bandCode, sourceCode, subsourceCode);
     }
 
     /**
