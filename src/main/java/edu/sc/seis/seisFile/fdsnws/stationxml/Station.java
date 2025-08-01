@@ -8,10 +8,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.LatLonLocatable;
 import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
-public class Station extends BaseNodeType {
+public class Station extends BaseNodeType implements LatLonLocatable {
 
     public Station() {}
     
@@ -71,7 +72,7 @@ public class Station extends BaseNodeType {
             }
         }
     }
-    
+
     public Network getNetwork() {
         return network;
     }
@@ -88,8 +89,14 @@ public class Station extends BaseNodeType {
         return longitude;
     }
 
+    @Override
     public Location asLocation() {
         return new Location(getLatitudeFloat(), getLongitudeFloat());
+    }
+
+    @Override
+    public String getLocationDescription() {
+        return getSourceId();
     }
 
     public FloatType getElevation() {

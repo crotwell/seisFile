@@ -1,5 +1,7 @@
 package edu.sc.seis.seisFile.fdsnws.quakeml;
 
+import edu.sc.seis.seisFile.ISOTimeParser;
+import edu.sc.seis.seisFile.LatLonLocatable;
 import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
@@ -14,7 +16,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Origin {
+public class Origin implements LatLonLocatable {
 
 	public static final String ELEMENT_NAME = QuakeMLTagNames.origin;
 	
@@ -149,11 +151,26 @@ public class Origin {
         return longitude;
     }
 
+    @Override
     public Location asLocation() {
         return new Location(
                 getLatitude().getValue(),
                 getLongitude().getValue(),
                 getDepth().getValue());
+    }
+
+    @Override
+    public String getLocationDescription() {
+        StringBuilder desc = new StringBuilder();
+        desc.append(ISOTimeParser.formatWithTimezone(getTime().asInstant()));
+        desc.append(" ");
+        desc.append(Location.formatLatLon(getLatitude().getValue()).trim())
+                .append("/")
+                .append(Location.formatLatLon(getLongitude().getValue()).trim());
+        desc.append(" ");
+        desc.append(Location.formatLatLon(getDepth().getValue()).trim());
+        desc.append(" km");
+        return desc.toString();
     }
 
     public String getMethodID() {

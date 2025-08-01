@@ -8,10 +8,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.ISOTimeParser;
+import edu.sc.seis.seisFile.LatLonLocatable;
+import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
-public class Event {
+public class Event implements LatLonLocatable {
 
     public static final String ELEMENT_NAME = QuakeMLTagNames.event;
 
@@ -260,4 +263,43 @@ public class Event {
     /** For Hibernate/JPA
      */
     private Integer dbid;
+
+    @Override
+    public Location asLocation() {
+        Location loc = null;
+        Origin origin = getPreferredOrigin();
+        if (origin != null) {
+            loc = origin.asLocation();
+        }
+        return loc;
+    }
+
+    @Override
+    public String getLocationDescription() {
+        Origin origin = getPreferredOrigin();
+        if (origin != null) {
+            Location loc = origin.asLocation();
+            // also set description
+            Magnitude mag = getPreferredMagnitude();
+            StringBuilder desc = new StringBuilder();
+            desc.append(ISOTimeParser.formatWithTimezone(origin.getTime().asInstant()));
+            if (mag != null) {
+                if (desc.length() != 0) {
+                    desc.append(" ");
+                }
+                desc.append(mag.getMag().getValue()).append(" ").append(mag.getType());
+            }
+            if (desc.length() != 0) {
+                desc.append(" ");
+            }
+            desc.append(Location.formatLatLon(loc.getLatitude()).trim())
+                    .append("/")
+                    .append(Location.formatLatLon(loc.getLongitude()).trim());
+            desc.append(" ");
+            desc.append(Location.formatLatLon(loc.getDepthKm()).trim());
+            desc.append(" km");
+            return desc.toString();
+        }
+        return "";
+    }
 }

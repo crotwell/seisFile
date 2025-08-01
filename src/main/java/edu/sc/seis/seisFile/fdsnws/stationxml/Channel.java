@@ -9,10 +9,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.sc.seis.seisFile.LatLonLocatable;
 import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 
-public class Channel extends BaseNodeType {
+public class Channel extends BaseNodeType implements LatLonLocatable {
 
     /** for hibernate, etc */
     public Channel() {}
@@ -203,8 +204,14 @@ public class Channel extends BaseNodeType {
         return getDepth().getValue();
     }
 
+    @Override
     public Location asLocation() {
         return new Location(getLatitudeFloat(), getLongitudeFloat(), getDepthFloat());
+    }
+
+    @Override
+    public String getLocationDescription() {
+        return getSourceId();
     }
 
     public DegreeFloatType getAzimuth() {

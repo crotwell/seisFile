@@ -5,12 +5,13 @@ import edu.sc.seis.seisFile.fdsnws.quakeml.Origin;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Channel;
 import edu.sc.seis.seisFile.fdsnws.stationxml.Station;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
  * Simple class to hold a lat/lon pair, with optional depth, defaults to 0.
  */
-public class Location {
+public class Location implements LatLonLocatable {
 
     double latitude;
     double longitude;
@@ -24,16 +25,17 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public Location(double latitude, double longitude, double depth) {
+    public Location(double latitude, double longitude, double depth_meter) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.depth_meter = depth;
+        this.depth_meter = depth_meter;
     }
 
     public Location(Station sta) {
         this.latitude = sta.getLatitudeFloat();
         this.longitude = sta.getLongitudeFloat();
         this.depth_meter = null;
+        setDescription(sta.getSourceId());
     }
 
     public Location(Channel chan) {
@@ -42,6 +44,7 @@ public class Location {
         if (chan.getDepth() != null) {
             this.depth_meter = Double.valueOf(chan.getDepthFloat());
         }
+        setDescription(chan.getSourceId());
     }
 
     public Location(Event ev) {
@@ -123,11 +126,30 @@ public class Location {
         if (this == o) return true;
         if (!(o instanceof Location)) return false;
         Location location = (Location) o;
-        return Double.compare(latitude, location.latitude) == 0 && Double.compare(longitude, location.longitude) == 0 && Objects.equals(depth_meter, location.depth_meter);
+        return Double.compare(latitude, location.latitude) == 0 &&
+                Double.compare(longitude, location.longitude) == 0 &&
+                Objects.equals(depth_meter, location.depth_meter);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(latitude, longitude, depth_meter);
+    }
+
+    public static String formatLatLon(double latlon) {
+        return String.format(locale, latLonFormat, latlon);
+    }
+
+    public static Locale locale = Locale.ROOT;
+    public static String latLonFormat = "%8.2f";
+
+    @Override
+    public Location asLocation() {
+        return this;
+    }
+
+    @Override
+    public String getLocationDescription() {
+        return getDescription();
     }
 }
