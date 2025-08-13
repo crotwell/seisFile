@@ -2,6 +2,8 @@ import java.util.Date
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 import org.asciidoctor.gradle.jvm.pdf.AsciidoctorPdfTask
 import org.gradle.crypto.checksum.Checksum
+import org.jreleaser.model.Active
+import org.jreleaser.model.Distribution
 
 plugins {
   id("edu.sc.seis.version-class") version "1.4.1"
@@ -14,6 +16,7 @@ plugins {
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
   id("com.github.ben-manes.versions") version "0.52.0"
+  id("org.jreleaser") version "1.19.0"
 }
 
 tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
@@ -31,6 +34,58 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
+}
+
+
+jreleaser {
+  dryrun.set(true)
+  project {
+    description.set("SeisFile: Seismic File Formats in Java")
+    authors.add("Philip Crotwell")
+    license.set("LGPL-3.0")
+    links {
+        homepage.set("https://github.com/crotwell/seisFile")
+    }
+    inceptionYear.set("2005")
+  }
+
+  release {
+      github {
+          repoOwner.set("crotwell")
+          overwrite.set(true)
+      }
+  }
+  distributions {
+      create("seisFile") {
+        distributionType.set(Distribution.DistributionType.JAVA_BINARY)
+         artifact {
+             path.set(file("build/distributions/{{distributionName}}-{{projectVersion}}.zip"))
+         }
+         artifact {
+             path.set(file("build/distributions/{{distributionName}}-{{projectVersion}}.tar"))
+         }
+      }
+  }
+  packagers {
+    brew {
+      active.set(Active.ALWAYS)
+    }
+  }
+  signing {
+    setActive("ALWAYS")
+    armored.set(true)
+  }
+  deploy {
+    maven {
+      mavenCentral {
+        create("sonatype") {
+          setActive("ALWAYS")
+          url= "https://central.sonatype.com/api/v1/publisher"
+          stagingRepository("build/staging-deploy")
+        }
+      }
+    }
+  }
 }
 
 tasks {
@@ -83,12 +138,7 @@ publishing {
         url = uri(layout.buildDirectory.dir("repos/test-deploy"))
       }
       maven {
-          val releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-          val snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
-          url = uri(if ( version.toString().lowercase().contains("snapshot")) snapshotRepo else releaseRepo)
-          name = "ossrh"
-          // credentials in gradle.properties as ossrhUsername and ossrhPassword
-          credentials(PasswordCredentials::class)
+          url = uri(layout.buildDirectory.dir("staging-deploy"))
       }
     }
 
