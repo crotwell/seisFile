@@ -38,7 +38,6 @@ java {
 
 
 jreleaser {
-  dryrun.set(true)
   project {
     description.set("SeisFile: Seismic File Formats in Java")
     authors.add("Philip Crotwell")
