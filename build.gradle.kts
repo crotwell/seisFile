@@ -27,7 +27,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.3.1-SNAPSHOT"
+version = "2.3.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -142,10 +142,6 @@ publishing {
       }
     }
 
-}
-
-signing {
-    sign(publishing.publications["mavenJava"])
 }
 
 sourceSets {
