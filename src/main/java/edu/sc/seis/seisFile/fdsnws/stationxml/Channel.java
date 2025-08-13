@@ -12,6 +12,8 @@ import javax.xml.stream.events.XMLEvent;
 import edu.sc.seis.seisFile.LatLonLocatable;
 import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import edu.sc.seis.seisFile.mseed3.FDSNSourceId;
+import edu.sc.seis.seisFile.mseed3.FDSNSourceIdException;
 
 public class Channel extends BaseNodeType implements LatLonLocatable {
 
@@ -211,7 +213,27 @@ public class Channel extends BaseNodeType implements LatLonLocatable {
 
     @Override
     public String getLocationDescription() {
-        return getSourceId();
+        StringBuilder desc = new StringBuilder();
+        if (getSourceId() != null) {
+            String sidStr = getSourceId();
+            if (sidStr.startsWith(FDSNSourceId.FDSN_PREFIX)) {
+                sidStr = sidStr.substring(FDSNSourceId.FDSN_PREFIX.length());
+            }
+            desc.append( sidStr);
+        } else {
+            try {
+                FDSNSourceId sid = FDSNSourceId.fromNSLC(getNetworkCode(),
+                        getStationCode(),
+                        getLocCode(), getChannelCode());
+                desc.append(  sid.toString().substring(FDSNSourceId.FDSN_PREFIX.length()));
+            } catch (FDSNSourceIdException e) {
+                // oh well
+                desc.append("Channel ");
+            }
+        }
+        Location loc = asLocation();
+        desc.append(" ").append(Location.createLocationDescription(asLocation()));
+        return desc.toString().trim();
     }
 
     public DegreeFloatType getAzimuth() {

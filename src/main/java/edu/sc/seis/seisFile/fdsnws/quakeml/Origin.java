@@ -162,7 +162,7 @@ public class Origin implements LatLonLocatable {
     @Override
     public String getLocationDescription() {
         StringBuilder desc = new StringBuilder();
-        desc.append(ISOTimeParser.formatWithTimezone(getTime().asInstant()));
+        desc.append(ISOTimeParser.formatForParsing(getTime().asInstant()));
         desc.append(" ");
         desc.append(Location.formatLatLon(getLatitude().getValue()).trim())
                 .append("/")

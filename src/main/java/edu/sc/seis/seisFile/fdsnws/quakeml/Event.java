@@ -282,7 +282,7 @@ public class Event implements LatLonLocatable {
             // also set description
             Magnitude mag = getPreferredMagnitude();
             StringBuilder desc = new StringBuilder();
-            desc.append(ISOTimeParser.formatWithTimezone(origin.getTime().asInstant()));
+            desc.append(ISOTimeParser.formatForParsing(origin.getTime().asInstant()));
             if (mag != null) {
                 if (desc.length() != 0) {
                     desc.append(" ");

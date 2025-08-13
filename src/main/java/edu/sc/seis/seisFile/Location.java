@@ -150,6 +150,18 @@ public class Location implements LatLonLocatable {
 
     @Override
     public String getLocationDescription() {
-        return getDescription();
+        if (hasDescription()) {
+            return getDescription();
+        } else {
+            return createLocationDescription(this);
+        }
+    }
+
+    public static String createLocationDescription(Location loc) {
+        String out = Location.formatLatLon(loc.latitude).trim()+"/"+Location.formatLatLon(loc.longitude).trim();
+        if (loc.hasDepth()) {
+            out += " "+Location.formatLatLon(loc.depth_meter).trim()+" m";
+        }
+        return out;
     }
 }

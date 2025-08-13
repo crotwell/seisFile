@@ -20,11 +20,7 @@ public class LatLonSimple implements LatLonLocatable {
 
     @Override
     public String getLocationDescription() {
-        String out = Location.formatLatLon(loc.latitude).trim()+"/"+Location.formatLatLon(loc.longitude).trim();
-        if (loc.hasDepth()) {
-            out += " "+Location.formatLatLon(loc.depth_meter).trim()+" m";
-        }
-        return out;
+        return Location.createLocationDescription(loc);
     }
 
     Location loc;

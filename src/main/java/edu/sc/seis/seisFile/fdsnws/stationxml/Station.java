@@ -11,6 +11,9 @@ import javax.xml.stream.events.XMLEvent;
 import edu.sc.seis.seisFile.LatLonLocatable;
 import edu.sc.seis.seisFile.Location;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import edu.sc.seis.seisFile.mseed3.FDSNSourceId;
+import edu.sc.seis.seisFile.mseed3.FDSNSourceIdException;
+import edu.sc.seis.seisFile.mseed3.FDSNStationSourceId;
 
 public class Station extends BaseNodeType implements LatLonLocatable {
 
@@ -96,7 +99,22 @@ public class Station extends BaseNodeType implements LatLonLocatable {
 
     @Override
     public String getLocationDescription() {
-        return getSourceId();
+        StringBuilder desc = new StringBuilder();
+        if (getSourceId() != null) {
+            String sidStr = getSourceId();
+            if (sidStr.startsWith(FDSNSourceId.FDSN_PREFIX)) {
+                sidStr = sidStr.substring(FDSNSourceId.FDSN_PREFIX.length());
+            }
+            desc.append( sidStr);
+        } else if ( ! getStationCode().isEmpty()) {
+            FDSNStationSourceId sid =  new FDSNStationSourceId(getNetworkCode(),
+                    getStationCode());
+            desc.append(sid.toString().substring(FDSNSourceId.FDSN_PREFIX.length()));
+        } else {
+            desc.append("Station ");
+        }
+        desc.append(" ").append(Location.createLocationDescription(asLocation()));
+        return desc.toString().trim();
     }
 
     public FloatType getElevation() {
