@@ -13,8 +13,14 @@
 # wrapper
 ./gradlew wrapper --gradle-version 8.14.2 --distribution-type bin
 
+# create tag
+git tag -a -m "v2.3.1" v2.3.1
+
 # Release
 move the curr_release branch, github pages builds from this branch
+
+# Add build/distribution zip to github release before publish so
+# zenodo will pick it up.
 
 # Zenodo
 # auto from github release, include the tarball
