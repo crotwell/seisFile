@@ -248,10 +248,10 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
      */
     public java.util.List<ChannelTimeWindow> createChannelTimeWindow() {
         java.util.List<ChannelTimeWindow> request = new java.util.ArrayList<ChannelTimeWindow>();
-        String[] netSplit = getParam(NETWORK).split(",");
-        String[] staSplit = getParam(STATION).split(",");
-        String[] locSplit = getParam(LOCATION).split(",");
-        String[] chanSplit = getParam(CHANNEL).split(",");
+        String[] netSplit = paramOrWildcard(NETWORK);
+        String[] staSplit = paramOrWildcard(STATION);
+        String[] locSplit = paramOrWildcard(LOCATION);
+        String[] chanSplit = paramOrWildcard(CHANNEL);
         Instant beginDate = TimeUtils.parseISOString(getParam(STARTTIME));
         Instant endDate = TimeUtils.parseISOString(getParam(ENDTIME));
             for (int n = 0; n < netSplit.length; n++) {
@@ -269,6 +269,17 @@ public class FDSNDataSelectQueryParams extends AbstractQueryParams implements Cl
                 }
             }
         return request;
+    }
+
+    public String[] paramOrWildcard(String paramName) {
+        String[] values;
+        String pval = getParam(paramName);
+        if (pval != null) {
+            values = pval.split(",");
+        } else {
+            values = new String[] { "*"};
+        }
+        return values;
     }
 
     public String formPostString() {
