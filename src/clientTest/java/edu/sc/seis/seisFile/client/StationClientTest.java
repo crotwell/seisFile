@@ -1,5 +1,6 @@
 package edu.sc.seis.seisFile.client;
 
+import static edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams.LOCATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO"};
         cmd.parseArgs(args);
-        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO", sc.getQueryParams().formURI().toString());
+        assertEquals("https://"+FDSNStationQueryParams.EARTHSCOPE_HOST + ":443/fdsnws/station/1/query?network=CO", sc.getQueryParams().formURI().toString());
     }
 
     @Test
@@ -34,7 +35,7 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO", "-s", "JSC"};
         cmd.parseArgs(args);
-        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC", sc.getQueryParams().formURI().toString());
+        assertEquals("https://"+FDSNStationQueryParams.EARTHSCOPE_HOST + ":443/fdsnws/station/1/query?network=CO&station=JSC", sc.getQueryParams().formURI().toString());
     }
 
     @Test
@@ -43,7 +44,7 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"-n", "CO", "-s", "JSC,CASEE"};
         cmd.parseArgs(args);
-        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?network=CO&station=JSC,CASEE", sc.getQueryParams().formURI().toString());
+        assertEquals("https://"+FDSNStationQueryParams.EARTHSCOPE_HOST + ":443/fdsnws/station/1/query?network=CO&station=JSC,CASEE", sc.getQueryParams().formURI().toString());
     }
 
 
@@ -53,9 +54,32 @@ public class StationClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"--box", "-83/-79/31/35"};
         cmd.parseArgs(args);
-        assertEquals("http://"+FDSNStationQueryParams.IRIS_HOST + ":80/fdsnws/station/1/query?maxlatitude=35.0&maxlongitude=-79.0&minlatitude=31.0&minlongitude=-83.0", sc.getQueryParams().formURI().toString());
+        assertEquals("https://"+FDSNStationQueryParams.EARTHSCOPE_HOST + ":443/fdsnws/station/1/query?maxlatitude=35.0&maxlongitude=-79.0&minlatitude=31.0&minlongitude=-83.0", sc.getQueryParams().formURI().toString());
     }
 
+    @Test
+    public void testDashDashLocCode() throws Exception {
+        String hostname = "service.earthscope.org";
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
+        CommandLine cmd = new CommandLine(sc);
+        String[] args = new String[] {"-n", "CO", "-s", "JSC", "-c", "HHZ", "-l", "--", "-b", "2021-02-28T12:45:00", "-e", "2021-02-28T12:47:00"};
+        cmd.parseArgs(args);
+        assertEquals("--", sc.getQueryParams().getParam(LOCATION));
+        assertEquals("https://"+hostname + ":443/fdsnws/station/1/query?channel=HHZ&endtime=2021-02-28T12:47:00.999&location=--&network=CO&starttime=2021-02-28T12:45:00.000&station=JSC",
+                sc.getQueryParams().formURI().toString());
+    }
+
+    @Test
+    public void testDashDashInListLocCode() throws Exception {
+        String hostname = "service.earthscope.org";
+        FDSNStationClient sc = new FDSNStationClient(); // the instance to populate
+        CommandLine cmd = new CommandLine(sc);
+        String[] args = new String[] {"-n", "CO", "-s", "JSC", "-c", "HHZ", "-l", "--,00", "-b", "2021-02-28T12:45:00", "-e", "2021-02-28T12:47:00"};
+        cmd.parseArgs(args);
+        assertEquals("--,00", sc.getQueryParams().getParam(LOCATION));
+        assertEquals("https://"+hostname + ":443/fdsnws/station/1/query?channel=HHZ&endtime=2021-02-28T12:47:00.999&location=--,00&network=CO&starttime=2021-02-28T12:45:00.000&station=JSC",
+                sc.getQueryParams().formURI().toString());
+    }
 
     @Test
     public void testLotsOfArg() throws Exception {

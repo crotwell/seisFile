@@ -2,6 +2,7 @@
 package edu.sc.seis.seisFile.client;
 
 import java.time.Instant;
+import java.util.List;
 
 import edu.sc.seis.seisFile.BoxArea;
 import edu.sc.seis.seisFile.DonutArea;
@@ -108,8 +109,13 @@ public class FDSNStationCmdLineQueryParams {
 
 
 
-    @Option(names = { "-l","--location","--loc" }, description="Select one or more SEED location identifiers. Multiple identifiers are comma-separated. As a special case -- (two dashes) will be translated to a string of two space characters to match blank location IDs.", split = "," )
-    public FDSNStationQueryParams setLocation(String[] value) {
+    @Option(names = { "-l","--location","--loc" },
+            description="Select one or more SEED location identifiers. "
+                    +"Multiple identifiers are comma-separated. As a special case -- (two dashes) "
+                    +"will be translated to a string of two space characters to match blank location IDs.",
+            parameterConsumer = LocCodeConsumer.class,
+            split = "," )
+    public FDSNStationQueryParams setLocation(List<String> value) {
       queryParams.clearLocation();
       for(String v: value) queryParams.appendToLocation(v);
       return queryParams;

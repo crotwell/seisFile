@@ -76,6 +76,9 @@ public abstract class AbstractQueryParams {
     }
 
     public URI formURI() throws URISyntaxException {
+        if (host.equalsIgnoreCase(EARTHSCOPE_HOST)) {
+            useHTTPS();
+        }
         params = getParams();
         if (params.size() == 0) {
             throw new IllegalArgumentException("at least one parameter is required");
@@ -211,11 +214,12 @@ public abstract class AbstractQueryParams {
     }
 
     public static final String NO_DATA = "nodata";
-    
+
     public static final String IRIS_HOST = "service.iris.edu";
+    public static final String EARTHSCOPE_HOST = "service.earthscope.org";
     
     // actual used is per service, event is usgs, station and datacenter are iris
-    public static final String DEFAULT_HOST = IRIS_HOST;
+    public static final String DEFAULT_HOST = EARTHSCOPE_HOST;
 
     public static final String FORMAT = "format";
 
