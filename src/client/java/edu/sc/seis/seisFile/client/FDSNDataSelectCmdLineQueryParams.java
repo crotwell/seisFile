@@ -122,6 +122,14 @@ public class FDSNDataSelectCmdLineQueryParams {
     }
 
 
+    public void validateArguments() {
+        if (queryParams.getParam(NETWORK) == null
+                && queryParams.getParam(STATION) == null
+                && queryParams.getParam(LOCATION) == null
+                && queryParams.getParam(CHANNEL) == null) {
+            throw new IllegalArgumentException("One of network, station, location or channel must be given.");
+        }
+    }
     
 
 }

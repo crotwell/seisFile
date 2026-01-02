@@ -295,8 +295,8 @@ public class FDSNEventCmdLineQueryParams {
     }
 
 
+    public void validateArguments() {
 
-    
-
+    }
 }
 

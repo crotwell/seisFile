@@ -47,6 +47,16 @@ public class FDSNEventClient extends AbstractFDSNClient {
         if (requiresAtLeastOneArg() && parsedArgs.expandedArgs().size() == 0) {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
+        try {
+            cmdLine.validateArguments();
+        } catch ( IllegalArgumentException e) {
+            if (spec != null ) {
+                throw new CommandLine.ParameterException(spec.commandLine(), e.getMessage(), e);
+            } else {
+                throw e;
+            }
+        }
+
         Quakeml quakeml =  null;
         try {
             if (isPrintUrl) {

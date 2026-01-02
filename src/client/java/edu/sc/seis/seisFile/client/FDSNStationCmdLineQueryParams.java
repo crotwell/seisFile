@@ -270,8 +270,7 @@ public class FDSNStationCmdLineQueryParams {
     }
 
 
-
-    
-
+    public void validateArguments() {
+    }
 }
 

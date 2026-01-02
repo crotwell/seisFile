@@ -44,6 +44,16 @@ public class FDSNDataSelectClient extends AbstractFDSNClient {
             throw new ParameterException(spec.commandLine(), "Must use at least one option");
         }
         try {
+            cmdLine.validateArguments();
+        } catch ( IllegalArgumentException e) {
+            if (spec != null ) {
+                throw new CommandLine.ParameterException(spec.commandLine(), e.getMessage(), e);
+            } else {
+                throw e;
+            }
+        }
+
+        try {
             
             FDSNDataSelectQuerier querier;
             if (cmdLine.doPost) {
