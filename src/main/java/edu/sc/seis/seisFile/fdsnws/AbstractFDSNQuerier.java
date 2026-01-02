@@ -53,6 +53,7 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
 
     public void connect() throws URISyntaxException, FDSNWSException {
         connectionUri = formURI();
+        CloseableHttpClient httpClient = null;
         try {
             RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
                     .setConnectTimeout(getConnectTimeout())
@@ -64,16 +65,15 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
               requestConfigBuilder.setProxy(proxy);
             }
             RequestConfig requestConfig = requestConfigBuilder.build();
-            CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+            httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
             HttpGet request = new HttpGet(connectionUri);
             request.setHeader("User-Agent", getUserAgent());
             request.setHeader("Accept", getAcceptHeader());
             TimeQueryLog.add(connectionUri);
             response = httpClient.execute(request);
+
             processConnection(response);
-        } catch(IOException e) {
-            throw new FDSNWSException("Problem with connection", e, connectionUri);
-        } catch(RuntimeException e) {
+        } catch(IOException | RuntimeException e) {
             throw new FDSNWSException("Problem with connection", e, connectionUri);
         }
     }

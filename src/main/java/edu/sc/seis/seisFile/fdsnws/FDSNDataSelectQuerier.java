@@ -16,6 +16,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.StringEntity;
@@ -114,6 +115,7 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
                 .setConnectTimeout(getConnectTimeout())
                 .setConnectionRequestTimeout(getConnectTimeout())
                 .setSocketTimeout(getReadTimeout())
+                .setRedirectsEnabled(true)
                 .build();
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
                 .setDefaultRequestConfig(requestConfig);
@@ -124,17 +126,32 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
             credsProvider.setCredentials(new AuthScope(queryParams.getHost(), queryParams.getPort(), realm), creds);
             httpClientBuilder.setDefaultCredentialsProvider(credsProvider);
         }
-        CloseableHttpClient httpClient = httpClientBuilder.build();
-        TimeQueryLog.add(connectionUri);
-        HttpPost request = new HttpPost(connectionUri);
-        HttpClientContext context = HttpClientContext.create();
-        request.setHeader("User-Agent", getUserAgent());
-        request.setHeader("Accept", getAcceptHeader());
-        request.setHeader("Accept-Encoding", "gzip, deflate");
-        HttpEntity entity = new StringEntity(postQuery);
-        request.setEntity(entity);
-        response = httpClient.execute(request, context);
-        processConnection(response);
+        CloseableHttpClient httpClient;
+        try {
+            httpClient = httpClientBuilder.build();
+            TimeQueryLog.add(connectionUri);
+            HttpPost request = new HttpPost(connectionUri);
+            HttpClientContext context = HttpClientContext.create();
+            request.setHeader("User-Agent", getUserAgent());
+            request.setHeader("Accept", getAcceptHeader());
+            request.setHeader("Accept-Encoding", "gzip, deflate");
+            HttpEntity entity = new StringEntity(postQuery);
+            request.setEntity(entity);
+            response = httpClient.execute(request, context);
+            if (response.getStatusLine().getStatusCode() == 307 || response.getStatusLine().getStatusCode() == 308) {
+                URI redirectURI = new URI(response.getFirstHeader("location").getValue());
+                logger.info("Redirect POST "+response.getStatusLine().getStatusCode()+" to "+redirectURI);
+                HttpPost redirectRequest = new HttpPost(redirectURI);
+                redirectRequest.setHeader("User-Agent", getUserAgent());
+                redirectRequest.setHeader("Accept", getAcceptHeader());
+                redirectRequest.setHeader("Accept-Encoding", "gzip, deflate");
+                redirectRequest.setEntity(entity);
+                response = httpClient.execute(redirectRequest, context);
+            }
+            processConnection(response);
+        } catch(IOException | RuntimeException e) {
+            throw new FDSNWSException("Problem with connection", e, connectionUri);
+        }
     }
 
     String username;
@@ -166,13 +183,14 @@ public class FDSNDataSelectQuerier extends AbstractFDSNQuerier {
 
     public URI formURIForPost() throws URISyntaxException {
         // all parameters in POST, not in url
-        return new URI(queryParams.getScheme(), 
-                       queryParams.getUserInfo(),
-                       queryParams.getHost(),
-                       queryParams.getPort(),
-                       queryParams.getPath(),
-                       "",
-                       queryParams.getFragment());
+        URI uriForGet = formURI();
+        return new URI(uriForGet.getScheme(),
+                uriForGet.getUserInfo(),
+                uriForGet.getHost(),
+                uriForGet.getPort(),
+                uriForGet.getPath(),
+                "",
+                uriForGet.getFragment());
     }
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FDSNDataSelectQuerier.class);
