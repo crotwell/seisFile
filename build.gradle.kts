@@ -15,8 +15,8 @@ plugins {
   application
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
-  id("com.github.ben-manes.versions") version "0.52.0"
-  id("org.jreleaser") version "1.19.0"
+  id("com.github.ben-manes.versions") version "0.53.0"
+  id("org.jreleaser") version "1.22.0"
 }
 
 tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
@@ -29,9 +29,11 @@ application {
 group = "edu.sc.seis"
 version = "2.3.2-SNAPSHOT"
 
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
     withJavadocJar()
     withSourcesJar()
 }
@@ -165,25 +167,25 @@ val clientTestImplementation by configurations.getting {
 dependencies {
 //    compile project(":seedCodec")
     implementation("edu.sc.seis:seedCodec:1.2.0")
-    clientImplementation("info.picocli:picocli:4.7.6")
+    clientImplementation("info.picocli:picocli:4.7.7")
 
-    annotationProcessor("info.picocli:picocli-codegen:4.7.6")
+    annotationProcessor("info.picocli:picocli-codegen:4.7.7")
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
     implementation( "com.fasterxml.woodstox:woodstox-core:7.1.1")
     implementation( "org.apache.httpcomponents:httpclient:4.5.14")
-    implementation("org.json:json:20250517")
+    implementation("org.json:json:20251224")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.1")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.13.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.14.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.13.1")
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.13.1")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.14.1")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.14.1")
     clientTestImplementation("org.junit.platform:junit-platform-launcher")
 
 }
@@ -496,3 +498,4 @@ tasks.get("installDist").dependsOn("versionToVersionFile")
 tasks.get("installDist").dependsOn(tasks.get("docsDir"))
 tasks.get("assemble").dependsOn(tasks.get("versionToVersionFile"))
 tasks.get("assemble").dependsOn(tasks.get("docsDir"))
+tasks.get("assemble").dependsOn(tasks.get("dependencyUpdates"))
