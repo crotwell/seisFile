@@ -1,6 +1,6 @@
 
 
-./gradlew clean iD test clientTest assemble
+./gradlew clean iD check assemble
 
 # if client code has changed, may need to rerun man templates for picocli
 #
