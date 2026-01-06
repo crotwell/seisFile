@@ -13,6 +13,12 @@
 # wrapper
 ./gradlew wrapper --gradle-version 8.14.2 --distribution-type bin
 
+# jreleaser
+#   just to mavenCentral:
+./gradlew jreleaserDeploy
+#   or the full thing, but maybe check github token?
+./gradlew jreleaserFullRelease
+
 # create tag
 git tag -a -m "v2.3.2" v2.3.2
 
