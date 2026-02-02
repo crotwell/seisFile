@@ -76,16 +76,12 @@ public abstract class AbstractQueryParams {
     }
 
     /**
-     * Forms URI, but requires at least one parameter be set, trying to avoid accidentally
-     * querying for everything. A URI without query parameters can be created via formURIForPost().
+     * Forms URI, setting query params.
+     * A URI without query parameters can be created via formURIForPost().
      * @return uri for query
      * @throws URISyntaxException
      */
     public URI formURI() throws URISyntaxException {
-        params = getParams(); // side effect in IRISFedCatQueryParams
-        if (params.size() == 0) {
-            throw new IllegalArgumentException("at least one parameter is required");
-        }
         return internalformURI(createGetParamString());
     }
 
@@ -104,17 +100,14 @@ public abstract class AbstractQueryParams {
      * @throws URISyntaxException
      */
     public String createGetParamString() throws URISyntaxException {
-        params = getParams(); // side effect in IRISFedCatQueryParams
+        HashMap<String, String> myparams = getParams(); // use getter, side effect in IRISFedCatQueryParams
         StringBuilder newQuery = new StringBuilder();
-        if (newQuery.length() != 0) {
-            newQuery.append("&");
-        }
         List<String> keyList = new ArrayList<String>();
-        keyList.addAll(params.keySet());
+        keyList.addAll(myparams.keySet());
         Collections.sort(keyList);
         for (String key : keyList) {
-            if (params.get(key) != null && params.get(key).length() != 0) {
-                newQuery.append(key).append("=").append(params.get(key)).append("&");
+            if (myparams.get(key) != null && myparams.get(key).length() != 0) {
+                newQuery.append(key).append("=").append(myparams.get(key)).append("&");
             }
         }
         if (newQuery.length() > 1) {
