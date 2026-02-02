@@ -75,14 +75,36 @@ public abstract class AbstractQueryParams {
         return TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
     }
 
+    /**
+     * Forms URI, but requires at least one parameter be set, trying to avoid accidentally
+     * querying for everything. A URI without query parameters can be created via formURIForPost().
+     * @return uri for query
+     * @throws URISyntaxException
+     */
     public URI formURI() throws URISyntaxException {
-        if (host.equalsIgnoreCase(EARTHSCOPE_HOST)) {
-            useHTTPS();
-        }
-        params = getParams();
+        params = getParams(); // side effect in IRISFedCatQueryParams
         if (params.size() == 0) {
             throw new IllegalArgumentException("at least one parameter is required");
         }
+        return internalformURI(createGetParamString());
+    }
+
+    /**
+     * Forms URI, but ignores all query parameters. Assumes they will be included in the POST body.
+     * @return uri for POST query
+     * @throws URISyntaxException
+     */
+    public URI formURIForPost() throws URISyntaxException {
+        return internalformURI("");
+    }
+
+    /**
+     * Creates the query param string from the parameters.
+     * @return query param string
+     * @throws URISyntaxException
+     */
+    public String createGetParamString() throws URISyntaxException {
+        params = getParams(); // side effect in IRISFedCatQueryParams
         StringBuilder newQuery = new StringBuilder();
         if (newQuery.length() != 0) {
             newQuery.append("&");
@@ -98,7 +120,14 @@ public abstract class AbstractQueryParams {
         if (newQuery.length() > 1) {
             newQuery.deleteCharAt(newQuery.length() - 1); // zap last &
         }
-        return new URI(getScheme(), getUserInfo(), getHost(), getPort(), getPath(), newQuery.toString(), getFragment());
+        return newQuery.toString();
+    }
+
+    URI internalformURI(String queryParams) throws URISyntaxException {
+        if (host.equalsIgnoreCase(EARTHSCOPE_HOST)) {
+            useHTTPS();
+        }
+        return new URI(getScheme(), getUserInfo(), getHost(), getPort(), getPath(), queryParams, getFragment());
     }
 
     String host = IRIS_HOST;
