@@ -16,11 +16,15 @@
 # jreleaser
 #   just to mavenCentral:
 ./gradlew jreleaserDeploy
+#
+# then log onto central.sonatype.com, may have to click the "Publish" button and refresh page till published.
+# Jreleaser will keep trying Attempt X of 101 till published.
+#
 #   or the full thing, but maybe check github token?
 ./gradlew jreleaserFullRelease
 
 # create tag
-git tag -a -m "v2.3.2" v2.3.2
+git tag -a -m "v2.3.3" v2.3.3
 
 # Release
 move the curr_release branch, github pages builds from this branch
