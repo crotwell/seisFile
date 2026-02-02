@@ -29,8 +29,11 @@ git tag -a -m "v2.3.3" v2.3.3
 # Release
 move the curr_release branch, github pages builds from this branch
 
+# Github
+create new release from tag, add release notes, append the zip from build/distributions
+
 # homebrew
-# Update formula with new url and sha256
+# Update formula with new url and sha256, can copy sha256 from github release
 
 # Add build/distribution zip to github release before publish so
 # zenodo will pick it up.
