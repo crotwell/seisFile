@@ -27,7 +27,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.3.2"
+version = "2.3.3"
 
 
 java {
@@ -74,7 +74,6 @@ jreleaser {
   }
   signing {
     setActive("ALWAYS")
-    armored.set(true)
   }
   deploy {
     maven {
@@ -177,15 +176,15 @@ dependencies {
     implementation("org.json:json:20251224")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.2")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.14.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.14.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.14.1")
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.14.1")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.14.2")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.14.2")
     clientTestImplementation("org.junit.platform:junit-platform-launcher")
 
 }
