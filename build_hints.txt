@@ -11,7 +11,7 @@
 ./gradlew dependencyUpdates
 
 # wrapper
-./gradlew wrapper --gradle-version 8.14.2 --distribution-type bin
+./gradlew wrapper --gradle-version 8.14.3 --distribution-type bin
 
 # jreleaser
 #   just to mavenCentral:
@@ -25,8 +25,11 @@ git tag -a -m "v2.3.2" v2.3.2
 # Release
 move the curr_release branch, github pages builds from this branch
 
+# homebrew
+# Update formula with new url and sha256
+
 # Add build/distribution zip to github release before publish so
 # zenodo will pick it up.
 
 # Zenodo
-# auto from github release, include the tarball
+# not-auto from github release, create new release and include the zip
