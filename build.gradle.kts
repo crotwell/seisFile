@@ -309,9 +309,10 @@ distributions {
         include("manpage/**")
         into("docs")
       }
-      from(tasks.named("asciidoctorPdf")) {
-        into("docs/manpdf")
-      }
+      // disable as seems to no longer work???
+      //from(tasks.named("asciidoctorPdf")) {
+      //  into("docs/manpdf")
+      //}
       from(tasks.named("versionToVersionFile")) {
         into(".")
       }
@@ -358,6 +359,7 @@ tasks {
   }
 }
 
+// disabled as seems to no longer work???
 tasks {
   "asciidoctorPdf"(AsciidoctorPdfTask::class) {
       dependsOn("asciidoctor")
