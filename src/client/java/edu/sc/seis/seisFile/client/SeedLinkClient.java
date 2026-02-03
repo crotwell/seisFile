@@ -48,8 +48,7 @@ public class SeedLinkClient extends AbstractClient {
     Instant end;
 
     
-    @Option(names= {"--itype"}, description="info typ, ex "+SeedlinkReader.INFO_STREAMS,
-    defaultValue=SeedlinkReader.INFO_STREAMS)
+    @Option(names= {"--itype"}, description="info typ, ex "+SeedlinkReader.INFO_STREAMS)
     String infoType = SeedlinkReader.EMPTY;
     @Option(names= { "--iout"}, description="info out file")
     String ioutFile = SeedlinkReader.EMPTY;
@@ -90,11 +89,7 @@ public class SeedLinkClient extends AbstractClient {
                     out.println(l);
                 }
             }
-            if (!infoType.isEmpty() || !ioutFile.isEmpty())
-            {
-                if (infoType.isEmpty()) {
-                    infoType = SeedlinkReader.INFO_STREAMS;
-                }
+            if (!infoType.isEmpty()) {
                 String infoString = reader.getInfoString(infoType);
                 if (ioutFile == null || ioutFile.isEmpty()) {
                     out.println(infoString);
