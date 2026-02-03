@@ -18,7 +18,7 @@ public class VirtualNetClientTest {
         IRISWSVirtualNetworkQueryParams qp = new IRISWSVirtualNetworkQueryParams();
         IRISWSVirtualNetworkQuerier querier = new IRISWSVirtualNetworkQuerier(qp);
         System.err.println(querier.formURI());
-        assertEquals("http://service.iris.edu:80/irisws/virtualnetwork/1/query?", querier.formURI().toString());
+        assertEquals("https://service.earthscope.org:443/irisws/virtualnetwork/1/query?", querier.formURI().toString());
     }
 
     @Test

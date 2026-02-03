@@ -123,7 +123,7 @@ public abstract class AbstractQueryParams {
         return new URI(getScheme(), getUserInfo(), getHost(), getPort(), getPath(), queryParams, getFragment());
     }
 
-    String host = IRIS_HOST;
+    String host;
 
     int port = 80;
 

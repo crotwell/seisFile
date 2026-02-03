@@ -5,11 +5,11 @@ import java.time.Instant;
 public class IRISWSVirtualNetworkQueryParams extends AbstractQueryParams  {
 
     public IRISWSVirtualNetworkQueryParams() {
-        this(IRIS_HOST);
+        this(DEFAULT_HOST);
     }
     
     public IRISWSVirtualNetworkQueryParams(String host) {
-        super(host==null ? IRIS_HOST : host);
+        super(host==null ? DEFAULT_HOST : host);
         setFdsnwsPath(IRISWS_PATH);
     }
 

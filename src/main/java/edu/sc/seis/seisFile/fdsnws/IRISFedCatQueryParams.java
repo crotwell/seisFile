@@ -19,14 +19,14 @@ public class IRISFedCatQueryParams extends AbstractQueryParams {
 
     public IRISFedCatQueryParams(String host,
                                  FDSNStationQueryParams stationQueryParams) {
-        super(host==null ? IRIS_HOST : host);
+        super(host==null ? DEFAULT_HOST : host);
         setFdsnwsPath(IRISWS_PATH);
         this.stationQueryParams = stationQueryParams;
     }
 
     public IRISFedCatQueryParams(String host,
                                  FDSNDataSelectQueryParams dataSelectQueryParams) {
-        super(host==null ? IRIS_HOST : host);
+        super(host==null ? DEFAULT_HOST : host);
         setFdsnwsPath(IRISWS_PATH);
         this.dataSelectQueryParams = dataSelectQueryParams;
     }
@@ -92,7 +92,6 @@ public class IRISFedCatQueryParams extends AbstractQueryParams {
         }
         return out;
     }
-
 
     FDSNStationQueryParams stationQueryParams = null;
     FDSNDataSelectQueryParams dataSelectQueryParams = null;
