@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXPLODE=../../../../build/explode
+EXPLODE=../../../../build/install/seisFile
 PATH=${PATH}:${EXPLODE}/bin
 CMD_FILES=$(ls *_ex?.sh)
 cd ../man-templates/example_output
