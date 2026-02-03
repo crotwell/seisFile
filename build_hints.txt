@@ -7,6 +7,11 @@
 ./gradlew genManTemplate
 # and check git diff on src/doc/man-templates
 
+# asciidoc man pages:
+generate in build, copied to src and docs
+example output from src/doc/man-example with run_examples.sh
+
+
 # check for dep updates
 ./gradlew dependencyUpdates
 
