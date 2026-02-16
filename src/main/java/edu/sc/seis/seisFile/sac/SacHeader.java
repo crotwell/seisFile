@@ -543,15 +543,8 @@ public class SacHeader {
         return s;
     }
 
-    private static final ThreadLocal<DecimalFormat> decimalFormat = new ThreadLocal<DecimalFormat>() {  
-        @Override  
-        protected DecimalFormat initialValue() {  
-            return (new DecimalFormat("#####.####", new DecimalFormatSymbols(Locale.US)));  
-        }  
-    };
-    
-    public static String format(String label, float f) {
-        return format(label, decimalFormat.get().format(f), DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH);
+    public static String format(String label, float f, DecimalFormat decimalFormat) {
+        return format(label, decimalFormat.format(f), DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH);
     }
     
     public static String format(String label, int val) {
@@ -577,8 +570,13 @@ public class SacHeader {
                                     String s4,
                                     float f4,
                                     String s5,
-                                    float f5) {
-        return format(s1, f1) + format(s2, f2) + format(s3, f3) + format(s4, f4) + format(s5, f5);
+                                    float f5,
+                                    DecimalFormat decimalFormat) {
+        return format(s1, f1, decimalFormat)
+                + format(s2, f2, decimalFormat)
+                + format(s3, f3, decimalFormat)
+                + format(s4, f4, decimalFormat)
+                + format(s5, f5, decimalFormat);
     }
 
     public void printHeader() {
@@ -586,17 +584,18 @@ public class SacHeader {
     }
 
     public void printHeader(PrintWriter out) {
-        out.println(formatLine("delta", delta, "depmin", depmin, "depmax", depmax, "scale", scale, "odelta", odelta));
-        out.println(formatLine("b", b, "e", e, "o", o, "a", a, "fmt", fmt));
-        out.println(formatLine("t0", t0, "t1", t1, "t2", t2, "t3", t3, "t4", t4));
-        out.println(formatLine("t5", t5, "t6", t6, "t7", t7, "t8", t8, "t9", t9));
-        out.println(formatLine("f", f, "resp0", resp0, "resp1", resp1, "resp2", resp2, "resp3", resp3));
-        out.println(formatLine("resp4", resp4, "resp5", resp5, "resp6", resp6, "resp7", resp7, "resp8", resp8));
-        out.println(formatLine("resp9", resp9, "stla", stla, "stlo", stlo, "stel", stel, "stdp", stdp));
-        out.println(formatLine("evla", evla, "evlo", evlo, "evel", evel, "evdp", evdp, "mag", mag));
-        out.println(formatLine("user0", user0, "user1", user1, "user2", user2, "user3", user3, "user4", user4));
-        out.println(formatLine("user5", user5, "user6", user6, "user7", user7, "user8", user8, "user9", user9));
-        out.println(formatLine("dist", dist, "az", az, "baz", baz, "gcarc", gcarc, "sb", sb));
+        DecimalFormat decimalFormat = new DecimalFormat("#####.####", new DecimalFormatSymbols(Locale.US));
+        out.println(formatLine("delta", delta, "depmin", depmin, "depmax", depmax, "scale", scale, "odelta", odelta, decimalFormat));
+        out.println(formatLine("b", b, "e", e, "o", o, "a", a, "fmt", fmt, decimalFormat));
+        out.println(formatLine("t0", t0, "t1", t1, "t2", t2, "t3", t3, "t4", t4, decimalFormat));
+        out.println(formatLine("t5", t5, "t6", t6, "t7", t7, "t8", t8, "t9", t9, decimalFormat));
+        out.println(formatLine("f", f, "resp0", resp0, "resp1", resp1, "resp2", resp2, "resp3", resp3, decimalFormat));
+        out.println(formatLine("resp4", resp4, "resp5", resp5, "resp6", resp6, "resp7", resp7, "resp8", resp8, decimalFormat));
+        out.println(formatLine("resp9", resp9, "stla", stla, "stlo", stlo, "stel", stel, "stdp", stdp, decimalFormat));
+        out.println(formatLine("evla", evla, "evlo", evlo, "evel", evel, "evdp", evdp, "mag", mag, decimalFormat));
+        out.println(formatLine("user0", user0, "user1", user1, "user2", user2, "user3", user3, "user4", user4, decimalFormat));
+        out.println(formatLine("user5", user5, "user6", user6, "user7", user7, "user8", user8, "user9", user9, decimalFormat));
+        out.println(formatLine("dist", dist, "az", az, "baz", baz, "gcarc", gcarc, "sb", sb, decimalFormat));
         out.println(formatLine("sdelta",
                                sdelta,
                                "depmen",
@@ -606,7 +605,7 @@ public class SacHeader {
                                "cmpinc",
                                cmpinc,
                                "xminimum",
-                               xminimum));
+                               xminimum, decimalFormat));
         out.println(formatLine("xmaximum",
                                xmaximum,
                                "yminimum",
@@ -616,7 +615,7 @@ public class SacHeader {
                                "unused6",
                                unused6,
                                "unused7",
-                               unused7));
+                               unused7, decimalFormat));
         out.println(formatLine("unused8",
                                unused8,
                                "unused9",
@@ -626,9 +625,9 @@ public class SacHeader {
                                "unused11",
                                unused11,
                                "unused12",
-                               unused12));
-        out.println(formatLine("nzyear", nzyear, "nzjday", nzjday, "nzhour", nzhour, "nzmin", nzmin, "nzsec", nzsec));
-        out.println(formatLine("nzmsec", nzmsec, "nvhdr", nvhdr, "norid", norid, "nevid", nevid, "npts", npts));
+                               unused12, decimalFormat));
+        out.println(formatLine("nzyear", nzyear, "nzjday", nzjday, "nzhour", nzhour, "nzmin", nzmin, "nzsec", nzsec, decimalFormat));
+        out.println(formatLine("nzmsec", nzmsec, "nvhdr", nvhdr, "norid", norid, "nevid", nevid, "npts", npts, decimalFormat));
         out.println(formatLine("nsnpts",
                                nsnpts,
                                "nwfid",
@@ -638,9 +637,9 @@ public class SacHeader {
                                "nysize",
                                nysize,
                                "unused15",
-                               unused15));
-        out.println(formatLine("iftype", iftype, "idep", idep, "iztype", iztype, "unused16", unused16, "iinst", iinst));
-        out.println(formatLine("istreg", istreg, "ievreg", ievreg, "ievtyp", ievtyp, "iqual", iqual, "isynth", isynth));
+                               unused15, decimalFormat));
+        out.println(formatLine("iftype", iftype, "idep", idep, "iztype", iztype, "unused16", unused16, "iinst", iinst, decimalFormat));
+        out.println(formatLine("istreg", istreg, "ievreg", ievreg, "ievtyp", ievtyp, "iqual", iqual, "isynth", isynth, decimalFormat));
         out.println(formatLine("imagtyp",
                                imagtyp,
                                "imagsrc",
@@ -650,7 +649,7 @@ public class SacHeader {
                                "unused20",
                                unused20,
                                "unused21",
-                               unused21));
+                               unused21, decimalFormat));
         out.println(formatLine("unused22",
                                unused22,
                                "unused23",
@@ -660,7 +659,7 @@ public class SacHeader {
                                "unused25",
                                unused25,
                                "unused26",
-                               unused26));
+                               unused26, decimalFormat));
         out.println(formatLine("leven",
                                leven,
                                "lpspol",
@@ -670,7 +669,7 @@ public class SacHeader {
                                "lcalda",
                                lcalda,
                                "unused27",
-                               unused27));
+                               unused27, decimalFormat));
         out.println(format("kstnm", kstnm, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("kevnm", kevnm, DEFAULT_LABEL_WIDTH, DEFAULT_WIDE_WIDTH)
                 + format("khole", khole, DEFAULT_LABEL_WIDTH+2, DEFAULT_VALUE_WIDTH));
         out.println(format("ko", ko, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH) + format("ka = ", ka, DEFAULT_LABEL_WIDTH, DEFAULT_VALUE_WIDTH)

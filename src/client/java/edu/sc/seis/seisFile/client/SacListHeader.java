@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 import edu.sc.seis.seisFile.sac.SacHeader;
 import edu.sc.seis.seisFile.sac.SacIncrementalloader;
@@ -52,6 +51,7 @@ public class SacListHeader extends AbstractClient {
             }
         }
         PrintWriter out = new PrintWriter(System.out, true);
+        DecimalFormat decimalFormat = new DecimalFormat("#####.####", new DecimalFormatSymbols(Locale.US));
         for (File sacFile : sacfileList) {
             if (sacFile.exists() && sacFile.isFile()) {
                 SacIncrementalloader loader = new SacIncrementalloader(sacFile);
@@ -75,7 +75,7 @@ public class SacListHeader extends AbstractClient {
                         Method fieldGetter = fieldMap.get(h);
                         if (fieldGetter != null) {
                             if (fieldGetter.getReturnType() == Float.TYPE) {
-                                headerString+= SacHeader.format(h, (float)fieldGetter.invoke(header));
+                                headerString+= SacHeader.format(h, (float)fieldGetter.invoke(header), decimalFormat);
                             } else if (fieldGetter.getReturnType() == Integer.TYPE) {
                                 headerString+= SacHeader.format(h, (int)fieldGetter.invoke(header));
                             } else {

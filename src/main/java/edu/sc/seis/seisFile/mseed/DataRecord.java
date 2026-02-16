@@ -471,20 +471,14 @@ public class DataRecord extends SeedRecord implements Serializable {
         }
     }
 
-    private static final ThreadLocal<DecimalFormat> decimalFormat = new ThreadLocal<DecimalFormat>() {  
-        @Override  
-        protected DecimalFormat initialValue() {  
-            return (new DecimalFormat("#####.####", new DecimalFormatSymbols(Locale.US)));  
-        }  
-    };
-
     public static String oneLineSummaryKey() {
         return "Type Codes Start Duration Npts";
         
     }
     public String oneLineSummary() {
+        DecimalFormat decimalFormat = new DecimalFormat("#####.####", new DecimalFormatSymbols(Locale.US));
         String s = getHeader().getTypeCode()+" "+ getHeader().getCodes() + " " 
-                + getStartTime() + "  " + decimalFormat.get().format(getHeader().getNumSamples()/ getSampleRate() ) +" "+getHeader().getNumSamples();
+                + getStartTime() + "  " + decimalFormat.format(getHeader().getNumSamples()/ getSampleRate() ) +" "+getHeader().getNumSamples();
         return s;
     }
     
