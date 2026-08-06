@@ -53,12 +53,21 @@ public class DataLinkClient extends AbstractClient {
         DataLink dl = new DataLink(host, port, timeoutSec, verbose);
         try {
             System.out.println("Server ID: "+dl.getServerId());
+            DataLinkResponse response;
             dl.match(match);
+            response = dl.readPacket();
+            if (verbose) {
+              System.out.println("Response: "+response.getKey());
+            }
             dl.stream();
+            response = dl.readPacket();
+            if (verbose) {
+              System.out.println("Response: "+response.getKey());
+            }
             if (outputFile != null) {
                 dataout = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
             }
-            DataLinkResponse response;
+
             for(int i=0; maxRecords==-1 || i<maxRecords; i++) {
                 response = dl.readPacket();
                 if (response instanceof DataLinkPacket) {
@@ -85,8 +94,8 @@ public class DataLinkClient extends AbstractClient {
         }
         return 0;
     }
-   
-    
+
+
     public void handlePacket(DataLinkPacket packet) throws DataLinkException, IOException {
         if (dataout != null) {
             dataout.write(packet.getRawData());
@@ -100,11 +109,11 @@ public class DataLinkClient extends AbstractClient {
             }
         }
     }
-    
+
     private DataOutputStream dataout;
 
     public static void main(String... args) { // bootstrap the application
         System.exit(new CommandLine(new DataLinkClient()).execute(args));
     }
-    
+
 }
