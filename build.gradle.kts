@@ -27,7 +27,7 @@ application {
 }
 
 group = "edu.sc.seis"
-version = "2.3.5-SNAPSHOT"
+version = "2.4.0"
 
 
 java {
