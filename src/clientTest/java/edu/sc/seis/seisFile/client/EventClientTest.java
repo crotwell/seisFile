@@ -15,7 +15,7 @@ public class EventClientTest {
         CommandLine cmd = new CommandLine(sc);
         String[] args = new String[] {"--minmag", "8.0"};
         cmd.parseArgs(args);
-        assertEquals("http://"+hostname + ":80/fdsnws/event/1/query?minmagnitude=8.0", sc.getQueryParams().formURI().toString());
+        assertEquals("https://"+hostname + ":443/fdsnws/event/1/query?minmagnitude=8.0", sc.getQueryParams().formURI().toString());
     }
 
     @Test

@@ -118,7 +118,9 @@ public abstract class AbstractQueryParams {
     }
 
     URI internalformURI(String queryParams) throws URISyntaxException {
-        if (host.equalsIgnoreCase(EARTHSCOPE_HOST)) {
+        if (host.equalsIgnoreCase(EARTHSCOPE_HOST)
+                || host.equalsIgnoreCase(IRIS_HOST)
+                || host.equalsIgnoreCase(USGS_HOST)) {
             useHTTPS();
         }
         return new URI(getScheme(), getUserInfo(), getHost(), getPort(), getPath(), queryParams, getFragment());
@@ -244,6 +246,11 @@ public abstract class AbstractQueryParams {
 
     public static final String IRIS_HOST = "service.iris.edu";
     public static final String EARTHSCOPE_HOST = "service.earthscope.org";
+
+    public static final String USGS_HOST = "earthquake.usgs.gov";
+    public static final String ISC_HOST = "www.isc.ac.uk";
+    public static final String ISC_MIRROR_HOST = "isc-mirror.iris.washington.edu";
+
 
     // actual used is per service, event is usgs, station and datacenter are iris
     public static final String DEFAULT_HOST = EARTHSCOPE_HOST;
