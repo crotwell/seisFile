@@ -22,16 +22,16 @@ import java.util.Objects;
 public class DataLink {
 
 
-    /** default of IRIS DMC 
-     * 
+    /** default of EARTHSCOPE DMC
+     *
      * @throws DataLinkException if unable to connect
      * */
     public DataLink() throws DataLinkException {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
 
-    /** uses the default port of 18000 
-     * 
+    /** uses the default port of 18000
+     *
      * @param host host to connect to
      * @throws DataLinkException if unable to connect
      *  */
@@ -39,9 +39,9 @@ public class DataLink {
         this(host, DEFAULT_PORT);
     }
 
-    /**  
+    /**
      * Open DataLink socket connection
-     * 
+     *
      * @param host host to connect to
      * @param port port to connect to
      * @throws DataLinkException if unable to connect
@@ -50,9 +50,9 @@ public class DataLink {
         this(host, port, DEFAULT_TIMEOUT_SECOND);
     }
 
-    /**  
+    /**
      * Open DataLink socket connection
-     * 
+     *
      * @param host host to connect to
      * @param port port to connect to
      * @param timeoutSeconds timeout value
@@ -177,10 +177,10 @@ public class DataLink {
         sendDLCommand(REJECT, rejectRegEx);
     }
 
-    /** 
+    /**
      * true if there is enough data in the instream to possibly read a data record.
      * This should not block, unlike hasNext() and next().
-     * 
+     *
      * @throws IOException if input stream throws
      * @return true if enough data to read a record
      */
@@ -192,8 +192,8 @@ public class DataLink {
         return in.available() > 3;
     }
 
-    /** 
-     * 
+    /**
+     *
      * @return available() from the underlying InputStream, in bytes
      *
      * @throws IOException from underlying input stream
@@ -229,7 +229,7 @@ public class DataLink {
     }
 
     /**
-     * 
+     *
      * @return true is connected
      */
     public boolean isConnected() {
@@ -257,13 +257,13 @@ public class DataLink {
     }
 
 
-/** 
+/**
  * encodes command with optional data section as
  * a string. This works for client generated commands
  * but not for a PACKET, which would have binary data.
  * PACKET is what client receives, but usually never
  * sends if it does not generate data.
- * 
+ *
  * @param command command to send
  * @param dataString optional data
  * @throws DataLinkException  if command is too long
@@ -434,11 +434,14 @@ public class DataLink {
     public static final String IRIS_HOST = "rtserve.iris.washington.edu";
     public static final int IRIS_PORT = 18000;
 
+    public static final String EARTHSCOPE_HOST = "rtserve.earthscope.org";
+    public static final int EARTHSCOPE_PORT = 18000;
+
     public static final String EEYORE_HOST = "eeyore.seis.sc.edu";
     public static final int EEYORE_PORT = 6383;
 
-    public static final String DEFAULT_HOST = EEYORE_HOST;
-    public static final int DEFAULT_PORT = EEYORE_PORT;
+    public static final String DEFAULT_HOST = EARTHSCOPE_HOST;
+    public static final int DEFAULT_PORT = EARTHSCOPE_PORT;
 
     public static final int DEFAULT_TIMEOUT_SECOND = 120;
 

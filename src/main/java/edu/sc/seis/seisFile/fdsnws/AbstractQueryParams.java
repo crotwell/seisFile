@@ -37,9 +37,9 @@ public abstract class AbstractQueryParams {
 
     public void appendToParam(String key, String value) {
         if (params.containsKey(key)) {
-            if (params.get(key).equals(value) 
-                    || params.get(key).startsWith(value+",") 
-                    || params.get(key).endsWith(","+value) 
+            if (params.get(key).equals(value)
+                    || params.get(key).startsWith(value+",")
+                    || params.get(key).endsWith(","+value)
                     || params.get(key).contains(","+value+",")) {
                 // already in list
                 value = params.get(key);
@@ -131,14 +131,14 @@ public abstract class AbstractQueryParams {
     public void setBaseURL(URI uri) {
         internalSetBaseURI(uri);
     }
-    
+
     public int nodata = 204;
 
 
     String scheme = "http";
-    
+
     String fdsnQueryStyle = "query";
-    
+
     String fdsnwsPath = "fdsnws";
 
     HashMap<String, String> params = new HashMap<String, String>();
@@ -150,7 +150,7 @@ public abstract class AbstractQueryParams {
         fdsnQueryStyle = other.getFdsnQueryStyle();
         fdsnwsPath = other.getFdsnwsPath();
     }
-    
+
     void internalSetBaseURI(URI baseURI) {
         setScheme(baseURI.getScheme());
         this.port = baseURI.getPort();
@@ -202,13 +202,13 @@ public abstract class AbstractQueryParams {
     String getPath() {
         return "/"+getFdsnwsPath()+"/" + getServiceName() + "/" + getFDSNMajorVersion() + "/"+getFdsnQueryStyle();
     }
-    
-    
+
+
     public String getFdsnwsPath() {
         return fdsnwsPath;
     }
 
-    
+
     public void setFdsnwsPath(String fdsnwsPath) {
         this.fdsnwsPath = fdsnwsPath;
     }
@@ -244,7 +244,7 @@ public abstract class AbstractQueryParams {
 
     public static final String IRIS_HOST = "service.iris.edu";
     public static final String EARTHSCOPE_HOST = "service.earthscope.org";
-    
+
     // actual used is per service, event is usgs, station and datacenter are iris
     public static final String DEFAULT_HOST = EARTHSCOPE_HOST;
 

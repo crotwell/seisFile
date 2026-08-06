@@ -17,31 +17,31 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.ParseResult;
 
-@Command(name="datalinkclient", 
-         description="Example client to stream miniseed over datalink.", 
+@Command(name="datalinkclient",
+         description="Example client to stream miniseed over datalink.",
          versionProvider=edu.sc.seis.seisFile.client.VersionProvider.class)
 public class DataLinkClient extends AbstractClient {
 
-    @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=DataLink.IRIS_HOST)
-    public String host = DataLink.IRIS_HOST;
-    
-    @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=""+DataLink.IRIS_PORT)
-    public Integer port = DataLink.IRIS_PORT;
-    
+    @Option(names= {"-h", "--host"}, description="host to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=DataLink.DEFAULT_HOST)
+    public String host = DataLink.DEFAULT_HOST;
+
+    @Option(names= {"-p", "--port"}, description="port to connect to, defaults to IRIS, ${DEFAULT-VALUE}", defaultValue=""+DataLink.DEFAULT_PORT)
+    public Integer port = DataLink.DEFAULT_PORT;
+
     @Option(names= {"-m", "--match"}, description="match pattern, as a regular expression. For miniseed the conventions is NN_SSS_LL_CCC/MSEED")
     public String match = "CO_BIRD_00_HHZ";
-    
+
     @Option(names= { "--max"}, description="number of packets to receive before ending the connection, defaults to ${DEFAULT-VALUE}", defaultValue="10")
     public int maxRecords = 10;
 
     @Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")
     private File outputFile = null;
-    
+
     @Option(names= {"--timeout"}, description="timeout seconds, defaults to ${DEFAULT-VALUE}", defaultValue = ""+DataLink.DEFAULT_TIMEOUT_SECOND)
     public Integer timeoutSec = DataLink.DEFAULT_TIMEOUT_SECOND;
-    
+
     public DataLinkClient() {
-        
+
     }
 
     @Override

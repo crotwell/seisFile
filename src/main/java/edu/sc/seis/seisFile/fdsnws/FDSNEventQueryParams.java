@@ -16,6 +16,9 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
 
     public FDSNEventQueryParams(String host) {
         super(host==null ? USGS_HOST : host);
+        if (this.host == USGS_HOST) {
+          useHTTPS();
+        }
     }
 
     public FDSNEventQueryParams clone() {
@@ -541,7 +544,7 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
     }
 
 
-    
+
 
     public static final String USGS_HOST = "earthquake.usgs.gov";
     public static final String ISC_HOST = "www.isc.ac.uk";
@@ -568,4 +571,3 @@ public class FDSNEventQueryParams extends AbstractQueryParams implements Cloneab
 
 
 }
-

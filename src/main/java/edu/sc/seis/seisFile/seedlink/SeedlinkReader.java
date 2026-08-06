@@ -36,7 +36,7 @@ public class SeedlinkReader {
     public SeedlinkReader(boolean verbose) throws IOException {
         this(DEFAULT_HOST, DEFAULT_PORT, verbose);
     }
-    
+
     /** uses the default port of 18000 */
     public SeedlinkReader(String host) throws IOException {
         this(host, DEFAULT_PORT);
@@ -82,7 +82,7 @@ public class SeedlinkReader {
         this.lastSeqNum = state.getGlobalLastSequence();
         this.seedlinkState = state;
     }
-    
+
     private void initConnection() throws IOException {
         if (isVerbose()) {
             getVerboseWriter().println("Init SeedLink to "+getHost()+" "+getPort());
@@ -124,9 +124,9 @@ public class SeedlinkReader {
         }
     }
 
-    /** true if there is enough data in the instream to possibly read a data record. 
+    /** true if there is enough data in the instream to possibly read a data record.
      * This should not block, unlike hasNext() and next().
-     * 
+     *
      */
     public boolean available() throws IOException {
         // check for closed connection and server sending END
@@ -135,17 +135,17 @@ public class SeedlinkReader {
         }
         return in.available() > 256;
     }
-    
+
     /** Returns available() from the underlying InputStream, in bytes
-     * 
+     *
      */
     public int availableBytes() throws IOException {
         return in.available();
     }
-    
+
 	/**
 	 * Get the SeedLink information string for streams.
-	 * 
+	 *
 	 * @return the SeedLink information string or null if error.
      * @throws IOException if an I/O Exception occurs.
      * @throws SeedlinkException if no packets or there is an error creating the packet.
@@ -159,7 +159,7 @@ public class SeedlinkReader {
 	/**
 	 * Get the SeedLink information string.
 	 * @param infoType the information type.
-	 * 
+	 *
 	 * @return the SeedLink information string or null if error.
      * @throws IOException if an I/O Exception occurs.
      * @throws SeedlinkException if no packets or there is an error creating the packet.
@@ -174,7 +174,7 @@ public class SeedlinkReader {
 	 * Get the SeedLink information string.
 	 * @param infoType the information type.
 	 * @param addNewlines true to add newlines to support XML parsing, false otherwise.
-	 * 
+	 *
 	 * @return the SeedLink information string or null if error.
      * @throws IOException if an I/O Exception occurs.
      * @throws SeedlinkException if no packets or there is an error creating the packet.
@@ -686,7 +686,7 @@ public class SeedlinkReader {
         String endStr = end == null ? "" : seedlinkFormat.format(end);
         startData(startStr, endStr);
     }
-    
+
     /**
      * Start the data transfer. Note the DMC only goes back 48 hours.
      * The start and end time format is year,month,day,hour,minute,second,
@@ -780,11 +780,11 @@ public class SeedlinkReader {
     boolean verbose = false;
 
     boolean debug = false;
-    
+
     int timeoutSeconds;
 
     int connectTimeoutSeconds;
-    
+
     List<String> sentCommands = new ArrayList<>();
 
     SeedlinkState seedlinkState;
@@ -842,10 +842,13 @@ public class SeedlinkReader {
 
     public static final String TIME_COMMAND = "TIME";
 
-    public static final String DEFAULT_HOST = "rtserve.iris.washington.edu";
+    public static final String EARTHSCOPE_HOST = "rtserve.earthscope.org";
+    public static final int EARTHSCOPE_PORT = 18000;
 
-    public static final int DEFAULT_PORT = 18000;
-    
+    public static final String DEFAULT_HOST = EARTHSCOPE_HOST;
+
+    public static final int DEFAULT_PORT = EARTHSCOPE_PORT;
+
     public static final int DEFAULT_TIMEOUT_SECOND = 120;
 
     public static final String INFO_ID = "ID";
