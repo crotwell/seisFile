@@ -116,13 +116,13 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
         HttpEntity entity = response.getEntity();
         long length = entity.getContentLength();
         if (length > 0 && length <= MAX_MEM_BUFFER) {
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream((int) MAX_MEM_BUFFER);
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream((int) length);
             entity.writeTo(byteStream);
             inputStream = new ByteArrayInputStream(byteStream.toByteArray());
         } else {
             Path tempFilePath = Files.createTempFile(UUID.randomUUID().toString(), ".xml");
             Files.copy(entity.getContent(), tempFilePath, REPLACE_EXISTING);
-            File tempFile = tempFilePath.toFile();
+            tempFile = tempFilePath.toFile();
             tempFile.deleteOnExit();
             inputStream = new FileInputStream(tempFile);
         }
@@ -402,6 +402,10 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
             }
             inputStream = null;
         }
+        if (tempFile != null ) {
+            tempFile.delete();
+            tempFile = null;
+        }
         if (response != null) {
             try {
                 response.close();
@@ -437,6 +441,8 @@ public abstract class AbstractFDSNQuerier implements AutoCloseable {
     XMLEventReader reader;
 
     InputStream inputStream;
+
+    File tempFile = null;
 
     ClassicHttpResponse response;
 
