@@ -15,8 +15,8 @@ plugins {
   application
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
-  id("com.github.ben-manes.versions") version "0.53.0"
-  id("org.jreleaser") version "1.22.0"
+  id("io.github.ben-manes.versions") version "0.59.0"
+  id("org.jreleaser") version "1.25.0"
 }
 
 tasks.withType<JavaCompile>().configureEach { options.compilerArgs.addAll(arrayOf("-Xlint:deprecation")) }
@@ -171,20 +171,20 @@ dependencies {
     annotationProcessor("info.picocli:picocli-codegen:4.7.7")
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
-    implementation( "com.fasterxml.woodstox:woodstox-core:7.1.1")
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.6.2")
-    implementation("org.json:json:20251224")
+    implementation( "com.fasterxml.woodstox:woodstox-core:7.2.2")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.6.3")
+    implementation("org.json:json:20260719")
 
     // Use JUnit Jupiter API for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.4")
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.14.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.14.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Use JUnit Jupiter API for testing.
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.14.2")
-    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.14.2")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-api:5.14.4")
+    clientTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.14.4")
     clientTestImplementation("org.junit.platform:junit-platform-launcher")
 
 }
