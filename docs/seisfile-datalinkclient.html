@@ -477,7 +477,7 @@ miniseed to a file.
 <dl>
 <dt class="hdlist1"><strong>-h</strong>, <strong>--host</strong>=<em>&lt;host&gt;</em></dt>
 <dd>
-<p>host to connect to, defaults to IRIS, rtserve.iris.washington.edu</p>
+<p>host to connect to, defaults to IRIS, rtserve.earthscope.org</p>
 </dd>
 <dt class="hdlist1"><strong>--help</strong></dt>
 <dd>
@@ -523,44 +523,28 @@ miniseed to a file.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; datalinkclient -m CO_BIRD_00_HH./MSEED --max 3 -o bird.mseed -v
-initConnection to rtserve.iris.washington.edu:18000
+<pre class="highlight"><code class="language-bash" data-lang="bash">&gt; datalinkclient -m CO_BIRD_00_H_H_./MSEED --max 3 -o bird.mseed -v
+initConnection to rtserve.earthscope.org:18000
 Connection made
 sendId
 send 'ID seisFile:unknown:42:java | '
 not bytes available 0
 readPacket
-readPacket(): blocking read for 3 bytes, available=53
-Server ID: ID DataLink 2018.078 :: DLPROTO:1.0 PACKETSIZE:512
-send 'MATCH | CO_BIRD_00_HH./MSEED'
-send 'STREAM | '
+readPacket(): blocking read for 3 bytes, available=68
+Server ID: ID DataLink v1.1 (RingServer/4.5.4) :: DLPROTO:1.1 PACKETSIZE:512
+send 'MATCH | CO_BIRD_00_H_H_./MSEED'
 readPacket(): blocking read for 3 bytes, available=0
 Response: OK
+send 'STREAM | '
 readPacket(): blocking read for 3 bytes, available=0
-D CO.BIRD.00.HHZ 2026,034,19:54:30.9800  3.11 311
-readPacket(): blocking read for 3 bytes, available=6655
-D CO.BIRD.00.HHZ 2026,034,19:54:34.0900  3.01 301
+Response: PACKET
+readPacket(): blocking read for 3 bytes, available=0
+D CO.BIRD.00.HHZ 2026,218,17:06:45.8300  3.73 373
+readPacket(): blocking read for 3 bytes, available=616
+D CO.BIRD.00.HHE 2026,218,17:06:45.5800  3.31 331
+readPacket(): blocking read for 3 bytes, available=0
+D CO.BIRD.00.HHN 2026,218,17:06:46.8900  3.29 329
 send 'ENDSTREAM | '
-readPacket(): blocking read for 3 bytes, available=6050
-D CO.BIRD.00.HHZ 2026,034,19:54:37.1000  2.98 298
-readPacket(): blocking read for 3 bytes, available=5445
-D CO.BIRD.00.HHZ 2026,034,19:54:40.0800  3.02 302
-readPacket(): blocking read for 3 bytes, available=4840
-D CO.BIRD.00.HHZ 2026,034,19:54:43.1000  3 300
-readPacket(): blocking read for 3 bytes, available=4235
-D CO.BIRD.00.HHZ 2026,034,19:54:46.1000  3.05 305
-readPacket(): blocking read for 3 bytes, available=3630
-D CO.BIRD.00.HHZ 2026,034,19:54:49.1500  2.93 293
-readPacket(): blocking read for 3 bytes, available=3025
-D CO.BIRD.00.HHZ 2026,034,19:54:52.0800  3.04 304
-readPacket(): blocking read for 3 bytes, available=2420
-D CO.BIRD.00.HHZ 2026,034,19:54:55.1200  3.07 307
-readPacket(): blocking read for 3 bytes, available=1815
-D CO.BIRD.00.HHZ 2026,034,19:54:58.1900  3 300
-readPacket(): blocking read for 3 bytes, available=1210
-D CO.BIRD.00.HHZ 2026,034,19:55:01.1900  3.02 302
-readPacket(): blocking read for 3 bytes, available=605
-D CO.BIRD.00.HHZ 2026,034,19:55:04.2100  2.91 291
 readPacket(): blocking read for 3 bytes, available=0</code></pre>
 </div>
 </div>
@@ -569,8 +553,8 @@ readPacket(): blocking read for 3 bytes, available=0</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.3.4 2026-02-03T20 00 34Z (2348 4906f01b)<br>
-Last updated 2026-02-03 12:48:26 -0500
+Version edu.sc.seis seisFile 2.4.0 2026-08-06T17 05 05Z (2363 1c7015a0)<br>
+Last updated 2026-08-06 13:09:56 -0400
 </div>
 </div>
 </body>

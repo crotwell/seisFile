@@ -494,7 +494,7 @@ and information about its use at IRIS here
 </dd>
 <dt class="hdlist1"><strong>-h</strong>, <strong>--host</strong>=<em>&lt;host&gt;</em></dt>
 <dd>
-<p>host to connect to, defaults to IRIS, rtserve.iris.washington.edu</p>
+<p>host to connect to, defaults to IRIS, rtserve.earthscope.org</p>
 </dd>
 <dt class="hdlist1"><strong>--help</strong></dt>
 <dd>
@@ -557,12 +557,12 @@ and information about its use at IRIS here
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">&gt; seedlinkclient -n CO -s HODGE -c HHZ -o hodge.mseed --max 3 -v
-Init SeedLink to rtserve.iris.washington.edu 18000
+Init SeedLink to rtserve.earthscope.org 18000
 send 'HELLO'
-recv 'SeedLink v3.1 (2018.078 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13'
-recv 'IRIS DMC RTSERVE3 ADC1 Ring Server'
-SeedLink v3.1 (2018.078 RingServer) :: SLPROTO:3.1 CAP EXTREPLY NSWILDCARD BATCH WS:13
-IRIS DMC RTSERVE3 ADC1 Ring Server
+recv 'SeedLink v4.0 (RingServer/4.5.4) :: SLPROTO:4.0 SLPROTO:3.1 CAP WS:13'
+recv 'EarthScope Ring Server'
+SeedLink v4.0 (RingServer/4.5.4) :: SLPROTO:4.0 SLPROTO:3.1 CAP WS:13
+EarthScope Ring Server
 send 'STATION HODGE CO'
 recv 'OK'
 send 'SELECT   HHZ.D'
@@ -573,14 +573,14 @@ send 'DATA'
 recv 'OK'
 send 'END'
 3 true
- Got a packet: 6F30A3  CO  HODGE  00  HHZ  2026,034,19:55:01.6900 420
-D CO.HODGE.00.HHZ 2026,034,19:55:01.6900  4.2 420
- Got a packet: 6F30A4  CO  HODGE  00  HHZ  2026,034,19:55:05.8900 421
-D CO.HODGE.00.HHZ 2026,034,19:55:05.8900  4.21 421
- Got a packet: 6F30A5  CO  HODGE  00  HHZ  2026,034,19:55:10.1000 416
-D CO.HODGE.00.HHZ 2026,034,19:55:10.1000  4.16 416
+ Got a packet: 91E270  CO  HODGE  00  HHZ  2026,218,17:06:59.9200 412
+D CO.HODGE.00.HHZ 2026,218,17:06:59.9200  4.12 412
+ Got a packet: 92379B  CO  HODGE  00  HHZ  2026,218,17:07:04.0400 412
+D CO.HODGE.00.HHZ 2026,218,17:07:04.0400  4.12 412
+ Got a packet: 928C4A  CO  HODGE  00  HHZ  2026,218,17:07:08.1600 412
+D CO.HODGE.00.HHZ 2026,218,17:07:08.1600  4.12 412
 send 'BYE'
-Finished: 2026-02-03T19:56:10.319435Z</code></pre>
+Finished: 2026-08-06T17:07:14.211659Z</code></pre>
 </div>
 </div>
 </div>
@@ -588,8 +588,8 @@ Finished: 2026-02-03T19:56:10.319435Z</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version edu.sc.seis seisFile 2.3.4 2026-02-03T20 00 34Z (2348 4906f01b)<br>
-Last updated 2026-02-03 12:48:15 -0500
+Version edu.sc.seis seisFile 2.4.0 2026-08-06T17 05 05Z (2363 1c7015a0)<br>
+Last updated 2026-08-06 13:10:05 -0400
 </div>
 </div>
 </body>
