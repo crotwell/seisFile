@@ -172,7 +172,7 @@ dependencies {
     implementation( "org.slf4j:slf4j-api:1.7.36")
     clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
     implementation( "com.fasterxml.woodstox:woodstox-core:7.1.1")
-    implementation( "org.apache.httpcomponents:httpclient:4.5.14")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.6.2")
     implementation("org.json:json:20251224")
 
     // Use JUnit Jupiter API for testing.

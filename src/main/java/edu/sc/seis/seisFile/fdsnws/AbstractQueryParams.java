@@ -11,6 +11,7 @@ import java.util.List;
 
 import edu.sc.seis.seisFile.ISOTimeParser;
 import edu.sc.seis.seisFile.TimeUtils;
+import org.apache.hc.core5.http.HttpHost;
 
 public abstract class AbstractQueryParams {
 
@@ -229,6 +230,10 @@ public abstract class AbstractQueryParams {
 
     public String getHost() {
         return host;
+    }
+
+    public HttpHost getHTTPHost() {
+        return new HttpHost(scheme, host, port);
     }
 
     public String getParam(String key) {

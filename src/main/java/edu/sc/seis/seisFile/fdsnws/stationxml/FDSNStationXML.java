@@ -17,11 +17,12 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import edu.sc.seis.seisFile.mseed3.FDSNSourceId;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.FDSNStationQuerier;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 
 public class FDSNStationXML {
 
@@ -231,14 +232,14 @@ public class FDSNStationXML {
         return true;
     }
 
-    public void setResponse(CloseableHttpResponse response) {
+    public void setResponse(ClassicHttpResponse response) {
         this.response = response;
     }
 
     /**
      * Where input stream came from, so can be closed at end
      */
-    CloseableHttpResponse response;
+    ClassicHttpResponse response;
 
     XMLEventReader reader;
 

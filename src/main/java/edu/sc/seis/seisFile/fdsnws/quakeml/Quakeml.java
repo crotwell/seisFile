@@ -11,12 +11,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.FDSNEventQuerier;
 import edu.sc.seis.seisFile.fdsnws.StaxUtil;
 import edu.sc.seis.seisFile.fdsnws.stationxml.FDSNStationXML;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 
 public class Quakeml {
 
@@ -140,7 +141,7 @@ public class Quakeml {
         this.querier = q;
     }
 
-    public void setResponse(CloseableHttpResponse response) {
+    public void setResponse(ClassicHttpResponse response) {
         this.response = response;
     }
 
@@ -155,7 +156,7 @@ public class Quakeml {
 
     String schemaVersion;
     
-    CloseableHttpResponse response;
+    ClassicHttpResponse response;
     /* this is so that the querier will not be garbage collected while the QuakeML is being processed. */
     FDSNEventQuerier querier;
 }
