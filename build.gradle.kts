@@ -169,8 +169,8 @@ dependencies {
     clientImplementation("info.picocli:picocli:4.7.7")
 
     annotationProcessor("info.picocli:picocli-codegen:4.7.7")
-    implementation( "org.slf4j:slf4j-api:1.7.36")
-    clientImplementation( "org.slf4j:slf4j-reload4j:1.7.36")
+    implementation( "org.slf4j:slf4j-api:2.0.6")
+    clientImplementation( "org.slf4j:slf4j-reload4j:2.0.6")
     implementation( "com.fasterxml.woodstox:woodstox-core:7.2.2")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.6.3")
     implementation("org.json:json:20260719")
