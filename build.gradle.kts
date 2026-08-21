@@ -15,7 +15,7 @@ plugins {
   application
   id("org.asciidoctor.jvm.convert") version "3.3.2"
   id("org.asciidoctor.jvm.pdf") version "3.3.2"
-  id("io.github.ben-manes.versions") version "0.59.0"
+  id("io.github.ben-manes.versions") version "0.61.0"
   id("org.jreleaser") version "1.25.0"
 }
 
@@ -173,7 +173,7 @@ dependencies {
     clientImplementation( "org.slf4j:slf4j-reload4j:2.0.6")
     implementation( "com.fasterxml.woodstox:woodstox-core:7.2.2")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.6.3")
-    implementation("org.json:json:20260719")
+    implementation("org.json:json:20260814")
 
     // Use JUnit Jupiter API for testing.
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.4")
