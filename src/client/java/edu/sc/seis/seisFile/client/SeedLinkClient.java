@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed3.MSeed3Record;
 import edu.sc.seis.seisFile.seedlink.SeedlinkPacket;
 import edu.sc.seis.seisFile.seedlink.SeedlinkReader;
 import picocli.CommandLine;
@@ -59,6 +60,9 @@ public class SeedLinkClient extends AbstractClient {
     @Option(names={"-o","--output"}, description = "Output file (default: print to console)")
     private File outputFile = null;
 
+    @Option(names= {"--v3"}, description="do not upgrade to SeedLink v4 even if the server supports it")
+    public boolean v3 = false;
+
     @Option(names= {"--timeout"}, description="timeout seconds, defaults to ${DEFAULT-VALUE}", defaultValue = ""+SeedlinkReader.DEFAULT_TIMEOUT_SECOND)
     public Integer timeoutSec = SeedlinkReader.DEFAULT_TIMEOUT_SECOND;
     
@@ -80,14 +84,16 @@ public class SeedLinkClient extends AbstractClient {
         if (outputFile != null) {
             dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
         }
-        SeedlinkReader reader = new SeedlinkReader(host, port, timeoutSec, verbose);
+        SeedlinkReader reader = new SeedlinkReader(host, port, timeoutSec, verbose, timeoutSec, !v3);
         reader.setVerboseWriter(out);
         try {
             if (verbose) {
-                String[] lines = reader.sendHello();
+                // cached from the protocol negotiation, if any
+                String[] lines = reader.sendHello(true);
                 for (String l : lines) {
                     out.println(l);
                 }
+                out.println("SeedLink protocol v" + (reader.isV4() ? "4" : "3"));
             }
             if (!infoType.isEmpty()) {
                 String infoString = reader.getInfoString(infoType);
@@ -127,17 +133,30 @@ public class SeedLinkClient extends AbstractClient {
                 reader.endHandshake();
                 int i = 0;
                 try {
-                    System.out.println(maxRecords+" "+((maxRecords == -1 || i < maxRecords) && reader.hasNext()));
                     while ((maxRecords == -1 || i < maxRecords) && reader.hasNext()) {
                         SeedlinkPacket slp = reader.readPacket();
-                        DataRecord dr = slp.getMiniSeed();
                         if (dos != null) {
-                            dr.write(dos);
+                            if (slp.isV4()) {
+                                // payload as sent, miniSEED 2 or 3
+                                dos.write(slp.getMseedBytes());
+                            } else {
+                                slp.getMiniSeed().write(dos);
+                            }
                         }
                         if (dos == null || verbose) {
                             // print something to the screen if we are not saving to
                             // disk
-                            out.println(dr.oneLineSummary());
+                            if (slp.isMiniSeed3()) {
+                                MSeed3Record rec = slp.getMiniSeed3();
+                                out.println(slp.getSeqNum() + " " + rec.getSourceIdStr() + " " + rec.getStartInstant()
+                                        + " " + rec.getNumSamples() + " samples");
+                            } else if (slp.isMiniSeed()) {
+                                DataRecord dr = slp.getMiniSeed();
+                                out.println(dr.oneLineSummary());
+                            } else {
+                                out.println(slp.getSeqNum() + " " + slp.getFormat() + slp.getSubformat() + " "
+                                        + slp.getStationId() + " " + slp.getMseedBytes().length + " bytes");
+                            }
                             out.flush();
                         }
                         i++;
