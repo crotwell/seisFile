@@ -9,14 +9,24 @@ import java.io.PushbackInputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import edu.sc.seis.seisFile.BuildVersion;
 import edu.sc.seis.seisFile.TimeUtils;
 import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
+import edu.sc.seis.seisFile.mseed3.MSeed3Record;
 
 
 /**
@@ -24,6 +34,13 @@ import edu.sc.seis.seisFile.mseed.SeedFormatException;
  * <a href="https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html">seedlink</a>
  * Note this implementatino assumes multistation mode. It may be possible to use this in single station mode, but
  * this has not been tested.
+ * <p>
+ * Connecting sends HELLO and, if the server advertises SeedLink 4 (SLPROTO:4.x), upgrades the connection to the
+ * version 4 protocol with SLPROTO 4.0. Servers that only support version 3 are used as before. In version 4 the
+ * STATION, SELECT, DATA and TIME helpers send the version 4 syntax, packets can carry miniSEED 3 (see
+ * SeedlinkPacket.isMiniSeed3()) and INFO is returned as JSON. Code that sends its own version 3 syntax commands
+ * with sendCmd() or that expects only miniSEED 2 from a server that supports version 4 should either
+ * check isV4() or turn the upgrade off with the autoUpgrade constructor argument.
  */
 public class SeedlinkReader {
 
@@ -64,11 +81,32 @@ public class SeedlinkReader {
     }
 
     public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose, int connectTimeoutSeconds) throws IOException {
+        this(host, port, timeoutSeconds, verbose, connectTimeoutSeconds, true);
+    }
+
+    /**
+     * Connects to the server, upgrading to SeedLink 4 if it is supported and autoUpgrade is true.
+     * @param host the server host.
+     * @param port the server port.
+     * @param timeoutSeconds the socket read timeout.
+     * @param verbose true to print the commands sent and responses received.
+     * @param connectTimeoutSeconds the socket connect timeout.
+     * @param autoUpgrade true to upgrade to SeedLink 4 if the server supports it, false to stay with version 3
+     *                    without sending anything extra to the server.
+     * @throws IOException if an I/O Exception occurs or the protocol negotiation fails.
+     */
+    public SeedlinkReader(String host, int port, int timeoutSeconds, boolean verbose, int connectTimeoutSeconds, boolean autoUpgrade) throws IOException {
         setVerbose(verbose);
         this.timeoutSeconds = timeoutSeconds;
         this.connectTimeoutSeconds = connectTimeoutSeconds;
+        this.autoUpgrade = autoUpgrade;
         this.seedlinkState = new SeedlinkState(host, port, sentCommands);
-        initConnection();
+        try {
+            initConnection();
+        } catch(SeedlinkException e) {
+            close();
+            throw new IOException(e.getMessage(), e);
+        }
     }
     public SeedlinkReader(SeedlinkState state) {
         this(state, DEFAULT_TIMEOUT_SECOND, false, DEFAULT_TIMEOUT_SECOND);
@@ -83,7 +121,7 @@ public class SeedlinkReader {
         this.seedlinkState = state;
     }
 
-    private void initConnection() throws IOException {
+    private void initConnection() throws IOException, SeedlinkException {
         if (isVerbose()) {
             getVerboseWriter().println("Init SeedLink to "+getHost()+" "+getPort());
         }
@@ -93,6 +131,245 @@ public class SeedlinkReader {
         out = new BufferedOutputStream(socket.getOutputStream());
         in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()), 3);
         inData = new DataInputStream(in);
+        helloLines = null;
+        protocolVersion = 3;
+        if (autoUpgrade) {
+            negotiateProtocol();
+        }
+        alignState();
+    }
+
+    /**
+     * Sends HELLO and upgrades to SeedLink 4 if the server supports it, like libslink does.
+     */
+    private void negotiateProtocol() throws IOException, SeedlinkException {
+        String[] hello = sendHello(true);
+        if (!hello[0].regionMatches(true, 0, "SeedLink", 0, "SeedLink".length())) {
+            throw new SeedlinkException("Unrecognized server identification in HELLO response: '" + hello[0] + "'");
+        }
+        boolean serverV4 = false;
+        for (String v : parseSlproto(hello[0])) {
+            if (v.startsWith("4")) {
+                serverV4 = true;
+                if (!v.equals("4.0") && !v.equals("4") && isVerbose()) {
+                    getVerboseWriter().println("Using SeedLink 4.0 instead of unsupported " + v);
+                }
+            }
+        }
+        if (!serverV4) {
+            return;
+        }
+        // an ERROR here is fatal, there is no falling back to v3 once the server has offered v4
+        internalSendCmd(SLPROTO_COMMAND + " 4.0");
+        protocolVersion = 4;
+        try {
+            internalSendCmd(USERAGENT_COMMAND + " SeisFile/" + BuildVersion.getVersion());
+        } catch(SeedlinkException e) {
+            // only for logging on the server, not worth failing
+            if (isVerbose()) {
+                getVerboseWriter().println("USERAGENT not accepted: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * The state, sequence numbers and commands, may have been saved from a connection with a different
+     * protocol than the one just negotiated, so convert it to match.
+     */
+    private void alignState() {
+        if (seedlinkState.getProtocolVersion() != protocolVersion) {
+            convertState(seedlinkState, protocolVersion);
+            if (!lastSeqNum.isEmpty()) {
+                lastSeqNum = seedlinkState.getGlobalLastSequence();
+            }
+        }
+    }
+
+    /**
+     * Servers that support both protocols share a sequence index, so converting is just a matter
+     * of hex versus decimal. The commands are changed to the syntax of the new protocol.
+     */
+    static void convertState(SeedlinkState state, int toProtocol) {
+        int from = state.getProtocolVersion();
+        state.updateGlobalSequence(convertSeq(state.getGlobalLastSequence(), from, toProtocol));
+        for (Map.Entry<String, String> e : state.getMap().entrySet()) {
+            e.setValue(convertSeq(e.getValue(), from, toProtocol));
+        }
+        List<String> converted = new ArrayList<>();
+        for (String cmd : state.getCommandList()) {
+            converted.add(convertCommand(cmd, from, toProtocol));
+        }
+        state.getCommandList().clear();
+        state.getCommandList().addAll(converted);
+        state.setProtocolVersion(toProtocol);
+    }
+
+    static String convertSeq(String seq, int from, int to) {
+        if (from == to) {
+            return seq;
+        }
+        return to == 4 ? seqToV4(seq) : seqToV3(seq);
+    }
+
+    /**
+     * Converts a version 3 hex sequence number to the decimal of version 4.
+     * @param hexSeq the version 3 sequence number.
+     * @return the version 4 sequence number.
+     */
+    public static String seqToV4(String hexSeq) {
+        return Long.toString(Long.parseLong(hexSeq.trim(), 16));
+    }
+
+    /**
+     * Converts a version 4 decimal sequence number to the 24 bit, 6 digit hex of version 3.
+     * @param decSeq the version 4 sequence number.
+     * @return the version 3 sequence number.
+     */
+    public static String seqToV3(String decSeq) {
+        String hex = Long.toHexString(Long.parseUnsignedLong(decSeq.trim()) & 0xFFFFFF).toUpperCase();
+        while (hex.length() < 6) { hex = "0" + hex;}
+        return hex;
+    }
+
+    static String convertCommand(String cmd, int from, int to) {
+        if (from == to) {
+            return cmd;
+        }
+        String[] p = cmd.trim().split(" +");
+        if (to == 4) {
+            if (p[0].equals("STATION") && p.length > 1) {
+                // STATION sta [net]
+                return "STATION " + (p.length > 2 ? p[2] : "*") + "_" + p[1];
+            } else if (cmd.startsWith("SELECT ")) {
+                // not split, an empty location is spaces
+                return "SELECT " + toV4StreamPattern(cmd.substring("SELECT ".length()));
+            } else if (p[0].equals(TIME_COMMAND)) {
+                if (p.length < 2) {
+                    return DATA_COMMAND;
+                }
+                return DATA_COMMAND + " ALL " + timeToV4(p[1]) + (p.length > 2 ? " " + timeToV4(p[2]) : "");
+            } else if (p[0].equals(DATA_COMMAND) && p.length == 2) {
+                return DATA_COMMAND + " " + seqToV4(p[1]);
+            } else if (p[0].equals(DATA_COMMAND) && p.length > 2) {
+                return DATA_COMMAND + " " + (seqToV4(p[1]).equals("0") ? "ALL" : seqToV4(p[1])) + " " + timeToV4(p[2]);
+            }
+        } else {
+            if (p[0].equals("STATION") && p.length > 1 && p[1].indexOf('_') > 0) {
+                int split = p[1].indexOf('_');
+                return "STATION " + p[1].substring(split + 1) + " " + p[1].substring(0, split);
+            } else if (cmd.startsWith("SELECT ")) {
+                return "SELECT " + toV3Selector(cmd.substring("SELECT ".length()));
+            } else if (p[0].equals(DATA_COMMAND) && p.length > 1 && p[1].equals("ALL")) {
+                if (p.length == 2) {
+                    return DATA_COMMAND;
+                }
+                return TIME_COMMAND + " " + timeToV3(p[2]) + (p.length > 3 ? " " + timeToV3(p[3]) : "");
+            } else if (p[0].equals(DATA_COMMAND) && p.length == 2) {
+                return DATA_COMMAND + " " + seqToV3(p[1]);
+            } else if (p[0].equals(DATA_COMMAND) && p.length > 2) {
+                return DATA_COMMAND + " " + seqToV3(p[1]) + " " + timeToV3(p[2]);
+            }
+        }
+        return cmd;
+    }
+
+    static String timeToV4(String v3Time) {
+        try {
+            return V4_TIME_FORMAT.format(V3_TIME_FORMAT.parse(v3Time, Instant::from));
+        } catch(DateTimeException e) {
+            return v3Time;
+        }
+    }
+
+    static String timeToV3(String v4Time) {
+        try {
+            return V3_TIME_FORMAT.format(Instant.parse(v4Time));
+        } catch(DateTimeException e) {
+            return v4Time;
+        }
+    }
+
+    /**
+     * Converts a version 3 selector, [LL]CCC[.T], to the version 4 stream pattern, LL_B_S_SS[.T]. Like
+     * libslink, leading '-' characters or spaces mean an empty location, three character selectors match any
+     * location and anything that cannot be converted, like a selector already in version 4 form, is
+     * returned unchanged.
+     * @param selector the version 3 selector, location and channel with an optional type.
+     * @return the version 4 stream pattern.
+     */
+    public static String toV4StreamPattern(String selector) {
+        int start = 0;
+        while (start < selector.length() && (selector.charAt(start) == '-' || selector.charAt(start) == ' ')) {
+            start++;
+        }
+        boolean emptyLocation = start > 0;
+        String s = selector.substring(start);
+        int dot = s.indexOf('.');
+        String id = dot < 0 ? s : s.substring(0, dot);
+        String type = dot < 0 ? "" : s.substring(dot);
+        for (int i = 0; i < id.length(); i++) {
+            char c = id.charAt(i);
+            if (!(Character.isLetterOrDigit(c) || c == '?' || c == '*')) {
+                return selector;
+            }
+        }
+        switch(id.length()) {
+            case 3:
+                return (emptyLocation ? "" : "*") + "_" + id.charAt(0) + "_" + id.charAt(1) + "_" + id.charAt(2) + type;
+            case 4:
+                return id.charAt(0) + "_" + id.charAt(1) + "_" + id.charAt(2) + "_" + id.charAt(3) + type;
+            case 5:
+                return id.substring(0, 2) + "_" + id.charAt(2) + "_" + id.charAt(3) + "_" + id.charAt(4) + type;
+            default:
+                return selector;
+        }
+    }
+
+    /** Reverse of toV4StreamPattern(), best effort, unchanged if not of that form. */
+    static String toV3Selector(String selector) {
+        Matcher m = V4_STREAM.matcher(selector);
+        if (!m.matches()) {
+            return selector;
+        }
+        String loc = m.group(1);
+        if (loc.isEmpty()) {
+            loc = "  ";
+        } else if (loc.equals("*")) {
+            loc = "";
+        } else if (loc.length() != 2) {
+            return selector;
+        }
+        return loc + m.group(2) + m.group(3) + m.group(4) + (m.group(5) == null ? "" : m.group(5));
+    }
+
+    /**
+     * Pulls the SLPROTO:x.y versions, as the strings x.y, out of the first line of a HELLO response. These come after
+     * the "::" that separates the capabilities from the server identification.
+     * @param helloLine the first line of the HELLO response.
+     * @return the versions, empty if none are advertised.
+     */
+    public static List<String> parseSlproto(String helloLine) {
+        List<String> versions = new ArrayList<>();
+        int caps = helloLine.indexOf("::");
+        if (caps < 0) {
+            return versions;
+        }
+        for (String flag : helloLine.substring(caps + 2).trim().split("\\s+")) {
+            if (flag.startsWith("SLPROTO:") && flag.length() > "SLPROTO:".length()) {
+                versions.add(flag.substring("SLPROTO:".length()));
+            }
+        }
+        return versions;
+    }
+
+    /** True if the connection has been upgraded to SeedLink 4. */
+    public boolean isV4() {
+        return protocolVersion == 4;
+    }
+
+    /** The response to HELLO, from the upgrade negotiation or an explicit sendHello(), null if none yet. */
+    public String[] getHelloLines() {
+        return helloLines;
     }
 
     /**
@@ -182,6 +459,23 @@ public class SeedlinkReader {
 	 */
 	public String getInfoString(String infoType, boolean addNewlines) throws IOException, SeedlinkException,
 			SeedFormatException {
+		if (isV4()) {
+			// a single JSON packet
+			info(infoType);
+			SeedlinkPacket jsonPacket = next();
+			String json = new String(jsonPacket.getMseedBytes(), StandardCharsets.UTF_8);
+			if (jsonPacket.isErrorPacket() || !jsonPacket.isInfoPacket()) {
+				throw new SeedlinkException("INFO " + infoType + " did not return info: " + json);
+			}
+			if (addNewlines) {
+				try {
+					json = new JSONObject(json).toString(2);
+				} catch(JSONException e) {
+					// leave as is
+				}
+			}
+			return json;
+		}
 		SeedlinkPacket infoPacket;
 		String s;
 		info(infoType);
@@ -236,19 +530,37 @@ public class SeedlinkReader {
             getVerboseWriter().println("readPacket(): blocking read for " + SeedlinkPacket.PACKET_SIZE + " bytes, available="
                     + in.available());
         }
-        byte[] bits = new byte[SeedlinkPacket.PACKET_SIZE];
-        inData.readFully(bits);
-        SeedlinkPacket slp = new SeedlinkPacket(bits);
-        lastSeqNum = slp.getSeqNum();
-        seedlinkState.updateGlobalSequence(lastSeqNum);
+        SeedlinkPacket slp;
+        if (isV4()) {
+            slp = SeedlinkPacket.readV4(inData);
+            lastSeqNum = slp.getSeqNum();
+            if (!slp.isInfoPacket()) {
+                seedlinkState.updateGlobalSequence(lastSeqNum);
+            }
+        } else {
+            byte[] bits = new byte[SeedlinkPacket.PACKET_SIZE];
+            inData.readFully(bits);
+            slp = new SeedlinkPacket(bits);
+            lastSeqNum = slp.getSeqNum();
+            seedlinkState.updateGlobalSequence(lastSeqNum);
+        }
         if (isVerbose()) {
             String packetString = EMPTY;
             try {
-                DataRecord dr = slp.getMiniSeed();
-                packetString = " Got a packet: " + slp.getSeqNum() + "  " + dr.getHeader().getNetworkCode() + "  "
-                        + dr.getHeader().getStationIdentifier() + "  " + dr.getHeader().getLocationIdentifier() + "  "
-                        + dr.getHeader().getChannelIdentifier() + "  " + dr.getHeader().getStartTime()
-                        +" "+dr.getHeader().getNumSamples();
+                if (slp.isMiniSeed3()) {
+                    MSeed3Record rec = slp.getMiniSeed3();
+                    packetString = " Got a packet: " + slp.getSeqNum() + "  " + rec.getSourceIdStr() + "  "
+                            + rec.getStartInstant() + " " + rec.getNumSamples();
+                } else if (!slp.isMiniSeed()) {
+                    packetString = " Got a packet: " + slp.getSeqNum() + "  " + slp.getFormat() + slp.getSubformat()
+                            + "  " + slp.getStationId() + " " + slp.getMseedBytes().length + " bytes";
+                } else {
+                    DataRecord dr = slp.getMiniSeed();
+                    packetString = " Got a packet: " + slp.getSeqNum() + "  " + dr.getHeader().getNetworkCode() + "  "
+                            + dr.getHeader().getStationIdentifier() + "  " + dr.getHeader().getLocationIdentifier() + "  "
+                            + dr.getHeader().getChannelIdentifier() + "  " + dr.getHeader().getStartTime()
+                            +" "+dr.getHeader().getNumSamples();
+                }
             } catch(SeedFormatException e) {
                 packetString = "SeedFormatExcpetion parsing packet: " + slp.getSeqNum() + e.getMessage();
             }
@@ -338,7 +650,7 @@ public class SeedlinkReader {
     public void resume() throws IOException, SeedlinkException {
         close();
         initConnection();
-        String nextSeqCmd = DATA_COMMAND + " " + nextSeq(seedlinkState.getGlobalLastSequence());
+        String nextSeqCmd = DATA_COMMAND + " " + nextSeq(seedlinkState.getGlobalLastSequence(), seedlinkState.isV4());
         for (String cmd : sentCommands) {
             if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
                 internalSendCmd(cmd);
@@ -370,7 +682,7 @@ public class SeedlinkReader {
         SeedlinkReader reader = new SeedlinkReader(seedlinkState);
         reader.setVerbose(verbose);
         reader.initConnection();
-        String nextSeqCmd = DATA_COMMAND + " " + nextSeq(seedlinkState.getGlobalLastSequence());
+        String nextSeqCmd = DATA_COMMAND + " " + nextSeq(seedlinkState.getGlobalLastSequence(), seedlinkState.isV4());
         for (String cmd : seedlinkState.getCommandList()) {
             if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
                 reader.internalSendCmd(cmd);
@@ -428,8 +740,15 @@ public class SeedlinkReader {
                     lastNet = null;
                 }
                 String[] splitCmd = cmd.split(" +");
-                lastStation = splitCmd[1];
-                lastNet = splitCmd[2];
+                if (seedlinkState.isV4()) {
+                    // STATION NET_STA
+                    int split = splitCmd[1].indexOf('_');
+                    lastNet = splitCmd[1].substring(0, split);
+                    lastStation = splitCmd[1].substring(split + 1);
+                } else {
+                    lastStation = splitCmd[1];
+                    lastNet = splitCmd[2];
+                }
             }
             if (! (cmd.startsWith(DATA_COMMAND) || cmd.startsWith(TIME_COMMAND))) {
                 reader.internalSendCmd(cmd);
@@ -450,7 +769,7 @@ public class SeedlinkReader {
     public static String createResumeDataCommand(String lastNet, String lastStation, SeedlinkState state) {
         if (state.contains(lastNet, lastStation)) {
             String staSeq = state.getForStation(lastNet, lastStation);
-            return DATA_COMMAND + " " + nextSeq(staSeq);
+            return DATA_COMMAND + " " + nextSeq(staSeq, state.isV4());
         } else {
             System.out.println("Last for station not found: "+lastStation);
             return DATA_COMMAND;
@@ -462,15 +781,47 @@ public class SeedlinkReader {
         return next;
     }
 
+    /**
+     * Gets the next sequence number.
+     * @param seq the last sequence number.
+     * @param v4 true for the decimal of version 4, false for the hex of version 3.
+     * @return the sequence number after seq.
+     */
+    public static String nextSeq(String seq, boolean v4) {
+        return v4 ? nextSeqV4(seq) : nextSeq(seq);
+    }
+
+    /** Gets the next decimal, version 4, sequence number. */
+    public static String nextSeqV4(String seq) {
+        return Long.toUnsignedString(Long.parseUnsignedLong(seq.trim()) + 1);
+    }
+
     public static boolean containsWildcard(String cmd) {
         return cmd.contains("*") || cmd.contains("?");
     }
 
     public String[] sendHello() throws IOException, SeedlinkException {
+        return sendHello(false);
+    }
+
+    /**
+     * Sends HELLO and returns the two line response, the server identification and the organization.
+     *
+     * @param useCached if true and HELLO has already been sent on this connection, such as when
+     *                  upgrading to SeedLink 4, return that response instead of sending HELLO again.
+     * @return the server identification and the organization.
+     * @throws IOException if an I/O Exception occurs.
+     * @throws SeedlinkException if a SeedLink error occurs.
+     */
+    public String[] sendHello(boolean useCached) throws IOException, SeedlinkException {
+        if (useCached && helloLines != null) {
+            return helloLines;
+        }
         send("HELLO");
         String[] lines = new String[2];
         lines[0] = readLine();
         lines[1] = readLine();
+        helloLines = lines;
         return lines;
     }
 
@@ -628,7 +979,11 @@ public class SeedlinkReader {
     public void sendStation(String network, String station) throws SeedlinkException, IOException {
         if (network.isEmpty()) {network = "*";}
         if (station.isEmpty()) {station = "*";}
-        sendCmd("STATION " + station + " " + network);
+        if (isV4()) {
+            sendCmd("STATION " + network + "_" + station);
+        } else {
+            sendCmd("STATION " + station + " " + network);
+        }
     }
 
     /**
@@ -654,7 +1009,8 @@ public class SeedlinkReader {
      */
     public void sendSelect(String locationChannel, String type) throws SeedlinkException, IOException {
         if (locationChannel.isEmpty()) {locationChannel = "*";}
-        sendCmd("SELECT " + locationChannel + "." + type);
+        String selector = locationChannel + "." + type;
+        sendCmd("SELECT " + (isV4() ? toV4StreamPattern(selector) : selector));
     }
 
     /**
@@ -718,10 +1074,14 @@ public class SeedlinkReader {
     }
 
     public void sendData(Instant start) throws SeedlinkException, IOException {
-        sendData("000000", start);
+        sendData(isV4() ? "ALL" : "000000", start);
     }
 
     public void sendData(String seqNum, Instant start) throws SeedlinkException, IOException {
+        if (isV4()) {
+            sendCmd(DATA_COMMAND + " " + seqNum + (start == null ? "" : " " + V4_TIME_FORMAT.format(start)));
+            return;
+        }
         DateTimeFormatter seedlinkFormat = TimeUtils.createFormatter("yyyy,MM,dd,HH,mm,ss");
         String startStr = start == null ? "" : seedlinkFormat.format(start);
         sendCmd(DATA_COMMAND+" "+seqNum+" "+startStr);
@@ -732,6 +1092,19 @@ public class SeedlinkReader {
     }
 
     public void sendTime(Instant start, Instant end) throws SeedlinkException, IOException {
+        if (isV4()) {
+            // TIME is gone in v4, DATA takes the time window
+            if (start == null) {
+                if (end != null && isVerbose()) {
+                    getVerboseWriter().println("End time without a start time is not supported, ignoring");
+                }
+                sendCmd(DATA_COMMAND);
+            } else {
+                sendCmd(DATA_COMMAND + " ALL " + V4_TIME_FORMAT.format(start)
+                        + (end == null ? "" : " " + V4_TIME_FORMAT.format(end)));
+            }
+            return;
+        }
         DateTimeFormatter seedlinkFormat = TimeUtils.createFormatter("yyyy,MM,dd,HH,mm,ss");
         String startStr = start == null ? "" : seedlinkFormat.format(start);
         String endStr = end == null ? "" : seedlinkFormat.format(end);
@@ -757,7 +1130,7 @@ public class SeedlinkReader {
         send(cmd);
         String line = readLine();
         if (!line.equals("OK")) {
-            throw new SeedlinkException("Command " + cmd + " did not return OK");
+            throw new SeedlinkException("Command " + cmd + " did not return OK" + (line.isEmpty() ? "" : ": " + line));
         }
     }
 
@@ -786,6 +1159,12 @@ public class SeedlinkReader {
     int connectTimeoutSeconds;
 
     List<String> sentCommands = new ArrayList<>();
+
+    private int protocolVersion = 3;
+
+    private boolean autoUpgrade = true;
+
+    private String[] helloLines;
 
     SeedlinkState seedlinkState;
 
@@ -842,6 +1221,17 @@ public class SeedlinkReader {
 
     public static final String TIME_COMMAND = "TIME";
 
+    public static final String SLPROTO_COMMAND = "SLPROTO";
+
+    public static final String USERAGENT_COMMAND = "USERAGENT";
+
+    private static final DateTimeFormatter V3_TIME_FORMAT = TimeUtils.createFormatter("yyyy,MM,dd,HH,mm,ss");
+
+    private static final DateTimeFormatter V4_TIME_FORMAT = TimeUtils.createFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+    /** The version 4 stream id, LL_B_S_SS[.T], location then band, source and subsource. */
+    private static final Pattern V4_STREAM = Pattern.compile("^([^_.]{0,2})_(.)_(.)_(.)(\\..*)?$");
+
     public static final String EARTHSCOPE_HOST = "rtserve.earthscope.org";
     public static final int EARTHSCOPE_PORT = 18000;
 
@@ -864,4 +1254,6 @@ public class SeedlinkReader {
     public static final String INFO_CONNECTIONS = "CONNECTIONS";
 
     public static final String INFO_ALL = "ALL";
+
+    public static final String INFO_FORMATS = "FORMATS";
 }

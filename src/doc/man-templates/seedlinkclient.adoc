@@ -18,6 +18,12 @@ https://www.seiscomp.de/seiscomp3/doc/applications/seedlink.html
 and information about its use at IRIS here
 http://ds.iris.edu/ds/nodes/dmc/services/seedlink/.
 
+If the server supports SeedLink v4, see
+https://docs.fdsn.org/projects/seedlink/en/latest/protocol.html,
+the connection is automatically upgraded to it. With v4 the data may be
+miniSEED 3, and output files contain the packet payloads exactly as sent
+by the server. Use --v3 to stay with the v3 protocol.
+
 include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-options]
 
 include::{includedir}/seedlinkclient.adoc[tag=picocli-generated-man-section-arguments]

@@ -19,6 +19,9 @@ public class SeedlinkState {
 
     int port;
 
+    /** protocol of the sequence numbers and commands held here, 3 or 4. */
+    private int protocolVersion = 3;
+
     protected SeedlinkState() {
         this(null, 0, new HashMap<String, String>(), new ArrayList<String>());
     }
@@ -39,6 +42,18 @@ public class SeedlinkState {
 
     public int getPort() {
         return port;
+    }
+
+    public int getProtocolVersion() {
+        return protocolVersion;
+    }
+
+    public void setProtocolVersion(int protocolVersion) {
+        this.protocolVersion = protocolVersion;
+    }
+
+    public boolean isV4() {
+        return protocolVersion == 4;
     }
 
     public boolean contains(String netCode, String staCode) {
@@ -71,6 +86,16 @@ public class SeedlinkState {
     }
 
     public void update(SeedlinkPacket slp) throws SeedFormatException, IOException {
+        if (slp.isV4()) {
+            // station id is NET_STA
+            String id = slp.getStationId();
+            int split = id.indexOf('_');
+            if (split < 0) {
+                throw new SeedFormatException("Unable to split v4 station id into net and sta: '" + id + "'");
+            }
+            put(id.substring(0, split), id.substring(split + 1), slp.getSeqNum());
+            return;
+        }
         put(slp.getMiniSeed().getHeader().getNetworkCode(),
                 slp.getMiniSeed().getHeader().getStationIdentifier(),
                 slp.getSeqNum());
@@ -89,6 +114,10 @@ public class SeedlinkState {
         json.put("host", getHost());
         json.put("port", getPort());
         json.put("globalSequence", globalLastSequence);
+        if (isV4()) {
+            // only written for v4 so v3 output is unchanged
+            json.put("protocol", protocolVersion);
+        }
         JSONArray cmds = new JSONArray();
         for (String c : commandList) {
             cmds.put(c);
@@ -107,6 +136,7 @@ public class SeedlinkState {
         ls.host = json.getString("host");
         ls.port = json.getInt("port");
         ls.globalLastSequence = json.getString("globalSequence");
+        ls.protocolVersion = json.optInt("protocol", 3);
         JSONObject seqVals = json.getJSONObject("sequence");
         for (String k : seqVals.keySet()) {
             ls.lastSeq.put(k, seqVals.getString(k));
